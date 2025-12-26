@@ -1,0 +1,183 @@
+@import "tailwindcss";
+
+@theme {
+  /* Define custom color palette references if needed, 
+     but we will rely heavily on CSS variables for theming */
+}
+
+/* 
+  MATURE DESIGN SYSTEM 
+  --------------------
+  Using CSS variables for semantic naming allows instant theme switching.
+  Color palette chosen for a clean, premium, "design engineer" aesthetic.
+*/
+
+:root {
+  /* FONT */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'DM Mono', monospace;
+
+  /* LIGHT THEME (Default) - Inspired by crisp paper and ink */
+  /* Backgrounds */
+  --bg-canvas: #f4f4f5;
+  /* Zinc-100 */
+  --bg-surface: rgba(255, 255, 255, 0.85);
+  --bg-surface-hover: rgba(255, 255, 255, 0.95);
+
+  /* Text */
+  --text-primary: #18181b;
+  /* Zinc-900 */
+  --text-secondary: #52525b;
+  /* Zinc-600 */
+  --text-tertiary: #a1a1aa;
+  /* Zinc-400 */
+
+  /* Borders & Lines */
+  --border-subtle: rgba(24, 24, 27, 0.08);
+  /* Zinc-900 alpha */
+  --border-strong: rgba(24, 24, 27, 0.15);
+
+  /* Grid Pattern */
+  --grid-line: rgba(24, 24, 27, 0.1);
+
+  /* Accents */
+  --accent-primary: #2563eb;
+  /* Blue-600 */
+  --accent-glow: rgba(37, 99, 235, 0.15);
+
+  /* Shadows (Premium/Soft) */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-card:
+    0 4px 6px -1px rgb(0 0 0 / 0.05),
+    0 2px 4px -2px rgb(0 0 0 / 0.05),
+    0 0 0 1px var(--border-subtle);
+  --shadow-floating:
+    0 20px 25px -5px rgb(0 0 0 / 0.1),
+    0 8px 10px -6px rgb(0 0 0 / 0.1),
+    0 0 0 1px var(--border-subtle);
+}
+
+/* DARK THEME - Deep, rich, "OLED" friendly */
+.dark {
+  /* Backgrounds */
+  --bg-canvas: #09090b;
+  /* Zinc-950 */
+  --bg-surface: rgba(24, 24, 27, 0.75);
+  /* Zinc-900 alpha */
+  --bg-surface-hover: rgba(39, 39, 42, 0.85);
+  /* Zinc-800 alpha */
+
+  /* Text */
+  --text-primary: #f4f4f5;
+  /* Zinc-100 */
+  --text-secondary: #a1a1aa;
+  /* Zinc-400 */
+  --text-tertiary: #52525b;
+  /* Zinc-600 */
+
+  /* Borders & Lines */
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.15);
+
+  /* Grid Pattern (Slightly lighter than before for visibility) */
+  --grid-line: rgba(255, 255, 255, 0.08);
+
+  /* Accents */
+  --accent-primary: #3b82f6;
+  /* Blue-500 */
+  --accent-glow: rgba(59, 130, 246, 0.15);
+
+  /* Shadows */
+  --shadow-card:
+    0 0 0 1px var(--border-subtle),
+    0 4px 6px -1px rgb(0 0 0 / 0.3);
+  --shadow-floating:
+    0 0 0 1px var(--border-subtle),
+    0 25px 50px -12px rgb(0 0 0 / 0.5);
+}
+
+/* BASE STYLES */
+html {
+  background-color: var(--bg-canvas);
+  transition: background-color 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body {
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  overflow: hidden;
+  /* We handle scroll in the canvas wrapper */
+}
+
+/* UTILITY CLASSES MAPPED TO VARS */
+.bg-canvas {
+  background-color: var(--bg-canvas);
+}
+
+.bg-surface {
+  background-color: var(--bg-surface);
+}
+
+.text-primary {
+  color: var(--text-primary);
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+}
+
+.border-subtle {
+  border-color: var(--border-subtle);
+}
+
+/* GRID BACKGROUND */
+/* GRID BACKGROUND - Figma Style */
+.grid-background {
+  background-color: var(--bg-canvas);
+  position: relative;
+}
+
+.grid-background::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-size: 100px 100px;
+  background-image:
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+}
+
+/* GLASSMORPHISM UTILS */
+.glass {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.glass-heavy {
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
+/* ANIMATIONS */
+.transition-theme {
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+/* SCROLLBAR HIDING */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
