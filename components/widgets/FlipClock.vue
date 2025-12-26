@@ -1,71 +1,26 @@
 <template>
-  <div class="w-full h-full flex items-center justify-center">
-    <div class="relative flex items-center justify-center gap-8 w-full h-full p-8 rounded-lg overflow-hidden">
-      <div class="relative flex items-center justify-center w-full h-full rounded-lg overflow-hidden">
-        <div class="relative z-10 flex items-center justify-center gap-8">
-          
-          <!-- Hours -->
-          <div class="relative w-[96px] h-[96px] rounded-lg">
-            <div class="absolute top-0 flip-container w-full h-1/2 items-start z-10 rounded-lg">
-              <div :class="['clip-path-top-digit absolute z-10 class-test bg-component w-full rounded-lg font-mono text-6xl text-center clock-text', flipState.hours ? 'animate-flip-top' : 'opacity-0']">
-                {{ formatTime(hours) }}
-              </div>
-              <div :class="['clip-path-bottom-digit absolute z-20 class-test bg-component w-full rounded-lg font-mono text-6xl text-center clock-text', flipState.hours ? 'animate-flip-bottom' : 'opacity-0']">
-                {{ formatTime(nextHours) }}
-              </div>
-            </div>
-            <div class="clip-path-top-digit absolute z-1 bg-component w-full flex items-center justify-center rounded-lg font-mono text-6xl text-center clock-text">
-              {{ formatTime(nextHours) }}
-            </div>
-            <div class="clip-path-bottom-digit absolute z-1 bg-component w-full flex items-center justify-center rounded-lg font-mono text-6xl text-center clock-text">
-             {{ formatTime(hours) }}
-            </div>
-          </div>
+  <div :class="['flex items-center justify-center', classes]">
+    <div class="relative flex items-center justify-center gap-4 sm:gap-6 p-4 rounded-lg overflow-hidden">
 
-          <!-- Minutes -->
-          <div class="relative w-[96px] h-[96px] rounded-lg">
-            <div class="absolute top-0 flip-container w-full h-1/2 items-start z-10 rounded-lg">
-              <div :class="['clip-path-top-digit absolute z-10 class-test bg-component w-full rounded-lg font-mono text-6xl text-center clock-text', flipState.minutes ? 'animate-flip-top' : 'opacity-0']">
-                {{ formatTime(minutes) }}
-              </div>
-              <div :class="['clip-path-bottom-digit absolute z-20 class-test bg-component w-full rounded-lg font-mono text-6xl text-center clock-text', flipState.minutes ? 'animate-flip-bottom' : 'opacity-0']">
-                {{ formatTime(nextMinutes) }}
-              </div>
-            </div>
-            <div class="clip-path-top-digit absolute z-1 bg-component w-full flex items-center justify-center rounded-lg font-mono text-6xl text-center clock-text">
-              {{ formatTime(nextMinutes) }}
-            </div>
-             <div class="clip-path-bottom-digit absolute z-1 bg-component w-full flex items-center justify-center rounded-lg font-mono text-6xl text-center clock-text">
-              {{ formatTime(minutes) }}
-            </div>
-          </div>
+      <!-- Hour Group -->
+      <FlipUnit :current="formatTime(hours)" :next="formatTime(nextHours)" :isFlipping="flipState.hours" />
 
-          <!-- Seconds -->
-          <div class="relative w-[96px] h-[96px] rounded-lg">
-            <div class="absolute top-0 flip-container w-full h-1/2 items-start z-10 rounded-lg">
-              <div :class="['clip-path-top-digit absolute z-10 class-test bg-component w-full rounded-lg font-mono text-6xl text-center clock-text', flipState.seconds ? 'animate-flip-top' : 'opacity-0']">
-                {{ formatTime(seconds) }}
-              </div>
-              <div :class="['clip-path-bottom-digit absolute z-20 class-test bg-component w-full rounded-lg font-mono text-6xl text-center clock-text', flipState.seconds ? 'animate-flip-bottom' : 'opacity-0']">
-                {{ formatTime(nextSeconds) }}
-              </div>
-            </div>
-            <div class="clip-path-top-digit absolute z-1 bg-component w-full flex items-center justify-center rounded-lg font-mono text-6xl text-center clock-text">
-              {{ formatTime(nextSeconds) }}
-            </div>
-            <div class="clip-path-bottom-digit absolute z-1 bg-component w-full flex items-center justify-center rounded-lg font-mono text-6xl text-center clock-text">
-              {{ formatTime(seconds) }}
-            </div>
-          </div>
+      <!-- Minute Group -->
+      <FlipUnit :current="formatTime(minutes)" :next="formatTime(nextMinutes)" :isFlipping="flipState.minutes" />
 
-        </div>
-      </div>
+      <!-- Second Group -->
+      <FlipUnit :current="formatTime(seconds)" :next="formatTime(nextSeconds)" :isFlipping="flipState.seconds" />
+
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
+
+const props = defineProps<{
+  classes?: string
+}>()
 
 const hours = ref(0)
 const minutes = ref(0)
@@ -81,86 +36,41 @@ const flipState = ref({
   seconds: false
 })
 
-const formatTime = (val: number) => (val < 10 ? `0${val}` : val)
+const formatTime = (val: number) => (val < 10 ? `0${val}` : val.toString())
 
 let intervalId: any
 
 const updateTime = () => {
-  // Reset flip states
-  flipState.value = { hours: false, minutes: false, seconds: false }
-
   const now = new Date()
   const sec = now.getSeconds()
   const min = now.getMinutes()
   const hr = now.getHours()
 
-  // Determine if flipping should happen
-  // Logic derived from reference: check if next number is different
-  const isSecFlip = sec !== seconds.value
-  const isMinFlip = isSecFlip && sec === 59 // Simplified flip logic trigger
-  // Wait, standard clock logic:
-  // Current stores the OLD time, Next stores the NEW time.
-  // Actually, usually we show Current, and we flip TO Next.
-  
-  // Let's align with the reference logic:
-  // s = new Date
-  // a = seconds, l = minutes, n = hours
-  // o = a !== e (seconds changed)
-  // d = o && 59 === a (seconds changed AND it IS 59? No, flip minutes when seconds GOES TO 0. Reference says 59... maybe it flips early?)
-  
-  // Let's implement robust flip logic:
-  // 1. Get current time.
-  // 2. Diff against stored time.
-  // 3. If diff, trigger flip.
-  
-  // Logic: 
-  // We desire to flip FROM the old time TO the new time.
-  // So 'hours', 'minutes', 'seconds' refs should hold the OLD time (Current Top).
-  // 'nextHours' etc should hold the NEW time (Back/Bottom).
-  
-  // When a second passes (now.getSeconds() !== seconds.value):
-  // 1. Set nextSeconds = now.getSeconds()
-  // 2. Trigger flip animation.
-  // 3. AFTER animation (600ms), set seconds = nextSeconds. 
-  //    (This effectively "locks in" the new number so it's ready for the next flip).
+  if (sec !== nextSeconds.value) {
+    nextSeconds.value = sec
+    flipState.value.seconds = true
+    setTimeout(() => {
+      seconds.value = sec
+      flipState.value.seconds = false
+    }, 600)
+  }
 
-  if (!intervalId) {
-     // Initial setup layout
-     hours.value = hr
-     minutes.value = min
-     seconds.value = sec
-     
-     nextHours.value = hr
-     nextMinutes.value = min
-     nextSeconds.value = sec
-  } else {
-      // Check for changes
-      if (sec !== nextSeconds.value) {
-          nextSeconds.value = sec
-          flipState.value.seconds = true
-          setTimeout(() => {
-              seconds.value = sec
-              flipState.value.seconds = false
-          }, 600)
-      }
-      
-      if (min !== nextMinutes.value) {
-          nextMinutes.value = min
-          flipState.value.minutes = true
-          setTimeout(() => {
-              minutes.value = min
-              flipState.value.minutes = false
-          }, 600)
-      }
-      
-      if (hr !== nextHours.value) {
-          nextHours.value = hr
-          flipState.value.hours = true
-          setTimeout(() => {
-              hours.value = hr
-              flipState.value.hours = false
-          }, 600)
-      }
+  if (min !== nextMinutes.value) {
+    nextMinutes.value = min
+    flipState.value.minutes = true
+    setTimeout(() => {
+      minutes.value = min
+      flipState.value.minutes = false
+    }, 600)
+  }
+
+  if (hr !== nextHours.value) {
+    nextHours.value = hr
+    flipState.value.hours = true
+    setTimeout(() => {
+      hours.value = hr
+      flipState.value.hours = false
+    }, 600)
   }
 }
 
@@ -182,30 +92,57 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-.flip-container {
-  overflow: hidden;
-  perspective: 250px;
-  perspective-origin: 50% 50%;
+/* Scoped styles for the parent clock container */
+</style>
+
+<!-- Internal Component for individual flip units to handle 3D cleanly -->
+<script lang="ts">
+import { defineComponent, h } from 'vue'
+
+const FlipUnit = defineComponent({
+  props: ['current', 'next', 'isFlipping'],
+  render() {
+    return h('div', { class: 'relative w-[70px] h-[90px] sm:w-[96px] sm:h-[110px] perspective-1000' }, [
+      // Static Top (Next Number)
+      h('div', { class: 'absolute top-0 w-full h-1/2 bg-component rounded-t-lg border-b border-black/10 overflow-hidden flex items-end justify-center' }, [
+        h('span', { class: 'text-4xl sm:text-6xl font-mono translate-y-[50%] text-foreground' }, this.next)
+      ]),
+      // Static Bottom (Current Number)
+      h('div', { class: 'absolute bottom-0 w-full h-1/2 bg-component rounded-b-lg overflow-hidden flex items-start justify-center' }, [
+        h('span', { class: 'text-4xl sm:text-6xl font-mono -translate-y-[50%] text-foreground' }, this.current)
+      ]),
+
+      // Animated Flap
+      h('div', {
+        class: [
+          'absolute top-0 w-full h-1/2 origin-bottom preserve-3d transition-transform duration-600 ease-in-out z-20',
+          this.isFlipping ? '[transform:rotateX(-180deg)]' : '[transform:rotateX(0deg)]'
+        ]
+      }, [
+        // Front (Old Number Top)
+        h('div', { class: 'absolute inset-0 bg-component rounded-t-lg border-b border-black/10 backface-hidden overflow-hidden flex items-end justify-center' }, [
+          h('span', { class: 'text-4xl sm:text-6xl font-mono translate-y-[50%] text-foreground' }, this.current)
+        ]),
+        // Back (New Number Bottom)
+        h('div', { class: 'absolute inset-0 bg-component rounded-b-lg [transform:rotateX(180deg)] backface-hidden overflow-hidden flex items-start justify-center' }, [
+          h('span', { class: 'text-4xl sm:text-6xl font-mono -translate-y-[50%] text-foreground' }, this.next)
+        ])
+      ])
+    ])
+  }
+})
+</script>
+
+<style>
+.perspective-1000 {
+  perspective: 1000px;
 }
 
-.clip-path-top-digit {
-  clip-path: polygon(0 0, 100% 0, 100% 50%, 0 50%);
-  top: 0;
+.preserve-3d {
+  transform-style: preserve-3d;
 }
 
-.clip-path-bottom-digit {
-  clip-path: polygon(0 50%, 100% 50%, 100% 100%, 0 100%);
-  top: 0;
-}
-
-/* Fallback color & line-height fix */
-.clock-text {
-  color: black;
-  line-height: normal; /* Ensure consistent height alignment */
-}
-
-/* Force white color in dark mode */
-:global(.dark) .clock-text {
-  color: white !important;
+.backface-hidden {
+  backface-visibility: hidden;
 }
 </style>

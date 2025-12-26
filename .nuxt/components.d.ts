@@ -14,26 +14,13 @@ type HydrationStrategies = {
 type LazyComponent<T> = DefineComponent<HydrationStrategies, {}, {}, {}, {}, {}, {}, { hydrated: () => void }> & T
 
 
-export const AnimatedCursor: typeof import("../components/AnimatedCursor.vue").default
-export const CustomCursor: typeof import("../components/CustomCursor.vue").default
-export const DraggableSticker: typeof import("../components/DraggableSticker.vue").default
-export const DraggableWidget: typeof import("../components/DraggableWidget.vue").default
-export const DrawingCanvas: typeof import("../components/DrawingCanvas.vue").default
 export const EducationCard: typeof import("../components/EducationCard.vue").default
-export const FigmaShape: typeof import("../components/FigmaShape.vue").default
-export const FlipDigit: typeof import("../components/FlipDigit.vue").default
 export const FloatingDock: typeof import("../components/FloatingDock.vue").default
-export const FloatingToolbar: typeof import("../components/FloatingToolbar.vue").default
-export const HeroSection: typeof import("../components/HeroSection.vue").default
-export const HorizontalScroll: typeof import("../components/HorizontalScroll.vue").default
-export const MagneticButton: typeof import("../components/MagneticButton.vue").default
-export const PinnedSection: typeof import("../components/PinnedSection.vue").default
 export const PolaroidPhoto: typeof import("../components/PolaroidPhoto.vue").default
-export const PreloaderScreen: typeof import("../components/PreloaderScreen.vue").default
 export const ProfileCard: typeof import("../components/ProfileCard.vue").default
-export const TheHeader: typeof import("../components/TheHeader.vue").default
-export const WebGLCanvas: typeof import("../components/WebGLCanvas.vue").default
 export const WidgetsBook3D: typeof import("../components/widgets/Book3D.vue").default
+export const WidgetsBrazilStamp: typeof import("../components/widgets/BrazilStamp.vue").default
+export const WidgetsChessPoster: typeof import("../components/widgets/ChessPoster.vue").default
 export const WidgetsDraggableCanvas: typeof import("../components/widgets/DraggableCanvas.vue").default
 export const WidgetsDraggableWidget: typeof import("../components/widgets/DraggableWidget.vue").default
 export const WidgetsDrawingCanvas: typeof import("../components/widgets/DrawingCanvas.vue").default
@@ -64,26 +51,13 @@ export const Head: typeof import("../node_modules/nuxt/dist/head/runtime/compone
 export const Html: typeof import("../node_modules/nuxt/dist/head/runtime/components").Html
 export const Body: typeof import("../node_modules/nuxt/dist/head/runtime/components").Body
 export const NuxtIsland: typeof import("../node_modules/nuxt/dist/app/components/nuxt-island").default
-export const LazyAnimatedCursor: LazyComponent<typeof import("../components/AnimatedCursor.vue").default>
-export const LazyCustomCursor: LazyComponent<typeof import("../components/CustomCursor.vue").default>
-export const LazyDraggableSticker: LazyComponent<typeof import("../components/DraggableSticker.vue").default>
-export const LazyDraggableWidget: LazyComponent<typeof import("../components/DraggableWidget.vue").default>
-export const LazyDrawingCanvas: LazyComponent<typeof import("../components/DrawingCanvas.vue").default>
 export const LazyEducationCard: LazyComponent<typeof import("../components/EducationCard.vue").default>
-export const LazyFigmaShape: LazyComponent<typeof import("../components/FigmaShape.vue").default>
-export const LazyFlipDigit: LazyComponent<typeof import("../components/FlipDigit.vue").default>
 export const LazyFloatingDock: LazyComponent<typeof import("../components/FloatingDock.vue").default>
-export const LazyFloatingToolbar: LazyComponent<typeof import("../components/FloatingToolbar.vue").default>
-export const LazyHeroSection: LazyComponent<typeof import("../components/HeroSection.vue").default>
-export const LazyHorizontalScroll: LazyComponent<typeof import("../components/HorizontalScroll.vue").default>
-export const LazyMagneticButton: LazyComponent<typeof import("../components/MagneticButton.vue").default>
-export const LazyPinnedSection: LazyComponent<typeof import("../components/PinnedSection.vue").default>
 export const LazyPolaroidPhoto: LazyComponent<typeof import("../components/PolaroidPhoto.vue").default>
-export const LazyPreloaderScreen: LazyComponent<typeof import("../components/PreloaderScreen.vue").default>
 export const LazyProfileCard: LazyComponent<typeof import("../components/ProfileCard.vue").default>
-export const LazyTheHeader: LazyComponent<typeof import("../components/TheHeader.vue").default>
-export const LazyWebGLCanvas: LazyComponent<typeof import("../components/WebGLCanvas.vue").default>
 export const LazyWidgetsBook3D: LazyComponent<typeof import("../components/widgets/Book3D.vue").default>
+export const LazyWidgetsBrazilStamp: LazyComponent<typeof import("../components/widgets/BrazilStamp.vue").default>
+export const LazyWidgetsChessPoster: LazyComponent<typeof import("../components/widgets/ChessPoster.vue").default>
 export const LazyWidgetsDraggableCanvas: LazyComponent<typeof import("../components/widgets/DraggableCanvas.vue").default>
 export const LazyWidgetsDraggableWidget: LazyComponent<typeof import("../components/widgets/DraggableWidget.vue").default>
 export const LazyWidgetsDrawingCanvas: LazyComponent<typeof import("../components/widgets/DrawingCanvas.vue").default>

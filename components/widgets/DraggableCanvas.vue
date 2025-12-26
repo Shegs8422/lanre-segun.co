@@ -1,53 +1,39 @@
 <template>
   <div class="relative w-screen h-screen overflow-hidden bg-canvas transition-theme">
-    
+
     <!-- 
       SCROLL WRAPPER
       Native scrolling enabled (two-finger scroll / mouse wheel).
       Scrollbars hidden via CSS.
       Added Drag-to-Scroll events.
     -->
-    <div 
-      ref="scrollContainerRef"
-      class="scroll-container w-full h-full overflow-auto relative scrollbar-none"
-      :class="{ 'cursor-grab': !isDragging, 'cursor-grabbing': isDragging }"
-      @mousedown="startDrag"
-      @mousemove="onDrag"
-      @mouseup="stopDrag"
-      @mouseleave="stopDrag"
-    >
+    <div ref="scrollContainerRef" class="scroll-container w-full h-full overflow-auto relative scrollbar-none flex"
+      :class="{ 'cursor-grab': !isDragging, 'cursor-grabbing': isDragging }" @mousedown="startDrag" @mousemove="onDrag"
+      @mouseup="stopDrag" @mouseleave="stopDrag">
       <!-- 
         CANVAS CONTENT 
         Large area that holds the grid and elements - Andre Souza style
       -->
-      <div 
-        ref="canvasContentRef"
-        class="canvas-content w-[3200px] h-[2760px] relative"
-      >
+      <div ref="canvasContentRef" class="canvas-content w-[3200px] h-[2760px] relative m-auto flex-shrink-0">
         <!-- Blue Canvas Mat with Border -->
-        <div 
-          id="mat-texture" 
-          class="absolute overflow-hidden rounded-lg border-[4px] border-[#94BDE6] bg-[#2A6DB0] w-[3200px] h-[2760px] left-[50%] top-[50%] -translate-x-[50%] -translate-y-[50%] shadow-lg bg-linear-grid bg-[size:16px_16px] bg-[position:12px_12px]"
-        >
+        <div id="mat-texture"
+          class="absolute overflow-hidden rounded-lg border-[4px] border-[#94BDE6] bg-[#2A6DB0] w-[3200px] h-[2760px] left-[50%] top-[50%] -translate-x-[50%] -translate-y-[50%] shadow-lg bg-linear-grid bg-[size:16px_16px] bg-[position:12px_12px]">
           <!-- Window Texture Overlay -->
-          <div 
-            id="window" 
-            class="z-10 opacity-[0.6] absolute w-full h-full left-[50%] top-[50%] -translate-x-[50%] -translate-y-[50%]"
-          ></div>
-          
+          <div id="window"
+            class="z-10 opacity-[0.6] absolute w-full h-full left-[50%] top-[50%] -translate-x-[50%] -translate-y-[50%]">
+          </div>
+
           <!-- Large Grid Lines -->
-          <div 
-            id="lines" 
-            class="absolute w-full h-full left-[50%] top-[50%] -translate-x-[50%] -translate-y-[50%] bg-linear-big-grid bg-[size:80px_80px] bg-[position:-4px_-4px]"
-          ></div>
-          
+          <div id="lines"
+            class="absolute w-full h-full left-[50%] top-[50%] -translate-x-[50%] -translate-y-[50%] bg-linear-big-grid bg-[size:80px_80px] bg-[position:-4px_-4px]">
+          </div>
+
           <!-- Diagonal Lines -->
-          <div 
-            id="diagonal-lines" 
-            class="absolute w-full h-full left-[50%] top-[50%] -translate-x-[50%] -translate-y-[50%] bg-diagonal-grid bg-[size:80px_80px] bg-[position:-2.5px_-2.5px]"
-          ></div>
+          <div id="diagonal-lines"
+            class="absolute w-full h-full left-[50%] top-[50%] -translate-x-[50%] -translate-y-[50%] bg-diagonal-grid bg-[size:80px_80px] bg-[position:-2.5px_-2.5px]">
+          </div>
         </div>
-        
+
         <!-- Content Slot -->
         <slot />
       </div>
@@ -86,13 +72,13 @@ const startDrag = (e: MouseEvent) => {
   startY.value = e.pageY
   lastX = e.pageX
   lastY = e.pageY
-  
+
   // Stop any existing momentum
   if (animationFrameId) {
-     cancelAnimationFrame(animationFrameId)
-     animationFrameId = null
+    cancelAnimationFrame(animationFrameId)
+    animationFrameId = null
   }
-  
+
   if (scrollContainerRef.value) {
     // CRITICAL: Disable smooth scrolling during drag to prevent fighting/lag
     scrollContainerRef.value.style.scrollBehavior = 'auto'
@@ -104,18 +90,18 @@ const startDrag = (e: MouseEvent) => {
 const onDrag = (e: MouseEvent) => {
   if (!isDragging.value || !scrollContainerRef.value) return
   e.preventDefault()
-  
+
   const currentX = e.pageX
   const currentY = e.pageY
-  
+
   // Calculate delta for scroll
   const deltaX = currentX - startX.value
   const deltaY = currentY - startY.value
-  
+
   // Calculate instantaneous velocity for momentum
   velocityX = currentX - lastX
   velocityY = currentY - lastY
-  
+
   lastX = currentX
   lastY = currentY
 
@@ -127,37 +113,37 @@ const onDrag = (e: MouseEvent) => {
 const stopDrag = () => {
   if (!isDragging.value) return
   isDragging.value = false
-  
+
   // Start Momentum Loop
   applyMomentum()
 }
 
 const applyMomentum = () => {
-    if (!scrollContainerRef.value) return
-    
-    // Friction factor (0.95 = slippery, 0.85 = quick stop)
-    const friction = 0.95
-    
-    if (Math.abs(velocityX) > 0.5 || Math.abs(velocityY) > 0.5) {
-        scrollContainerRef.value.scrollLeft -= velocityX
-        scrollContainerRef.value.scrollTop -= velocityY
-        
-        velocityX *= friction
-        velocityY *= friction
-        
-        animationFrameId = requestAnimationFrame(applyMomentum)
-    } else {
-        // Momentum finished, re-enable smooth scroll for wheel/api
-        if (scrollContainerRef.value) {
-           scrollContainerRef.value.style.scrollBehavior = 'smooth'
-        }
+  if (!scrollContainerRef.value) return
+
+  // Friction factor (0.95 = slippery, 0.85 = quick stop)
+  const friction = 0.95
+
+  if (Math.abs(velocityX) > 0.5 || Math.abs(velocityY) > 0.5) {
+    scrollContainerRef.value.scrollLeft -= velocityX
+    scrollContainerRef.value.scrollTop -= velocityY
+
+    velocityX *= friction
+    velocityY *= friction
+
+    animationFrameId = requestAnimationFrame(applyMomentum)
+  } else {
+    // Momentum finished, re-enable smooth scroll for wheel/api
+    if (scrollContainerRef.value) {
+      scrollContainerRef.value.style.scrollBehavior = 'smooth'
     }
+  }
 }
 
 // Function to re-center the canvas
 const recenterCanvas = () => {
   if (!scrollContainerRef.value) return
-  
+
   const container = scrollContainerRef.value
   const contentWidth = 3200
   const contentHeight = 2760
@@ -165,9 +151,9 @@ const recenterCanvas = () => {
   const viewportHeight = window.innerHeight
 
   container.scrollTo({
-      left: (contentWidth - viewportWidth) / 2,
-      top: (contentHeight - viewportHeight) / 2,
-      behavior: 'smooth'
+    left: Math.max(0, (contentWidth - viewportWidth) / 2),
+    top: Math.max(0, (contentHeight - viewportHeight) / 2),
+    behavior: 'smooth'
   })
 }
 
@@ -179,59 +165,61 @@ onMounted(async () => {
   if (!process.client || !scrollContainerRef.value) return
 
   const centerCanvas = () => {
-      const container = scrollContainerRef.value
-      if (!container) return
+    const container = scrollContainerRef.value
+    if (!container) return
 
-      const contentWidth = 3200
-      const contentHeight = 2760
-      const viewportWidth = window.innerWidth
-      const viewportHeight = window.innerHeight
+    const contentWidth = 3200
+    const contentHeight = 2760
+    const viewportWidth = window.innerWidth
+    const viewportHeight = window.innerHeight
 
-      const scrollX = (contentWidth - viewportWidth) / 2
-      const scrollY = (contentHeight - viewportHeight) / 2
-      
-      container.style.scrollBehavior = 'auto'
-      container.scrollTo(scrollX, scrollY)
+    const scrollX = Math.max(0, (contentWidth - viewportWidth) / 2)
+    const scrollY = Math.max(0, (contentHeight - viewportHeight) / 2)
+
+    container.style.scrollBehavior = 'auto'
+    container.scrollTo(scrollX, scrollY)
   }
 
   // Initial Center
   centerCanvas()
-  
+
   // Setup smooth scroll after init
   setTimeout(() => {
     centerCanvas() // Ensure centered
     if (scrollContainerRef.value) {
-        scrollContainerRef.value.style.scrollBehavior = 'smooth'
+      scrollContainerRef.value.style.scrollBehavior = 'smooth'
     }
   }, 100)
-  
+
   // Safety check
   setTimeout(() => {
-     if (scrollContainerRef.value && scrollContainerRef.value.scrollLeft === 0 && scrollContainerRef.value.scrollTop === 0) {
-        centerCanvas()
-     }
+    if (scrollContainerRef.value && scrollContainerRef.value.scrollLeft === 0 && scrollContainerRef.value.scrollTop === 0) {
+      centerCanvas()
+    }
   }, 500)
 })
 
 onUnmounted(() => {
-    if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId)
-    }
+  if (animationFrameId) {
+    cancelAnimationFrame(animationFrameId)
+  }
 })
 </script>
 
 <style scoped>
 .scroll-container {
   /* Ensure default cursor, no grab */
-  /* cursor: default; Replaced by dynamic class binding */ 
-  
-  user-select: none; /* Prevent text selection while dragging */
+  /* cursor: default; Replaced by dynamic class binding */
+
+  user-select: none;
+  /* Prevent text selection while dragging */
 }
 
 /* Cursor Styles */
 .cursor-grab {
   cursor: grab;
 }
+
 .cursor-grabbing {
   cursor: grabbing;
 }
@@ -240,9 +228,12 @@ onUnmounted(() => {
 .scrollbar-none::-webkit-scrollbar {
   display: none;
 }
+
 /* Hide scrollbar for IE, Edge and Firefox */
 .scrollbar-none {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 </style>
