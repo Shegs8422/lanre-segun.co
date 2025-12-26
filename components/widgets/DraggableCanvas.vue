@@ -7,37 +7,54 @@
       Scrollbars hidden via CSS.
       Added Drag-to-Scroll events.
     -->
-    <div ref="scrollContainerRef" class="scroll-container w-full h-full overflow-auto relative scrollbar-none flex"
+    <div ref="scrollContainerRef"
+      class="scroll-container w-full h-full overflow-auto relative scrollbar-none flex items-center justify-center bg-[#2A6DB0]"
       :class="{ 'cursor-grab': !isDragging, 'cursor-grabbing': isDragging }" @mousedown="startDrag" @mousemove="onDrag"
       @mouseup="stopDrag" @mouseleave="stopDrag">
+
       <!-- 
-        CANVAS CONTENT 
-        Large area that holds the grid and elements - Andre Souza style
+        CANVAS CONTEXT WRAPPER
+        This wrapper has the ACTUAL visual size (3200 * zoom).
+        This ensures the scrollbars/scroll-range match the visual content.
       -->
-      <div ref="canvasContentRef" class="canvas-content w-[3200px] h-[2760px] relative m-auto flex-shrink-0">
-        <!-- Blue Canvas Mat with Border -->
-        <div id="mat-texture"
-          class="absolute overflow-hidden rounded-lg border-[4px] border-[#94BDE6] bg-[#2A6DB0] w-[3200px] h-[2760px] left-[50%] top-[50%] -translate-x-[50%] -translate-y-[50%] shadow-lg bg-linear-grid bg-[size:16px_16px] bg-[position:12px_12px]">
-          <!-- Window Texture Overlay -->
-          <div id="window"
-            class="z-10 opacity-[0.6] absolute w-full h-full left-[50%] top-[50%] -translate-x-[50%] -translate-y-[50%]">
+      <div class="relative flex-shrink-0" :style="{
+        width: `${3200 * zoom}px`,
+        height: `${2760 * zoom}px`
+      }">
+
+        <!-- 
+          CANVAS CONTENT 
+          Large area that holds the grid and elements.
+          We use origin-top-left (0 0) to make coordinate math predictable.
+        -->
+        <div ref="canvasContentRef"
+          class="canvas-content w-[3200px] h-[2760px] absolute top-0 left-0 transition-transform duration-300 ease-out origin-[0_0]"
+          :style="{ transform: `scale(${zoom})` }">
+
+          <!-- Blue Canvas Mat with Border -->
+          <div id="mat-texture"
+            class="absolute overflow-hidden rounded-lg border-[4px] border-[#94BDE6] bg-[#2A6DB0] w-[3200px] h-[2760px] left-0 top-0 shadow-lg bg-linear-grid bg-[size:16px_16px] bg-[position:12px_12px]">
+            <!-- Window Texture Overlay -->
+            <div id="window" class="z-10 opacity-[0.6] absolute w-full h-full left-0 top-0">
+            </div>
+
+            <!-- Large Grid Lines -->
+            <div id="lines"
+              class="absolute w-full h-full left-0 top-0 bg-linear-big-grid bg-[size:80px_80px] bg-[position:-4px_-4px]">
+            </div>
+
+            <!-- Diagonal Lines -->
+            <div id="diagonal-lines"
+              class="absolute w-full h-full left-0 top-0 bg-diagonal-grid bg-[size:80px_80px] bg-[position:-2.5px:-2.5px]">
+            </div>
           </div>
 
-          <!-- Large Grid Lines -->
-          <div id="lines"
-            class="absolute w-full h-full left-[50%] top-[50%] -translate-x-[50%] -translate-y-[50%] bg-linear-big-grid bg-[size:80px_80px] bg-[position:-4px_-4px]">
-          </div>
-
-          <!-- Diagonal Lines -->
-          <div id="diagonal-lines"
-            class="absolute w-full h-full left-[50%] top-[50%] -translate-x-[50%] -translate-y-[50%] bg-diagonal-grid bg-[size:80px_80px] bg-[position:-2.5px_-2.5px]">
-          </div>
+          <!-- Content Slot -->
+          <slot />
         </div>
-
-        <!-- Content Slot -->
-        <slot />
       </div>
     </div>
+
   </div>
 </template>
 
@@ -60,6 +77,29 @@ let velocityY = 0
 let lastX = 0
 let lastY = 0
 let animationFrameId: number | null = null
+
+// Scaling State
+const zoom = ref(1.0)
+
+const updateAdaptiveScale = () => {
+  if (!process.client) return
+  const width = window.innerWidth
+
+  // Calculate zoom based on viewport width
+  // 1440px is our reference width for 1.0 zoom
+  // On smaller screens, we scale down linearly
+  // We set a minimum zoom of 0.4 to prevent it from becoming too tiny
+  let newZoom = Math.min(1.0, width / 1440)
+
+  // Mobile specific adjustment
+  if (width < 768) {
+    newZoom = Math.max(0.4, width / 800)
+  } else {
+    newZoom = Math.max(0.6, newZoom)
+  }
+
+  zoom.value = newZoom
+}
 
 const startDrag = (e: MouseEvent) => {
   // Prevent drag if interacting with no-drag elements
@@ -105,7 +145,8 @@ const onDrag = (e: MouseEvent) => {
   lastX = currentX
   lastY = currentY
 
-  // Apply scroll (1:1 movement)
+  // Apply scroll
+  // Since we are scrolling the visually scaled container, no need to divide by zoom
   scrollContainerRef.value.scrollLeft = scrollLeftStart.value - deltaX
   scrollContainerRef.value.scrollTop = scrollTopStart.value - deltaY
 }
@@ -140,8 +181,28 @@ const applyMomentum = () => {
   }
 }
 
-// Function to re-center the canvas
-const recenterCanvas = () => {
+// Function to calculate exact center of Profile Card for initial focus
+const getProfileCardCoordinates = () => {
+  // These are derived from the orchestration grid layout in app.vue
+  // Grid: 8 cols of 360px (2880px + gaps)
+  // Gaps: 4px * 7 = 28px
+  // Total: 2908px width? Wait, app.vue says 2992px width.
+  // 8 * 360 = 2880. 8 * 14 (total gaps?) = 112. 2880 + 112 = 2992.
+
+  // Profile card is at col 4, row 4.
+  // Col 4 start: (3 * 360) + (3 * 16) = 1080 + 48 = 1128
+  // Card Width: 568px (2 cols + gap)
+  // Center X: 1128 + (568/2) = 1128 + 284 = 1412
+
+  // Row 4 start: (3 * 360) + (3 * 16) = 1128
+  // Card Height: ~720? (h-fit, row-span-2)
+  // Let's use 1412, 1488 as a good baseline or calculate relative to container
+
+  return { x: 1600, y: 1380 } // Exactly centered on the 3200x2760 canvas
+}
+
+// Function to re-center the canvas or a specific area
+const centerOnCoordinates = (x?: number, y?: number, smooth = true) => {
   if (!scrollContainerRef.value) return
 
   const container = scrollContainerRef.value
@@ -150,38 +211,49 @@ const recenterCanvas = () => {
   const viewportWidth = window.innerWidth
   const viewportHeight = window.innerHeight
 
+  // Use provided coordinates OR default to geometric center
+  const targetX = x !== undefined ? x : contentWidth / 2
+  const targetY = y !== undefined ? y : contentHeight / 2
+
+  // Calculate scroll position to put target in center of viewport
+  // Math: Target position in layout * zoom = visual target position.
+  // Then subtract half viewport to center it.
+  const scrollX = (targetX * zoom.value) - (viewportWidth / 2)
+  const scrollY = (targetY * zoom.value) - (viewportHeight / 2)
+
   container.scrollTo({
-    left: Math.max(0, (contentWidth - viewportWidth) / 2),
-    top: Math.max(0, (contentHeight - viewportHeight) / 2),
-    behavior: 'smooth'
+    left: scrollX,
+    top: scrollY,
+    behavior: smooth ? 'smooth' : 'auto'
   })
 }
 
-// Provide the recenter function to child components
+// Legacy function kept for compatibility
+const recenterCanvas = () => centerOnCoordinates()
+
+// Provide the functions to child components
 provide('recenterCanvas', recenterCanvas)
+provide('centerOnCoordinates', centerOnCoordinates)
 
 
 onMounted(async () => {
   if (!process.client || !scrollContainerRef.value) return
 
+  // Initial Scale
+  updateAdaptiveScale()
+
+  // Centering logic
   const centerCanvas = () => {
-    const container = scrollContainerRef.value
-    if (!container) return
-
-    const contentWidth = 3200
-    const contentHeight = 2760
-    const viewportWidth = window.innerWidth
-    const viewportHeight = window.innerHeight
-
-    const scrollX = Math.max(0, (contentWidth - viewportWidth) / 2)
-    const scrollY = Math.max(0, (contentHeight - viewportHeight) / 2)
-
-    container.style.scrollBehavior = 'auto'
-    container.scrollTo(scrollX, scrollY)
+    const coords = getProfileCardCoordinates()
+    centerOnCoordinates(coords.x, coords.y, false)
   }
 
-  // Initial Center
   centerCanvas()
+  window.addEventListener('resize', () => {
+    updateAdaptiveScale()
+    // Optional: Recenter on resize to keep focus? 
+    // Andre Souza seems to allow free drag but adaptive scale.
+  })
 
   // Setup smooth scroll after init
   setTimeout(() => {
@@ -200,9 +272,18 @@ onMounted(async () => {
 })
 
 onUnmounted(() => {
+  if (!process.client) return
+  window.removeEventListener('resize', updateAdaptiveScale)
   if (animationFrameId) {
     cancelAnimationFrame(animationFrameId)
   }
+})
+
+// Expose functions for parent components (like app.vue)
+defineExpose({
+  centerOnCoordinates,
+  recenterCanvas,
+  zoom
 })
 </script>
 

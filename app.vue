@@ -99,7 +99,7 @@
 
             <!-- Book 13 (White) -->
             <Book3D cover="/images/image_13.jpg" color="#F2F2F2" :width="160" :height="208"
-              classes="col-start-7 row-start-2 rotate-[-15deg] left-[100px] bottom-[20px]" :stagger="32" />
+              classes="col-start-4 row-start-6 rotate-[-15deg] left-[80px] bottom-[20px]" :stagger="32" />
 
             <!-- Vinyl Records -->
             <VinylRecord cover="/images/image_12.jpg" album="Clube da Esquina" artist="Milton Nascimento"
@@ -263,7 +263,7 @@
             </DraggableWidget>
 
             <DraggableWidget
-              class="relative max-w-[100vw] col-start-3 row-start-5 w-fit h-fit col-span-1 bottom-[160px] left-[240px]"
+              class="relative max-w-[100vw] col-start-2 row-start-5 w-fit h-fit col-span-1 bottom-[160px] left-[240px]"
               style="--stagger: 4">
               <div class="rotate-[-12deg] transition-transform hover:scale-105 duration-300">
                 <PolaroidPhoto src="/images/image_2.jpg" alt="Profile example" />
@@ -321,8 +321,6 @@ import DrawingCanvas from '~/components/widgets/DrawingCanvas.vue'
 import FloatingDock from '~/components/FloatingDock.vue'
 import BrazilStamp from '~/components/widgets/BrazilStamp.vue'
 import ChessPoster from '~/components/widgets/ChessPoster.vue'
-
-
 
 
 
