@@ -1,183 +1,219 @@
 @import "tailwindcss";
 
 @theme {
-  /* Define custom color palette references if needed, 
-     but we will rely heavily on CSS variables for theming */
+  /* We will use CSS variables for theming to match the reference site */
 }
 
 /* 
-  MATURE DESIGN SYSTEM 
-  --------------------
-  Using CSS variables for semantic naming allows instant theme switching.
-  Color palette chosen for a clean, premium, "design engineer" aesthetic.
+  REFERENCE DESIGN SYSTEM 
+  -----------------------
+  Based on saveweb2zip-com-www-andregs-com/css/7020e9a05757b260.css
 */
 
 :root {
-  /* FONT */
+  --background: 0 0% 98%;
+  --foreground: 220 5% 13%;
+  --component: 220 7% 100%;
+  --component-active: 220 7% 92%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 220 7% 3.9%;
+  --primary: 220 7% 10%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 220 4.8% 95.9%;
+  --secondary-foreground: 220 7% 10%;
+  --muted: 220 4.8% 95.9%;
+  --muted-foreground: 220 3% 40%;
+  --accent: 220 7% 93%;
+  --accent-foreground: 220 7% 10%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 220 7% 90%;
+  --input: 220 7% 85%;
+  --ring: 220 7% 10%;
+  --radius: 0.5rem;
+
+  /* FONTS */
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono: 'DM Mono', monospace;
-
-  /* LIGHT THEME (Default) - Inspired by crisp paper and ink */
-  /* Backgrounds */
-  --bg-canvas: #f4f4f5;
-  /* Zinc-100 */
-  --bg-surface: rgba(255, 255, 255, 0.85);
-  --bg-surface-hover: rgba(255, 255, 255, 0.95);
-
-  /* Text */
-  --text-primary: #18181b;
-  /* Zinc-900 */
-  --text-secondary: #52525b;
-  /* Zinc-600 */
-  --text-tertiary: #a1a1aa;
-  /* Zinc-400 */
-
-  /* Borders & Lines */
-  --border-subtle: rgba(24, 24, 27, 0.08);
-  /* Zinc-900 alpha */
-  --border-strong: rgba(24, 24, 27, 0.15);
-
-  /* Grid Pattern */
-  --grid-line: rgba(24, 24, 27, 0.1);
-
-  /* Accents */
-  --accent-primary: #2563eb;
-  /* Blue-600 */
-  --accent-glow: rgba(37, 99, 235, 0.15);
-
-  /* Shadows (Premium/Soft) */
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-card:
-    0 4px 6px -1px rgb(0 0 0 / 0.05),
-    0 2px 4px -2px rgb(0 0 0 / 0.05),
-    0 0 0 1px var(--border-subtle);
-  --shadow-floating:
-    0 20px 25px -5px rgb(0 0 0 / 0.1),
-    0 8px 10px -6px rgb(0 0 0 / 0.1),
-    0 0 0 1px var(--border-subtle);
+  /* Fallback until Sohne is properly loaded */
 }
 
-/* DARK THEME - Deep, rich, "OLED" friendly */
 .dark {
-  /* Backgrounds */
-  --bg-canvas: #09090b;
-  /* Zinc-950 */
-  --bg-surface: rgba(24, 24, 27, 0.75);
-  /* Zinc-900 alpha */
-  --bg-surface-hover: rgba(39, 39, 42, 0.85);
-  /* Zinc-800 alpha */
-
-  /* Text */
-  --text-primary: #f4f4f5;
-  /* Zinc-100 */
-  --text-secondary: #a1a1aa;
-  /* Zinc-400 */
-  --text-tertiary: #52525b;
-  /* Zinc-600 */
-
-  /* Borders & Lines */
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-strong: rgba(255, 255, 255, 0.15);
-
-  /* Grid Pattern (Slightly lighter than before for visibility) */
-  --grid-line: rgba(255, 255, 255, 0.08);
-
-  /* Accents */
-  --accent-primary: #3b82f6;
-  /* Blue-500 */
-  --accent-glow: rgba(59, 130, 246, 0.15);
-
-  /* Shadows */
-  --shadow-card:
-    0 0 0 1px var(--border-subtle),
-    0 4px 6px -1px rgb(0 0 0 / 0.3);
-  --shadow-floating:
-    0 0 0 1px var(--border-subtle),
-    0 25px 50px -12px rgb(0 0 0 / 0.5);
+  --background: 0 0% 4%;
+  --foreground: 0 0% 98%;
+  --component: 220 13% 8%;
+  --component-active: 220 13% 14%;
+  --popover: 220 10% 3.9%;
+  --popover-foreground: 0 0% 98%;
+  --primary: 0 0% 98%;
+  --primary-foreground: 220 5.9% 10%;
+  --secondary: 220 3.7% 15.9%;
+  --secondary-foreground: 0 0% 98%;
+  --muted: 220 3.7% 15.9%;
+  --muted-foreground: 0 0% 71%;
+  --accent: 220 13% 11%;
+  --accent-foreground: 0 13% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 220 3.7% 15.9%;
+  --input: 220 3.7% 15.9%;
+  --ring: 220 4.9% 83.9%;
 }
 
 /* BASE STYLES */
-html {
-  background-color: var(--bg-canvas);
-  transition: background-color 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+* {
+  border-color: hsl(var(--border));
 }
 
 body {
-  color: var(--text-primary);
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   margin: 0;
   overflow: hidden;
-  /* We handle scroll in the canvas wrapper */
+  /* Canvas wrapper handles scroll */
 }
 
 /* UTILITY CLASSES MAPPED TO VARS */
-.bg-canvas {
-  background-color: var(--bg-canvas);
+.bg-background {
+  background-color: hsl(var(--background));
 }
 
-.bg-surface {
-  background-color: var(--bg-surface);
+.bg-component {
+  background-color: hsl(var(--component));
 }
 
-.text-primary {
-  color: var(--text-primary);
+.bg-component-active {
+  background-color: hsl(var(--component-active));
 }
 
-.text-secondary {
-  color: var(--text-secondary);
+.bg-secondary {
+  background-color: hsl(var(--secondary));
 }
 
-.border-subtle {
-  border-color: var(--border-subtle);
+.bg-muted {
+  background-color: hsl(var(--muted));
 }
 
-/* GRID BACKGROUND */
-/* GRID BACKGROUND - Figma Style */
-.grid-background {
-  background-color: var(--bg-canvas);
-  position: relative;
+.text-foreground {
+  color: hsl(var(--foreground));
 }
 
-.grid-background::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  background-size: 100px 100px;
+.text-muted-foreground {
+  color: hsl(var(--muted-foreground));
+}
+
+.text-secondary-foreground {
+  color: hsl(var(--secondary-foreground));
+}
+
+.border-border {
+  border-color: hsl(var(--border));
+}
+
+.border-secondary {
+  border-color: hsl(var(--secondary));
+}
+
+/* ANDRE SOUZA DESIGN PATTERNS */
+
+/* Blue Canvas Background */
+.canvas-texture {
+  background-color: #2A6DB0;
+  border: 4px solid #94BDE6;
+  border-radius: 0.5rem;
+}
+
+/* Small Grid Pattern - 16px x 16px */
+.bg-linear-grid {
   background-image:
-    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+    linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 16px 16px;
+  background-position: 12px 12px;
 }
 
-/* GLASSMORPHISM UTILS */
-.glass {
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+/* Large Grid Lines */
+.bg-linear-big-grid {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.25) 1px, transparent 0),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.25) 1px, transparent 0);
+  background-size: 80px 80px;
+  background-position: -4px -4px;
 }
 
-.glass-heavy {
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+/* Diagonal Lines Pattern */
+.bg-diagonal-grid {
+  background-image:
+    repeating-linear-gradient(45deg,
+      transparent,
+      transparent 39px,
+      rgba(255, 255, 255, 0.08) 39px,
+      rgba(255, 255, 255, 0.08) 41px),
+    repeating-linear-gradient(-45deg,
+      transparent,
+      transparent 39px,
+      rgba(255, 255, 255, 0.08) 39px,
+      rgba(255, 255, 255, 0.08) 41px);
+  background-size: 80px 80px;
+  background-position: -2.5px -2.5px;
 }
 
-/* ANIMATIONS */
-.transition-theme {
-  transition:
-    background-color 0.3s ease,
-    border-color 0.3s ease,
-    color 0.3s ease,
-    box-shadow 0.3s ease;
+/* Grid Layout for Components */
+.orchestration {
+  /* display: grid;  -- Handled by Tailwind grid class in HTML */
+  /* grid-template-columns: repeat(8, 360px); -- Handled by Tailwind arbitrary values */
+  /* grid-template-rows: repeat(7, 360px); -- Handled by Tailwind arbitrary values */
 }
 
-/* SCROLLBAR HIDING */
-.hide-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+/* Spin Animation */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
-.hide-scrollbar::-webkit-scrollbar {
-  display: none;
+.animate-spin-slow {
+  animation: spin 8s linear infinite;
+}
+
+
+/* Flip Animations */
+@keyframes flip-top {
+  0% {
+    transform: rotateX(0deg);
+    opacity: 1;
+  }
+
+  100% {
+    transform: rotateX(-90deg);
+    opacity: 0;
+  }
+}
+
+@keyframes flip-bottom {
+  0% {
+    transform: rotateX(90deg);
+    opacity: 0;
+  }
+
+  100% {
+    transform: rotateX(0deg);
+    opacity: 1;
+  }
+}
+
+.animate-flip-top {
+  animation: flip-top 0.6s ease-in forwards;
+  transform-origin: bottom;
+}
+
+.animate-flip-bottom {
+  animation: flip-bottom 0.6s ease-out forwards;
+  transform-origin: top;
 }
