@@ -31,6 +31,8 @@ export { setInterval } from '#app/compat/interval';
 export { definePageMeta } from '../node_modules/nuxt/dist/pages/runtime/composables';
 export { defineLazyHydrationComponent } from '#app/composables/lazy-hydration';
 export { useAlbumPlayer } from '../composables/useAlbumPlayer';
+export { useClientSound } from '../composables/useClientSound';
+export { useProjects, Project } from '../composables/useProjects';
 export { useTheme } from '../composables/useTheme';
 export { useCameraManager, useGraph, useLoader, useLoop, useRendererManager, useTres, useTresContext, useTresContextProvider, extend as extendTres, TresObject } from '@tresjs/core';
 export { useNuxtDevTools } from '../node_modules/@nuxt/devtools/dist/runtime/use-nuxt-devtools';

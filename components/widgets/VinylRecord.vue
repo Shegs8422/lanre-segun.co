@@ -60,8 +60,6 @@
 </template>
 
 <script setup lang="ts">
-import { useSound } from '@vueuse/sound'
-
 interface Props {
   cover: string
   label?: string
@@ -100,22 +98,28 @@ const albumId = computed(() =>
 // Check if THIS album is playing
 const isPlaying = computed(() => isPlayingGlobal(albumId.value))
 
-// Setup audio if musicFile is provided
-const [playAudio, { stop: stopAudio }] = props.musicFile
-  ? useSound(props.musicFile, {
-    volume: volume.value,
-    html5: true,
-    onload: () => {
-      console.log(`Audio loaded for: ${props.album}`)
-    },
-    onloaderror: (id: any, err: any) => {
-      console.error(`Failed to load audio for: ${props.album}`, err)
-    },
-    onplayerror: (id: any, err: any) => {
-      console.error(`Failed to play audio for: ${props.album}`, err)
-      stopTrack()
-    },
-    onend: () => {
+// Initialize audio using client-safe composable
+const audioControls = props.musicFile ? useClientSound(props.musicFile, {
+  volume: volume.value,
+  html5: true,
+
+  onload: () => {
+    console.log(`Audio loaded successfully for: ${props.album}`)
+  },
+  onend: () => {
+    stopTrack()
+    if (animationFrameId.value) {
+      cancelAnimationFrame(animationFrameId.value)
+      animationFrameId.value = null
+    }
+    rotation.value = 0
+  }
+}) : null
+
+// Watch for sound ending
+if (audioControls) {
+  watch(audioControls.isPlaying, (playing) => {
+    if (!playing && props.musicFile) {
       stopTrack()
       if (animationFrameId.value) {
         cancelAnimationFrame(animationFrameId.value)
@@ -123,20 +127,27 @@ const [playAudio, { stop: stopAudio }] = props.musicFile
       }
       rotation.value = 0
     }
-  } as any)
-  : [() => { }, { stop: () => { } }]
+  })
+
+  // Sync volume
+  watch(volume, (newVolume) => {
+    audioControls.setVolume(newVolume)
+  })
+}
 
 const play = () => {
+  if (!props.musicFile || !audioControls) return
   try {
-    playAudio()
+    audioControls.play()
   } catch (error) {
     console.error('Error playing sound:', error)
   }
 }
 
 const stop = () => {
+  if (!audioControls) return
   try {
-    stopAudio()
+    audioControls.stop()
   } catch (error) {
     console.error('Error stopping sound:', error)
   }

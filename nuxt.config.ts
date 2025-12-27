@@ -16,23 +16,23 @@ export default defineNuxtConfig({
             meta: [
                 { charset: 'utf-8' },
                 { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-                { name: 'description', content: 'Design engineer creating joyful, delightful interactions. Portfolio showcasing innovative UI/UX work and interactive experiences.' },
+                { name: 'description', content: 'C-Suite Senior Product Designer & Design Engineer. Specializing in Web3, Fintech, and SaaS with a focus on HCD and premium UI.' },
                 { name: 'author', content: 'Olanrewaju Segun' },
                 // Open Graph
                 { property: 'og:type', content: 'website' },
-                { property: 'og:title', content: 'Olanrewaju Segun - Design Engineer Portfolio' },
-                { property: 'og:description', content: 'Interactive portfolio showcasing design engineering work and philosophy. Explore my draggable canvas workspace.' },
+                { property: 'og:title', content: 'Olanrewaju Segun - Senior Product Designer Portfolio' },
+                { property: 'og:description', content: 'Strategic Product Designer bridging complex engineering and premium UI. Explore my interactive portfolio.' },
                 { property: 'og:image', content: '/og-image.png' },
-                { property: 'og:url', content: 'https://yoursite.com' }, // TODO: Update with actual domain
+                { property: 'og:url', content: 'https://lanre-segun.vercel.app' },
                 // Twitter Card
                 { name: 'twitter:card', content: 'summary_large_image' },
-                { name: 'twitter:title', content: 'Olanrewaju Segun - Design Engineer' },
-                { name: 'twitter:description', content: 'Design engineer creating joyful, delightful interactions. Explore my interactive portfolio.' },
+                { name: 'twitter:title', content: 'Olanrewaju Segun - Senior Product Designer' },
+                { name: 'twitter:description', content: 'Strategic Product Designer bridging complex engineering and premium UI.' },
                 { name: 'twitter:image', content: '/og-image.png' },
-                // { name: 'twitter:creator', content: '@yourhandle' }, // TODO: Add your Twitter handle
+                { name: 'twitter:creator', content: '@Olusegun51' },
             ],
             link: [
-                { rel: 'canonical', href: 'https://yoursite.com' }, // TODO: Update with actual domain
+                { rel: 'canonical', href: 'https://lanre-segun.vercel.app' },
                 {
                     rel: 'preconnect',
                     href: 'https://fonts.googleapis.com'
@@ -55,6 +55,6 @@ export default defineNuxtConfig({
         ],
     },
     build: {
-        transpile: ['gsap', 'three']
+        transpile: ['gsap', 'three', '@vueuse/sound']
     }
 })

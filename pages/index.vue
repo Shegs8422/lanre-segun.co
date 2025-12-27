@@ -84,11 +84,11 @@
 
                 <!-- Vinyl Records -->
                 <VinylRecord :key="`clube`" cover="/images/image_12.jpg" album="Clube da Esquina"
-                    artist="Milton Nascimento" musicFile="/audio/interaction sound.mp3"
+                    artist="Milton Nascimento" musicFile="/audio/interaction-sound.mp3"
                     classes="col-start-5 row-start-1 rotate-[-15deg] top-[40px] left-[60px]" :stagger="31" />
 
                 <VinylRecord :key="`initial-d`" cover="/images/image_16.jpg" album="Super Eurobeat Collection"
-                    artist="Initial D" musicFile="/audio/interaction sound.mp3"
+                    artist="Initial D" musicFile="/audio/interaction-sound.mp3"
                     classes="col-start-2 row-start-1 rotate-[12deg] top-[40px] left-[40px]" :stagger="32" />
 
                 <VinylRecord :key="`iba-folouwa`" cover="/images/iba%20foluwa.jpg"
@@ -235,10 +235,6 @@
                 </div>
 
                 <!-- Additional Sticker (Profile/Horse/Sticker) -->
-                <img draggable="false" alt="Profile example" width="120"
-                    class="select-none relative col-start-6 row-start-4 right-[200px] bottom-[40px] rotate-[-18deg]"
-                    style="--stagger:10" src="/images/image_11.jpg">
-
 
                 <!-- Polaroid Photos (Draggable Cards) -->
                 <DraggableWidget
@@ -293,7 +289,7 @@ import BrazilStamp from '~/components/widgets/BrazilStamp.vue'
 import ChessPoster from '~/components/widgets/ChessPoster.vue'
 
 useHead({
-    title: 'Olanrewaju Segun - Design Engineer | Interactive Portfolio',
+    title: 'Olanrewaju Segun - Senior Product Designer | Interactive Portfolio',
     bodyAttrs: {
         class: 'overflow-hidden bg-background'
     }

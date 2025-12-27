@@ -41,7 +41,6 @@
 </template>
 
 <script setup lang="ts">
-import { useSound } from '@vueuse/sound'
 import { ref, onMounted } from 'vue'
 
 const scratchCanvas = ref<HTMLCanvasElement | null>(null)
@@ -50,6 +49,9 @@ const isRevealed = ref(false)
 const isWriggling = ref(false)
 const scratchedPixels = ref(0)
 const totalPixels = ref(0)
+
+// Sound - initialized client-side only using composable
+const scratchSound = useClientSound('/audio/interaction-sound.mp3', { volume: 0.5, eager: true })
 
 const loadCoverImage = () => {
     if (!scratchCanvas.value) return
@@ -71,8 +73,6 @@ const loadCoverImage = () => {
     }
     coverImage.src = '/about-me/chess-cover.png'
 }
-
-const [playScratch] = useSound('/audio/interaction sound.mp3', { volume: 0.5 })
 
 const startScratching = (e: MouseEvent | TouchEvent) => {
     isScratching.value = true
@@ -113,7 +113,7 @@ const scratch = (e: MouseEvent | TouchEvent) => {
     ctx.fill()
 
     // Play scratch sound
-    playScratch()
+    scratchSound.play()
 
     // Check scratch percentage
     checkScratchPercentage()

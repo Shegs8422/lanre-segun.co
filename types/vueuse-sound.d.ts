@@ -1,25 +1,29 @@
 declare module '@vueuse/sound' {
+    import { Ref } from 'vue'
+    
     export interface UseSoundOptions {
-        volume?: number
-        soundEnabled?: boolean
+        volume?: number | Ref<number>
+        soundEnabled?: boolean | Ref<boolean>
         forceSoundEnabled?: boolean
         onend?: () => void
         onload?: () => void
         onstop?: () => void
         interrupt?: boolean
+        playbackRate?: number | Ref<number>
+        autoplay?: boolean
     }
 
     export interface UseSoundReturn {
-        play: () => void
-        stop: () => void
-        pause: () => void
-        sound: any
-        duration: number
-        isPlaying: boolean
+        play: (options?: { id?: number; forceSoundEnabled?: boolean; playbackRate?: number }) => void
+        stop: (id?: number) => void
+        pause: (id?: number) => void
+        sound: Ref<any>
+        duration: Ref<number | null>
+        isPlaying: Ref<boolean>
     }
 
     export function useSound(
-        src: string,
+        src: string | Ref<string>,
         options?: UseSoundOptions
-    ): [play: () => void, { stop: () => void; pause: () => void; sound: any; duration: number; isPlaying: boolean }]
+    ): UseSoundReturn
 }

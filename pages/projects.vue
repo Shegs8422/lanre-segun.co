@@ -13,9 +13,9 @@
                 class="project-item flex flex-col gap-6 w-full flex-shrink-0 transition-all duration-700 ease-in-out"
                 :class="activeProject === index ? 'opacity-100 scale-100' : 'opacity-40 scale-90 grayscale-[0.5]'"
                 style="scroll-snap-align: center; min-height: 80vh; justify-content: center;">
-                <NuxtLink :to="project.link"
+                <NuxtLink :to="`/projects/${project.slug}`"
                     class="group relative overflow-hidden rounded-2xl shadow-2xl border border-white/10 aspect-video block">
-                    <img :src="project.image" :alt="project.title"
+                    <img :src="project.coverImage" :alt="project.title"
                         class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                     <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500">
                     </div>
@@ -26,7 +26,7 @@
                     <p class="text-muted-foreground text-lg max-w-xl leading-relaxed">
                         {{ project.description }}
                     </p>
-                    <NuxtLink :to="project.link"
+                    <NuxtLink :to="`/projects/${project.slug}`"
                         class="text-primary font-medium flex items-center gap-2 hover:gap-3 transition-all w-fit mt-2">
                         View Project Details
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -47,38 +47,8 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 
-const projects = [
-    {
-        title: 'Fintech Dashboard',
-        description: 'Designing a comprehensive financial management platform for SMEs with real-time analytics and seamless transaction oversight.',
-        link: '/projects/fintech-dashboard',
-        image: '/images/projects/project-1.png'
-    },
-    {
-        title: 'E-commerce Redesign',
-        description: 'Reimagining the online shopping experience for modern consumers, focusing on mobile-first navigation and sophisticated aesthetic.',
-        link: '/projects/ecommerce-redesign',
-        image: '/images/projects/project-2.png'
-    },
-    {
-        title: 'Mobile Banking App',
-        description: 'Building a seamless mobile banking experience with intuitive user flows, biometric security, and personalized financial insights.',
-        link: '/projects/mobile-banking',
-        image: '/images/projects/project-3.png'
-    },
-    {
-        title: 'SaaS Platform',
-        description: 'Creating a scalable design system for a B2B productivity platform that empowers teams to collaborate and deliver high-impact results.',
-        link: '/projects/saas-platform',
-        image: '/images/projects/project-4.png'
-    },
-    {
-        title: 'Healthcare Portal',
-        description: 'Designing patient-centered digital health solutions that streamline data access and improve interactions between patients and providers.',
-        link: '/projects/healthcare-portal',
-        image: '/images/projects/project-5.png'
-    }
-]
+const { getAllProjects } = useProjects()
+const projects = getAllProjects()
 
 const activeProject = ref(0)
 const projectRefs = ref<any[]>([])
