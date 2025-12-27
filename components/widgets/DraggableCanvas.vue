@@ -7,10 +7,8 @@
       Scrollbars hidden via CSS.
       Added Drag-to-Scroll events.
     -->
-    <div ref="scrollContainerRef"
-      class="scroll-container w-full h-full overflow-auto relative scrollbar-none flex items-center justify-center bg-[#2A6DB0]"
-      :class="{ 'cursor-grab': !isDragging, 'cursor-grabbing': isDragging }" @mousedown="startDrag" @mousemove="onDrag"
-      @mouseup="stopDrag" @mouseleave="stopDrag">
+    <div ref="scrollContainerRef" class="scroll-container w-full h-full overflow-auto relative scrollbar-none"
+      @mousedown="startDrag" @mousemove="onDrag" @mouseup="stopDrag" @mouseleave="stopDrag">
 
       <!-- 
         CANVAS CONTEXT WRAPPER
@@ -35,7 +33,8 @@
           <div id="mat-texture"
             class="absolute overflow-hidden rounded-lg border-[4px] border-[#94BDE6] bg-[#2A6DB0] w-[3200px] h-[2760px] left-0 top-0 shadow-lg bg-linear-grid bg-[size:16px_16px] bg-[position:12px_12px]">
             <!-- Window Texture Overlay -->
-            <div id="window" class="z-10 opacity-[0.6] absolute w-full h-full left-0 top-0">
+            <div id="window" class="z-10 opacity-[0.6] absolute w-full h-full left-0 top-0 bg-cover bg-center"
+              style="background-image: url('/images/Layer-window.png')">
             </div>
 
             <!-- Large Grid Lines -->
@@ -45,12 +44,16 @@
 
             <!-- Diagonal Lines -->
             <div id="diagonal-lines"
-              class="absolute w-full h-full left-0 top-0 bg-diagonal-grid bg-[size:80px_80px] bg-[position:-2.5px:-2.5px]">
+              class="absolute w-full h-full left-0 top-0 bg-diagonal-grid bg-[size:80px_80px] bg-[position:-2.5px_-2.5px]">
             </div>
           </div>
 
           <!-- Content Slot -->
-          <slot />
+          <div class="relative z-20 w-full h-full pointer-events-none">
+            <div class="w-full h-full pointer-events-auto">
+              <slot />
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -248,20 +251,24 @@ onMounted(async () => {
     centerOnCoordinates(coords.x, coords.y, false)
   }
 
+  // Force center multiple times to handle race conditions with layout/zoom
   centerCanvas()
-  window.addEventListener('resize', () => {
-    updateAdaptiveScale()
-    // Optional: Recenter on resize to keep focus? 
-    // Andre Souza seems to allow free drag but adaptive scale.
+
+  // Try again after a frame
+  requestAnimationFrame(() => {
+    centerCanvas()
+    // And after a small delay for good measure
+    setTimeout(() => {
+      centerCanvas()
+      if (scrollContainerRef.value) {
+        scrollContainerRef.value.style.scrollBehavior = 'smooth'
+      }
+    }, 100)
   })
 
-  // Setup smooth scroll after init
-  setTimeout(() => {
-    centerCanvas() // Ensure centered
-    if (scrollContainerRef.value) {
-      scrollContainerRef.value.style.scrollBehavior = 'smooth'
-    }
-  }, 100)
+  window.addEventListener('resize', () => {
+    updateAdaptiveScale()
+  })
 
   // Safety check
   setTimeout(() => {

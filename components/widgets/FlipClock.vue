@@ -1,148 +1,254 @@
 <template>
-  <div :class="['flex items-center justify-center', classes]">
-    <div class="relative flex items-center justify-center gap-4 sm:gap-6 p-4 rounded-lg overflow-hidden">
-
-      <!-- Hour Group -->
-      <FlipUnit :current="formatTime(hours)" :next="formatTime(nextHours)" :isFlipping="flipState.hours" />
-
-      <!-- Minute Group -->
-      <FlipUnit :current="formatTime(minutes)" :next="formatTime(nextMinutes)" :isFlipping="flipState.minutes" />
-
-      <!-- Second Group -->
-      <FlipUnit :current="formatTime(seconds)" :next="formatTime(nextSeconds)" :isFlipping="flipState.seconds" />
-
+  <div :class="['flip-clock', classes]">
+    <div class="flip-clock__piece" v-for="(value, key) in displayTime" :key="key">
+      <span class="flip-clock__card flip-card" :class="{ flip: flipStates[key] }">
+        <b class="flip-card__top">{{ formatDigit(value) }}</b>
+        <b class="flip-card__bottom" :data-value="formatDigit(value)"></b>
+        <b class="flip-card__back" :data-value="formatDigit(previousTime[key])"></b>
+        <b class="flip-card__back-bottom" :data-value="formatDigit(previousTime[key])"></b>
+      </span>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, reactive, onMounted, onUnmounted } from 'vue'
 
 const props = defineProps<{
   classes?: string
 }>()
 
-const hours = ref(0)
-const minutes = ref(0)
-const seconds = ref(0)
-
-const nextHours = ref(0)
-const nextMinutes = ref(0)
-const nextSeconds = ref(0)
-
-const flipState = ref({
-  hours: false,
-  minutes: false,
-  seconds: false
+const displayTime = reactive({
+  Hours: 0,
+  Minutes: 0,
+  Seconds: 0
 })
 
-const formatTime = (val: number) => (val < 10 ? `0${val}` : val.toString())
+const previousTime = reactive({
+  Hours: 0,
+  Minutes: 0,
+  Seconds: 0
+})
+
+const flipStates = reactive({
+  Hours: false,
+  Minutes: false,
+  Seconds: false
+})
+
+const formatDigit = (value: number): string => {
+  return value < 10 ? `0${value}` : `${value}`
+}
 
 let intervalId: any
 
 const updateTime = () => {
   const now = new Date()
-  const sec = now.getSeconds()
-  const min = now.getMinutes()
-  const hr = now.getHours()
+  const hours = now.getHours()
+  const minutes = now.getMinutes()
+  const seconds = now.getSeconds()
 
-  if (sec !== nextSeconds.value) {
-    nextSeconds.value = sec
-    flipState.value.seconds = true
-    setTimeout(() => {
-      seconds.value = sec
-      flipState.value.seconds = false
-    }, 600)
+  // Update seconds
+  if (seconds !== displayTime.Seconds) {
+    previousTime.Seconds = displayTime.Seconds
+    displayTime.Seconds = seconds
+    flipStates.Seconds = false
+    setTimeout(() => { flipStates.Seconds = true }, 10)
   }
 
-  if (min !== nextMinutes.value) {
-    nextMinutes.value = min
-    flipState.value.minutes = true
-    setTimeout(() => {
-      minutes.value = min
-      flipState.value.minutes = false
-    }, 600)
+  // Update minutes
+  if (minutes !== displayTime.Minutes) {
+    previousTime.Minutes = displayTime.Minutes
+    displayTime.Minutes = minutes
+    flipStates.Minutes = false
+    setTimeout(() => { flipStates.Minutes = true }, 10)
   }
 
-  if (hr !== nextHours.value) {
-    nextHours.value = hr
-    flipState.value.hours = true
-    setTimeout(() => {
-      hours.value = hr
-      flipState.value.hours = false
-    }, 600)
+  // Update hours
+  if (hours !== displayTime.Hours) {
+    previousTime.Hours = displayTime.Hours
+    displayTime.Hours = hours
+    flipStates.Hours = false
+    setTimeout(() => { flipStates.Hours = true }, 10)
   }
 }
 
 onMounted(() => {
   const now = new Date()
-  hours.value = now.getHours()
-  minutes.value = now.getMinutes()
-  seconds.value = now.getSeconds()
-  nextHours.value = hours.value
-  nextMinutes.value = minutes.value
-  nextSeconds.value = seconds.value
+  displayTime.Hours = now.getHours()
+  displayTime.Minutes = now.getMinutes()
+  displayTime.Seconds = now.getSeconds()
+  previousTime.Hours = displayTime.Hours
+  previousTime.Minutes = displayTime.Minutes
+  previousTime.Seconds = displayTime.Seconds
 
   intervalId = setInterval(updateTime, 1000)
 })
 
 onUnmounted(() => {
-  clearInterval(intervalId)
+  if (intervalId) clearInterval(intervalId)
 })
 </script>
 
 <style scoped>
-/* Scoped styles for the parent clock container */
-</style>
+.flip-clock {
+  text-align: center;
+  perspective: 600px;
+  margin: 0 auto;
+}
 
-<!-- Internal Component for individual flip units to handle 3D cleanly -->
-<script lang="ts">
-import { defineComponent, h } from 'vue'
+.flip-clock *,
+.flip-clock *:before,
+.flip-clock *:after {
+  box-sizing: border-box;
+}
 
-const FlipUnit = defineComponent({
-  props: ['current', 'next', 'isFlipping'],
-  render() {
-    return h('div', { class: 'relative w-[70px] h-[90px] sm:w-[96px] sm:h-[110px] perspective-1000' }, [
-      // Static Top (Next Number)
-      h('div', { class: 'absolute top-0 w-full h-1/2 bg-component rounded-t-lg border-b border-black/10 overflow-hidden flex items-end justify-center' }, [
-        h('span', { class: 'text-4xl sm:text-6xl font-mono translate-y-[50%] text-foreground' }, this.next)
-      ]),
-      // Static Bottom (Current Number)
-      h('div', { class: 'absolute bottom-0 w-full h-1/2 bg-component rounded-b-lg overflow-hidden flex items-start justify-center' }, [
-        h('span', { class: 'text-4xl sm:text-6xl font-mono -translate-y-[50%] text-foreground' }, this.current)
-      ]),
+.flip-clock__piece {
+  display: inline-block;
+  margin: 0 0.2vw;
+}
 
-      // Animated Flap
-      h('div', {
-        class: [
-          'absolute top-0 w-full h-1/2 origin-bottom preserve-3d transition-transform duration-600 ease-in-out z-20',
-          this.isFlipping ? '[transform:rotateX(-180deg)]' : '[transform:rotateX(0deg)]'
-        ]
-      }, [
-        // Front (Old Number Top)
-        h('div', { class: 'absolute inset-0 bg-component rounded-t-lg border-b border-black/10 backface-hidden overflow-hidden flex items-end justify-center' }, [
-          h('span', { class: 'text-4xl sm:text-6xl font-mono translate-y-[50%] text-foreground' }, this.current)
-        ]),
-        // Back (New Number Bottom)
-        h('div', { class: 'absolute inset-0 bg-component rounded-b-lg [transform:rotateX(180deg)] backface-hidden overflow-hidden flex items-start justify-center' }, [
-          h('span', { class: 'text-4xl sm:text-6xl font-mono -translate-y-[50%] text-foreground' }, this.next)
-        ])
-      ])
-    ])
+@media (min-width: 1000px) {
+  .flip-clock__piece {
+    margin: 0 5px;
   }
-})
-</script>
-
-<style>
-.perspective-1000 {
-  perspective: 1000px;
 }
 
-.preserve-3d {
-  transform-style: preserve-3d;
+.flip-clock__slot {
+  font-size: 1rem;
+  line-height: 1.5;
+  display: block;
+  color: hsl(var(--foreground));
 }
 
-.backface-hidden {
+@media (min-width: 1000px) {
+  .flip-clock__slot {
+    font-size: 1.2rem;
+  }
+}
+
+.flip-card {
+  display: block;
+  position: relative;
+  padding-bottom: 0.72em;
+  font-size: 2.25rem;
+  line-height: 0.95;
+}
+
+@media (min-width: 1000px) {
+  .flip-card {
+    font-size: 3rem;
+  }
+}
+
+/* Card faces */
+.flip-card__top,
+.flip-card__bottom,
+.flip-card__back-bottom,
+.flip-card__back::before,
+.flip-card__back::after {
+  display: block;
+  height: 0.72em;
+  color: #ccc;
+  background: hsl(var(--component));
+  padding: 0.23em 0.25em 0.4em;
+  border-radius: 0.15em 0.15em 0 0;
   backface-visibility: hidden;
+  transform-style: preserve-3d;
+  width: 1.8em;
+}
+
+.flip-card__bottom,
+.flip-card__back-bottom {
+  color: hsl(var(--foreground));
+  position: absolute;
+  top: 50%;
+  left: 0;
+  border-top: solid 1px rgba(0, 0, 0, 0.1);
+  background: hsl(var(--component-active));
+  border-radius: 0 0 0.15em 0.15em;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 2;
+}
+
+.flip-card__back-bottom {
+  z-index: 1;
+}
+
+.flip-card__bottom::after,
+.flip-card__back-bottom::after {
+  display: block;
+  margin-top: -0.72em;
+}
+
+.flip-card__back::before,
+.flip-card__bottom::after,
+.flip-card__back-bottom::after {
+  content: attr(data-value);
+}
+
+.flip-card__back {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  left: 0;
+  pointer-events: none;
+}
+
+.flip-card__back::before {
+  position: relative;
+  overflow: hidden;
+  z-index: -1;
+}
+
+.flip .flip-card__back::before {
+  z-index: 1;
+  animation: flipTop 0.3s cubic-bezier(0.37, 0.01, 0.94, 0.35);
+  animation-fill-mode: both;
+  transform-origin: center bottom;
+}
+
+.flip .flip-card__bottom {
+  transform-origin: center top;
+  animation-fill-mode: both;
+  animation: flipBottom 0.6s cubic-bezier(0.15, 0.45, 0.28, 1);
+}
+
+@keyframes flipTop {
+  0% {
+    transform: rotateX(0deg);
+    z-index: 2;
+  }
+
+  0%,
+  99% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: rotateX(-90deg);
+    opacity: 0;
+  }
+}
+
+@keyframes flipBottom {
+
+  0%,
+  50% {
+    z-index: -1;
+    transform: rotateX(90deg);
+    opacity: 0;
+  }
+
+  51% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+    transform: rotateX(0deg);
+    z-index: 5;
+  }
 }
 </style>

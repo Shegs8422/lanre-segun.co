@@ -1,8 +1,8 @@
 <template>
   <div class="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-4">
 
-    <!-- Drag to Move Label (Bouncy) -->
-    <div
+    <!-- Drag to Move Label (Bouncy) - Only show on home page -->
+    <div v-if="route.path === '/'"
       class="flex items-center gap-2 px-3 py-1.5 bg-[#1A1A1A] text-white rounded-full text-xs font-medium animate-bounce shadow-lg border border-white/10">
       <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5">
@@ -50,7 +50,7 @@
         style="will-change: auto; transform: none;">
         <!-- Nav Links with Active State Logic -->
         <!-- Home -->
-        <NuxtLink to="/"
+        <NuxtLink to="/" @click="playInteraction"
           class="shrink-0 overflow-hidden flex h-10 rounded-xl items-center justify-center transition-all duration-300 hover:bg-accent relative"
           :class="isActive('/') ? 'w-auto px-4 bg-secondary text-secondary-foreground' : 'w-10 px-[10px]'">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
@@ -63,7 +63,7 @@
         </NuxtLink>
 
         <!-- Projects -->
-        <NuxtLink to="/projects"
+        <NuxtLink to="/projects" @click="playInteraction"
           class="shrink-0 overflow-hidden flex h-10 rounded-xl items-center justify-center transition-all duration-300 hover:bg-accent relative"
           :class="isActive('/projects') ? 'w-auto px-4 bg-secondary text-secondary-foreground' : 'w-10 px-[10px]'">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
@@ -76,7 +76,7 @@
         </NuxtLink>
 
         <!-- Craft -->
-        <NuxtLink to="/craft"
+        <NuxtLink to="/craft" @click="playInteraction"
           class="shrink-0 overflow-hidden flex h-10 rounded-xl items-center justify-center transition-all duration-300 hover:bg-accent relative"
           :class="isActive('/craft') ? 'w-auto px-4 bg-secondary text-secondary-foreground' : 'w-10 px-[10px]'">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -92,7 +92,7 @@
         </NuxtLink>
 
         <!-- Notes -->
-        <NuxtLink to="/notes"
+        <NuxtLink to="/notes" @click="playInteraction"
           class="shrink-0 overflow-hidden flex h-10 rounded-xl items-center justify-center transition-all duration-300 hover:bg-accent relative"
           :class="isActive('/notes') ? 'w-auto px-4 bg-secondary text-secondary-foreground' : 'w-10 px-[10px]'">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
@@ -105,7 +105,7 @@
         </NuxtLink>
 
         <!-- Photos -->
-        <NuxtLink to="/photos"
+        <NuxtLink to="/photos" @click="playInteraction"
           class="shrink-0 overflow-hidden flex h-10 rounded-xl items-center justify-center transition-all duration-300 hover:bg-accent relative"
           :class="isActive('/photos') ? 'w-auto px-4 bg-secondary text-secondary-foreground' : 'w-10 px-[10px]'">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
@@ -148,17 +148,17 @@
           <!-- Volume On -->
           <svg v-if="isSoundEnabled" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
             viewBox="0 0 24 24" class="h-5 w-5">
-            <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
-              d="m21.5 10-2.121 2.121m0 0-2.122 2.121m2.122-2.12L17.257 10m2.122 2.121 2.121 2.121M4 8h1.333a2 2 0 0 0 1.2-.4L11.2 4.1a.5.5 0 0 1 .8.4v15a.5.5 0 0 1-.8.4l-4.667-3.5a2 2 0 0 0-1.2-.4H4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2Z">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M19.071 4.92968C20.8807 6.73932 22 9.23932 22 12.0007C22 14.7622 20.8807 17.2622 19.071 19.0718M15.8891 8.11132C16.8844 9.10662 17.5 10.4816 17.5 12.0004C17.5 13.5192 16.8844 14.8942 15.8891 15.8895M4 7.99999H5.33333C5.76607 7.99999 6.18714 7.85964 6.53333 7.59999L11.2 4.09999C11.5296 3.85278 12 4.08797 12 4.49999V19.5C12 19.912 11.5296 20.1472 11.2 19.9L6.53333 16.4C6.18714 16.1403 5.76607 16 5.33333 16H4C2.89543 16 2 15.1046 2 14V9.99999C2 8.89542 2.89543 7.99999 4 7.99999Z">
             </path>
           </svg>
 
           <!-- Volume Off (Muted) -->
           <svg v-else xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">
-            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-            <line x1="23" y1="9" x2="17" y2="15"></line>
-            <line x1="17" y1="9" x2="23" y2="15"></line>
+            class="h-5 w-5">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="m21.5 10-2.121 2.121m0 0-2.122 2.121m2.122-2.12L17.257 10m2.122 2.121 2.121 2.121M4 8h1.333a2 2 0 0 0 1.2-.4L11.2 4.1a.5.5 0 0 1 .8.4v15a.5.5 0 0 1-.8.4l-4.667-3.5a2 2 0 0 0-1.2-.4H4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2Z">
+            </path>
           </svg>
         </button>
 
@@ -169,6 +169,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import { useSound } from '@vueuse/sound'
 
 // useRoute is auto-imported in Nuxt 3
 
@@ -178,11 +179,16 @@ const route = useRoute()
 // Get current track from album player
 const { currentTrack, stopTrack, toggleSound, isSoundEnabled } = useAlbumPlayer()
 
-// Simple route match check
+// Interaction Sound
+const [playInteraction] = useSound('/audio/interaction sound.mp3', {
+  volume: 0.5
+})
+
 // Simple route match check
 const isActive = (path: string) => route?.path === path
 
 const toggleTheme = () => {
+  playInteraction()
   isDark.value = !isDark.value
   const html = document.documentElement
   if (isDark.value) {
@@ -198,10 +204,12 @@ const toggleTheme = () => {
 
 // Sound toggle now uses global state
 const handleToggleSound = () => {
+  playInteraction()
   toggleSound()
 }
 
 const handleStopMusic = () => {
+  playInteraction()
   stopTrack()
 }
 

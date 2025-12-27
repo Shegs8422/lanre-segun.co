@@ -33,8 +33,58 @@
   --radius: 0.5rem;
 
   /* FONTS */
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-sans: 'Google Sans Text', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: 'Google Sans Display', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   /* Fallback until Sohne is properly loaded */
+}
+
+/* FONT FACES */
+@font-face {
+  font-family: 'Google Sans Display';
+  src: url('/assets/fonts/GoogleSansDisplay-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Google Sans Display';
+  src: url('/assets/fonts/GoogleSansDisplay-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Google Sans Display';
+  src: url('/assets/fonts/GoogleSansDisplay-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Google Sans Text';
+  src: url('/assets/fonts/GoogleSansText-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Google Sans Text';
+  src: url('/assets/fonts/GoogleSansText-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Google Sans Text';
+  src: url('/assets/fonts/GoogleSansText-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
 }
 
 .dark {
