@@ -121,8 +121,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   margin: 0;
-  overflow: hidden;
-  /* Canvas wrapper handles scroll */
+  /* overflow: hidden removed to allow scrolling on pages like /craft */
 }
 
 /* UTILITY CLASSES MAPPED TO VARS */

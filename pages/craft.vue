@@ -2,7 +2,7 @@
     <div class="min-h-screen bg-background text-foreground py-20 px-4 md:px-8 max-w-7xl mx-auto">
         <!-- Header -->
         <div class="mb-16">
-            <h1 class="text-4xl md:text-5xl font-bold mb-4">Laboratory</h1>
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Craft Lab</h1>
             <p class="text-muted-foreground text-lg max-w-2xl">
                 A collection of interactive components and experiments crafted with Vue, Tailwind, and GSAP.
                 Explore the building blocks of this portfolio.
@@ -30,7 +30,7 @@
                     </div>
                 </div>
                 <div
-                    class="lg:col-span-8 bg-[#0A0A0A] dark:bg-[#111111] rounded-2xl border border-white/10 p-12 flex items-center justify-center min-h-[300px] relative overflow-hidden">
+                    class="lg:col-span-8 bg-[#0A0A0A] dark:bg-[#111111] rounded-2xl border border-white/10 p-12 flex items-center justify-center min-h-[450px] relative overflow-hidden">
                     <div
                         class="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] [background-size:16px_16px]">
                     </div>
@@ -55,7 +55,7 @@
                     </div>
                 </div>
                 <div
-                    class="lg:col-span-8 bg-[#0A0A0A] dark:bg-[#111111] rounded-2xl border border-white/10 p-12 flex items-center justify-center min-h-[300px] relative overflow-hidden">
+                    class="lg:col-span-8 bg-[#0A0A0A] dark:bg-[#111111] rounded-2xl border border-white/10 p-12 flex items-center justify-center min-h-[450px] relative overflow-hidden">
                     <div
                         class="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] [background-size:16px_16px]">
                     </div>
@@ -81,18 +81,19 @@
                     </div>
                 </div>
                 <div
-                    class="lg:col-span-8 bg-[#0A0A0A] dark:bg-[#111111] rounded-2xl border border-white/10 p-12 flex items-center justify-center min-h-[300px] relative overflow-hidden">
+                    class="lg:col-span-8 bg-[#0A0A0A] dark:bg-[#111111] rounded-2xl border border-white/10 p-12 flex items-center justify-center min-h-[450px] relative overflow-hidden">
                     <div
                         class="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] [background-size:16px_16px]">
                     </div>
-                    <Book3D cover="/images/image_3.png" color="#E32A24" :width="160" :height="220" />
+                    <Book3D cover="/images/image_3.png" color="#E32A24" :width="160" :height="220"
+                        title="Design Systems" author="Alla Kholmatova" />
                 </div>
             </div>
 
-            <!-- Item 4: Turbulence Canvas -->
+            <!-- Item 4: Interactive Canvas -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                 <div class="lg:col-span-4 flex flex-col gap-4">
-                    <h2 class="text-2xl font-semibold">Turbulence Canvas</h2>
+                    <h2 class="text-2xl font-semibold">Interactive Canvas</h2>
                     <p class="text-muted-foreground leading-relaxed">
                         An interactive drawing canvas with SVG turbulence filters. The line has a "wobbly" organic feel
                         created by displacing the SVG path with noise.
@@ -109,7 +110,7 @@
                     </div>
                 </div>
                 <div
-                    class="lg:col-span-8 bg-[#0A0A0A] dark:bg-[#111111] rounded-2xl border border-white/10 p-12 flex items-center justify-center min-h-[400px] relative overflow-hidden">
+                    class="lg:col-span-8 bg-[#0A0A0A] dark:bg-[#111111] rounded-2xl border border-white/10 p-12 flex items-center justify-center min-h-[450px] relative overflow-hidden">
                     <div
                         class="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] [background-size:16px_16px]">
                     </div>
@@ -138,12 +139,12 @@
                     </div>
                 </div>
                 <div
-                    class="lg:col-span-8 bg-[#0A0A0A] dark:bg-[#111111] rounded-2xl border border-white/10 p-12 flex items-center justify-center min-h-[400px] relative overflow-hidden">
+                    class="lg:col-span-8 bg-[#0A0A0A] dark:bg-[#111111] rounded-2xl border border-white/10 p-12 flex items-center justify-center min-h-[450px] relative overflow-hidden">
                     <div
                         class="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] [background-size:16px_16px]">
                     </div>
-                    <VinylRecord :key="`demo-record`" cover="/images/image_16.jpg" album="Super Eurobeat Demo"
-                        artist="Initial D" musicFile="/audio/interaction-sound.mp3" />
+                    <VinylRecord :key="`demo-record`" cover="/images/image_16.jpg" album="Somewhere Only We Know"
+                        artist="Keane" musicFile="/audio/somewhere-only-we-know.mp3" />
                 </div>
             </div>
 
@@ -174,10 +175,10 @@
                 </div>
             </div>
 
-            <!-- Item 7: Brazil Stamp -->
+            <!-- Item 7: Location Stamp -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                 <div class="lg:col-span-4 flex flex-col gap-4">
-                    <h2 class="text-2xl font-semibold">Brazil Stamp</h2>
+                    <h2 class="text-2xl font-semibold">Location Stamp</h2>
                     <p class="text-muted-foreground leading-relaxed">
                         A decorative stamp component with a fixed rotation. Simple yet effective for adding visual flair
                         to layouts.
@@ -190,40 +191,13 @@
                     </div>
                 </div>
                 <div
-                    class="lg:col-span-8 bg-[#0A0A0A] dark:bg-[#111111] rounded-2xl border border-white/10 p-12 flex items-center justify-center min-h-[300px] relative overflow-hidden">
+                    class="lg:col-span-8 bg-[#0A0A0A] dark:bg-[#111111] rounded-2xl border border-white/10 p-12 flex items-center justify-center min-h-[450px] relative overflow-hidden">
                     <div
                         class="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] [background-size:16px_16px]">
                     </div>
                     <div class="scale-125">
-                        <BrazilStamp />
+                        <LocationStamp />
                     </div>
-                </div>
-            </div>
-
-            <!-- Item 8: Draggable Polaroid -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                <div class="lg:col-span-4 flex flex-col gap-4">
-                    <h2 class="text-2xl font-semibold">Draggable Polaroid</h2>
-                    <p class="text-muted-foreground leading-relaxed">
-                        A polaroid photo frame that can be dragged around using GSAP Draggable. Features tilt rotation,
-                        hover lift effects, and z-index management.
-                    </p>
-                    <div class="flex flex-wrap gap-2 mt-2">
-                        <span
-                            class="px-3 py-1 rounded-full text-xs font-medium bg-secondary text-secondary-foreground border border-border">Vue</span>
-                        <span
-                            class="px-3 py-1 rounded-full text-xs font-medium bg-secondary text-secondary-foreground border border-border">GSAP
-                            Draggable</span>
-                    </div>
-                </div>
-                <div
-                    class="lg:col-span-8 bg-[#0A0A0A] dark:bg-[#111111] rounded-2xl border border-white/10 p-12 flex items-center justify-center min-h-[600px] relative overflow-hidden">
-                    <div
-                        class="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] [background-size:16px_16px]">
-                    </div>
-                    <PolaroidPhoto :x="100" :y="150" :rotation="-5" caption="Memories"
-                        src="/images/gallery/grid-6.jpg" />
-                    <PolaroidPhoto :x="300" :y="180" :rotation="5" caption="Travel" src="/images/gallery/grid-2.jpg" />
                 </div>
             </div>
 
@@ -238,11 +212,10 @@ import Book3D from '~/components/widgets/Book3D.vue'
 import DrawingCanvas from '~/components/widgets/DrawingCanvas.vue'
 import VinylRecord from '~/components/widgets/VinylRecord.vue'
 import ChessPoster from '~/components/widgets/ChessPoster.vue'
-import BrazilStamp from '~/components/widgets/BrazilStamp.vue'
-import PolaroidPhoto from '~/components/PolaroidPhoto.vue'
+import LocationStamp from '~/components/widgets/LocationStamp.vue'
 
 useHead({
-    title: 'Craft | Olanrewaju Segun',
+    title: 'Craft | Lanre Segun',
     meta: [
         { name: 'description', content: 'A collection of interactive components and experiments.' }
     ]

@@ -8,14 +8,24 @@
         </span>
         <div class="flex flex-1 justify-between items-center">
           <div class="flex flex-col">
-            <p class="text-base sm:text-xl font-medium"> Olanrewaju Segun </p>
+            <p class="text-base sm:text-xl font-medium"> Lanre Segun </p>
             <p class="text-base font-medium text-muted-foreground"> Senior Product Designer </p>
           </div>
           <div class="sm:size-10 size-8">
-            <svg width="100%" height="100%" viewBox="0 0 170 170" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path fill-rule="evenodd" clip-rule="evenodd"
-                d="M48.984 57.6266C39.1262 37.9349 47.1632 14.0126 66.9347 4.19468C86.7063 -5.62326 110.726 2.38104 120.584 22.0727L165.788 112.373C175.646 132.065 167.609 155.987 147.838 165.805C128.066 175.623 104.047 167.619 94.1889 147.927L48.984 57.6266ZM112.699 38.9242C112.699 54.1243 100.327 66.4465 85.0649 66.4465C69.8029 66.4465 57.4306 54.1243 57.4306 38.9242C57.4306 23.7239 69.8029 11.4016 85.0649 11.4016C100.327 11.4016 112.699 23.7239 112.699 38.9242ZM4.2117 112.373L28.0668 64.7207L72.2659 153.625L72.3337 153.634C61.0496 169.079 39.8972 174.612 22.1623 165.805C2.3907 155.987 -5.64607 132.065 4.2117 112.373Z"
-                fill="currentColor"></path>
+            <!-- Dark Mode Logo -->
+            <svg v-if="isDark" width="100%" height="100%" viewBox="0 0 320 320" fill="none"
+              xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M80 0C35.8172 0 0 35.8172 0 80C0 124.183 35.8172 160 80 160C35.8172 160 0 195.817 0 240C0 284.183 35.8172 320 80 320C124.183 320 160 284.183 160 240C160 284.183 195.817 320 240 320C284.183 320 320 284.183 320 240C320 195.817 284.183 160 240 160C284.183 160 320 124.183 320 80C320 35.8172 284.183 0 240 0C195.817 0 160 35.8172 160 80C160 35.8172 124.183 0 80 0Z"
+                fill="white" />
+              <path d="M150 90V170H230V230H90V90H150Z" fill="black" stroke="black" stroke-width="20" />
+            </svg>
+            <!-- Light Mode Logo -->
+            <svg v-else width="100%" height="100%" viewBox="0 0 320 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M240 0.5C283.907 0.5 319.5 36.0934 319.5 80C319.5 123.907 283.907 159.5 240 159.5V160.5C283.907 160.5 319.5 196.093 319.5 240C319.5 283.907 283.907 319.5 240 319.5C196.093 319.5 160.5 283.907 160.5 240H159.5C159.5 283.907 123.907 319.5 80 319.5C36.0934 319.5 0.5 283.907 0.5 240C0.500002 196.093 36.0934 160.5 80 160.5V159.5C36.0934 159.5 0.5 123.907 0.5 80C0.500001 36.0934 36.0934 0.500001 80 0.5C123.907 0.5 159.5 36.0934 159.5 80H160.5C160.5 36.0934 196.093 0.500002 240 0.5Z"
+                fill="black" stroke="black" />
+              <path d="M150 90V170H230V230H90V90H150Z" fill="white" stroke="white" stroke-width="20" />
             </svg>
           </div>
         </div>
@@ -131,5 +141,5 @@
 </template>
 
 <script setup lang="ts">
-// Logic minimal as content is hardcoded for exact match
+const { isDark } = useTheme()
 </script>

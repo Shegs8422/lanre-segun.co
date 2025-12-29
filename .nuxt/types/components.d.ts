@@ -19,12 +19,12 @@ interface _GlobalComponents {
   'PolaroidPhoto': typeof import("../../components/PolaroidPhoto.vue").default
   'ProfileCard': typeof import("../../components/ProfileCard.vue").default
   'WidgetsBook3D': typeof import("../../components/widgets/Book3D.vue").default
-  'WidgetsBrazilStamp': typeof import("../../components/widgets/BrazilStamp.vue").default
   'WidgetsChessPoster': typeof import("../../components/widgets/ChessPoster.vue").default
   'WidgetsDraggableCanvas': typeof import("../../components/widgets/DraggableCanvas.vue").default
   'WidgetsDraggableWidget': typeof import("../../components/widgets/DraggableWidget.vue").default
   'WidgetsDrawingCanvas': typeof import("../../components/widgets/DrawingCanvas.vue").default
   'WidgetsFlipClock': typeof import("../../components/widgets/FlipClock.vue").default
+  'WidgetsLocationStamp': typeof import("../../components/widgets/LocationStamp.vue").default
   'WidgetsVinylRecord': typeof import("../../components/widgets/VinylRecord.vue").default
   'NuxtWelcome': typeof import("../../node_modules/nuxt/dist/app/components/welcome.vue").default
   'NuxtLayout': typeof import("../../node_modules/nuxt/dist/app/components/nuxt-layout").default
@@ -56,12 +56,12 @@ interface _GlobalComponents {
   'LazyPolaroidPhoto': LazyComponent<typeof import("../../components/PolaroidPhoto.vue").default>
   'LazyProfileCard': LazyComponent<typeof import("../../components/ProfileCard.vue").default>
   'LazyWidgetsBook3D': LazyComponent<typeof import("../../components/widgets/Book3D.vue").default>
-  'LazyWidgetsBrazilStamp': LazyComponent<typeof import("../../components/widgets/BrazilStamp.vue").default>
   'LazyWidgetsChessPoster': LazyComponent<typeof import("../../components/widgets/ChessPoster.vue").default>
   'LazyWidgetsDraggableCanvas': LazyComponent<typeof import("../../components/widgets/DraggableCanvas.vue").default>
   'LazyWidgetsDraggableWidget': LazyComponent<typeof import("../../components/widgets/DraggableWidget.vue").default>
   'LazyWidgetsDrawingCanvas': LazyComponent<typeof import("../../components/widgets/DrawingCanvas.vue").default>
   'LazyWidgetsFlipClock': LazyComponent<typeof import("../../components/widgets/FlipClock.vue").default>
+  'LazyWidgetsLocationStamp': LazyComponent<typeof import("../../components/widgets/LocationStamp.vue").default>
   'LazyWidgetsVinylRecord': LazyComponent<typeof import("../../components/widgets/VinylRecord.vue").default>
   'LazyNuxtWelcome': LazyComponent<typeof import("../../node_modules/nuxt/dist/app/components/welcome.vue").default>
   'LazyNuxtLayout': LazyComponent<typeof import("../../node_modules/nuxt/dist/app/components/nuxt-layout").default>

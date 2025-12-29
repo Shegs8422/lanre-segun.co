@@ -19,12 +19,12 @@ export const FloatingDock: typeof import("../components/FloatingDock.vue").defau
 export const PolaroidPhoto: typeof import("../components/PolaroidPhoto.vue").default
 export const ProfileCard: typeof import("../components/ProfileCard.vue").default
 export const WidgetsBook3D: typeof import("../components/widgets/Book3D.vue").default
-export const WidgetsBrazilStamp: typeof import("../components/widgets/BrazilStamp.vue").default
 export const WidgetsChessPoster: typeof import("../components/widgets/ChessPoster.vue").default
 export const WidgetsDraggableCanvas: typeof import("../components/widgets/DraggableCanvas.vue").default
 export const WidgetsDraggableWidget: typeof import("../components/widgets/DraggableWidget.vue").default
 export const WidgetsDrawingCanvas: typeof import("../components/widgets/DrawingCanvas.vue").default
 export const WidgetsFlipClock: typeof import("../components/widgets/FlipClock.vue").default
+export const WidgetsLocationStamp: typeof import("../components/widgets/LocationStamp.vue").default
 export const WidgetsVinylRecord: typeof import("../components/widgets/VinylRecord.vue").default
 export const NuxtWelcome: typeof import("../node_modules/nuxt/dist/app/components/welcome.vue").default
 export const NuxtLayout: typeof import("../node_modules/nuxt/dist/app/components/nuxt-layout").default
@@ -56,12 +56,12 @@ export const LazyFloatingDock: LazyComponent<typeof import("../components/Floati
 export const LazyPolaroidPhoto: LazyComponent<typeof import("../components/PolaroidPhoto.vue").default>
 export const LazyProfileCard: LazyComponent<typeof import("../components/ProfileCard.vue").default>
 export const LazyWidgetsBook3D: LazyComponent<typeof import("../components/widgets/Book3D.vue").default>
-export const LazyWidgetsBrazilStamp: LazyComponent<typeof import("../components/widgets/BrazilStamp.vue").default>
 export const LazyWidgetsChessPoster: LazyComponent<typeof import("../components/widgets/ChessPoster.vue").default>
 export const LazyWidgetsDraggableCanvas: LazyComponent<typeof import("../components/widgets/DraggableCanvas.vue").default>
 export const LazyWidgetsDraggableWidget: LazyComponent<typeof import("../components/widgets/DraggableWidget.vue").default>
 export const LazyWidgetsDrawingCanvas: LazyComponent<typeof import("../components/widgets/DrawingCanvas.vue").default>
 export const LazyWidgetsFlipClock: LazyComponent<typeof import("../components/widgets/FlipClock.vue").default>
+export const LazyWidgetsLocationStamp: LazyComponent<typeof import("../components/widgets/LocationStamp.vue").default>
 export const LazyWidgetsVinylRecord: LazyComponent<typeof import("../components/widgets/VinylRecord.vue").default>
 export const LazyNuxtWelcome: LazyComponent<typeof import("../node_modules/nuxt/dist/app/components/welcome.vue").default>
 export const LazyNuxtLayout: LazyComponent<typeof import("../node_modules/nuxt/dist/app/components/nuxt-layout").default>

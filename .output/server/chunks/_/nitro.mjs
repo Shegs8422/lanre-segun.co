@@ -157,6 +157,8 @@ function stringifyQuery(query) {
 const PROTOCOL_STRICT_REGEX = /^[\s\w\0+.-]{2,}:([/\\]{1,2})/;
 const PROTOCOL_REGEX = /^[\s\w\0+.-]{2,}:([/\\]{2})?/;
 const PROTOCOL_RELATIVE_REGEX = /^([/\\]\s*){2,}[^/\\]/;
+const PROTOCOL_SCRIPT_RE = /^[\s\0]*(blob|data|javascript|vbscript):$/i;
+const TRAILING_SLASH_RE = /\/$|\/\?|\/#/;
 const JOIN_LEADING_SLASH_RE = /^\.?\//;
 function hasProtocol(inputString, opts = {}) {
   if (typeof opts === "boolean") {
@@ -167,20 +169,52 @@ function hasProtocol(inputString, opts = {}) {
   }
   return PROTOCOL_REGEX.test(inputString) || (opts.acceptRelative ? PROTOCOL_RELATIVE_REGEX.test(inputString) : false);
 }
+function isScriptProtocol(protocol) {
+  return !!protocol && PROTOCOL_SCRIPT_RE.test(protocol);
+}
 function hasTrailingSlash(input = "", respectQueryAndFragment) {
-  {
+  if (!respectQueryAndFragment) {
     return input.endsWith("/");
   }
+  return TRAILING_SLASH_RE.test(input);
 }
 function withoutTrailingSlash(input = "", respectQueryAndFragment) {
-  {
+  if (!respectQueryAndFragment) {
     return (hasTrailingSlash(input) ? input.slice(0, -1) : input) || "/";
   }
+  if (!hasTrailingSlash(input, true)) {
+    return input || "/";
+  }
+  let path = input;
+  let fragment = "";
+  const fragmentIndex = input.indexOf("#");
+  if (fragmentIndex !== -1) {
+    path = input.slice(0, fragmentIndex);
+    fragment = input.slice(fragmentIndex);
+  }
+  const [s0, ...s] = path.split("?");
+  const cleanPath = s0.endsWith("/") ? s0.slice(0, -1) : s0;
+  return (cleanPath || "/") + (s.length > 0 ? `?${s.join("?")}` : "") + fragment;
 }
 function withTrailingSlash(input = "", respectQueryAndFragment) {
-  {
+  if (!respectQueryAndFragment) {
     return input.endsWith("/") ? input : input + "/";
   }
+  if (hasTrailingSlash(input, true)) {
+    return input || "/";
+  }
+  let path = input;
+  let fragment = "";
+  const fragmentIndex = input.indexOf("#");
+  if (fragmentIndex !== -1) {
+    path = input.slice(0, fragmentIndex);
+    fragment = input.slice(fragmentIndex);
+    if (!path) {
+      return fragment;
+    }
+  }
+  const [s0, ...s] = path.split("?");
+  return s0 + "/" + (s.length > 0 ? `?${s.join("?")}` : "") + fragment;
 }
 function hasLeadingSlash(input = "") {
   return input.startsWith("/");
@@ -2480,7 +2514,8 @@ function createNodeFetch() {
 const fetch = globalThis.fetch ? (...args) => globalThis.fetch(...args) : createNodeFetch();
 const Headers$1 = globalThis.Headers || s$1;
 const AbortController = globalThis.AbortController || i;
-createFetch({ fetch, Headers: Headers$1, AbortController });
+const ofetch = createFetch({ fetch, Headers: Headers$1, AbortController });
+const $fetch = ofetch;
 
 function wrapToPromise(value) {
   if (!value || typeof value.then !== "function") {
@@ -3972,7 +4007,7 @@ function _expandFromEnv(value) {
 const _inlineRuntimeConfig = {
   "app": {
     "baseURL": "/",
-    "buildId": "ac4fbed0-edfb-46de-ac8c-b25daaa7aa6e",
+    "buildId": "c29c8b9d-5623-4243-9663-7549052925f0",
     "buildAssetsDir": "/_nuxt/",
     "cdnURL": ""
   },
@@ -4044,6 +4079,124 @@ new Proxy(/* @__PURE__ */ Object.create(null), {
     return void 0;
   }
 });
+
+function createContext(opts = {}) {
+  let currentInstance;
+  let isSingleton = false;
+  const checkConflict = (instance) => {
+    if (currentInstance && currentInstance !== instance) {
+      throw new Error("Context conflict");
+    }
+  };
+  let als;
+  if (opts.asyncContext) {
+    const _AsyncLocalStorage = opts.AsyncLocalStorage || globalThis.AsyncLocalStorage;
+    if (_AsyncLocalStorage) {
+      als = new _AsyncLocalStorage();
+    } else {
+      console.warn("[unctx] `AsyncLocalStorage` is not provided.");
+    }
+  }
+  const _getCurrentInstance = () => {
+    if (als) {
+      const instance = als.getStore();
+      if (instance !== void 0) {
+        return instance;
+      }
+    }
+    return currentInstance;
+  };
+  return {
+    use: () => {
+      const _instance = _getCurrentInstance();
+      if (_instance === void 0) {
+        throw new Error("Context is not available");
+      }
+      return _instance;
+    },
+    tryUse: () => {
+      return _getCurrentInstance();
+    },
+    set: (instance, replace) => {
+      if (!replace) {
+        checkConflict(instance);
+      }
+      currentInstance = instance;
+      isSingleton = true;
+    },
+    unset: () => {
+      currentInstance = void 0;
+      isSingleton = false;
+    },
+    call: (instance, callback) => {
+      checkConflict(instance);
+      currentInstance = instance;
+      try {
+        return als ? als.run(instance, callback) : callback();
+      } finally {
+        if (!isSingleton) {
+          currentInstance = void 0;
+        }
+      }
+    },
+    async callAsync(instance, callback) {
+      currentInstance = instance;
+      const onRestore = () => {
+        currentInstance = instance;
+      };
+      const onLeave = () => currentInstance === instance ? onRestore : void 0;
+      asyncHandlers.add(onLeave);
+      try {
+        const r = als ? als.run(instance, callback) : callback();
+        if (!isSingleton) {
+          currentInstance = void 0;
+        }
+        return await r;
+      } finally {
+        asyncHandlers.delete(onLeave);
+      }
+    }
+  };
+}
+function createNamespace(defaultOpts = {}) {
+  const contexts = {};
+  return {
+    get(key, opts = {}) {
+      if (!contexts[key]) {
+        contexts[key] = createContext({ ...defaultOpts, ...opts });
+      }
+      return contexts[key];
+    }
+  };
+}
+const _globalThis = typeof globalThis !== "undefined" ? globalThis : typeof self !== "undefined" ? self : typeof global !== "undefined" ? global : {};
+const globalKey = "__unctx__";
+const defaultNamespace = _globalThis[globalKey] || (_globalThis[globalKey] = createNamespace());
+const getContext = (key, opts = {}) => defaultNamespace.get(key, opts);
+const asyncHandlersKey = "__unctx_async_handlers__";
+const asyncHandlers = _globalThis[asyncHandlersKey] || (_globalThis[asyncHandlersKey] = /* @__PURE__ */ new Set());
+function executeAsync(function_) {
+  const restores = [];
+  for (const leaveHandler of asyncHandlers) {
+    const restore2 = leaveHandler();
+    if (restore2) {
+      restores.push(restore2);
+    }
+  }
+  const restore = () => {
+    for (const restore2 of restores) {
+      restore2();
+    }
+  };
+  let awaitable = function_();
+  if (awaitable && typeof awaitable === "object" && "catch" in awaitable) {
+    awaitable = awaitable.catch((error) => {
+      restore();
+      throw error;
+    });
+  }
+  return [awaitable, restore];
+}
 
 const config = useRuntimeConfig();
 const _routeRulesMatcher = toRouteMatcher(
@@ -4294,12 +4447,33 @@ const plugins = [
 ];
 
 const assets = {
+  "/black.png": {
+    "type": "image/png",
+    "etag": "\"21e-SEKx5BazesNcNImBvmYTYex2jJQ\"",
+    "mtime": "2025-12-28T21:15:17.570Z",
+    "size": 542,
+    "path": "../public/black.png"
+  },
   "/og-image.png": {
     "type": "image/png",
     "etag": "\"7833d-yjUdgaXWcKTr+jUdn94ZCqOZSDU\"",
     "mtime": "2025-12-26T01:14:01.295Z",
     "size": 492349,
     "path": "../public/og-image.png"
+  },
+  "/white.png": {
+    "type": "image/png",
+    "etag": "\"206-VHaq5IHgKiYk5bphepzJ5BgT8cA\"",
+    "mtime": "2025-12-28T21:15:17.544Z",
+    "size": 518,
+    "path": "../public/white.png"
+  },
+  "/about-me/chess-cover.png": {
+    "type": "image/png",
+    "etag": "\"fea7-EtAsZFBJT+IB2eVlLHG9LrD3WHA\"",
+    "mtime": "2025-12-27T01:41:06.163Z",
+    "size": 65191,
+    "path": "../public/about-me/chess-cover.png"
   },
   "/about-me/Layer-window.png": {
     "type": "image/png",
@@ -4308,6 +4482,48 @@ const assets = {
     "size": 1011447,
     "path": "../public/about-me/Layer-window.png"
   },
+  "/about-me/promo cursor.svg": {
+    "type": "image/svg+xml",
+    "etag": "\"bb6-iQEOa1S7I4EAafxqgxTDFB3Q+Gc\"",
+    "mtime": "2025-12-27T01:39:28.838Z",
+    "size": 2998,
+    "path": "../public/about-me/promo cursor.svg"
+  },
+  "/audio/boney-m-sunny.mp3": {
+    "type": "audio/mpeg",
+    "etag": "\"3b4cec-upkUSHRZFUajcNAqyvVrakok7IQ\"",
+    "mtime": "2025-12-27T00:48:16.922Z",
+    "size": 3886316,
+    "path": "../public/audio/boney-m-sunny.mp3"
+  },
+  "/audio/chief-commander-ebenezer-obey-iba-folouwa.mp3": {
+    "type": "audio/mpeg",
+    "etag": "\"39e06c-OrI+w+nvlO2qW06fz441hNjYvfQ\"",
+    "mtime": "2025-12-27T01:07:14.739Z",
+    "size": 3793004,
+    "path": "../public/audio/chief-commander-ebenezer-obey-iba-folouwa.mp3"
+  },
+  "/audio/interaction-sound.mp3": {
+    "type": "audio/mpeg",
+    "etag": "\"8100-QzHDHqjkDppABJQuxFglJXd4tT0\"",
+    "mtime": "2025-12-26T22:55:40.206Z",
+    "size": 33024,
+    "path": "../public/audio/interaction-sound.mp3"
+  },
+  "/audio/leave-the-door-open.mp3": {
+    "type": "audio/mpeg",
+    "etag": "\"3af8ec-kwbY+B7XCjt0ez3hGcNsb46iSz0\"",
+    "mtime": "2025-12-26T23:06:15.551Z",
+    "size": 3864812,
+    "path": "../public/audio/leave-the-door-open.mp3"
+  },
+  "/audio/mozart-symphony-40-in-g-minor-k-550-1-molto-allegro-128-ytshorts.savetube.me.mp3": {
+    "type": "audio/mpeg",
+    "etag": "\"78f26c-8TXCUnsAIRV6AxU0O53z0jKMDXE\"",
+    "mtime": "2025-12-27T01:21:55.188Z",
+    "size": 7926380,
+    "path": "../public/audio/mozart-symphony-40-in-g-minor-k-550-1-molto-allegro-128-ytshorts.savetube.me.mp3"
+  },
   "/audio/README.md": {
     "type": "text/markdown; charset=utf-8",
     "etag": "\"4ea-/YV8XjanFn+7eYUz+iwgHrvz2d8\"",
@@ -4315,19 +4531,40 @@ const assets = {
     "size": 1258,
     "path": "../public/audio/README.md"
   },
+  "/audio/somewhere-only-we-know.mp3": {
+    "type": "audio/mpeg",
+    "etag": "\"398aec-wzFypaKkiC654GktgK2EcdPK3Jw\"",
+    "mtime": "2025-12-27T00:56:06.223Z",
+    "size": 3771116,
+    "path": "../public/audio/somewhere-only-we-know.mp3"
+  },
+  "/audio/the-heart-part-5.mp3": {
+    "type": "audio/mpeg",
+    "etag": "\"511eec-Q8qNYsiz95EvjdEtE+23Sry0Ig8\"",
+    "mtime": "2025-12-28T17:34:57.634Z",
+    "size": 5316332,
+    "path": "../public/audio/the-heart-part-5.mp3"
+  },
+  "/audio/tuyo-narcos-theme.mp3": {
+    "type": "audio/mpeg",
+    "etag": "\"25046c-/P5xSkbuhcCTjMtn5sSAslf/AiA\"",
+    "mtime": "2025-12-28T13:14:24.660Z",
+    "size": 2425964,
+    "path": "../public/audio/tuyo-narcos-theme.mp3"
+  },
+  "/images/Abeokuta.png": {
+    "type": "image/png",
+    "etag": "\"219788-X/ovG7v2VUtCD61oVCWQzdnQh9A\"",
+    "mtime": "2025-12-27T09:05:33.300Z",
+    "size": 2201480,
+    "path": "../public/images/Abeokuta.png"
+  },
   "/images/background.svg": {
     "type": "image/svg+xml",
     "etag": "\"25af-siXBykJX+lbK6F/jzts1VAwdN1Y\"",
     "mtime": "2025-12-26T13:00:36.272Z",
     "size": 9647,
     "path": "../public/images/background.svg"
-  },
-  "/images/book-cover.png": {
-    "type": "image/png",
-    "etag": "\"785d4-PnWQiliqSnqT/P79RxAyHuDf6fE\"",
-    "mtime": "2025-12-24T03:03:35.574Z",
-    "size": 493012,
-    "path": "../public/images/book-cover.png"
   },
   "/images/chess-poster.svg": {
     "type": "image/svg+xml",
@@ -4343,19 +4580,68 @@ const assets = {
     "size": 2998,
     "path": "../public/images/cursor.svg"
   },
+  "/images/Design Beyond Limits with Figma - Simon Jun.jpg": {
+    "type": "image/jpeg",
+    "etag": "\"1893c-XJvgqQ9RtvVlxEOAlVQ8M8opuB8\"",
+    "mtime": "2025-12-28T14:21:46.501Z",
+    "size": 100668,
+    "path": "../public/images/Design Beyond Limits with Figma - Simon Jun.jpg"
+  },
+  "/images/Designing Brand Identity - Alina Wheeler.jpg": {
+    "type": "image/jpeg",
+    "etag": "\"5f5d2-toUIhlV4atxbUA0Q386Vv2hXuaA\"",
+    "mtime": "2025-12-28T12:31:30.198Z",
+    "size": 390610,
+    "path": "../public/images/Designing Brand Identity - Alina Wheeler.jpg"
+  },
+  "/images/Fall in Love with the Problem, Not the Solution - Uri Levine.jpg": {
+    "type": "image/jpeg",
+    "etag": "\"2246d-Od7tXpDK4lmnRU9Wr7cfEymq0WI\"",
+    "mtime": "2025-12-28T18:32:01.870Z",
+    "size": 140397,
+    "path": "../public/images/Fall in Love with the Problem, Not the Solution - Uri Levine.jpg"
+  },
+  "/images/Funaab logo.png": {
+    "type": "image/png",
+    "etag": "\"22748-nmqFcGxOa940eOpziBD2PAnBdAs\"",
+    "mtime": "2025-12-28T16:19:47.897Z",
+    "size": 141128,
+    "path": "../public/images/Funaab logo.png"
+  },
+  "/images/google.png": {
+    "type": "image/png",
+    "etag": "\"58f6-LvPkjGJyGUjWRlLxuVDUfYTjnzA\"",
+    "mtime": "2025-12-28T16:55:42.605Z",
+    "size": 22774,
+    "path": "../public/images/google.png"
+  },
+  "/images/Grid System in Graphic Design - Josef Muller Brockmann.jpg": {
+    "type": "image/jpeg",
+    "etag": "\"17c6e-Wgo4SfcyNhpw8+tz0O+r1PBHIjI\"",
+    "mtime": "2025-12-28T12:56:48.712Z",
+    "size": 97390,
+    "path": "../public/images/Grid System in Graphic Design - Josef Muller Brockmann.jpg"
+  },
+  "/images/iba foluwa - 1.jpg": {
+    "type": "image/jpeg",
+    "etag": "\"1dea5-B0+nYpUClVawukP94NDfVP+t8Ag\"",
+    "mtime": "2025-12-27T01:10:55.611Z",
+    "size": 122533,
+    "path": "../public/images/iba foluwa - 1.jpg"
+  },
+  "/images/iba foluwa.jpg": {
+    "type": "image/jpeg",
+    "etag": "\"7cd2-+gaA9g5oNkGNUKwQ6Kj6zWK+TL8\"",
+    "mtime": "2025-12-27T01:11:48.627Z",
+    "size": 31954,
+    "path": "../public/images/iba foluwa.jpg"
+  },
   "/images/icon.ico": {
     "type": "image/vnd.microsoft.icon",
     "etag": "\"1083e-zCIggpuLMlmfhhVQIyKFQIwtnHs\"",
     "mtime": "2025-12-26T13:00:36.315Z",
     "size": 67646,
     "path": "../public/images/icon.ico"
-  },
-  "/images/image.jpg": {
-    "type": "image/jpeg",
-    "etag": "\"a408-R8LDC6Jva8H4rDa+LoITQvAU8LA\"",
-    "mtime": "2025-12-26T13:00:36.360Z",
-    "size": 41992,
-    "path": "../public/images/image.jpg"
   },
   "/images/image.png": {
     "type": "image/png",
@@ -4399,20 +4685,6 @@ const assets = {
     "size": 195695,
     "path": "../public/images/image_11.jpg"
   },
-  "/images/image_11.png": {
-    "type": "image/png",
-    "etag": "\"81e9-mCO7An188t9ehPEGFnp575uSCoY\"",
-    "mtime": "2025-12-26T13:00:36.426Z",
-    "size": 33257,
-    "path": "../public/images/image_11.png"
-  },
-  "/images/image_12.jpg": {
-    "type": "image/jpeg",
-    "etag": "\"7f59-BmKKI1JxnwNFRKYww57qwoDYEhE\"",
-    "mtime": "2025-12-26T13:00:36.436Z",
-    "size": 32601,
-    "path": "../public/images/image_12.jpg"
-  },
   "/images/image_12.png": {
     "type": "image/png",
     "etag": "\"25c1a-UppD7ogzOJkJe/e5o6iiOzUUoNw\"",
@@ -4447,20 +4719,6 @@ const assets = {
     "mtime": "2025-12-26T13:00:36.487Z",
     "size": 287642,
     "path": "../public/images/image_14.png"
-  },
-  "/images/image_15.jpg": {
-    "type": "image/jpeg",
-    "etag": "\"541d-4A6RORmpaFMArLRvMicW/iR08UY\"",
-    "mtime": "2025-12-26T13:00:36.495Z",
-    "size": 21533,
-    "path": "../public/images/image_15.jpg"
-  },
-  "/images/image_15.png": {
-    "type": "image/png",
-    "etag": "\"2ab21-+1r+iYoXHsNXWPk+hUuuP3M/0S8\"",
-    "mtime": "2025-12-26T13:00:36.506Z",
-    "size": 174881,
-    "path": "../public/images/image_15.png"
   },
   "/images/image_16.jpg": {
     "type": "image/jpeg",
@@ -4497,13 +4755,6 @@ const assets = {
     "size": 30986,
     "path": "../public/images/image_18.jpg"
   },
-  "/images/image_18.png": {
-    "type": "image/png",
-    "etag": "\"151f-IazGRRRUNMSwYvPJOIY8K7ABiqw\"",
-    "mtime": "2025-12-26T13:00:36.562Z",
-    "size": 5407,
-    "path": "../public/images/image_18.png"
-  },
   "/images/image_19.jpg": {
     "type": "image/jpeg",
     "etag": "\"56da-frvPdmm8vZ6J6j1Jfo6/bqm17uo\"",
@@ -4531,13 +4782,6 @@ const assets = {
     "mtime": "2025-12-26T13:00:36.598Z",
     "size": 3730,
     "path": "../public/images/image_2.png"
-  },
-  "/images/image_20.jpg": {
-    "type": "image/jpeg",
-    "etag": "\"15e2e-ZebGFpC5j8Ny67hz0NA1LYsXEvQ\"",
-    "mtime": "2025-12-26T13:00:36.608Z",
-    "size": 89646,
-    "path": "../public/images/image_20.jpg"
   },
   "/images/image_20.png": {
     "type": "image/png",
@@ -4574,13 +4818,6 @@ const assets = {
     "size": 68148,
     "path": "../public/images/image_22.png"
   },
-  "/images/image_23.jpg": {
-    "type": "image/jpeg",
-    "etag": "\"554a-UHc/8tkMSddBUp1DNhTAzUJIpjQ\"",
-    "mtime": "2025-12-26T13:00:36.669Z",
-    "size": 21834,
-    "path": "../public/images/image_23.jpg"
-  },
   "/images/image_23.png": {
     "type": "image/png",
     "etag": "\"e92-loe891sBjx1sC6qLnaE5sOAlTd8\"",
@@ -4615,27 +4852,6 @@ const assets = {
     "mtime": "2025-12-26T13:00:36.721Z",
     "size": 41884,
     "path": "../public/images/image_25.png"
-  },
-  "/images/image_26.jpg": {
-    "type": "image/jpeg",
-    "etag": "\"1337-LcMrajS8ziCxEZ3hdKUpR5YaBDk\"",
-    "mtime": "2025-12-26T13:00:36.729Z",
-    "size": 4919,
-    "path": "../public/images/image_26.jpg"
-  },
-  "/images/image_26.png": {
-    "type": "image/png",
-    "etag": "\"aef5-lU2fa1c2HlyuMQgnvjth/dUZkto\"",
-    "mtime": "2025-12-26T13:00:36.743Z",
-    "size": 44789,
-    "path": "../public/images/image_26.png"
-  },
-  "/images/image_27.jpg": {
-    "type": "image/jpeg",
-    "etag": "\"1804-6wuYGbdZfanBEyfSuJK6Pyo50HA\"",
-    "mtime": "2025-12-26T13:00:36.761Z",
-    "size": 6148,
-    "path": "../public/images/image_27.jpg"
   },
   "/images/image_27.png": {
     "type": "image/png",
@@ -4833,6 +5049,27 @@ const assets = {
     "size": 85369,
     "path": "../public/images/image_9.png"
   },
+  "/images/Inclusive Design for Accessibility - Dale Cruse & D.Bourdreau.jpg": {
+    "type": "image/jpeg",
+    "etag": "\"1844e-KKCCDbOPCHv5Q1Lu8C5TzHIZx1g\"",
+    "mtime": "2025-12-28T18:13:26.681Z",
+    "size": 99406,
+    "path": "../public/images/Inclusive Design for Accessibility - Dale Cruse & D.Bourdreau.jpg"
+  },
+  "/images/Keane Hopes and fears - 1.jpg": {
+    "type": "image/jpeg",
+    "etag": "\"4341-7FWjqZK+TUTwZGHHrprZGmDAzXQ\"",
+    "mtime": "2025-12-27T00:59:45.413Z",
+    "size": 17217,
+    "path": "../public/images/Keane Hopes and fears - 1.jpg"
+  },
+  "/images/Keane Hopes and fears.jpg": {
+    "type": "image/jpeg",
+    "etag": "\"111a2-L5ahiscR3JfXtD7wQWhu5WFHo5I\"",
+    "mtime": "2025-12-27T00:59:00.833Z",
+    "size": 70050,
+    "path": "../public/images/Keane Hopes and fears.jpg"
+  },
   "/images/king-chess-poster.svg": {
     "type": "image/svg+xml",
     "etag": "\"ffe-6Hl6Ls9gmy2RixYD9l1cocCEpGM\"",
@@ -4847,96 +5084,320 @@ const assets = {
     "size": 1011447,
     "path": "../public/images/Layer-window.png"
   },
-  "/images/photo-desk.png": {
-    "type": "image/png",
-    "etag": "\"988ed-4FdLrDuLTEq8OWMnAqOGoWukYb8\"",
-    "mtime": "2025-12-24T03:04:29.745Z",
-    "size": 624877,
-    "path": "../public/images/photo-desk.png"
+  "/images/Living Purposefully - Pastor Juwon Owolabi.jpg": {
+    "type": "image/jpeg",
+    "etag": "\"14344b-LO/y+PoCJ+RcnEHIYBVqU16h1AA\"",
+    "mtime": "2025-12-28T13:19:11.649Z",
+    "size": 1324107,
+    "path": "../public/images/Living Purposefully - Pastor Juwon Owolabi.jpg"
   },
-  "/images/photo-mountain.png": {
+  "/images/mckinsey.png": {
     "type": "image/png",
-    "etag": "\"c9e61-kxcjkl5djeYUW87wuFAWWfO0MuQ\"",
-    "mtime": "2025-12-24T03:04:11.592Z",
-    "size": 826977,
-    "path": "../public/images/photo-mountain.png"
+    "etag": "\"4c4e-1ZRQbRquLxBF/zdCoWQ5gmhCANc\"",
+    "mtime": "2025-12-28T17:07:09.100Z",
+    "size": 19534,
+    "path": "../public/images/mckinsey.png"
   },
-  "/images/poster-spiderman.png": {
+  "/images/nvidia.png": {
     "type": "image/png",
-    "etag": "\"fe8fb-md7Imq01AJ5x/PHOdiUX4+Pwvv4\"",
-    "mtime": "2025-12-24T03:03:57.058Z",
-    "size": 1042683,
-    "path": "../public/images/poster-spiderman.png"
+    "etag": "\"2e66-w8/sjDAF75qRzqB9BHI1Ip/myrY\"",
+    "mtime": "2025-12-28T16:57:35.260Z",
+    "size": 11878,
+    "path": "../public/images/nvidia.png"
   },
-  "/images/profile-avatar.png": {
-    "type": "image/png",
-    "etag": "\"bb9d6-GfyVjvQWoUj7ZOnZy5IHLgCBzY0\"",
-    "mtime": "2025-12-24T03:04:44.512Z",
-    "size": 768470,
-    "path": "../public/images/profile-avatar.png"
+  "/images/profile-avatar.jpg": {
+    "type": "image/jpeg",
+    "etag": "\"f4197-jmvsqaUZGjhzoR75xekYXdFxZYY\"",
+    "mtime": "2025-12-27T22:24:22.414Z",
+    "size": 999831,
+    "path": "../public/images/profile-avatar.jpg"
   },
-  "/_nuxt/B2-fXe3W.js": {
+  "/images/Prompt Engineering for UX - MEDAVI.jpg": {
+    "type": "image/jpeg",
+    "etag": "\"112ba-KiYDU3pMmvM78fD9Z7ZRRz+Ufwo\"",
+    "mtime": "2025-12-28T14:50:06.049Z",
+    "size": 70330,
+    "path": "../public/images/Prompt Engineering for UX - MEDAVI.jpg"
+  },
+  "/images/segun.jpg": {
+    "type": "image/jpeg",
+    "etag": "\"13326c-g8an0AJW5dVZiTntFSn+ueTus2Y\"",
+    "mtime": "2025-12-28T18:49:13.491Z",
+    "size": 1258092,
+    "path": "../public/images/segun.jpg"
+  },
+  "/images/Sunny - 2.jpg": {
+    "type": "image/jpeg",
+    "etag": "\"5ec1-ldVrt+mICjqBZG9PJRrnMm6skD8\"",
+    "mtime": "2025-12-26T23:37:14.583Z",
+    "size": 24257,
+    "path": "../public/images/Sunny - 2.jpg"
+  },
+  "/images/Sunny.jpg": {
+    "type": "image/jpeg",
+    "etag": "\"166c4-XzSa1VL5cmdBT5eoh5er3tt7elQ\"",
+    "mtime": "2025-12-26T23:36:32.614Z",
+    "size": 91844,
+    "path": "../public/images/Sunny.jpg"
+  },
+  "/images/The Effective Product Designer - ARTIOM DASHINSKY.jpg": {
+    "type": "image/jpeg",
+    "etag": "\"10606-TOXOf3oSFgxtS/God3vWicUGAlg\"",
+    "mtime": "2025-12-28T12:35:39.793Z",
+    "size": 67078,
+    "path": "../public/images/The Effective Product Designer - ARTIOM DASHINSKY.jpg"
+  },
+  "/images/The Heart 5 - Kendrick Lamar -1.jpg": {
+    "type": "image/jpeg",
+    "etag": "\"5f37-nnSofdogUj63PacfbcnDDdSHJLE\"",
+    "mtime": "2025-12-28T17:36:36.565Z",
+    "size": 24375,
+    "path": "../public/images/The Heart 5 - Kendrick Lamar -1.jpg"
+  },
+  "/images/The Heart 5 - Kendrick Lamar.jpg": {
+    "type": "image/jpeg",
+    "etag": "\"176a1-PipK9fHTmMarmkpGKx6syHnHEqc\"",
+    "mtime": "2025-12-28T17:35:53.233Z",
+    "size": 95905,
+    "path": "../public/images/The Heart 5 - Kendrick Lamar.jpg"
+  },
+  "/images/The Path to Senior Designer - ARTIOM DASHINSKY.jpg": {
+    "type": "image/jpeg",
+    "etag": "\"10036-h/ynU/0Az/Qh96LS1u8lG1cX/Zc\"",
+    "mtime": "2025-12-28T12:34:10.383Z",
+    "size": 65590,
+    "path": "../public/images/The Path to Senior Designer - ARTIOM DASHINSKY.jpg"
+  },
+  "/images/The Subtle Art of Not Giving a Fuck - Mark Manson.jpg": {
+    "type": "image/jpeg",
+    "etag": "\"187ca-tSibe+Q++kGiuViF6Gzq/0+KBvU\"",
+    "mtime": "2025-12-28T12:37:52.296Z",
+    "size": 100298,
+    "path": "../public/images/The Subtle Art of Not Giving a Fuck - Mark Manson.jpg"
+  },
+  "/images/tuyo-narcos-theme.jpg": {
+    "type": "image/jpeg",
+    "etag": "\"d9252-zZwQuJ7/MAC2zxZMxD5H10CFX2o\"",
+    "mtime": "2025-12-28T13:24:25.056Z",
+    "size": 889426,
+    "path": "../public/images/tuyo-narcos-theme.jpg"
+  },
+  "/images/Wolfgang-amadeus-mozart-1.jpg": {
+    "type": "image/jpeg",
+    "etag": "\"57fd-BLzEr4cy1+VEGKnX94H3BIcIlgg\"",
+    "mtime": "2025-12-27T01:25:00.273Z",
+    "size": 22525,
+    "path": "../public/images/Wolfgang-amadeus-mozart-1.jpg"
+  },
+  "/images/Wolfgang-amadeus-mozart.jpg": {
+    "type": "image/jpeg",
+    "etag": "\"1b095-CDvmG0KIuB9o3qITjvXkqgrFrxE\"",
+    "mtime": "2025-12-27T01:24:08.608Z",
+    "size": 110741,
+    "path": "../public/images/Wolfgang-amadeus-mozart.jpg"
+  },
+  "/_nuxt/BfRUA-Ve.js": {
     "type": "text/javascript; charset=utf-8",
-    "etag": "\"5724c-IhiDvaA8m5+y36FyQON1mmfzAlg\"",
-    "mtime": "2025-12-26T21:19:07.989Z",
-    "size": 356940,
-    "path": "../public/_nuxt/B2-fXe3W.js"
+    "etag": "\"eae-nmJiAO7o5bgsAq65BcIct2y3d6E\"",
+    "mtime": "2025-12-29T00:00:14.792Z",
+    "size": 3758,
+    "path": "../public/_nuxt/BfRUA-Ve.js"
   },
-  "/_nuxt/Bbq6G5XC.js": {
+  "/_nuxt/BGgdrHXp.js": {
     "type": "text/javascript; charset=utf-8",
-    "etag": "\"d3e-Zh47whjlLKIKQjqZNGLgMQFfBvY\"",
-    "mtime": "2025-12-26T21:19:07.992Z",
-    "size": 3390,
-    "path": "../public/_nuxt/Bbq6G5XC.js"
+    "etag": "\"1448-HHd96swfnMYxEH1qs456Jvohtqo\"",
+    "mtime": "2025-12-29T00:00:14.795Z",
+    "size": 5192,
+    "path": "../public/_nuxt/BGgdrHXp.js"
   },
-  "/_nuxt/Dk6trA63.js": {
+  "/_nuxt/BXY1cK2B.js": {
     "type": "text/javascript; charset=utf-8",
-    "etag": "\"e95-3IlxP0t9FqzP9YMgHhWxECvOGu0\"",
-    "mtime": "2025-12-26T21:19:07.992Z",
-    "size": 3733,
-    "path": "../public/_nuxt/Dk6trA63.js"
+    "etag": "\"2301-pzD68cp9OW4whNcjDpfvS5YIJRw\"",
+    "mtime": "2025-12-29T00:00:14.794Z",
+    "size": 8961,
+    "path": "../public/_nuxt/BXY1cK2B.js"
   },
-  "/_nuxt/entry.YQjlwdg7.css": {
+  "/_nuxt/Bz5aWWAb.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"9b9c-+FZsNYRdRL4S/5DLfdpq9S8LFbY\"",
+    "mtime": "2025-12-29T00:00:14.794Z",
+    "size": 39836,
+    "path": "../public/_nuxt/Bz5aWWAb.js"
+  },
+  "/_nuxt/CHe-gQcu.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"b22-OtS/72AcrhJqejA2IVZxI6j31rk\"",
+    "mtime": "2025-12-29T00:00:14.794Z",
+    "size": 2850,
+    "path": "../public/_nuxt/CHe-gQcu.js"
+  },
+  "/_nuxt/DLhFZ3wB.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"2123-V+4CSvA5T6+iPFv2GIP7cFOiDeg\"",
+    "mtime": "2025-12-29T00:00:14.795Z",
+    "size": 8483,
+    "path": "../public/_nuxt/DLhFZ3wB.js"
+  },
+  "/_nuxt/DnOmEc7l.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"4319-tSjC1jqQYCOe1lBo7A+EI/tmLPU\"",
+    "mtime": "2025-12-29T00:00:14.794Z",
+    "size": 17177,
+    "path": "../public/_nuxt/DnOmEc7l.js"
+  },
+  "/_nuxt/entry.qRa9jLfr.css": {
     "type": "text/css; charset=utf-8",
-    "etag": "\"af3-0Y3A8uORxG7nmoPHFJYlq26XtvY\"",
-    "mtime": "2025-12-26T21:19:07.991Z",
-    "size": 2803,
-    "path": "../public/_nuxt/entry.YQjlwdg7.css"
+    "etag": "\"f31a-BA6jNLDNub6/zK4YQC47cQTA2CM\"",
+    "mtime": "2025-12-29T00:00:14.792Z",
+    "size": 62234,
+    "path": "../public/_nuxt/entry.qRa9jLfr.css"
   },
-  "/_nuxt/error-404.CYUhy3y9.css": {
+  "/_nuxt/error-404.2GhCpCfF.css": {
     "type": "text/css; charset=utf-8",
-    "etag": "\"dca-005xQIrTNdE7LUqKJ7YOCC8lzEw\"",
-    "mtime": "2025-12-26T21:19:07.982Z",
-    "size": 3530,
-    "path": "../public/_nuxt/error-404.CYUhy3y9.css"
+    "etag": "\"97e-rj7LYDldeiZzQ/rAgQHuKm4R4CM\"",
+    "mtime": "2025-12-29T00:00:14.792Z",
+    "size": 2430,
+    "path": "../public/_nuxt/error-404.2GhCpCfF.css"
   },
-  "/_nuxt/error-500.CVLkTsZM.css": {
+  "/_nuxt/error-500.DqdIhFrl.css": {
     "type": "text/css; charset=utf-8",
-    "etag": "\"75a-W5VxOFBjAs2NvcF8lJBDWJ0iI/o\"",
-    "mtime": "2025-12-26T21:19:07.991Z",
-    "size": 1882,
-    "path": "../public/_nuxt/error-500.CVLkTsZM.css"
+    "etag": "\"773-5c6J9Uy3GU9ENVOfwDGwZL5dQKk\"",
+    "mtime": "2025-12-29T00:00:14.792Z",
+    "size": 1907,
+    "path": "../public/_nuxt/error-500.DqdIhFrl.css"
   },
-  "/_nuxt/Kep_FBPd.js": {
+  "/_nuxt/GoogleSansDisplay-Bold.DuPpFrTn.ttf": {
+    "type": "font/ttf",
+    "etag": "\"267b8-a2AyQju3LLa316MjE/Gtgb8GfKM\"",
+    "mtime": "2025-12-29T00:00:14.792Z",
+    "size": 157624,
+    "path": "../public/_nuxt/GoogleSansDisplay-Bold.DuPpFrTn.ttf"
+  },
+  "/_nuxt/GoogleSansDisplay-Medium.CQsfVe_b.ttf": {
+    "type": "font/ttf",
+    "etag": "\"268a4-HR8ia8SKz4hB9vZyP3tYxkQ0b4I\"",
+    "mtime": "2025-12-29T00:00:14.792Z",
+    "size": 157860,
+    "path": "../public/_nuxt/GoogleSansDisplay-Medium.CQsfVe_b.ttf"
+  },
+  "/_nuxt/GoogleSansDisplay-Regular.BtEhIT2z.ttf": {
+    "type": "font/ttf",
+    "etag": "\"267f4-C+o7Wrk0UEuYPl/f3kDIu6/aLj0\"",
+    "mtime": "2025-12-29T00:00:14.785Z",
+    "size": 157684,
+    "path": "../public/_nuxt/GoogleSansDisplay-Regular.BtEhIT2z.ttf"
+  },
+  "/_nuxt/GoogleSansText-Bold.vsh2es3t.ttf": {
+    "type": "font/ttf",
+    "etag": "\"1c8c4-g9SNdLxKxMF500OIs+7me6ecAXA\"",
+    "mtime": "2025-12-29T00:00:14.792Z",
+    "size": 116932,
+    "path": "../public/_nuxt/GoogleSansText-Bold.vsh2es3t.ttf"
+  },
+  "/_nuxt/GoogleSansText-Medium.BFm9TfYg.ttf": {
+    "type": "font/ttf",
+    "etag": "\"1c9f0-Y5T1btT2TYUPllx+FlNsNfhIKm4\"",
+    "mtime": "2025-12-29T00:00:14.792Z",
+    "size": 117232,
+    "path": "../public/_nuxt/GoogleSansText-Medium.BFm9TfYg.ttf"
+  },
+  "/_nuxt/GoogleSansText-Regular.BM9L9Qbs.ttf": {
+    "type": "font/ttf",
+    "etag": "\"1c8fc-Th7L5LgaelYO5FAWXUiPJZNHC/A\"",
+    "mtime": "2025-12-29T00:00:14.792Z",
+    "size": 116988,
+    "path": "../public/_nuxt/GoogleSansText-Regular.BM9L9Qbs.ttf"
+  },
+  "/_nuxt/index.BXRhVyUC.css": {
+    "type": "text/css; charset=utf-8",
+    "etag": "\"cd-7550onbSUUTTblBM5P3OeNm1+Ns\"",
+    "mtime": "2025-12-29T00:00:14.792Z",
+    "size": 205,
+    "path": "../public/_nuxt/index.BXRhVyUC.css"
+  },
+  "/_nuxt/index.CvBb_3kL.css": {
+    "type": "text/css; charset=utf-8",
+    "etag": "\"340-0OQ5ypAn4S9/wAnRNv/8gJimRbI\"",
+    "mtime": "2025-12-29T00:00:14.792Z",
+    "size": 832,
+    "path": "../public/_nuxt/index.CvBb_3kL.css"
+  },
+  "/_nuxt/LocationStamp.nUxjI2kD.css": {
+    "type": "text/css; charset=utf-8",
+    "etag": "\"e90-TNmdJWqJcsBrJtWT2nqscRoalZI\"",
+    "mtime": "2025-12-29T00:00:14.792Z",
+    "size": 3728,
+    "path": "../public/_nuxt/LocationStamp.nUxjI2kD.css"
+  },
+  "/_nuxt/O1lNVKmW.js": {
     "type": "text/javascript; charset=utf-8",
-    "etag": "\"8f5c-zy/n5q7d7eZKIR+PDhfZl6lpzZ0\"",
-    "mtime": "2025-12-26T21:19:07.993Z",
-    "size": 36700,
-    "path": "../public/_nuxt/Kep_FBPd.js"
+    "etag": "\"d90-kZ8iMnHyA0IA26D4HsT7JnddFaQ\"",
+    "mtime": "2025-12-29T00:00:14.794Z",
+    "size": 3472,
+    "path": "../public/_nuxt/O1lNVKmW.js"
+  },
+  "/_nuxt/p6gsb40E.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"5c73f-VfyMQHoO37XoLKxQplFjXQxxD8w\"",
+    "mtime": "2025-12-29T00:00:14.792Z",
+    "size": 378687,
+    "path": "../public/_nuxt/p6gsb40E.js"
+  },
+  "/_nuxt/_slug_.PE5Rtx2f.css": {
+    "type": "text/css; charset=utf-8",
+    "etag": "\"158-EkME0gjOZnnto2VqZ1AJivjd/e8\"",
+    "mtime": "2025-12-29T00:00:14.792Z",
+    "size": 344,
+    "path": "../public/_nuxt/_slug_.PE5Rtx2f.css"
+  },
+  "/images/projects/project-1.png": {
+    "type": "image/png",
+    "etag": "\"8e772-mxldkneHhGXRq86F0Ypq8nNmRzQ\"",
+    "mtime": "2025-12-27T09:47:06.215Z",
+    "size": 583538,
+    "path": "../public/images/projects/project-1.png"
+  },
+  "/images/projects/project-2.png": {
+    "type": "image/png",
+    "etag": "\"cadc7-YPs3B6aJlZhsrhlFhgdDHPHkbqA\"",
+    "mtime": "2025-12-27T09:47:24.969Z",
+    "size": 830919,
+    "path": "../public/images/projects/project-2.png"
+  },
+  "/images/projects/project-3.png": {
+    "type": "image/png",
+    "etag": "\"88ee3-vr2npRIJ70NccnjLhPICd7jraLM\"",
+    "mtime": "2025-12-27T09:47:43.135Z",
+    "size": 560867,
+    "path": "../public/images/projects/project-3.png"
+  },
+  "/images/projects/project-4.png": {
+    "type": "image/png",
+    "etag": "\"8fb5b-DAGlMEaA0lEESOHt9nDgtAAwcWw\"",
+    "mtime": "2025-12-27T09:48:00.631Z",
+    "size": 588635,
+    "path": "../public/images/projects/project-4.png"
+  },
+  "/images/projects/project-5.png": {
+    "type": "image/png",
+    "etag": "\"969b1-votA+JYb2wF5SUG6IAKaDcWpeg0\"",
+    "mtime": "2025-12-27T09:48:22.177Z",
+    "size": 616881,
+    "path": "../public/images/projects/project-5.png"
   },
   "/_nuxt/builds/latest.json": {
     "type": "application/json",
-    "etag": "\"47-ZQzEofnjw3giSzYJs/0Tn5FedqU\"",
-    "mtime": "2025-12-26T21:19:18.243Z",
+    "etag": "\"47-Dxl9Xd/fP7YhQjVViqHmQeM7ICQ\"",
+    "mtime": "2025-12-29T00:00:30.870Z",
     "size": 71,
     "path": "../public/_nuxt/builds/latest.json"
   },
-  "/_nuxt/builds/meta/ac4fbed0-edfb-46de-ac8c-b25daaa7aa6e.json": {
+  "/_nuxt/builds/meta/c29c8b9d-5623-4243-9663-7549052925f0.json": {
     "type": "application/json",
-    "etag": "\"8b-Bsvh5Ku/il26EvFwiyGTRdmN6+8\"",
-    "mtime": "2025-12-26T21:19:18.244Z",
+    "etag": "\"8b-g+qMKh+z7lohPQWewFuegzBWxZA\"",
+    "mtime": "2025-12-29T00:00:30.872Z",
     "size": 139,
-    "path": "../public/_nuxt/builds/meta/ac4fbed0-edfb-46de-ac8c-b25daaa7aa6e.json"
+    "path": "../public/_nuxt/builds/meta/c29c8b9d-5623-4243-9663-7549052925f0.json"
   }
 };
 
@@ -5567,5 +6028,5 @@ function setupGracefulShutdown(listener, nitroApp) {
   });
 }
 
-export { getResponseStatus as a, getQuery as b, createError$1 as c, defineRenderHandler as d, getRouteRules as e, useNitroApp as f, getResponseStatusText as g, destr as h, trapUnhandledNodeErrors as i, joinRelativeURL as j, setupGracefulShutdown as s, toNodeListener as t, useRuntimeConfig as u };
+export { $fetch as $, withoutTrailingSlash as A, trapUnhandledNodeErrors as a, useNitroApp as b, getResponseStatus as c, destr as d, defineRenderHandler as e, getQuery as f, getResponseStatusText as g, createError$1 as h, getRouteRules as i, joinRelativeURL as j, hasProtocol as k, isScriptProtocol as l, joinURL as m, sanitizeStatusCode as n, getContext as o, createHooks as p, executeAsync as q, toRouteMatcher as r, setupGracefulShutdown as s, toNodeListener as t, useRuntimeConfig as u, createRouter$1 as v, withQuery as w, defu as x, parseQuery as y, withTrailingSlash as z };
 //# sourceMappingURL=nitro.mjs.map

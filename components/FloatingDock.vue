@@ -45,7 +45,7 @@
 
       <!-- Main Floating Dock (Updated with Active Logic) -->
       <div
-        class="w-full px-2 py-2 bg-component border scrollbar-none overflow-y-hidden overflow-x-auto sm:overflow-visible rounded-2xl w-fit flex h-[3.5rem] items-center gap-2 relative z-10 shadow-[_0_1px_1px_-0.5px_rgba(0,0,0,0.04),_0_3px_3px_-1.5px_rgba(0,0,0,0.04),_0_12px_12px_-6px_rgba(0,0,0,0.04)]"
+        class="w-full px-2 py-2 bg-component border scrollbar-none overflow-y-hidden overflow-x-auto sm:overflow-visible rounded-2xl w-fit flex h-[3.5rem] items-center gap-2 relative z-10 shadow-[_0_1px_1px_-0.5px_rgba(0,0,0,0.04),_0_3px_3px_-1.5px_rgba(0,0,0,0.04),_0_12px_12px_-6px_rgba(0,0,0,0.04)] max-w-[95vw]"
         style="will-change: auto; transform: none;">
         <!-- Nav Links with Active State Logic -->
         <!-- Home -->
@@ -256,7 +256,7 @@ const props = defineProps<{
   demo?: boolean
 }>()
 
-const isDark = ref(false)
+const { isDark, toggleTheme: performToggle } = useTheme()
 const route = useRoute()
 const activeDemoTab = ref('/') // Local state for demo mode active tab simulation
 
@@ -308,17 +308,7 @@ const isActive = (path: string) => {
 
 const toggleTheme = () => {
   interactionSound.play()
-  isDark.value = !isDark.value
-  const html = document.documentElement
-  if (isDark.value) {
-    html.classList.remove('light')
-    html.classList.add('dark')
-    localStorage.setItem('theme', 'dark')
-  } else {
-    html.classList.remove('dark')
-    html.classList.add('light')
-    localStorage.setItem('theme', 'light')
-  }
+  performToggle()
 }
 
 // Sound toggle now uses global state
@@ -342,8 +332,7 @@ const handleStopMusic = () => {
 }
 
 onMounted(() => {
-  // Basic detection
-  isDark.value = document.documentElement.classList.contains('dark') || window.matchMedia('(prefers-color-scheme: dark)').matches
+  // Theme is handled by useTheme composable
 })
 </script>
 

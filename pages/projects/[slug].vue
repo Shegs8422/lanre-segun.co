@@ -50,9 +50,18 @@
                     </div>
 
                     <!-- Text Content -->
+                    <!-- Text Content -->
                     <p v-if="section.type === 'text'" class="text-lg leading-relaxed text-muted-foreground max-w-2xl">
                         {{ section.content }}
                     </p>
+
+                    <!-- Grid Layout -->
+                    <div v-if="section.type === 'grid'" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div v-for="(img, i) in section.images" :key="i"
+                            class="rounded-xl overflow-hidden bg-white/5 aspect-[4/3]">
+                            <img :src="img" alt="Project detail" class="w-full h-full object-cover">
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Results / Metrics -->
@@ -113,7 +122,7 @@ const adjacent = computed(() => getAdjacentProjects(route.params.slug as string)
 
 // SEO
 useHead({
-    title: computed(() => project.value ? `${project.value.title} - Olanrewaju Segun` : 'Project Not Found'),
+    title: computed(() => project.value ? `${project.value.title} - Lanre Segun` : 'Project Not Found'),
     meta: [
         { name: 'description', content: computed(() => project.value?.description || '') }
     ]

@@ -1,87 +1,156 @@
 <template>
-  <div :class="['flip-clock', classes]">
-    <div class="flip-clock__piece" v-for="(value, key) in displayTime" :key="key">
-      <span class="flip-clock__card flip-card" :class="{ flip: flipStates[key] }">
-        <b class="flip-card__top">{{ formatDigit(value) }}</b>
-        <b class="flip-card__bottom" :data-value="formatDigit(value)"></b>
-        <b class="flip-card__back" :data-value="formatDigit(previousTime[key])"></b>
-        <b class="flip-card__back-bottom" :data-value="formatDigit(previousTime[key])"></b>
-      </span>
+  <div class="flip-clock-container" ref="containerRef">
+    <div class="countdown flex gap-8 items-center">
+      <!-- Hours Group -->
+      <div class="flex gap-1">
+        <ul class="flip">
+          <li v-for="n in 3" :key="`h1-${n - 1}`" :class="getDigitClass(0, n - 1)">
+            <span>
+              <div class="up">
+                <div class="shadow"></div>
+                <div class="inn">{{ n - 1 }}</div>
+              </div>
+              <div class="down">
+                <div class="shadow"></div>
+                <div class="inn">{{ n - 1 }}</div>
+              </div>
+            </span>
+          </li>
+        </ul>
+        <ul class="flip">
+          <li v-for="n in 10" :key="`h2-${n - 1}`" :class="getDigitClass(1, n - 1)">
+            <span>
+              <div class="up">
+                <div class="shadow"></div>
+                <div class="inn">{{ n - 1 }}</div>
+              </div>
+              <div class="down">
+                <div class="shadow"></div>
+                <div class="inn">{{ n - 1 }}</div>
+              </div>
+            </span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Minutes Group -->
+      <div class="flex gap-1">
+        <ul class="flip">
+          <li v-for="n in 6" :key="`m1-${n - 1}`" :class="getDigitClass(2, n - 1)">
+            <span>
+              <div class="up">
+                <div class="shadow"></div>
+                <div class="inn">{{ n - 1 }}</div>
+              </div>
+              <div class="down">
+                <div class="shadow"></div>
+                <div class="inn">{{ n - 1 }}</div>
+              </div>
+            </span>
+          </li>
+        </ul>
+        <ul class="flip">
+          <li v-for="n in 10" :key="`m2-${n - 1}`" :class="getDigitClass(3, n - 1)">
+            <span>
+              <div class="up">
+                <div class="shadow"></div>
+                <div class="inn">{{ n - 1 }}</div>
+              </div>
+              <div class="down">
+                <div class="shadow"></div>
+                <div class="inn">{{ n - 1 }}</div>
+              </div>
+            </span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Seconds Group -->
+      <div class="flex gap-1">
+        <ul class="flip">
+          <li v-for="n in 6" :key="`s1-${n - 1}`" :class="getDigitClass(4, n - 1)">
+            <span>
+              <div class="up">
+                <div class="shadow"></div>
+                <div class="inn">{{ n - 1 }}</div>
+              </div>
+              <div class="down">
+                <div class="shadow"></div>
+                <div class="inn">{{ n - 1 }}</div>
+              </div>
+            </span>
+          </li>
+        </ul>
+        <ul class="flip">
+          <li v-for="n in 10" :key="`s2-${n - 1}`" :class="getDigitClass(5, n - 1)">
+            <span>
+              <div class="up">
+                <div class="shadow"></div>
+                <div class="inn">{{ n - 1 }}</div>
+              </div>
+              <div class="down">
+                <div class="shadow"></div>
+                <div class="inn">{{ n - 1 }}</div>
+              </div>
+            </span>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 
-const props = defineProps<{
-  classes?: string
-}>()
+// State for each of the 6 digits (H1, H2, M1, M2, S1, S2)
+// Store current and previous values to manage classes
+const digits = ref([
+  { current: 0, previous: -1 }, // H1
+  { current: 0, previous: -1 }, // H2
+  { current: 0, previous: -1 }, // M1
+  { current: 0, previous: -1 }, // M2
+  { current: 0, previous: -1 }, // S1
+  { current: 0, previous: -1 }  // S2
+])
 
-const displayTime = reactive({
-  Hours: 0,
-  Minutes: 0,
-  Seconds: 0
-})
+const containerRef = ref<HTMLElement | null>(null)
+let intervalId: any = null
 
-const previousTime = reactive({
-  Hours: 0,
-  Minutes: 0,
-  Seconds: 0
-})
-
-const flipStates = reactive({
-  Hours: false,
-  Minutes: false,
-  Seconds: false
-})
-
-const formatDigit = (value: number): string => {
-  return value < 10 ? `0${value}` : `${value}`
+const getDigitClass = (digitIndex: number, value: number) => {
+  const digitState = digits.value[digitIndex]
+  if (digitState.current === value) return 'current'
+  if (digitState.previous === value) return 'previous'
+  return ''
 }
-
-let intervalId: any
 
 const updateTime = () => {
   const now = new Date()
-  const hours = now.getHours()
-  const minutes = now.getMinutes()
-  const seconds = now.getSeconds()
+  const h = now.getHours()
+  const m = now.getMinutes()
+  const s = now.getSeconds()
 
-  // Update seconds
-  if (seconds !== displayTime.Seconds) {
-    previousTime.Seconds = displayTime.Seconds
-    displayTime.Seconds = seconds
-    flipStates.Seconds = false
-    setTimeout(() => { flipStates.Seconds = true }, 10)
-  }
+  const h1 = Math.floor(h / 10)
+  const h2 = h % 10
+  const m1 = Math.floor(m / 10)
+  const m2 = m % 10
+  const s1 = Math.floor(s / 10)
+  const s2 = s % 10
 
-  // Update minutes
-  if (minutes !== displayTime.Minutes) {
-    previousTime.Minutes = displayTime.Minutes
-    displayTime.Minutes = minutes
-    flipStates.Minutes = false
-    setTimeout(() => { flipStates.Minutes = true }, 10)
-  }
+  const newValues = [h1, h2, m1, m2, s1, s2]
 
-  // Update hours
-  if (hours !== displayTime.Hours) {
-    previousTime.Hours = displayTime.Hours
-    displayTime.Hours = hours
-    flipStates.Hours = false
-    setTimeout(() => { flipStates.Hours = true }, 10)
-  }
+  newValues.forEach((val, index) => {
+    if (digits.value[index].current !== val) {
+      // Before updating, set the current one to previous
+      digits.value[index].previous = digits.value[index].current
+      // Set new current
+      digits.value[index].current = val
+    }
+  })
 }
 
 onMounted(() => {
-  const now = new Date()
-  displayTime.Hours = now.getHours()
-  displayTime.Minutes = now.getMinutes()
-  displayTime.Seconds = now.getSeconds()
-  previousTime.Hours = displayTime.Hours
-  previousTime.Minutes = displayTime.Minutes
-  previousTime.Seconds = displayTime.Seconds
-
+  updateTime() // Initial set
   intervalId = setInterval(updateTime, 1000)
 })
 
@@ -91,164 +160,228 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-.flip-clock {
-  text-align: center;
-  perspective: 600px;
-  margin: 0 auto;
+.flip-clock-container {
+  display: flex;
+  justify-content: center;
+  user-select: none;
 }
 
-.flip-clock *,
-.flip-clock *:before,
-.flip-clock *:after {
-  box-sizing: border-box;
+.countdown {
+  height: 100px;
+  /* display: flex; handled in template */
+  /* gap: 4px; handled in template */
 }
 
-.flip-clock__piece {
-  display: inline-block;
-  margin: 0 0.2vw;
-}
-
-@media (min-width: 1000px) {
-  .flip-clock__piece {
-    margin: 0 5px;
-  }
-}
-
-.flip-clock__slot {
-  font-size: 1rem;
-  line-height: 1.5;
-  display: block;
-  color: hsl(var(--foreground));
-}
-
-@media (min-width: 1000px) {
-  .flip-clock__slot {
-    font-size: 1.2rem;
-  }
-}
-
-.flip-card {
-  display: block;
+ul.flip {
   position: relative;
-  padding-bottom: 0.72em;
-  font-size: 2.25rem;
-  line-height: 0.95;
+  float: left;
+  margin: 0 2px;
+  width: 60px;
+  height: 100%;
+  font-size: 80px;
+  font-weight: bold;
+  line-height: 100px;
+  border-radius: 6px;
+  list-style: none;
+  padding: 0;
 }
 
-@media (min-width: 1000px) {
-  .flip-card {
-    font-size: 3rem;
-  }
-}
-
-/* Card faces */
-.flip-card__top,
-.flip-card__bottom,
-.flip-card__back-bottom,
-.flip-card__back::before,
-.flip-card__back::after {
-  display: block;
-  height: 0.72em;
-  color: #ccc;
-  background: hsl(var(--component));
-  padding: 0.23em 0.25em 0.4em;
-  border-radius: 0.15em 0.15em 0 0;
-  backface-visibility: hidden;
-  transform-style: preserve-3d;
-  width: 1.8em;
-}
-
-.flip-card__bottom,
-.flip-card__back-bottom {
-  color: hsl(var(--foreground));
+ul.flip li {
+  z-index: 1;
   position: absolute;
-  top: 50%;
   left: 0;
-  border-top: solid 1px rgba(0, 0, 0, 0.1);
-  background: hsl(var(--component-active));
-  border-radius: 0 0 0.15em 0.15em;
-  pointer-events: none;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  line-height: inherit;
+}
+
+ul.flip li span {
+  display: block;
+  height: 100%;
+  perspective: 200px;
+}
+
+ul.flip li span div {
+  z-index: 1;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 50%;
   overflow: hidden;
+}
+
+ul.flip li span div .shadow {
+  position: absolute;
+  width: 100%;
+  height: 100%;
   z-index: 2;
 }
 
-.flip-card__back-bottom {
-  z-index: 1;
-}
-
-.flip-card__bottom::after,
-.flip-card__back-bottom::after {
-  display: block;
-  margin-top: -0.72em;
-}
-
-.flip-card__back::before,
-.flip-card__bottom::after,
-.flip-card__back-bottom::after {
-  content: attr(data-value);
-}
-
-.flip-card__back {
-  position: absolute;
+ul.flip li span div.up {
+  transform-origin: 50% 100%;
   top: 0;
-  height: 100%;
+}
+
+/* Divider line */
+ul.flip li span div.up:after {
+  content: "";
+  position: absolute;
+  bottom: 0px;
   left: 0;
-  pointer-events: none;
+  z-index: 5;
+  width: 100%;
+  height: 1px;
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
-.flip-card__back::before {
-  position: relative;
-  overflow: hidden;
-  z-index: -1;
+ul.flip li span div.down {
+  transform-origin: 50% 0%;
+  bottom: 0;
 }
 
-.flip .flip-card__back::before {
+ul.flip li span div div.inn {
+  position: absolute;
+  left: 0;
   z-index: 1;
-  animation: flipTop 0.3s cubic-bezier(0.37, 0.01, 0.94, 0.35);
-  animation-fill-mode: both;
-  transform-origin: center bottom;
+  width: 100%;
+  height: 200%;
+  color: #ccc;
+  text-shadow: 0 1px 2px #000;
+  text-align: center;
+  background-color: #1a1a1a;
+  /* Dark background default */
+  border-radius: 6px;
+  font-family: 'DM Mono', monospace;
 }
 
-.flip .flip-card__bottom {
-  transform-origin: center top;
-  animation-fill-mode: both;
-  animation: flipBottom 0.6s cubic-bezier(0.15, 0.45, 0.28, 1);
+/* Light/Dark mode adjustments */
+:global(.dark) ul.flip li span div div.inn {
+  background-color: #1a1a1a;
+  color: #e5e5e5;
 }
 
-@keyframes flipTop {
+/* Explicitly set color for light mode if needed, assuming dark theme logic prevails for this widget type */
+/* Using user provided #127C02 as ci-color-dark or #333 as backup. Let's stick to a clean dark grey/black for "ui ui" or custom.
+   User CSS had: background-color: $ci-color-dark; ($ci-color-dark: #127C02;)
+   Let's use a neutralized dark styling compatible with the portfolio.
+   User requested "I like the UI". CodePen had simplified style.
+   I'll maintain the #333-ish style from CodePen logic but use Tailwind colors if possible. 
+   Keeping the standard CodePen style for now.
+*/
+
+ul.flip li span div.up div.inn {
+  top: 0;
+}
+
+ul.flip li span div.down div.inn {
+  bottom: 0;
+}
+
+/* ANIMATION LOGIC */
+
+/* PLAY */
+ul.flip li.previous {
+  z-index: 2;
+}
+
+ul.flip li.current {
+  z-index: 3;
+  animation: asd 0.5s linear both;
+}
+
+@keyframes asd {
   0% {
-    transform: rotateX(0deg);
     z-index: 2;
   }
 
-  0%,
-  99% {
-    opacity: 1;
+  5% {
+    z-index: 4;
+  }
+
+  100% {
+    z-index: 4;
+  }
+}
+
+ul.flip li.current .down {
+  z-index: 2;
+  animation: turn 0.5s linear both;
+}
+
+@keyframes turn {
+  0% {
+    transform: rotateX(90deg);
+  }
+
+  100% {
+    transform: rotateX(0deg);
+  }
+}
+
+ul.flip li.previous .up {
+  z-index: 2;
+  animation: turn2 0.5s linear both;
+}
+
+@keyframes turn2 {
+  0% {
+    transform: rotateX(0deg);
   }
 
   100% {
     transform: rotateX(-90deg);
-    opacity: 0;
   }
 }
 
-@keyframes flipBottom {
+/* SHADOWS */
+ul.flip li.previous .up .shadow {
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 1) 100%);
+  animation: show 0.5s linear both;
+}
 
-  0%,
-  50% {
-    z-index: -1;
-    transform: rotateX(90deg);
+ul.flip li.current .up .shadow {
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 1) 100%);
+  animation: hide 0.5s 0.3s linear both;
+}
+
+ul.flip li.previous .down .shadow {
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.1) 100%);
+  animation: show 0.5s linear both;
+}
+
+ul.flip li.current .down .shadow {
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.1) 100%);
+  animation: hide 0.5s 0.3s linear both;
+}
+
+@keyframes show {
+  0% {
     opacity: 0;
-  }
-
-  51% {
-    opacity: 1;
   }
 
   100% {
     opacity: 1;
-    transform: rotateX(0deg);
-    z-index: 5;
+  }
+}
+
+@keyframes hide {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Responsive Scaling */
+@media (max-width: 600px) {
+  ul.flip {
+    width: 40px;
+    font-size: 50px;
+    height: 70px;
+    line-height: 70px;
   }
 }
 </style>

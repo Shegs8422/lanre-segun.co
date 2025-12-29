@@ -1,6 +1,23 @@
 <template>
     <ClientOnly>
-        <DraggableCanvas>
+        <!-- Mobile View (≤768px) -->
+        <div v-if="isMobile" class="min-h-screen bg-canvas relative overflow-y-auto">
+            <!-- Background layers -->
+            <div class="absolute inset-0 bg-linear-grid bg-[size:16px_16px] bg-[position:12px_12px]"></div>
+            <div class="absolute inset-0 opacity-60 bg-cover bg-center z-10"
+                style="background-image: url('/images/Layer-window.png')"></div>
+            <div class="absolute inset-0 bg-linear-big-grid bg-[size:80px_80px] bg-[position:-4px_-4px] z-20"></div>
+            <div class="absolute inset-0 bg-diagonal-grid bg-[size:80px_80px] bg-[position:-2.5px_-2.5px] z-30"></div>
+
+            <!-- Content -->
+            <div class="relative z-40 flex flex-col items-center gap-6 p-6 pt-24 pb-32">
+                <ProfileCard />
+                <EducationCard />
+            </div>
+        </div>
+
+        <!-- Desktop View (>768px) -->
+        <DraggableCanvas v-else>
             <!-- Orchestration Grid - 8x7 layout with 360px cells -->
             <div
                 class="absolute orchestration grid gap-4 grid-cols-[repeat(8,360px)] grid-rows-[repeat(7,360px)] w-[2992px] h-[2620px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
@@ -30,49 +47,65 @@
                 <FlipClock classes="col-start-7 col-span-2 row-start-5 rotate-[4deg] bottom-[100px]" :stagger="12" />
 
                 <!-- 3D Books -->
-                <!-- Book 1 (Red) -->
-                <Book3D cover="/images/image_13.png" color="#EB1C24" :width="165" :height="201"
-                    classes="col-start-3 row-start-1 rotate-[-12deg] top-[40px] left-[120px]" :stagger="20" />
+                <!-- Book 1 - The Path to Senior Designer -->
+                <Book3D cover="/images/The Path to Senior Designer - ARTIOM DASHINSKY.jpg"
+                    title="The Path to Senior Designer" author="ARTIOM DASHINSKY" color="#2D469B" :width="165"
+                    :height="201" classes="col-start-3 row-start-1 rotate-[-12deg] top-[40px] left-[120px]"
+                    :stagger="20" />
 
-                <!-- Book 2 (Red 2) -->
-                <Book3D cover="/images/image_3.png" color="#E32A24" :width="133" :height="201"
-                    classes="col-start-5 row-start-2 top-[40px] left-[40px] rotate-[15deg]" :stagger="21" />
+                <!-- Book 2 - The Effective Product Designer -->
+                <Book3D cover="/images/The Effective Product Designer - ARTIOM DASHINSKY.jpg"
+                    title="The Effective Product Designer" author="ARTIOM DASHINSKY" color="#F97316" :width="133"
+                    :height="201" classes="col-start-5 row-start-2 top-[40px] left-[40px] rotate-[15deg]"
+                    :stagger="21" />
 
-                <!-- Book 3 (Orange) -->
-                <Book3D cover="/images/image_3.jpg" color="#F1855A" :width="135" :height="198"
-                    classes="col-start-2 row-start-4 rotate-[6deg]" :stagger="21" />
+                <!-- Book 3 - The Subtle Art of Not Giving a Fuck -->
+                <Book3D cover="/images/The Subtle Art of Not Giving a Fuck - Mark Manson.jpg"
+                    title="The Subtle Art of Not Giving a Fuck" author="Mark Manson" color="#F97316" :width="135"
+                    :height="198" classes="col-start-2 row-start-4 rotate-[6deg]" :stagger="21" />
 
-                <!-- Book 4 (Blue) -->
-                <Book3D cover="/images/image_7.jpg" color="#2D469B" :width="135" :height="200"
-                    classes="col-start-3 row-start-2 rotate-[-5deg] left-[80px] bottom-[20px]" :stagger="23" />
+                <!-- Book 4 - Designing Brand Identity -->
+                <Book3D cover="/images/Designing Brand Identity - Alina Wheeler.jpg" title="Designing Brand Identity"
+                    author="Alina Wheeler" color="#EF4444" :width="135" :height="200"
+                    classes="col-start-3 row-start-2 rotate-[-5deg] left-[10px] bottom-[20px]" :stagger="23" />
 
                 <!-- Book 5 (Red 3) -->
                 <Book3D cover="/images/image_1.jpg" color="#CA2528" :width="130" :height="198"
                     classes="col-start-1 row-start-5 rotate-[12deg] left-[20px] top-[80px]" :stagger="24" />
 
-                <!-- Book 6 (Orange 2) -->
-                <Book3D cover="/images/image_6.jpg" color="#F03800" :width="145" :height="198"
+                <!-- Book 6 - Prompt Engineering for UX -->
+                <Book3D cover="/images/Prompt Engineering for UX - MEDAVI.jpg" title="Prompt Engineering for UX"
+                    author="MEDAVI" color="#F03800" :width="145" :height="198"
                     classes="col-start-6 row-start-6 rotate-[-10deg] right-[40px] top-[40px]" :stagger="25" />
 
-                <!-- Book 7 (Orange 3) -->
-                <Book3D cover="/images/image.jpg" color="#ED6626" :width="136" :height="199"
-                    classes="col-start-7 row-start-4 rotate-[12deg] left-[140px] bottom-[40px]" :stagger="26" />
+                <!-- Book 7 - Grid System in Graphic Design -->
+                <Book3D cover="/images/Grid System in Graphic Design - Josef Muller Brockmann.jpg"
+                    title="Grid System in Graphic Design" author="Josef Muller Brockmann" color="#0A0A0A" :width="136"
+                    :height="199" classes="col-start-7 row-start-4 rotate-[12deg] left-[140px] bottom-[40px]"
+                    :stagger="26" />
 
-                <!-- Book 8 (Yellow) -->
-                <Book3D cover="/images/image_4.jpg" color="#FFF20C" :width="128" :height="197"
-                    classes="col-start-4 row-start-6 rotate-[-4deg] right-[40px] top-[120px]" :stagger="27" />
+                <!-- Book 8 - Design Beyond Limits with Figma -->
+                <Book3D cover="/images/Design Beyond Limits with Figma - Simon Jun.jpg"
+                    title="Design Beyond Limits with Figma" author="Simon Jun" color="#1abcfe" :width="128"
+                    :height="197" classes="col-start-3 row-start-6 rotate-[4deg] left-[80px] top-[120px]"
+                    :stagger="27" />
 
-                <!-- Book 9 (Black) -->
-                <Book3D cover="/images/image_8.png" color="#0A0A0A" :width="137" :height="194"
-                    classes="col-start-6 row-start-7 rotate-[15deg] left-[40px] top-[20px]" :stagger="28" />
+                <!-- Book 9 - Living Purposefully -->
+                <Book3D cover="/images/Living Purposefully - Pastor Juwon Owolabi.jpg" title="Living Purposefully"
+                    author="Pastor Juwon Owolabi" color="#8B4513" :width="137" :height="194"
+                    classes="col-start-1 row-start-4 rotate-[-12deg] left-[20px] top-[40px]" :stagger="28" />
 
-                <!-- Book 10 (Gray) -->
-                <Book3D cover="/images/image_10.jpg" color="#485556" :width="143" :height="198"
-                    classes="col-start-3 row-start-6 rotate-[-8deg] right-[60px] bottom-[40px]" :stagger="29" />
+                <!-- Book 10 - Inclusive Design for Accessibility -->
+                <Book3D cover="/images/Inclusive Design for Accessibility - Dale Cruse & D.Bourdreau.jpg"
+                    title="Inclusive Design for Accessibility" author="Dale Cruse & D.Bourdreau" color="#252525"
+                    :width="143" :height="198"
+                    classes="col-start-7 row-start-1 h-fit w-fit left-[360px] relative top-[400px]" :stagger="29" />
 
-                <!-- Book 11 (Blue 2) -->
-                <Book3D cover="/images/image_9.jpg" color="#1983FC" :width="143" :height="201"
-                    classes="col-start-1 row-start-3 rotate-[10deg] left-[60px] top-[60px]" :stagger="30" />
+                <!-- Book 11 - Fall in Love with the Problem -->
+                <Book3D cover="/images/Fall in Love with the Problem, Not the Solution - Uri Levine.jpg"
+                    title="Fall in Love with the Problem, Not the Solution" author="Uri Levine" color="##FEDE05"
+                    :width="143" :height="201" classes="col-start-1 row-start-1 rotate-[-10deg] left-[60px] top-[20px]"
+                    :stagger="30" />
 
                 <!-- Book 12 (Beige) -->
                 <Book3D cover="/images/image_5.png" color="#E1D2BC" :width="143" :height="202"
@@ -83,12 +116,13 @@
                     classes="col-start-4 row-start-6 rotate-[-15deg] left-[80px] bottom-[20px]" :stagger="32" />
 
                 <!-- Vinyl Records -->
-                <VinylRecord :key="`clube`" cover="/images/image_12.jpg" album="Clube da Esquina"
-                    artist="Milton Nascimento" musicFile="/audio/interaction-sound.mp3"
+                <VinylRecord :key="`tuyo-narcos`" cover="/images/tuyo-narcos-theme.jpg" album="Tuyo (Narcos Theme)"
+                    artist="Rodrigo Amarante" musicFile="/audio/tuyo-narcos-theme.mp3"
                     classes="col-start-5 row-start-1 rotate-[-15deg] top-[40px] left-[60px]" :stagger="31" />
 
-                <VinylRecord :key="`initial-d`" cover="/images/image_16.jpg" album="Super Eurobeat Collection"
-                    artist="Initial D" musicFile="/audio/interaction-sound.mp3"
+                <VinylRecord :key="`kendrick-heart`" cover="/images/The Heart 5 - Kendrick Lamar.jpg"
+                    label="/images/The Heart 5 - Kendrick Lamar -1.jpg" album="The Heart Part 5" artist="Kendrick Lamar"
+                    musicFile="/audio/the-heart-part-5.mp3"
                     classes="col-start-2 row-start-1 rotate-[12deg] top-[40px] left-[40px]" :stagger="32" />
 
                 <VinylRecord :key="`iba-folouwa`" cover="/images/iba%20foluwa.jpg"
@@ -141,7 +175,7 @@
 
                 <!-- Google Logo Box -->
                 <div style="--stagger:42"
-                    class="select-none relative col-start-1 row-start-4 w-[300px] h-[300px] shadow-2xl rounded-2xl overflow-hidden left-[40px] top-[40px] rotate-[-4deg] ">
+                    class="select-none relative col-start-1 row-start-5 w-[200px] h-[200px] shadow-2xl rounded-2xl overflow-hidden right-[60px] top-[120px] rotate-[4deg] ">
                     <div class="relative group h-full">
                         <div
                             class="relative w-full h-full overflow-hidden rounded-2xl shadow-lg select-none cursor-none bg-white flex items-center justify-center p-8">
@@ -265,7 +299,7 @@
                     class="relative max-w-[100vw] col-start-6 row-start-5 w-fit h-fit col-span-1 bottom-[200px] right-[70px]"
                     style="--stagger: 6">
                     <div class="rotate-[8deg] transition-transform hover:scale-105 duration-300">
-                        <PolaroidPhoto src="/images/image_11.jpg" alt="Profile example" />
+                        <PolaroidPhoto src="/images/segun.jpg" alt="Lanre Segun" />
                     </div>
                 </DraggableWidget>
 
@@ -285,13 +319,31 @@ import ProfileCard from '~/components/ProfileCard.vue'
 import EducationCard from '~/components/EducationCard.vue'
 import PolaroidPhoto from '~/components/PolaroidPhoto.vue'
 import DrawingCanvas from '~/components/widgets/DrawingCanvas.vue'
-import BrazilStamp from '~/components/widgets/BrazilStamp.vue'
+import BrazilStamp from '~/components/widgets/LocationStamp.vue'
 import ChessPoster from '~/components/widgets/ChessPoster.vue'
 
+// Mobile detection
+const isMobile = ref(false)
+
+onMounted(() => {
+    if (process.client) {
+        const checkMobile = () => {
+            isMobile.value = window.innerWidth <= 768
+        }
+        checkMobile()
+        window.addEventListener('resize', checkMobile)
+    }
+})
+
+// Conditional overflow based on device
+const bodyClass = computed(() => {
+    return isMobile.value ? 'bg-background' : 'overflow-hidden bg-background'
+})
+
 useHead({
-    title: 'Olanrewaju Segun - Senior Product Designer | Interactive Portfolio',
+    title: 'Lanre Segun - Senior Product Designer | Interactive Portfolio',
     bodyAttrs: {
-        class: 'overflow-hidden bg-background'
+        class: bodyClass
     }
 })
 </script>

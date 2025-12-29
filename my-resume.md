@@ -1,4 +1,4 @@
-# Olanrewaju Segun  
+# Lanre Segun  
 **Senior Product Designer**
 
 ---

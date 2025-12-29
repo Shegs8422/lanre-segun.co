@@ -44,11 +44,9 @@
       </div>
 
       <!-- Floating Info Card (Shows on Hover) -->
-      <div class="absolute -bottom-16 left-1/2 -translate-x-1/2 w-max max-w-[200px] z-20 pointer-events-none" :style="{
-        opacity: isHovering && !isPlaying ? 1 : 0,
-        transform: isHovering && !isPlaying ? 'translate(-50%, 0) scale(1) rotate(-5deg)' : 'translate(-50%, -10px) scale(0.9) rotate(-5deg)',
-        transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)'
-      }">
+      <div
+        class="absolute -bottom-24 left-1/2 -translate-x-1/2 w-max max-w-[200px] z-20 pointer-events-none transition-all duration-300 transform"
+        :class="isHovering && !isPlaying ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'">
         <div
           class="bg-[#1A1A1A] text-white px-4 py-3 rounded-xl shadow-xl flex flex-col items-center border border-white/10">
           <p class="text-sm font-bold text-center leading-tight">{{ album }}</p>

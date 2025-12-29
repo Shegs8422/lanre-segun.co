@@ -101,8 +101,14 @@ onMounted(() => {
           gsap.to(polaroidRef.value, { scale: 1.05, duration: 0.2 })
         },
         onRelease: function () {
-          // Stay put
-          gsap.to(this.target, { scale: 1, duration: 0.2 })
+          // Return to initial position with gentle animation
+          gsap.to(this.target, {
+            x: 0,
+            y: 0,
+            scale: 1,
+            duration: 0.6,
+            ease: 'power2.out'
+          })
         }
       })
     }
