@@ -3,8 +3,9 @@ import { Server } from 'node:http';
 import { resolve, dirname, join } from 'node:path';
 import nodeCrypto from 'node:crypto';
 import { parentPort, threadId } from 'node:worker_threads';
-import { defineEventHandler, handleCacheHeaders, splitCookiesString, createEvent, fetchWithEvent, isEvent, eventHandler, setHeaders, sendRedirect, proxyRequest, getRequestHeader, setResponseHeaders, setResponseStatus, send, getRequestHeaders, setResponseHeader, appendResponseHeader, getRequestURL, getResponseHeader, removeResponseHeader, createError, getQuery as getQuery$1, readBody, createApp, createRouter as createRouter$1, toNodeListener, lazyEventHandler, getResponseStatus, getRouterParam, setCookie, getResponseStatusText } from 'file://C:/Users/Lanre%20Segun/Desktop/Investors/node_modules/h3/dist/index.mjs';
+import { defineEventHandler, handleCacheHeaders, splitCookiesString, createEvent, fetchWithEvent, isEvent, eventHandler, setHeaders, sendRedirect, proxyRequest, getRequestHeader, setResponseHeaders, setResponseStatus, send, getRequestHeaders, setResponseHeader, appendResponseHeader, getRequestURL, getResponseHeader, removeResponseHeader, createError, getQuery as getQuery$1, readBody, createApp, createRouter as createRouter$1, toNodeListener, lazyEventHandler, getResponseStatus, getRouterParam, setCookie, getHeader, getCookie, deleteCookie, getResponseStatusText } from 'file://C:/Users/Lanre%20Segun/Desktop/Investors/node_modules/h3/dist/index.mjs';
 import { escapeHtml } from 'file://C:/Users/Lanre%20Segun/Desktop/Investors/node_modules/@vue/shared/dist/shared.cjs.js';
+import { createServerClient, parseCookieHeader } from 'file://C:/Users/Lanre%20Segun/Desktop/Investors/node_modules/@supabase/ssr/dist/main/index.js';
 import { createRenderer, getRequestDependencies, getPreloadLinks, getPrefetchLinks } from 'file://C:/Users/Lanre%20Segun/Desktop/Investors/node_modules/vue-bundle-renderer/dist/runtime.mjs';
 import { parseURL, withoutBase, joinURL, getQuery, withQuery, withTrailingSlash, decodePath, withLeadingSlash, withoutTrailingSlash, joinRelativeURL } from 'file://C:/Users/Lanre%20Segun/Desktop/Investors/node_modules/ufo/dist/index.mjs';
 import destr, { destr as destr$1 } from 'file://C:/Users/Lanre%20Segun/Desktop/Investors/node_modules/destr/dist/index.mjs';
@@ -650,7 +651,7 @@ const _inlineRuntimeConfig = {
   "public": {
     "supabase": {
       "url": "https://ivbkynuqdngkmjoqvrgt.supabase.co",
-      "key": "sb_publishable_dv1geqSyCnvLauUUX58-tg_OKFF0KZc",
+      "key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml2Ymt5bnVxZG5na21qb3F2cmd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjcwMjQ0MTcsImV4cCI6MjA4MjYwMDQxN30.6XncbH7u9Ld37MN2FJGLTT617tyOsLFPNRBFlfnvJz8",
       "redirect": false,
       "redirectOptions": {
         "login": "/login",
@@ -1480,7 +1481,22 @@ const plugins = [
 _LGZR3m2ujYWY3v2HdjFfn_7chcveplvF43DMNzldAMU
 ];
 
-const assets = {};
+const assets = {
+  "/index.mjs": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"1726e-fOdcvbqEo3eSpXJOmYHO3QPxWfM\"",
+    "mtime": "2025-12-30T05:59:23.159Z",
+    "size": 94830,
+    "path": "index.mjs"
+  },
+  "/index.mjs.map": {
+    "type": "application/json",
+    "etag": "\"5808e-M0SXEVv2fGFrb5vQmQkdsOCy1/0\"",
+    "mtime": "2025-12-30T05:59:23.159Z",
+    "size": 360590,
+    "path": "index.mjs.map"
+  }
+};
 
 function readAsset (id) {
   const serverDir = dirname$1(fileURLToPath(globalThis._importMeta_.url));
@@ -1891,11 +1907,17 @@ async function getIslandContext(event) {
 }
 
 const _lazy_4eOPQ_ = () => Promise.resolve().then(function () { return auth_post$1; });
+const _lazy_vABoAb = () => Promise.resolve().then(function () { return resetPassword_post$1; });
+const _lazy_9RrBQ8 = () => Promise.resolve().then(function () { return setup_post$1; });
+const _lazy_pV_xcc = () => Promise.resolve().then(function () { return verify_post$1; });
 const _lazy_GSkdT3 = () => Promise.resolve().then(function () { return renderer$1; });
 
 const handlers = [
   { route: '', handler: _A4G_Ri, lazy: false, middleware: true, method: undefined },
   { route: '/api/auth', handler: _lazy_4eOPQ_, lazy: true, middleware: false, method: "post" },
+  { route: '/api/auth/reset-password', handler: _lazy_vABoAb, lazy: true, middleware: false, method: "post" },
+  { route: '/api/security/setup', handler: _lazy_9RrBQ8, lazy: true, middleware: false, method: "post" },
+  { route: '/api/security/verify', handler: _lazy_pV_xcc, lazy: true, middleware: false, method: "post" },
   { route: '/__nuxt_error', handler: _lazy_GSkdT3, lazy: true, middleware: false, method: undefined },
   { route: '/__nuxt_island/**', handler: _SxA8c9, lazy: false, middleware: false, method: undefined },
   { route: '/**', handler: _lazy_GSkdT3, lazy: true, middleware: false, method: undefined }
@@ -2229,18 +2251,76 @@ const styles$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   default: styles
 }, Symbol.toStringTag, { value: 'Module' }));
 
+async function fetchWithRetry(req, init) {
+  const retries = 3;
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      return await fetch(req, init);
+    } catch (error) {
+      if (init?.signal?.aborted) {
+        throw error;
+      }
+      if (attempt === retries) {
+        console.error(`Error fetching request ${req}`, error, init);
+        throw error;
+      }
+      console.warn(`Retrying fetch attempt ${attempt + 1} for request: ${req}`);
+      await new Promise((resolve) => setTimeout(resolve, 100 * attempt));
+    }
+  }
+  throw new Error("Unreachable code");
+}
+
+function setCookies(event, cookies) {
+  const response = event.node.res;
+  const headersWritable = () => !response.headersSent && !response.writableEnded;
+  if (!headersWritable()) {
+    return;
+  }
+  for (const { name, value, options } of cookies) {
+    if (!headersWritable()) {
+      break;
+    }
+    setCookie(event, name, value, options);
+  }
+}
+
+const serverSupabaseClient = async (event) => {
+  if (!event.context._supabaseClient) {
+    const { url, key, cookiePrefix, cookieOptions, clientOptions: { auth = {}, global = {} } } = useRuntimeConfig(event).public.supabase;
+    event.context._supabaseClient = createServerClient(url, key, {
+      auth,
+      cookies: {
+        getAll: () => parseCookieHeader(getHeader(event, "Cookie") ?? ""),
+        setAll: (cookies) => setCookies(event, cookies)
+      },
+      cookieOptions: {
+        ...cookieOptions,
+        name: cookiePrefix
+      },
+      global: {
+        fetch: fetchWithRetry,
+        ...global
+      }
+    });
+  }
+  return event.context._supabaseClient;
+};
+
 const auth_post = defineEventHandler(async (event) => {
   const body = await readBody(event);
   const password = body.password;
-  const CORRECT_PASSWORD = process.env.CMS_PASSWORD || "admin123";
+  const supabase = await serverSupabaseClient(event);
+  const { data: config } = await supabase.from("security_questions").select("password_override").eq("id", "00000000-0000-0000-0000-000000000000").maybeSingle();
+  const CORRECT_PASSWORD = (config == null ? void 0 : config.password_override) || process.env.CMS_PASSWORD || "admin123";
   if (password === CORRECT_PASSWORD) {
     setCookie(event, "auth_token", "logged-in-secret-token", {
       httpOnly: false,
-      // Allow client JS to read for UI state if needed, but better true for security. 
-      // For this simple case, we might check cookie existence in middleware.
+      secure: false,
       maxAge: 60 * 60 * 24 * 7,
       // 1 week
-      path: "/"
+      path: "/",
+      sameSite: "strict"
     });
     return { success: true };
   } else {
@@ -2254,6 +2334,130 @@ const auth_post = defineEventHandler(async (event) => {
 const auth_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   __proto__: null,
   default: auth_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const resetPassword_post = defineEventHandler(async (event) => {
+  const { newPassword } = await readBody(event);
+  const resetToken = getCookie(event, "reset_token");
+  if (resetToken !== "verified-admin-reset") {
+    throw createError({
+      statusCode: 401,
+      message: "Unauthorized. Verification expired or invalid."
+    });
+  }
+  try {
+    const supabase = await serverSupabaseClient(event);
+    const { error } = await supabase.from("security_questions").update({ password_override: newPassword }).eq("id", "00000000-0000-0000-0000-000000000000");
+    if (error) throw error;
+    deleteCookie(event, "reset_token");
+    return { success: true, message: "Password updated successfully" };
+  } catch (error) {
+    console.error("Reset error:", error);
+    throw createError({
+      statusCode: 500,
+      message: "Failed to update password"
+    });
+  }
+});
+
+const resetPassword_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: resetPassword_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const setup_post = defineEventHandler(async (event) => {
+  const { questions, answers } = await readBody(event);
+  const authToken = getCookie(event, "auth_token");
+  if (!authToken) {
+    throw createError({ statusCode: 401, message: "Unauthorized" });
+  }
+  try {
+    const supabase = await serverSupabaseClient(event);
+    const bcrypt = await import('file://C:/Users/Lanre%20Segun/Desktop/Investors/node_modules/bcryptjs/index.js');
+    const normalize = (val) => val.replace(/\s/g, "").toLowerCase();
+    const hashedAnswers = await Promise.all(
+      answers.map((answer) => bcrypt.hash(normalize(answer), 10))
+    );
+    const ADMIN_CONFIG_ID = "00000000-0000-0000-0000-000000000000";
+    console.log("[DEBUG] UPSERTING security questions for ID:", ADMIN_CONFIG_ID);
+    const { error } = await supabase.from("security_questions").upsert({
+      id: ADMIN_CONFIG_ID,
+      question_1: questions[0],
+      answer_1_hash: hashedAnswers[0],
+      question_2: questions[1],
+      answer_2_hash: hashedAnswers[1],
+      question_3: questions[2],
+      answer_3_hash: hashedAnswers[2]
+    });
+    if (error) {
+      console.error("[DEBUG] UPSERT ERROR:", error.message, error.code, error.details);
+      throw error;
+    }
+    return { success: true };
+  } catch (error) {
+    if (error.statusCode) throw error;
+    console.error("[DEBUG] SETUP POST ERROR:", error);
+    throw createError({ statusCode: 500, message: "Failed to save security questions: " + (error.message || "Unknown error") });
+  }
+});
+
+const setup_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: setup_post
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const verify_post = defineEventHandler(async (event) => {
+  const { answers } = await readBody(event);
+  if (!answers || answers.length !== 3) {
+    throw createError({
+      statusCode: 400,
+      message: "Invalid request. 3 answers required."
+    });
+  }
+  try {
+    const supabase = await serverSupabaseClient(event);
+    const bcrypt = await import('file://C:/Users/Lanre%20Segun/Desktop/Investors/node_modules/bcryptjs/index.js');
+    const { data, error } = await supabase.from("security_questions").select("*").limit(1).maybeSingle();
+    if (error || !data) {
+      throw createError({
+        statusCode: 404,
+        message: "Security questions not found. Please set them up in the CMS first."
+      });
+    }
+    const normalize = (val) => val.replace(/\s/g, "").toLowerCase();
+    const isValid = await Promise.all([
+      bcrypt.compare(normalize(answers[0]), data.answer_1_hash),
+      bcrypt.compare(normalize(answers[1]), data.answer_2_hash),
+      bcrypt.compare(normalize(answers[2]), data.answer_3_hash)
+    ]);
+    if (isValid.every((v) => v === true)) {
+      setCookie(event, "reset_token", "verified-admin-reset", {
+        maxAge: 600,
+        // 10 minutes
+        httpOnly: true,
+        secure: false,
+        sameSite: "strict"
+      });
+      return { success: true };
+    } else {
+      throw createError({
+        statusCode: 401,
+        message: "Verification failed. Answers are incorrect."
+      });
+    }
+  } catch (error) {
+    if (error.statusCode) throw error;
+    console.error("Verification error:", error);
+    throw createError({
+      statusCode: 500,
+      message: "Verification failed"
+    });
+  }
+});
+
+const verify_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: verify_post
 }, Symbol.toStringTag, { value: 'Module' }));
 
 function renderPayloadResponse(ssrContext) {

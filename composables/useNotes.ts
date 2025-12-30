@@ -36,10 +36,31 @@ export const useNotes = () => {
         return notes.value.find(n => n.slug === slug)
     }
 
+    const updateNote = async (id: string, content: string) => {
+        const { error } = await supabase
+            .from('notes')
+            .update({ content })
+            .eq('id', id)
+
+        if (error) {
+            console.error('Error updating note:', error)
+            return false
+        }
+
+        // Update local state
+        const noteIndex = notes.value.findIndex(n => n.id === id)
+        if (noteIndex !== -1) {
+            notes.value[noteIndex].content = content
+        }
+
+        return true
+    }
+
     return {
         notes,
         fetchNotes,
         getAllNotes,
-        getNoteBySlug
+        getNoteBySlug,
+        updateNote
     }
 }

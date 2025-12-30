@@ -4,9 +4,9 @@
         <!-- Toast Notification -->
         <Transition name="toast">
             <div v-if="toast.show"
-                class="fixed top-20 lg:top-6 right-6 z-[200] flex items-center gap-3 px-6 py-4 rounded-xl shadow-2xl border backdrop-blur-md min-w-[300px] lg:min-w-[320px]"
+                class="fixed top-20 lg:top-6 right-6 z-200 flex items-center gap-3 px-6 py-4 rounded-xl shadow-2xl border backdrop-blur-md min-w-[300px] lg:min-w-[320px]"
                 :class="toastClasses">
-                <div class="flex-shrink-0">
+                <div class="shrink-0">
                     <svg v-if="toast.type === 'success'" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
                         stroke-linejoin="round">
@@ -27,7 +27,7 @@
                         <line x1="12" y1="16" x2="12.01" y2="16" />
                     </svg>
                 </div>
-                <div class="flex-grow">
+                <div class="grow">
                     <p class="text-sm font-bold tracking-tight">{{ toast.title }}</p>
                     <p class="text-xs opacity-80">{{ toast.message }}</p>
                 </div>
@@ -70,7 +70,7 @@
 
             <nav class="flex flex-col gap-2 pt-20 lg:pt-0">
                 <button @click="handleTabChange('notes')"
-                    class="px-4 py-2 rounded-lg text-left transition-all duration-200"
+                    class="px-4 py-2 rounded-lg text-left transition-all duration-200" :withCheck="true"
                     :class="activeTab === 'notes' ? 'bg-foreground text-background font-medium shadow-md' : 'text-muted-foreground hover:bg-muted hover:text-foreground'">
                     Notes
                 </button>
@@ -78,6 +78,11 @@
                     class="px-4 py-2 rounded-lg text-left transition-all duration-200"
                     :class="activeTab === 'projects' ? 'bg-foreground text-background font-medium shadow-md' : 'text-muted-foreground hover:bg-muted hover:text-foreground'">
                     Projects
+                </button>
+                <button @click="handleTabChange('gallery')"
+                    class="px-4 py-2 rounded-lg text-left transition-all duration-200"
+                    :class="activeTab === 'gallery' ? 'bg-foreground text-background font-medium shadow-md' : 'text-muted-foreground hover:bg-muted hover:text-foreground'">
+                    Gallery
                 </button>
             </nav>
 
@@ -118,38 +123,87 @@
                     </div>
 
                     <div class="flex flex-col gap-4">
-                        <!-- Items -->
-                        <div v-for="item in activeItems" :key="item.slug || item.id"
-                            class="p-5 rounded-2xl border border-border bg-component/50 dark:bg-white/2 shadow-sm hover:shadow-md hover:border-blue-500/40 transition-all flex flex-col sm:flex-row justify-between sm:items-center gap-4 group">
-                            <div class="flex flex-col gap-1.5">
-                                <h3
-                                    class="font-bold text-base lg:text-lg text-foreground group-hover:text-blue-500 transition-colors leading-tight">
-                                    {{ item.title }}</h3>
-                                <div class="flex items-center gap-2 text-xs font-medium text-muted-foreground">
-                                    <span class="px-2 py-0.5 bg-muted rounded uppercase tracking-wider">{{ item.year
-                                        }}</span>
-                                    <span class="opacity-40">•</span>
-                                    <span class="font-mono">{{ item.slug }}</span>
+                        <!-- Gallery View Integration -->
+                        <div v-if="activeTab === 'gallery'"
+                            class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                            <!-- Pending Upload Skeletons -->
+                            <div v-for="n in pendingUploads" :key="'skeleton-' + n"
+                                class="aspect-[3/4] bg-muted rounded-xl animate-pulse flex items-center justify-center border border-border">
+                                <svg class="w-8 h-8 text-muted-foreground/20 animate-spin" fill="none"
+                                    viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                        stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor"
+                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                    </path>
+                                </svg>
+                            </div>
+
+                            <div v-for="item in galleryItems" :key="item.id"
+                                class="group relative aspect-[3/4] bg-muted rounded-xl overflow-hidden border border-border">
+                                <img :src="item.url"
+                                    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                                <div
+                                    class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
+                                    <button @click="deleteItem(item, 'gallery')"
+                                        class="w-full py-2 bg-red-500 text-white text-xs font-bold rounded-lg hover:bg-red-600 transition-colors">
+                                        Delete
+                                    </button>
                                 </div>
                             </div>
-                            <div class="flex items-center gap-3">
-                                <button @click="editItem(item)"
-                                    class="flex-1 lg:flex-initial text-sm font-bold px-4 py-2 rounded-lg bg-muted text-foreground hover:bg-foreground hover:text-background transition-all">
-                                    Edit
-                                </button>
-                                <button @click="deleteItem(item, activeTab === 'notes' ? 'note' : 'project')"
-                                    class="flex-1 lg:flex-initial text-sm font-bold px-4 py-2 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all">
-                                    Delete
-                                </button>
-                            </div>
+
+                            <!-- Large Upload Trigger for Gallery -->
+                            <button @click="$refs.massGalleryInput.click()"
+                                class="aspect-[3/4] border-2 border-dashed border-border rounded-xl flex flex-col items-center justify-center gap-2 hover:bg-muted/50 transition-colors group">
+                                <div
+                                    class="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-all">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                            d="M12 4v16m8-8H4" />
+                                    </svg>
+                                </div>
+                                <span class="text-xs font-bold text-muted-foreground tracking-wider uppercase">Add
+                                    Photos</span>
+                                <input type="file" ref="massGalleryInput" class="hidden"
+                                    @change="handleImageUpload($event, 'massGallery')" multiple accept="image/*">
+                            </button>
                         </div>
 
-                        <div v-if="activeItems.length === 0"
-                            class="text-center py-20 bg-muted/30 rounded-3xl border border-dashed border-border">
-                            <p class="text-muted-foreground font-medium">No items found in {{ activeTab }}.</p>
-                            <button @click="createNew" class="mt-4 text-blue-500 font-bold hover:underline">Create your
-                                first now</button>
-                        </div>
+                        <!-- Standard Items List (Notes/Projects) -->
+                        <template v-else>
+                            <div v-for="item in activeItems" :key="item.slug || item.id"
+                                class="p-5 rounded-2xl border border-border bg-component/50 dark:bg-white/2 shadow-sm hover:shadow-md hover:border-blue-500/40 transition-all flex flex-col sm:flex-row justify-between sm:items-center gap-4 group">
+                                <div class="flex flex-col gap-1.5">
+                                    <h3
+                                        class="font-bold text-base lg:text-lg text-foreground group-hover:text-blue-500 transition-colors leading-tight">
+                                        {{ item.title }}</h3>
+                                    <div class="flex items-center gap-2 text-xs font-medium text-muted-foreground">
+                                        <span class="px-2 py-0.5 bg-muted rounded uppercase tracking-wider">{{ item.year
+                                            }}</span>
+                                        <span class="opacity-40">•</span>
+                                        <span class="font-mono">{{ item.slug }}</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <button @click="editItem(item)"
+                                        class="flex-1 lg:flex-initial text-sm font-bold px-4 py-2 rounded-lg bg-muted text-foreground hover:bg-foreground hover:text-background transition-all">
+                                        Edit
+                                    </button>
+                                    <button @click="deleteItem(item, (activeTab === 'notes' ? 'note' : 'project'))"
+                                        class="flex-1 lg:flex-initial text-sm font-bold px-4 py-2 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all">
+                                        Delete
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div v-if="activeItems.length === 0"
+                                class="text-center py-20 bg-muted/30 rounded-3xl border border-dashed border-border">
+                                <p class="text-muted-foreground font-medium">No items found in {{ activeTab }}.</p>
+                                <button @click="createNew" class="mt-4 text-blue-500 font-bold hover:underline">Create
+                                    your
+                                    first now</button>
+                            </div>
+                        </template>
                     </div>
                 </div>
 
@@ -280,8 +334,9 @@
                                         <input type="file" ref="noteImageInput" class="hidden"
                                             @change="handleImageUpload($event, 'noteContent')" accept="image/*">
                                     </div>
-                                    <textarea v-model="formData.content" rows="12" placeholder="# Introduction..."
-                                        class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground font-mono text-sm leading-relaxed"></textarea>
+                                    <div class="min-h-[500px]">
+                                        <ContentBuilder v-model="formData.content" />
+                                    </div>
                                 </div>
                             </div>
 
@@ -346,6 +401,9 @@
                 </div>
             </template>
         </main>
+
+        <!-- Security Setup for first-time login -->
+        <LazySecuritySetup ref="securitySetup" />
     </div>
 </template>
 
@@ -353,14 +411,16 @@
 const supabase = useSupabaseClient()
 const { fetchNotes, notes } = useNotes()
 const { fetchProjects, projects } = useProjects()
+const { galleryItems, fetchGallery } = useGallery()
 
 // UX State
 const loading = ref(true)
 const isSidebarOpen = ref(false)
-const activeTab = ref<'notes' | 'projects'>('notes')
+const activeTab = ref<'notes' | 'projects' | 'gallery'>('notes')
 const view = ref<'list' | 'edit'>('list')
 const isEditing = ref(false)
 const isUploading = ref(false)
+const pendingUploads = ref(0)
 
 // Form State
 const formData = ref<any>({})
@@ -394,9 +454,22 @@ const monthOptions = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'S
 const activeItems = computed(() => activeTab.value === 'notes' ? notes.value : projects.value)
 
 // Logic
+const securitySetup = ref<any>(null)
+
 onMounted(async () => {
     try {
-        await Promise.all([fetchNotes(), fetchProjects()])
+        await Promise.all([fetchNotes(), fetchProjects(), fetchGallery()])
+
+        // Check if security questions are set up
+        const { data: qData } = await supabase
+            .from('security_questions')
+            .select('id')
+            .limit(1)
+            .maybeSingle()
+
+        if (!qData) {
+            securitySetup.value?.open()
+        }
     } catch (e) {
         showToast('Sync Error', 'Database connection failed.', 'error')
     } finally {
@@ -410,8 +483,14 @@ const handleTabChange = (tab: 'notes' | 'projects') => {
     isSidebarOpen.value = false
 }
 
-const cmsHeaderTitle = computed(() => activeTab.value === 'notes' ? 'Notes Database' : 'Project Portfolio')
-const activeTabLabel = computed(() => activeTab.value === 'notes' ? 'Note' : 'Project')
+const cmsHeaderTitle = computed(() => {
+    if (activeTab.value === 'gallery') return 'Photo Gallery'
+    return activeTab.value === 'notes' ? 'Notes Database' : 'Project Portfolio'
+})
+const activeTabLabel = computed(() => {
+    if (activeTab.value === 'gallery') return 'Photo'
+    return activeTab.value === 'notes' ? 'Note' : 'Project'
+})
 const editHeaderTitle = computed(() => `${isEditing.value ? 'Refine' : 'Add'} ${activeTabLabel.value}`)
 
 const createNew = () => {
@@ -505,13 +584,22 @@ const saveItem = async () => {
     }
 }
 
-const deleteItem = async (item: any, type: 'note' | 'project') => {
+const deleteItem = async (item: any, type: 'note' | 'project' | 'gallery') => {
     if (!confirm('Are you sure you want to remove this entry? This action cannot be undone.')) return
     try {
-        const table = type === 'note' ? 'notes' : 'projects'
-        // Notes use ID (UUID), Projects use Slug as primary identifiers in these tables
-        const column = type === 'note' ? 'id' : 'slug'
-        const value = type === 'note' ? item.id : item.slug
+        let table = ''
+        let column = ''
+        let value = ''
+
+        if (type === 'gallery') {
+            table = 'gallery'
+            column = 'id'
+            value = item.id
+        } else {
+            table = type === 'note' ? 'notes' : 'projects'
+            column = type === 'note' ? 'id' : 'slug'
+            value = type === 'note' ? item.id : item.slug
+        }
 
         if (!value) {
             showToast('Error', 'Missing identifier for deletion.', 'error')
@@ -521,7 +609,8 @@ const deleteItem = async (item: any, type: 'note' | 'project') => {
         const { error } = await supabase.from(table).delete().eq(column, value)
         if (error) throw error
 
-        await (activeTab.value === 'notes' ? fetchNotes() : fetchProjects())
+        if (type === 'gallery') await fetchGallery()
+        else await (activeTab.value === 'notes' ? fetchNotes() : fetchProjects())
         showToast('Deleted', 'Entry removed successfully.', 'success')
     } catch (e) {
         console.error('Delete Error:', e)
@@ -534,6 +623,8 @@ const handleImageUpload = async (event: Event, field: string) => {
     if (!input.files?.length) return
 
     isUploading.value = true
+    if (field === 'massGallery') pendingUploads.value = input.files.length
+
     try {
         for (const file of Array.from(input.files)) {
             const fileExt = file.name.split('.').pop()
@@ -546,13 +637,20 @@ const handleImageUpload = async (event: Event, field: string) => {
 
             if (field === 'coverImage') formData.value.coverImage = publicUrl
             else if (field === 'noteContent') formData.value.content = (formData.value.content || '') + `\n\n![Image](${publicUrl})\n\n`
-            else wireframesInput.value += (wireframesInput.value ? '\n' : '') + publicUrl
+            else if (field === 'wireframes') wireframesInput.value += (wireframesInput.value ? '\n' : '') + publicUrl
+            else if (field === 'massGallery') {
+                const { error: insErr } = await supabase.from('gallery').insert({ url: publicUrl, order_index: galleryItems.value.length })
+                if (insErr) throw insErr
+                pendingUploads.value = Math.max(0, pendingUploads.value - 1)
+            }
         }
+        if (field === 'massGallery') await fetchGallery()
         showToast('Done', 'Images hosted successfully.', 'success')
     } catch (e) {
         showToast('Storage Error', 'Upload failed.', 'error')
     } finally {
         isUploading.value = false
+        pendingUploads.value = 0
         input.value = ''
     }
 }

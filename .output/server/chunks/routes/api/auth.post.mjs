@@ -1,4 +1,5 @@
 import { c as defineEventHandler, r as readBody, e as setCookie, f as createError } from '../../_/nitro.mjs';
+import { s as serverSupabaseClient } from '../../_/serverSupabaseClient.mjs';
 import 'node:http';
 import 'node:https';
 import 'node:events';
@@ -7,19 +8,22 @@ import 'node:fs';
 import 'node:path';
 import 'node:crypto';
 import 'node:url';
+import '@supabase/ssr';
 
 const auth_post = defineEventHandler(async (event) => {
   const body = await readBody(event);
   const password = body.password;
-  const CORRECT_PASSWORD = process.env.CMS_PASSWORD || "admin123";
+  const supabase = await serverSupabaseClient(event);
+  const { data: config } = await supabase.from("security_questions").select("password_override").eq("id", "00000000-0000-0000-0000-000000000000").single();
+  const CORRECT_PASSWORD = (config == null ? void 0 : config.password_override) || process.env.CMS_PASSWORD || "admin123";
   if (password === CORRECT_PASSWORD) {
     setCookie(event, "auth_token", "logged-in-secret-token", {
-      httpOnly: false,
-      // Allow client JS to read for UI state if needed, but better true for security. 
-      // For this simple case, we might check cookie existence in middleware.
+      httpOnly: true,
+      secure: true,
       maxAge: 60 * 60 * 24 * 7,
       // 1 week
-      path: "/"
+      path: "/",
+      sameSite: "strict"
     });
     return { success: true };
   } else {

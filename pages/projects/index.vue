@@ -3,14 +3,14 @@
         style="scroll-snap-type: y mandatory;">
         <main class="flex flex-col max-w-3xl mx-auto items-center pt-16 pb-12 px-8 gap-12">
             <!-- Header Section -->
-            <header class="w-full flex justify-between items-center pb-4 flex-shrink-0 scroll-snap-align-start"
+            <header class="w-full flex justify-between items-center pb-4 shrink-0 scroll-snap-align-start"
                 style="scroll-snap-align: start;">
                 <h2 class="text-3xl font-medium tracking-tight">Projects</h2>
             </header>
 
             <!-- Project List -->
             <div v-for="(project, index) in projects" :key="index" :ref="(el) => projectRefs[index] = el"
-                class="project-item flex flex-col gap-6 w-full flex-shrink-0 transition-all duration-700 ease-in-out"
+                class="project-item flex flex-col gap-6 w-full shrink-0 transition-all duration-700 ease-in-out"
                 :class="activeProject === index ? 'opacity-100 scale-100' : 'opacity-40 scale-90 grayscale-[0.5]'"
                 style="scroll-snap-align: center; min-height: 80vh; justify-content: center;">
                 <NuxtLink :to="`/projects/${project.slug}`"
@@ -51,7 +51,7 @@
             </div>
 
             <!-- Footer Spacer -->
-            <footer class="h-[20vh] flex-shrink-0"></footer>
+            <footer class="h-[20vh] shrink-0"></footer>
         </main>
     </div>
 </template>

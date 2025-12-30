@@ -6,6 +6,15 @@ declare module "nitropack/types" {
     '/api/auth': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/auth.post').default>>>>
     }
+    '/api/auth/reset-password': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/auth/reset-password.post').default>>>>
+    }
+    '/api/security/setup': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/security/setup.post').default>>>>
+    }
+    '/api/security/verify': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/security/verify.post').default>>>>
+    }
     '/__nuxt_error': {
       'default': Simplify<Serialize<Awaited<ReturnType<typeof import('../../node_modules/@nuxt/nitro-server/dist/runtime/handlers/renderer').default>>>>
     }

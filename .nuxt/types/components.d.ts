@@ -14,11 +14,15 @@ type HydrationStrategies = {
 type LazyComponent<T> = DefineComponent<HydrationStrategies, {}, {}, {}, {}, {}, {}, { hydrated: () => void }> & T
 
 interface _GlobalComponents {
+  'BookLoader': typeof import("../../components/BookLoader.vue").default
+  'ContentBuilder': typeof import("../../components/ContentBuilder.vue").default
   'EducationCard': typeof import("../../components/EducationCard.vue").default
   'FloatingDock': typeof import("../../components/FloatingDock.vue").default
   'LoginModal': typeof import("../../components/LoginModal.vue").default
+  'PasswordRecovery': typeof import("../../components/PasswordRecovery.vue").default
   'PolaroidPhoto': typeof import("../../components/PolaroidPhoto.vue").default
   'ProfileCard': typeof import("../../components/ProfileCard.vue").default
+  'SecuritySetup': typeof import("../../components/SecuritySetup.vue").default
   'WidgetsBook3D': typeof import("../../components/widgets/Book3D.vue").default
   'WidgetsChessPoster': typeof import("../../components/widgets/ChessPoster.vue").default
   'WidgetsDraggableCanvas': typeof import("../../components/widgets/DraggableCanvas.vue").default
@@ -52,11 +56,15 @@ interface _GlobalComponents {
   'Html': typeof import("../../node_modules/nuxt/dist/head/runtime/components").Html
   'Body': typeof import("../../node_modules/nuxt/dist/head/runtime/components").Body
   'NuxtIsland': typeof import("../../node_modules/nuxt/dist/app/components/nuxt-island").default
+  'LazyBookLoader': LazyComponent<typeof import("../../components/BookLoader.vue").default>
+  'LazyContentBuilder': LazyComponent<typeof import("../../components/ContentBuilder.vue").default>
   'LazyEducationCard': LazyComponent<typeof import("../../components/EducationCard.vue").default>
   'LazyFloatingDock': LazyComponent<typeof import("../../components/FloatingDock.vue").default>
   'LazyLoginModal': LazyComponent<typeof import("../../components/LoginModal.vue").default>
+  'LazyPasswordRecovery': LazyComponent<typeof import("../../components/PasswordRecovery.vue").default>
   'LazyPolaroidPhoto': LazyComponent<typeof import("../../components/PolaroidPhoto.vue").default>
   'LazyProfileCard': LazyComponent<typeof import("../../components/ProfileCard.vue").default>
+  'LazySecuritySetup': LazyComponent<typeof import("../../components/SecuritySetup.vue").default>
   'LazyWidgetsBook3D': LazyComponent<typeof import("../../components/widgets/Book3D.vue").default>
   'LazyWidgetsChessPoster': LazyComponent<typeof import("../../components/widgets/ChessPoster.vue").default>
   'LazyWidgetsDraggableCanvas': LazyComponent<typeof import("../../components/widgets/DraggableCanvas.vue").default>

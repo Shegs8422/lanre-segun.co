@@ -1,0 +1,8 @@
+const _slug__vue_vue_type_style_index_0_lang = ".prose h2{font-size:1.5rem;margin-bottom:1.5rem;margin-top:3rem}.prose h2,.prose h3{color:var(--foreground);font-weight:800}.prose h3{font-size:1.25rem;margin-bottom:1rem;margin-top:2rem}.prose p{color:var(--foreground);font-size:1.125rem;line-height:1.75;margin-bottom:1.5rem;opacity:.8}.prose img{border:1px solid var(--border);border-radius:1rem;box-shadow:0 25px 50px -12px #00000080;margin:3rem auto}.prose ul{display:flex;flex-direction:column;gap:.75rem;list-style-type:disc;margin-bottom:1.5rem;padding-left:1.5rem}.prose li{color:var(--foreground);font-size:1.125rem;opacity:.8}.prose strong{color:var(--foreground);font-weight:900}.prose blockquote{border-left:4px solid #3b82f6;color:var(--foreground);font-style:italic;margin:2rem 0;opacity:.7;padding-left:1.5rem}";
+
+const _slug_Styles_CCeppqDM = [
+  _slug__vue_vue_type_style_index_0_lang
+];
+
+export { _slug_Styles_CCeppqDM as default };
+//# sourceMappingURL=_slug_-styles.CCeppqDM.mjs.map

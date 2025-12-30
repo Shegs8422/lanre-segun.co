@@ -32,6 +32,8 @@ export { definePageMeta } from '../node_modules/nuxt/dist/pages/runtime/composab
 export { defineLazyHydrationComponent } from '#app/composables/lazy-hydration';
 export { useAlbumPlayer } from '../composables/useAlbumPlayer';
 export { useClientSound } from '../composables/useClientSound';
+export { useGallery } from '../composables/useGallery';
+export { useLayout } from '../composables/useLayout';
 export { useNotes, Note } from '../composables/useNotes';
 export { useProjects, Project } from '../composables/useProjects';
 export { useTheme } from '../composables/useTheme';

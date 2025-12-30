@@ -14,11 +14,15 @@ type HydrationStrategies = {
 type LazyComponent<T> = DefineComponent<HydrationStrategies, {}, {}, {}, {}, {}, {}, { hydrated: () => void }> & T
 
 
+export const BookLoader: typeof import("../components/BookLoader.vue").default
+export const ContentBuilder: typeof import("../components/ContentBuilder.vue").default
 export const EducationCard: typeof import("../components/EducationCard.vue").default
 export const FloatingDock: typeof import("../components/FloatingDock.vue").default
 export const LoginModal: typeof import("../components/LoginModal.vue").default
+export const PasswordRecovery: typeof import("../components/PasswordRecovery.vue").default
 export const PolaroidPhoto: typeof import("../components/PolaroidPhoto.vue").default
 export const ProfileCard: typeof import("../components/ProfileCard.vue").default
+export const SecuritySetup: typeof import("../components/SecuritySetup.vue").default
 export const WidgetsBook3D: typeof import("../components/widgets/Book3D.vue").default
 export const WidgetsChessPoster: typeof import("../components/widgets/ChessPoster.vue").default
 export const WidgetsDraggableCanvas: typeof import("../components/widgets/DraggableCanvas.vue").default
@@ -52,11 +56,15 @@ export const Head: typeof import("../node_modules/nuxt/dist/head/runtime/compone
 export const Html: typeof import("../node_modules/nuxt/dist/head/runtime/components").Html
 export const Body: typeof import("../node_modules/nuxt/dist/head/runtime/components").Body
 export const NuxtIsland: typeof import("../node_modules/nuxt/dist/app/components/nuxt-island").default
+export const LazyBookLoader: LazyComponent<typeof import("../components/BookLoader.vue").default>
+export const LazyContentBuilder: LazyComponent<typeof import("../components/ContentBuilder.vue").default>
 export const LazyEducationCard: LazyComponent<typeof import("../components/EducationCard.vue").default>
 export const LazyFloatingDock: LazyComponent<typeof import("../components/FloatingDock.vue").default>
 export const LazyLoginModal: LazyComponent<typeof import("../components/LoginModal.vue").default>
+export const LazyPasswordRecovery: LazyComponent<typeof import("../components/PasswordRecovery.vue").default>
 export const LazyPolaroidPhoto: LazyComponent<typeof import("../components/PolaroidPhoto.vue").default>
 export const LazyProfileCard: LazyComponent<typeof import("../components/ProfileCard.vue").default>
+export const LazySecuritySetup: LazyComponent<typeof import("../components/SecuritySetup.vue").default>
 export const LazyWidgetsBook3D: LazyComponent<typeof import("../components/widgets/Book3D.vue").default>
 export const LazyWidgetsChessPoster: LazyComponent<typeof import("../components/widgets/ChessPoster.vue").default>
 export const LazyWidgetsDraggableCanvas: LazyComponent<typeof import("../components/widgets/DraggableCanvas.vue").default>

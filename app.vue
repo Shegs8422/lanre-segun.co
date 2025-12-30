@@ -10,9 +10,7 @@
     </Html>
 
     <!-- Global Layout elements -->
-    <ClientOnly>
-      <FloatingDock />
-    </ClientOnly>
+    <LazyFloatingDock v-if="isDockVisible" />
 
     <!-- Page Content -->
     <NuxtPage v-slot="{ Component, route }">
@@ -23,14 +21,14 @@
     </NuxtPage>
 
     <div id="theme-toggle-script"></div>
-    <LoginModal ref="loginModal" />
+    <LazyLoginModal ref="loginModal" />
   </div>
 </template>
 
 <script setup lang="ts">
-import FloatingDock from '~/components/FloatingDock.vue'
-import LoginModal from '~/components/LoginModal.vue'
 import gsap from 'gsap'
+
+const { isDockVisible } = useLayout()
 
 // GSAP Page Transitions
 const onEnter = (el: Element, done: () => void, path: string) => {
@@ -69,10 +67,10 @@ const loginModal = ref<any>(null)
 const handleKeydown = (e: KeyboardEvent) => {
   // Ignore if user is typing in an input/textarea
   if (['INPUT', 'TEXTAREA'].includes((e.target as HTMLElement).tagName)) return
-  // Ignore if command/ctrl key is pressed
-  if (e.metaKey || e.ctrlKey || e.altKey) return
 
-  if (e.key.toLowerCase() === 'l') {
+  // Check for Ctrl+Shift+L (Windows/Linux) or Cmd+Shift+L (Mac)
+  if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'l') {
+    e.preventDefault() // Prevent any default browser behavior
     loginModal.value?.open()
   }
 }

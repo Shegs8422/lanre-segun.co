@@ -36,7 +36,7 @@
                 </div>
             </article>
 
-            <div v-else class="text-center py-20 bg-component rounded-3xl border border-border">
+            <div v-if="!note && !pending" class="text-center py-20 bg-component rounded-3xl border border-border">
                 <p class="text-muted-foreground font-medium">Note not found.</p>
                 <NuxtLink to="/notes" class="mt-4 inline-block text-blue-500 font-bold hover:underline">Back to all
                     notes</NuxtLink>
@@ -46,8 +46,6 @@
 </template>
 
 <script setup lang="ts">
-import { marked } from 'marked'
-
 const route = useRoute()
 const { getNoteBySlug, notes, fetchNotes } = useNotes()
 
@@ -68,11 +66,8 @@ const formattedDate = computed(() => {
         day: '2-digit'
     })
 })
-
-const parsedContent = computed(() => {
-    if (!note.value?.content) return ''
-    return marked.parse(note.value.content)
-})
+// No parsing needed as content is now stored as HTML structure
+const parsedContent = computed(() => note.value?.content || '')
 
 useSeoMeta({
     title: () => note.value ? `${note.value.title} - Lanre Segun` : 'Note Not Found',

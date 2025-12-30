@@ -1,9 +1,9 @@
-import process from 'node:process';globalThis._importMeta_=globalThis._importMeta_||{url:"file:///_entry.js",env:process.env};import { defineComponent, hasInjectionContext, inject, shallowRef, getCurrentInstance, provide, cloneVNode, h, createElementBlock, toRef, isRef, ref, Suspense, Fragment, useSSRContext, createApp, reactive, shallowReactive, unref, mergeProps, computed, withCtx, createTextVNode, createVNode, resolveDynamicComponent, Transition, createBlock, openBlock, onErrorCaptured, onServerPrefetch, effectScope, isReadonly, isShallow, isReactive, toRaw, nextTick, defineAsyncComponent, getCurrentScope } from 'vue';
-import { m as hasProtocol, n as isScriptProtocol, o as joinURL, w as withQuery, p as sanitizeStatusCode, q as getContext, $ as $fetch, v as createHooks, x as executeAsync, y as getHeader, f as createError$1, z as toRouteMatcher, A as createRouter$1, B as defu, e as setCookie, d as destr, C as klona, D as parse, E as getRequestHeader, F as isEqual, G as getCookie, H as deleteCookie } from '../_/nitro.mjs';
+import process from 'node:process';globalThis._importMeta_=globalThis._importMeta_||{url:"file:///_entry.js",env:process.env};import { hasInjectionContext, inject, toRef, isRef, getCurrentInstance, defineComponent, ref, h, Suspense, Fragment, defineAsyncComponent, useSSRContext, createApp, reactive, provide, shallowReactive, computed, mergeProps, withCtx, createTextVNode, createVNode, resolveDynamicComponent, Transition, createBlock, openBlock, onErrorCaptured, onServerPrefetch, unref, effectScope, shallowRef, isReadonly, isShallow, isReactive, toRaw, getCurrentScope } from 'vue';
+import { p as hasProtocol, q as isScriptProtocol, v as joinURL, w as withQuery, x as sanitizeStatusCode, y as getContext, $ as $fetch, z as createHooks, A as executeAsync, i as getHeader, f as createError$1, B as toRouteMatcher, C as createRouter$1, D as defu, e as setCookie, d as destr, E as klona, F as parse, G as getRequestHeader, H as isEqual, g as getCookie, h as deleteCookie } from '../_/nitro.mjs';
 import { u as useSeoMeta$1, a as useHead$1, h as headSymbol, b as baseURL } from '../routes/renderer.mjs';
 import { RouterView, createMemoryHistory, createRouter, START_LOCATION } from 'vue-router';
 import { createServerClient, parseCookieHeader } from '@supabase/ssr';
-import { ssrRenderAttrs, ssrRenderAttr, ssrInterpolate, ssrIncludeBooleanAttr, ssrRenderComponent, ssrRenderVNode, ssrRenderSuspense } from 'vue/server-renderer';
+import { ssrRenderAttrs, ssrRenderComponent, ssrRenderVNode, ssrRenderSuspense } from 'vue/server-renderer';
 import 'node:http';
 import 'node:https';
 import 'node:events';
@@ -386,32 +386,37 @@ const _routes = [
   {
     name: "cms",
     path: "/cms",
-    component: () => import('./cms-OBNYRdWK.mjs')
+    component: () => import('./cms-DZQqeHmp.mjs')
   },
   {
     name: "craft",
     path: "/craft",
-    component: () => import('./craft-CMo6_GN4.mjs')
+    component: () => import('./craft-B_VNxYHI.mjs')
   },
   {
     name: "index",
     path: "/",
-    component: () => import('./index-CDU7-FZR.mjs')
+    component: () => import('./index-Buh3-93x.mjs')
   },
   {
     name: "notes",
     path: "/notes",
-    component: () => import('./notes-Cx-Tbzjb.mjs')
+    component: () => import('./index-XGlMKI8J.mjs')
+  },
+  {
+    name: "notes-slug",
+    path: "/notes/:slug()",
+    component: () => import('./_slug_-CLsnLeTI.mjs')
   },
   {
     name: "projects",
     path: "/projects",
-    component: () => import('./index-COMyfeTT.mjs')
+    component: () => import('./index-C8vixl-K.mjs')
   },
   {
     name: "projects-slug",
     path: "/projects/:slug()",
-    component: () => import('./_slug_-CNxH7uQY.mjs')
+    component: () => import('./_slug_-BpSHOxPm.mjs')
   }
 ];
 const ROUTE_KEY_PARENTHESES_RE = /(:\w+)\([^)]+\)/g;
@@ -1259,43 +1264,6 @@ defineComponent({
     };
   }
 });
-defineComponent({
-  name: "ServerPlaceholder",
-  render() {
-    return createElementBlock("div");
-  }
-});
-const clientOnlySymbol = /* @__PURE__ */ Symbol.for("nuxt:client-only");
-const __nuxt_component_0 = defineComponent({
-  name: "ClientOnly",
-  inheritAttrs: false,
-  props: ["fallback", "placeholder", "placeholderTag", "fallbackTag"],
-  ...false,
-  setup(props, { slots, attrs }) {
-    const mounted = shallowRef(false);
-    const vm = getCurrentInstance();
-    if (vm) {
-      vm._nuxtClientOnly = true;
-    }
-    provide(clientOnlySymbol, true);
-    return () => {
-      if (mounted.value) {
-        const vnodes = slots.default?.();
-        if (vnodes && vnodes.length === 1) {
-          return [cloneVNode(vnodes[0], attrs)];
-        }
-        return vnodes;
-      }
-      const slot = slots.fallback || slots.placeholder;
-      if (slot) {
-        return h(slot);
-      }
-      const fallbackStr = props.fallback || props.placeholder || "";
-      const fallbackTag = props.fallbackTag || props.placeholderTag || "span";
-      return createElementBlock(fallbackTag, attrs, fallbackStr);
-    };
-  }
-});
 const defineRouteProvider = (name = "RouteProvider") => defineComponent({
   name,
   props: {
@@ -1379,52 +1347,6 @@ function normalizeSlot(slot, data) {
   const slotContent = slot(data);
   return slotContent.length === 1 ? h(slotContent[0]) : h(Fragment, void 0, slotContent);
 }
-const _sfc_main$3 = /* @__PURE__ */ defineComponent({
-  __name: "LoginModal",
-  __ssrInlineRender: true,
-  setup(__props, { expose: __expose }) {
-    const isOpen = ref(false);
-    const password = ref("");
-    const error = ref("");
-    const loading = ref(false);
-    const passwordInput = ref(null);
-    useRouter();
-    const open = () => {
-      isOpen.value = true;
-      nextTick(() => {
-        passwordInput.value?.focus();
-      });
-    };
-    __expose({ open });
-    return (_ctx, _push, _parent, _attrs) => {
-      if (unref(isOpen)) {
-        _push(`<div${ssrRenderAttrs(mergeProps({ class: "fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm" }, _attrs))} data-v-aff80015><div class="bg-neutral-900 border border-neutral-800 p-8 rounded-2xl w-full max-w-sm shadow-2xl relative" data-v-aff80015><button class="absolute top-4 right-4 text-neutral-500 hover:text-white" data-v-aff80015><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-v-aff80015><line x1="18" y1="6" x2="6" y2="18" data-v-aff80015></line><line x1="6" y1="6" x2="18" y2="18" data-v-aff80015></line></svg></button><h2 class="text-xl font-bold text-white mb-6" data-v-aff80015>Restricted Access</h2><form class="flex flex-col gap-4" data-v-aff80015><input${ssrRenderAttr("value", unref(password))} type="password" placeholder="Enter password..." class="bg-black/50 border border-neutral-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-blue-500 transition-colors" data-v-aff80015><button type="submit" class="bg-white text-black font-medium py-3 rounded-lg hover:bg-neutral-200 transition-colors"${ssrIncludeBooleanAttr(unref(loading)) ? " disabled" : ""} data-v-aff80015>${ssrInterpolate(unref(loading) ? "Checking..." : "Enter CMS")}</button></form>`);
-        if (unref(error)) {
-          _push(`<p class="text-red-500 text-sm mt-4 text-center" data-v-aff80015>${ssrInterpolate(unref(error))}</p>`);
-        } else {
-          _push(`<!---->`);
-        }
-        _push(`</div></div>`);
-      } else {
-        _push(`<!---->`);
-      }
-    };
-  }
-});
-const _export_sfc = (sfc, props) => {
-  const target = sfc.__vccOpts || sfc;
-  for (const [key, val] of props) {
-    target[key] = val;
-  }
-  return target;
-};
-const _sfc_setup$3 = _sfc_main$3.setup;
-_sfc_main$3.setup = (props, ctx) => {
-  const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("components/LoginModal.vue");
-  return _sfc_setup$3 ? _sfc_setup$3(props, ctx) : void 0;
-};
-const LoginModal = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$3, [["__scopeId", "data-v-aff80015"]]), { __name: "LoginModal" });
 function _assertThisInitialized(self) {
   if (self === void 0) {
     throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
@@ -5423,6 +5345,8 @@ const useTheme = () => {
     setTheme
   };
 };
+const __nuxt_component_3_lazy = defineAsyncComponent(() => import('./FloatingDock-gkYPI4uv.mjs').then((n) => n.b).then((c) => c.default || c));
+const __nuxt_component_5_lazy = defineAsyncComponent(() => import('./LoginModal-DwJFP9LP.mjs').then((c) => c.default || c));
 const _sfc_main$2 = /* @__PURE__ */ defineComponent({
   __name: "app",
   __ssrInlineRender: true,
@@ -5471,8 +5395,9 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
       const _component_Html = Html;
       const _component_Head = Head;
       const _component_Title = Title;
-      const _component_ClientOnly = __nuxt_component_0;
+      const _component_LazyFloatingDock = __nuxt_component_3_lazy;
       const _component_NuxtPage = __nuxt_component_4;
+      const _component_LazyLoginModal = __nuxt_component_5_lazy;
       _push(`<div${ssrRenderAttrs(mergeProps({ class: "min-h-screen bg-background text-foreground overflow-y-auto" }, _attrs))}>`);
       _push(ssrRenderComponent(_component_Html, { lang: "en" }, {
         default: withCtx((_, _push2, _parent2, _scopeId) => {
@@ -5532,7 +5457,7 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
         }),
         _: 1
       }, _parent));
-      _push(ssrRenderComponent(_component_ClientOnly, null, {}, _parent));
+      _push(ssrRenderComponent(_component_LazyFloatingDock, null, null, _parent));
       _push(ssrRenderComponent(_component_NuxtPage, null, {
         default: withCtx(({ Component, route }, _push2, _parent2, _scopeId) => {
           if (_push2) {
@@ -5561,7 +5486,7 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
         _: 1
       }, _parent));
       _push(`<div id="theme-toggle-script"></div>`);
-      _push(ssrRenderComponent(LoginModal, {
+      _push(ssrRenderComponent(_component_LazyLoginModal, {
         ref_key: "loginModal",
         ref: loginModal
       }, null, _parent));
@@ -5589,8 +5514,8 @@ const _sfc_main$1 = {
     const statusMessage = _error.statusMessage ?? (is404 ? "Page Not Found" : "Internal Server Error");
     const description = _error.message || _error.toString();
     const stack = void 0;
-    const _Error404 = defineAsyncComponent(() => import('./error-404-D2Vq58m8.mjs'));
-    const _Error = defineAsyncComponent(() => import('./error-500-Ct-IS5Op.mjs'));
+    const _Error404 = defineAsyncComponent(() => import('./error-404-Dlh0YVyX.mjs'));
+    const _Error = defineAsyncComponent(() => import('./error-500-ChoqZiWh.mjs'));
     const ErrorTemplate = is404 ? _Error404 : _Error;
     return (_ctx, _push, _parent, _attrs) => {
       _push(ssrRenderComponent(unref(ErrorTemplate), mergeProps({ statusCode: unref(statusCode), statusMessage: unref(statusMessage), description: unref(description), stack: unref(stack) }, _attrs), null, _parent));
@@ -5671,5 +5596,5 @@ let entry;
 }
 const entry_default = (ssrContext) => entry(ssrContext);
 
-export { _export_sfc as _, useSeoMeta as a, useTheme as b, useRoute as c, __nuxt_component_0 as d, entry_default as default, useState as e, useRouter as f, useNuxtApp as g, useRuntimeConfig as h, nuxtLinkDefaults as i, navigateTo as n, resolveRouteObject as r, useHead as u };
+export { useRouter as a, useSeoMeta as b, useTheme as c, useRoute as d, entry_default as default, useState as e, useNuxtApp as f, useRuntimeConfig as g, nuxtLinkDefaults as h, navigateTo as n, resolveRouteObject as r, useHead as u };
 //# sourceMappingURL=server.mjs.map
