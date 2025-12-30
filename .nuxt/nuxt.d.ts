@@ -1,6 +1,6 @@
-/// <reference types="@nuxtjs/supabase" />
 /// <reference types="@tresjs/nuxt" />
 /// <reference types="@nuxt/devtools" />
+/// <reference types="@nuxtjs/supabase" />
 /// <reference types="@nuxt/telemetry" />
 /// <reference path="types/builder-env.d.ts" />
 /// <reference path="types/plugins.d.ts" />
@@ -8,7 +8,7 @@
 /// <reference path="types/app.config.d.ts" />
 /// <reference path="types/runtime-config.d.ts" />
 /// <reference types="nuxt/app" />
-/// <reference types="C:/Users/Lanre Segun/Desktop/Investors/node_modules/@nuxt/nitro-server/dist/index.mjs" />
+/// <reference types="C:/Users/Lanre Segun/Desktop/lanre-segun.co/node_modules/@nuxt/nitro-server/dist/index.mjs" />
 /// <reference types="@tresjs/core" />
 /// <reference path="types/supabase.d.ts" />
 /// <reference types="vue-router" />

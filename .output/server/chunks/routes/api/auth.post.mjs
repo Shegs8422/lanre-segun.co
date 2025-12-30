@@ -14,11 +14,11 @@ const auth_post = defineEventHandler(async (event) => {
   const body = await readBody(event);
   const password = body.password;
   const supabase = await serverSupabaseClient(event);
-  const { data: config } = await supabase.from("security_questions").select("password_override").eq("id", "00000000-0000-0000-0000-000000000000").single();
+  const { data: config } = await supabase.from("security_questions").select("password_override").eq("id", "00000000-0000-0000-0000-000000000000").maybeSingle();
   const CORRECT_PASSWORD = (config == null ? void 0 : config.password_override) || process.env.CMS_PASSWORD || "admin123";
   if (password === CORRECT_PASSWORD) {
     setCookie(event, "auth_token", "logged-in-secret-token", {
-      httpOnly: true,
+      httpOnly: false,
       secure: true,
       maxAge: 60 * 60 * 24 * 7,
       // 1 week

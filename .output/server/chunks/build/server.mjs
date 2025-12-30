@@ -1,4 +1,4 @@
-import process from 'node:process';globalThis._importMeta_=globalThis._importMeta_||{url:"file:///_entry.js",env:process.env};import { hasInjectionContext, inject, toRef, isRef, getCurrentInstance, defineComponent, ref, h, Suspense, Fragment, defineAsyncComponent, useSSRContext, createApp, reactive, provide, shallowReactive, computed, mergeProps, withCtx, createTextVNode, createVNode, resolveDynamicComponent, Transition, createBlock, openBlock, onErrorCaptured, onServerPrefetch, unref, effectScope, shallowRef, isReadonly, isShallow, isReactive, toRaw, getCurrentScope } from 'vue';
+import process from 'node:process';globalThis._importMeta_=globalThis._importMeta_||{url:"file:///_entry.js",env:process.env};import { hasInjectionContext, inject, toRef, isRef, getCurrentInstance, defineComponent, ref, h, Suspense, Fragment, defineAsyncComponent, useSSRContext, createApp, reactive, provide, shallowReactive, computed, mergeProps, withCtx, createTextVNode, createVNode, unref, resolveDynamicComponent, Transition, createBlock, openBlock, onErrorCaptured, onServerPrefetch, effectScope, shallowRef, isReadonly, isShallow, isReactive, toRaw, getCurrentScope } from 'vue';
 import { p as hasProtocol, q as isScriptProtocol, v as joinURL, w as withQuery, x as sanitizeStatusCode, y as getContext, $ as $fetch, z as createHooks, A as executeAsync, i as getHeader, f as createError$1, B as toRouteMatcher, C as createRouter$1, D as defu, e as setCookie, d as destr, E as klona, F as parse, G as getRequestHeader, H as isEqual, g as getCookie, h as deleteCookie } from '../_/nitro.mjs';
 import { u as useSeoMeta$1, a as useHead$1, h as headSymbol, b as baseURL } from '../routes/renderer.mjs';
 import { RouterView, createMemoryHistory, createRouter, START_LOCATION } from 'vue-router';
@@ -386,37 +386,42 @@ const _routes = [
   {
     name: "cms",
     path: "/cms",
-    component: () => import('./cms-DZQqeHmp.mjs')
+    component: () => import('./cms-BRRsjZIP.mjs')
   },
   {
     name: "craft",
     path: "/craft",
-    component: () => import('./craft-B_VNxYHI.mjs')
+    component: () => import('./craft-dl00C2e0.mjs')
   },
   {
     name: "index",
     path: "/",
-    component: () => import('./index-Buh3-93x.mjs')
+    component: () => import('./index-uKc8DGIw.mjs')
+  },
+  {
+    name: "photos",
+    path: "/photos",
+    component: () => import('./photos-dnNEnPO0.mjs')
   },
   {
     name: "notes",
     path: "/notes",
-    component: () => import('./index-XGlMKI8J.mjs')
+    component: () => import('./index-BRsSTx1h.mjs')
   },
   {
     name: "notes-slug",
     path: "/notes/:slug()",
-    component: () => import('./_slug_-CLsnLeTI.mjs')
+    component: () => import('./_slug_-D3QOOcPe.mjs')
   },
   {
     name: "projects",
     path: "/projects",
-    component: () => import('./index-C8vixl-K.mjs')
+    component: () => import('./index-BBbUM3Ft.mjs')
   },
   {
     name: "projects-slug",
     path: "/projects/:slug()",
-    component: () => import('./_slug_-BpSHOxPm.mjs')
+    component: () => import('./_slug_-DUReNSvf.mjs')
   }
 ];
 const ROUTE_KEY_PARENTHESES_RE = /(:\w+)\([^)]+\)/g;
@@ -5331,6 +5336,12 @@ _forEachName("x,y,z,top,right,bottom,left,width,height,fontSize,padding,margin,p
 gsap.registerPlugin(CSSPlugin);
 var gsapWithCSS = gsap.registerPlugin(CSSPlugin) || gsap;
 gsapWithCSS.core.Tween;
+const useLayout = () => {
+  const isDockVisible = useState("isDockVisible", () => true);
+  return {
+    isDockVisible
+  };
+};
 const useTheme = () => {
   const isDark = useState("theme", () => true);
   const toggleTheme = () => {
@@ -5345,12 +5356,13 @@ const useTheme = () => {
     setTheme
   };
 };
-const __nuxt_component_3_lazy = defineAsyncComponent(() => import('./FloatingDock-gkYPI4uv.mjs').then((n) => n.b).then((c) => c.default || c));
-const __nuxt_component_5_lazy = defineAsyncComponent(() => import('./LoginModal-DwJFP9LP.mjs').then((c) => c.default || c));
+const __nuxt_component_3_lazy = defineAsyncComponent(() => import('./FloatingDock-CGCOsBJa.mjs').then((n) => n.b).then((c) => c.default || c));
+const __nuxt_component_5_lazy = defineAsyncComponent(() => import('./LoginModal-DGjqbTYd.mjs').then((c) => c.default || c));
 const _sfc_main$2 = /* @__PURE__ */ defineComponent({
   __name: "app",
   __ssrInlineRender: true,
   setup(__props) {
+    const { isDockVisible } = useLayout();
     const onEnter = (el, done, path) => {
       gsapWithCSS.fromTo(
         el,
@@ -5457,7 +5469,11 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
         }),
         _: 1
       }, _parent));
-      _push(ssrRenderComponent(_component_LazyFloatingDock, null, null, _parent));
+      if (unref(isDockVisible)) {
+        _push(ssrRenderComponent(_component_LazyFloatingDock, null, null, _parent));
+      } else {
+        _push(`<!---->`);
+      }
       _push(ssrRenderComponent(_component_NuxtPage, null, {
         default: withCtx(({ Component, route }, _push2, _parent2, _scopeId) => {
           if (_push2) {
@@ -5514,8 +5530,8 @@ const _sfc_main$1 = {
     const statusMessage = _error.statusMessage ?? (is404 ? "Page Not Found" : "Internal Server Error");
     const description = _error.message || _error.toString();
     const stack = void 0;
-    const _Error404 = defineAsyncComponent(() => import('./error-404-Dlh0YVyX.mjs'));
-    const _Error = defineAsyncComponent(() => import('./error-500-ChoqZiWh.mjs'));
+    const _Error404 = defineAsyncComponent(() => import('./error-404-DqY3xvZ5.mjs'));
+    const _Error = defineAsyncComponent(() => import('./error-500-ZFeRdmJo.mjs'));
     const ErrorTemplate = is404 ? _Error404 : _Error;
     return (_ctx, _push, _parent, _attrs) => {
       _push(ssrRenderComponent(unref(ErrorTemplate), mergeProps({ statusCode: unref(statusCode), statusMessage: unref(statusMessage), description: unref(description), stack: unref(stack) }, _attrs), null, _parent));
@@ -5596,5 +5612,5 @@ let entry;
 }
 const entry_default = (ssrContext) => entry(ssrContext);
 
-export { useRouter as a, useSeoMeta as b, useTheme as c, useRoute as d, entry_default as default, useState as e, useNuxtApp as f, useRuntimeConfig as g, nuxtLinkDefaults as h, navigateTo as n, resolveRouteObject as r, useHead as u };
+export { useRouter as a, useSeoMeta as b, useTheme as c, useRoute as d, entry_default as default, useLayout as e, useState as f, useNuxtApp as g, useRuntimeConfig as h, nuxtLinkDefaults as i, navigateTo as n, resolveRouteObject as r, useHead as u };
 //# sourceMappingURL=server.mjs.map

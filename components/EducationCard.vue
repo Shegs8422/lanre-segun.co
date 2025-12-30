@@ -11,10 +11,10 @@
     <div class="relative z-10 flex flex-col gap-4">
       <p class="font-medium" :class="{ 'text-white': activeColor }">Education & Certification</p>
 
-      <ul class="flex flex-col gap-4">
+      <ul class="flex flex-col gap-4" @mouseleave="onLeave">
         <li v-for="(item, index) in education" :key="index"
-          class="flex flex-row gap-4 items-center transition-all duration-200 relative p-2 rounded-md hover:bg-white/10"
-          @mouseenter="onHover(item.color)" @mouseleave="onLeave">
+          class="flex flex-row gap-4 items-center transition-all duration-200 relative p-2 rounded-md"
+          @mouseenter="onHover(item.color)">
 
           <!-- Logo Image -->
           <div
@@ -73,20 +73,20 @@ const activeColor = ref<string | null>(null)
 
 // Lively Bubble Animation
 const onHover = (color: string) => {
+  if (activeColor.value === color) return // Avoid re-triggering if same color
+
   activeColor.value = color
   if (bubbleRef.value) {
     // Set color first
     bubbleRef.value.style.backgroundColor = color
 
     // Animate bubble expansion from top-left
-    gsap.fromTo(bubbleRef.value,
-      { clipPath: 'circle(0% at 0 0)' },
-      {
-        clipPath: 'circle(250% at 0 0)',
-        duration: 0.8,
-        ease: 'power2.out'
-      }
-    )
+    gsap.to(bubbleRef.value, {
+      clipPath: 'circle(250% at 0 0)',
+      duration: 0.6,
+      ease: 'power2.out',
+      overwrite: 'auto'
+    })
   }
 }
 
@@ -96,8 +96,9 @@ const onLeave = () => {
     // Animate bubble shrinking back to top-left
     gsap.to(bubbleRef.value, {
       clipPath: 'circle(0% at 0 0)',
-      duration: 0.5,
-      ease: 'power2.in'
+      duration: 0.4,
+      ease: 'power2.inOut',
+      overwrite: 'auto'
     })
   }
 }

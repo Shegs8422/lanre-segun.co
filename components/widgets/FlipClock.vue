@@ -1,8 +1,8 @@
 <template>
-  <div class="flip-clock-container" ref="containerRef">
-    <div class="countdown flex gap-8 items-center">
+  <div class="flip-clock-container" ref="containerRef" data-no-drag="true">
+    <div class="countdown flex gap-4 lg:gap-8 items-center h-[100px] w-fit">
       <!-- Hours Group -->
-      <div class="flex gap-1">
+      <div class="flex gap-1 group-h">
         <ul class="flip">
           <li v-for="n in 3" :key="`h1-${n - 1}`" :class="getDigitClass(0, n - 1)">
             <span>
@@ -34,7 +34,7 @@
       </div>
 
       <!-- Minutes Group -->
-      <div class="flex gap-1">
+      <div class="flex gap-1 group-m">
         <ul class="flip">
           <li v-for="n in 6" :key="`m1-${n - 1}`" :class="getDigitClass(2, n - 1)">
             <span>
@@ -66,7 +66,7 @@
       </div>
 
       <!-- Seconds Group -->
-      <div class="flex gap-1">
+      <div class="flex gap-1 group-s">
         <ul class="flip">
           <li v-for="n in 6" :key="`s1-${n - 1}`" :class="getDigitClass(4, n - 1)">
             <span>
@@ -119,6 +119,7 @@ let intervalId: any = null
 
 const getDigitClass = (digitIndex: number, value: number) => {
   const digitState = digits.value[digitIndex]
+  if (!digitState) return ''
   if (digitState.current === value) return 'current'
   if (digitState.previous === value) return 'previous'
   return ''
@@ -140,11 +141,12 @@ const updateTime = () => {
   const newValues = [h1, h2, m1, m2, s1, s2]
 
   newValues.forEach((val, index) => {
-    if (digits.value[index].current !== val) {
+    const digit = digits.value[index]
+    if (digit && digit.current !== val) {
       // Before updating, set the current one to previous
-      digits.value[index].previous = digits.value[index].current
+      digit.previous = digit.current
       // Set new current
-      digits.value[index].current = val
+      digit.current = val
     }
   })
 }
@@ -174,16 +176,20 @@ onUnmounted(() => {
 
 ul.flip {
   position: relative;
-  float: left;
+  /* float: left removed to avoid flex conflicts */
   margin: 0 2px;
   width: 60px;
-  height: 100%;
+  min-width: 60px;
+  height: 100px;
+  /* Explicit height */
   font-size: 80px;
   font-weight: bold;
   line-height: 100px;
   border-radius: 6px;
   list-style: none;
   padding: 0;
+  perspective: 400px;
+  /* Increased for better 3D depth */
 }
 
 ul.flip li {
@@ -199,7 +205,9 @@ ul.flip li {
 ul.flip li span {
   display: block;
   height: 100%;
-  perspective: 200px;
+  perspective: 400px;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
 }
 
 ul.flip li span div {
@@ -209,6 +217,7 @@ ul.flip li span div {
   width: 100%;
   height: 50%;
   overflow: hidden;
+  backface-visibility: hidden;
 }
 
 ul.flip li span div .shadow {
@@ -243,16 +252,19 @@ ul.flip li span div.down {
 ul.flip li span div div.inn {
   position: absolute;
   left: 0;
-  z-index: 1;
+  z-index: 3;
+  /* Increased to stay above shadows */
   width: 100%;
   height: 200%;
-  color: #ccc;
-  text-shadow: 0 1px 2px #000;
+  color: #fff;
+  /* True white for maximum contrast */
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
   text-align: center;
-  background-color: #1a1a1a;
-  /* Dark background default */
+  background-color: #0c0c0c;
+  /* Deeper black */
   border-radius: 6px;
-  font-family: 'DM Mono', monospace;
+  font-family: 'DM Mono', 'Space Mono', 'Courier New', monospace;
+  will-change: transform;
 }
 
 /* Light/Dark mode adjustments */

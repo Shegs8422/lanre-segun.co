@@ -21,7 +21,7 @@ const verify_post = defineEventHandler(async (event) => {
   try {
     const supabase = await serverSupabaseClient(event);
     const bcrypt = await import('bcryptjs');
-    const { data, error } = await supabase.from("security_questions").select("*").limit(1).single();
+    const { data, error } = await supabase.from("security_questions").select("*").limit(1).maybeSingle();
     if (error || !data) {
       throw createError({
         statusCode: 404,
