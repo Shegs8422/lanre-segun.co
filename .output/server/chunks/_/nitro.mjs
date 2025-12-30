@@ -94,7 +94,7 @@ function encodeQueryValue(input) {
 function encodeQueryKey(text) {
   return encodeQueryValue(text).replace(EQUAL_RE, "%3D");
 }
-function decode(text = "") {
+function decode$2(text = "") {
   try {
     return decodeURIComponent("" + text);
   } catch {
@@ -102,13 +102,13 @@ function decode(text = "") {
   }
 }
 function decodePath(text) {
-  return decode(text.replace(ENC_SLASH_RE, "%252F"));
+  return decode$2(text.replace(ENC_SLASH_RE, "%252F"));
 }
 function decodeQueryKey(text) {
-  return decode(text.replace(PLUS_RE, " "));
+  return decode$2(text.replace(PLUS_RE, " "));
 }
 function decodeQueryValue(text) {
-  return decode(text.replace(PLUS_RE, " "));
+  return decode$2(text.replace(PLUS_RE, " "));
 }
 
 function parseQuery(parametersString = "") {
@@ -367,6 +367,211 @@ function stringifyParsedURL(parsed) {
   const host = parsed.host || "";
   const proto = parsed.protocol || parsed[protocolRelative] ? (parsed.protocol || "") + "//" : "";
   return proto + auth + host + pathname + search + hash;
+}
+
+function parse$1(str, options) {
+  if (typeof str !== "string") {
+    throw new TypeError("argument str must be a string");
+  }
+  const obj = {};
+  const opt = {};
+  const dec = opt.decode || decode$1;
+  let index = 0;
+  while (index < str.length) {
+    const eqIdx = str.indexOf("=", index);
+    if (eqIdx === -1) {
+      break;
+    }
+    let endIdx = str.indexOf(";", index);
+    if (endIdx === -1) {
+      endIdx = str.length;
+    } else if (endIdx < eqIdx) {
+      index = str.lastIndexOf(";", eqIdx - 1) + 1;
+      continue;
+    }
+    const key = str.slice(index, eqIdx).trim();
+    if (opt?.filter && !opt?.filter(key)) {
+      index = endIdx + 1;
+      continue;
+    }
+    if (void 0 === obj[key]) {
+      let val = str.slice(eqIdx + 1, endIdx).trim();
+      if (val.codePointAt(0) === 34) {
+        val = val.slice(1, -1);
+      }
+      obj[key] = tryDecode$1(val, dec);
+    }
+    index = endIdx + 1;
+  }
+  return obj;
+}
+function decode$1(str) {
+  return str.includes("%") ? decodeURIComponent(str) : str;
+}
+function tryDecode$1(str, decode2) {
+  try {
+    return decode2(str);
+  } catch {
+    return str;
+  }
+}
+
+const fieldContentRegExp = /^[\u0009\u0020-\u007E\u0080-\u00FF]+$/;
+function serialize$2(name, value, options) {
+  const opt = options || {};
+  const enc = opt.encode || encodeURIComponent;
+  if (typeof enc !== "function") {
+    throw new TypeError("option encode is invalid");
+  }
+  if (!fieldContentRegExp.test(name)) {
+    throw new TypeError("argument name is invalid");
+  }
+  const encodedValue = enc(value);
+  if (encodedValue && !fieldContentRegExp.test(encodedValue)) {
+    throw new TypeError("argument val is invalid");
+  }
+  let str = name + "=" + encodedValue;
+  if (void 0 !== opt.maxAge && opt.maxAge !== null) {
+    const maxAge = opt.maxAge - 0;
+    if (Number.isNaN(maxAge) || !Number.isFinite(maxAge)) {
+      throw new TypeError("option maxAge is invalid");
+    }
+    str += "; Max-Age=" + Math.floor(maxAge);
+  }
+  if (opt.domain) {
+    if (!fieldContentRegExp.test(opt.domain)) {
+      throw new TypeError("option domain is invalid");
+    }
+    str += "; Domain=" + opt.domain;
+  }
+  if (opt.path) {
+    if (!fieldContentRegExp.test(opt.path)) {
+      throw new TypeError("option path is invalid");
+    }
+    str += "; Path=" + opt.path;
+  }
+  if (opt.expires) {
+    if (!isDate(opt.expires) || Number.isNaN(opt.expires.valueOf())) {
+      throw new TypeError("option expires is invalid");
+    }
+    str += "; Expires=" + opt.expires.toUTCString();
+  }
+  if (opt.httpOnly) {
+    str += "; HttpOnly";
+  }
+  if (opt.secure) {
+    str += "; Secure";
+  }
+  if (opt.priority) {
+    const priority = typeof opt.priority === "string" ? opt.priority.toLowerCase() : opt.priority;
+    switch (priority) {
+      case "low": {
+        str += "; Priority=Low";
+        break;
+      }
+      case "medium": {
+        str += "; Priority=Medium";
+        break;
+      }
+      case "high": {
+        str += "; Priority=High";
+        break;
+      }
+      default: {
+        throw new TypeError("option priority is invalid");
+      }
+    }
+  }
+  if (opt.sameSite) {
+    const sameSite = typeof opt.sameSite === "string" ? opt.sameSite.toLowerCase() : opt.sameSite;
+    switch (sameSite) {
+      case true: {
+        str += "; SameSite=Strict";
+        break;
+      }
+      case "lax": {
+        str += "; SameSite=Lax";
+        break;
+      }
+      case "strict": {
+        str += "; SameSite=Strict";
+        break;
+      }
+      case "none": {
+        str += "; SameSite=None";
+        break;
+      }
+      default: {
+        throw new TypeError("option sameSite is invalid");
+      }
+    }
+  }
+  if (opt.partitioned) {
+    str += "; Partitioned";
+  }
+  return str;
+}
+function isDate(val) {
+  return Object.prototype.toString.call(val) === "[object Date]" || val instanceof Date;
+}
+
+function parseSetCookie(setCookieValue, options) {
+  const parts = (setCookieValue || "").split(";").filter((str) => typeof str === "string" && !!str.trim());
+  const nameValuePairStr = parts.shift() || "";
+  const parsed = _parseNameValuePair(nameValuePairStr);
+  const name = parsed.name;
+  let value = parsed.value;
+  try {
+    value = options?.decode === false ? value : (options?.decode || decodeURIComponent)(value);
+  } catch {
+  }
+  const cookie = {
+    name,
+    value
+  };
+  for (const part of parts) {
+    const sides = part.split("=");
+    const partKey = (sides.shift() || "").trimStart().toLowerCase();
+    const partValue = sides.join("=");
+    switch (partKey) {
+      case "expires": {
+        cookie.expires = new Date(partValue);
+        break;
+      }
+      case "max-age": {
+        cookie.maxAge = Number.parseInt(partValue, 10);
+        break;
+      }
+      case "secure": {
+        cookie.secure = true;
+        break;
+      }
+      case "httponly": {
+        cookie.httpOnly = true;
+        break;
+      }
+      case "samesite": {
+        cookie.sameSite = partValue;
+        break;
+      }
+      default: {
+        cookie[partKey] = partValue;
+      }
+    }
+  }
+  return cookie;
+}
+function _parseNameValuePair(nameValuePairStr) {
+  let name = "";
+  let value = "";
+  const nameValueArr = nameValuePairStr.split("=");
+  if (nameValueArr.length > 1) {
+    name = nameValueArr.shift();
+    value = nameValueArr.join("=");
+  } else {
+    value = nameValuePairStr;
+  }
+  return { name, value };
 }
 
 const NODE_TYPES = {
@@ -660,7 +865,7 @@ const defuFn = createDefu((object, key, currentValue) => {
   }
 });
 
-function o(n){throw new Error(`${n} is not implemented yet!`)}let i$1 = class i extends EventEmitter{__unenv__={};readableEncoding=null;readableEnded=true;readableFlowing=false;readableHighWaterMark=0;readableLength=0;readableObjectMode=false;readableAborted=false;readableDidRead=false;closed=false;errored=null;readable=false;destroyed=false;static from(e,t){return new i(t)}constructor(e){super();}_read(e){}read(e){}setEncoding(e){return this}pause(){return this}resume(){return this}isPaused(){return  true}unpipe(e){return this}unshift(e,t){}wrap(e){return this}push(e,t){return  false}_destroy(e,t){this.removeAllListeners();}destroy(e){return this.destroyed=true,this._destroy(e),this}pipe(e,t){return {}}compose(e,t){throw new Error("Method not implemented.")}[Symbol.asyncDispose](){return this.destroy(),Promise.resolve()}async*[Symbol.asyncIterator](){throw o("Readable.asyncIterator")}iterator(e){throw o("Readable.iterator")}map(e,t){throw o("Readable.map")}filter(e,t){throw o("Readable.filter")}forEach(e,t){throw o("Readable.forEach")}reduce(e,t,r){throw o("Readable.reduce")}find(e,t){throw o("Readable.find")}findIndex(e,t){throw o("Readable.findIndex")}some(e,t){throw o("Readable.some")}toArray(e){throw o("Readable.toArray")}every(e,t){throw o("Readable.every")}flatMap(e,t){throw o("Readable.flatMap")}drop(e,t){throw o("Readable.drop")}take(e,t){throw o("Readable.take")}asIndexedPairs(e){throw o("Readable.asIndexedPairs")}};let l$1 = class l extends EventEmitter{__unenv__={};writable=true;writableEnded=false;writableFinished=false;writableHighWaterMark=0;writableLength=0;writableObjectMode=false;writableCorked=0;closed=false;errored=null;writableNeedDrain=false;writableAborted=false;destroyed=false;_data;_encoding="utf8";constructor(e){super();}pipe(e,t){return {}}_write(e,t,r){if(this.writableEnded){r&&r();return}if(this._data===void 0)this._data=e;else {const s=typeof this._data=="string"?Buffer$1.from(this._data,this._encoding||t||"utf8"):this._data,a=typeof e=="string"?Buffer$1.from(e,t||this._encoding||"utf8"):e;this._data=Buffer$1.concat([s,a]);}this._encoding=t,r&&r();}_writev(e,t){}_destroy(e,t){}_final(e){}write(e,t,r){const s=typeof t=="string"?this._encoding:"utf8",a=typeof t=="function"?t:typeof r=="function"?r:void 0;return this._write(e,s,a),true}setDefaultEncoding(e){return this}end(e,t,r){const s=typeof e=="function"?e:typeof t=="function"?t:typeof r=="function"?r:void 0;if(this.writableEnded)return s&&s(),this;const a=e===s?void 0:e;if(a){const u=t===s?void 0:t;this.write(a,u,s);}return this.writableEnded=true,this.writableFinished=true,this.emit("close"),this.emit("finish"),this}cork(){}uncork(){}destroy(e){return this.destroyed=true,delete this._data,this.removeAllListeners(),this}compose(e,t){throw new Error("Method not implemented.")}[Symbol.asyncDispose](){return Promise.resolve()}};const c=class{allowHalfOpen=true;_destroy;constructor(e=new i$1,t=new l$1){Object.assign(this,e),Object.assign(this,t),this._destroy=m(e._destroy,t._destroy);}};function _(){return Object.assign(c.prototype,i$1.prototype),Object.assign(c.prototype,l$1.prototype),c}function m(...n){return function(...e){for(const t of n)t(...e);}}const g=_();class A extends g{__unenv__={};bufferSize=0;bytesRead=0;bytesWritten=0;connecting=false;destroyed=false;pending=false;localAddress="";localPort=0;remoteAddress="";remoteFamily="";remotePort=0;autoSelectFamilyAttemptedAddresses=[];readyState="readOnly";constructor(e){super();}write(e,t,r){return  false}connect(e,t,r){return this}end(e,t,r){return this}setEncoding(e){return this}pause(){return this}resume(){return this}setTimeout(e,t){return this}setNoDelay(e){return this}setKeepAlive(e,t){return this}address(){return {}}unref(){return this}ref(){return this}destroySoon(){this.destroy();}resetAndDestroy(){const e=new Error("ERR_SOCKET_CLOSED");return e.code="ERR_SOCKET_CLOSED",this.destroy(e),this}}class y extends i$1{aborted=false;httpVersion="1.1";httpVersionMajor=1;httpVersionMinor=1;complete=true;connection;socket;headers={};trailers={};method="GET";url="/";statusCode=200;statusMessage="";closed=false;errored=null;readable=false;constructor(e){super(),this.socket=this.connection=e||new A;}get rawHeaders(){const e=this.headers,t=[];for(const r in e)if(Array.isArray(e[r]))for(const s of e[r])t.push(r,s);else t.push(r,e[r]);return t}get rawTrailers(){return []}setTimeout(e,t){return this}get headersDistinct(){return p(this.headers)}get trailersDistinct(){return p(this.trailers)}}function p(n){const e={};for(const[t,r]of Object.entries(n))t&&(e[t]=(Array.isArray(r)?r:[r]).filter(Boolean));return e}class w extends l$1{statusCode=200;statusMessage="";upgrading=false;chunkedEncoding=false;shouldKeepAlive=false;useChunkedEncodingByDefault=false;sendDate=false;finished=false;headersSent=false;strictContentLength=false;connection=null;socket=null;req;_headers={};constructor(e){super(),this.req=e;}assignSocket(e){e._httpMessage=this,this.socket=e,this.connection=e,this.emit("socket",e),this._flush();}_flush(){this.flushHeaders();}detachSocket(e){}writeContinue(e){}writeHead(e,t,r){e&&(this.statusCode=e),typeof t=="string"&&(this.statusMessage=t,t=void 0);const s=r||t;if(s&&!Array.isArray(s))for(const a in s)this.setHeader(a,s[a]);return this.headersSent=true,this}writeProcessing(){}setTimeout(e,t){return this}appendHeader(e,t){e=e.toLowerCase();const r=this._headers[e],s=[...Array.isArray(r)?r:[r],...Array.isArray(t)?t:[t]].filter(Boolean);return this._headers[e]=s.length>1?s:s[0],this}setHeader(e,t){return this._headers[e.toLowerCase()]=t,this}setHeaders(e){for(const[t,r]of Object.entries(e))this.setHeader(t,r);return this}getHeader(e){return this._headers[e.toLowerCase()]}getHeaders(){return this._headers}getHeaderNames(){return Object.keys(this._headers)}hasHeader(e){return e.toLowerCase()in this._headers}removeHeader(e){delete this._headers[e.toLowerCase()];}addTrailers(e){}flushHeaders(){}writeEarlyHints(e,t){typeof t=="function"&&t();}}const E=(()=>{const n=function(){};return n.prototype=Object.create(null),n})();function R(n={}){const e=new E,t=Array.isArray(n)||H(n)?n:Object.entries(n);for(const[r,s]of t)if(s){if(e[r]===void 0){e[r]=s;continue}e[r]=[...Array.isArray(e[r])?e[r]:[e[r]],...Array.isArray(s)?s:[s]];}return e}function H(n){return typeof n?.entries=="function"}function v(n={}){if(n instanceof Headers)return n;const e=new Headers;for(const[t,r]of Object.entries(n))if(r!==void 0){if(Array.isArray(r)){for(const s of r)e.append(t,String(s));continue}e.set(t,String(r));}return e}const S=new Set([101,204,205,304]);async function b(n,e){const t=new y,r=new w(t);t.url=e.url?.toString()||"/";let s;if(!t.url.startsWith("/")){const d=new URL(t.url);s=d.host,t.url=d.pathname+d.search+d.hash;}t.method=e.method||"GET",t.headers=R(e.headers||{}),t.headers.host||(t.headers.host=e.host||s||"localhost"),t.connection.encrypted=t.connection.encrypted||e.protocol==="https",t.body=e.body||null,t.__unenv__=e.context,await n(t,r);let a=r._data;(S.has(r.statusCode)||t.method.toUpperCase()==="HEAD")&&(a=null,delete r._headers["content-length"]);const u={status:r.statusCode,statusText:r.statusMessage,headers:r._headers,body:a};return t.destroy(),r.destroy(),u}async function C(n,e,t={}){try{const r=await b(n,{url:e,...t});return new Response(r.body,{status:r.status,statusText:r.statusText,headers:v(r.headers)})}catch(r){return new Response(r.toString(),{status:Number.parseInt(r.statusCode||r.code)||500,statusText:r.statusText})}}
+function o(n){throw new Error(`${n} is not implemented yet!`)}let i$1 = class i extends EventEmitter{__unenv__={};readableEncoding=null;readableEnded=true;readableFlowing=false;readableHighWaterMark=0;readableLength=0;readableObjectMode=false;readableAborted=false;readableDidRead=false;closed=false;errored=null;readable=false;destroyed=false;static from(e,t){return new i(t)}constructor(e){super();}_read(e){}read(e){}setEncoding(e){return this}pause(){return this}resume(){return this}isPaused(){return  true}unpipe(e){return this}unshift(e,t){}wrap(e){return this}push(e,t){return  false}_destroy(e,t){this.removeAllListeners();}destroy(e){return this.destroyed=true,this._destroy(e),this}pipe(e,t){return {}}compose(e,t){throw new Error("Method not implemented.")}[Symbol.asyncDispose](){return this.destroy(),Promise.resolve()}async*[Symbol.asyncIterator](){throw o("Readable.asyncIterator")}iterator(e){throw o("Readable.iterator")}map(e,t){throw o("Readable.map")}filter(e,t){throw o("Readable.filter")}forEach(e,t){throw o("Readable.forEach")}reduce(e,t,r){throw o("Readable.reduce")}find(e,t){throw o("Readable.find")}findIndex(e,t){throw o("Readable.findIndex")}some(e,t){throw o("Readable.some")}toArray(e){throw o("Readable.toArray")}every(e,t){throw o("Readable.every")}flatMap(e,t){throw o("Readable.flatMap")}drop(e,t){throw o("Readable.drop")}take(e,t){throw o("Readable.take")}asIndexedPairs(e){throw o("Readable.asIndexedPairs")}};let l$1 = class l extends EventEmitter{__unenv__={};writable=true;writableEnded=false;writableFinished=false;writableHighWaterMark=0;writableLength=0;writableObjectMode=false;writableCorked=0;closed=false;errored=null;writableNeedDrain=false;writableAborted=false;destroyed=false;_data;_encoding="utf8";constructor(e){super();}pipe(e,t){return {}}_write(e,t,r){if(this.writableEnded){r&&r();return}if(this._data===void 0)this._data=e;else {const s=typeof this._data=="string"?Buffer$1.from(this._data,this._encoding||t||"utf8"):this._data,a=typeof e=="string"?Buffer$1.from(e,t||this._encoding||"utf8"):e;this._data=Buffer$1.concat([s,a]);}this._encoding=t,r&&r();}_writev(e,t){}_destroy(e,t){}_final(e){}write(e,t,r){const s=typeof t=="string"?this._encoding:"utf8",a=typeof t=="function"?t:typeof r=="function"?r:void 0;return this._write(e,s,a),true}setDefaultEncoding(e){return this}end(e,t,r){const s=typeof e=="function"?e:typeof t=="function"?t:typeof r=="function"?r:void 0;if(this.writableEnded)return s&&s(),this;const a=e===s?void 0:e;if(a){const u=t===s?void 0:t;this.write(a,u,s);}return this.writableEnded=true,this.writableFinished=true,this.emit("close"),this.emit("finish"),this}cork(){}uncork(){}destroy(e){return this.destroyed=true,delete this._data,this.removeAllListeners(),this}compose(e,t){throw new Error("Method not implemented.")}[Symbol.asyncDispose](){return Promise.resolve()}};const c$1=class c{allowHalfOpen=true;_destroy;constructor(e=new i$1,t=new l$1){Object.assign(this,e),Object.assign(this,t),this._destroy=m(e._destroy,t._destroy);}};function _(){return Object.assign(c$1.prototype,i$1.prototype),Object.assign(c$1.prototype,l$1.prototype),c$1}function m(...n){return function(...e){for(const t of n)t(...e);}}const g=_();class A extends g{__unenv__={};bufferSize=0;bytesRead=0;bytesWritten=0;connecting=false;destroyed=false;pending=false;localAddress="";localPort=0;remoteAddress="";remoteFamily="";remotePort=0;autoSelectFamilyAttemptedAddresses=[];readyState="readOnly";constructor(e){super();}write(e,t,r){return  false}connect(e,t,r){return this}end(e,t,r){return this}setEncoding(e){return this}pause(){return this}resume(){return this}setTimeout(e,t){return this}setNoDelay(e){return this}setKeepAlive(e,t){return this}address(){return {}}unref(){return this}ref(){return this}destroySoon(){this.destroy();}resetAndDestroy(){const e=new Error("ERR_SOCKET_CLOSED");return e.code="ERR_SOCKET_CLOSED",this.destroy(e),this}}class y extends i$1{aborted=false;httpVersion="1.1";httpVersionMajor=1;httpVersionMinor=1;complete=true;connection;socket;headers={};trailers={};method="GET";url="/";statusCode=200;statusMessage="";closed=false;errored=null;readable=false;constructor(e){super(),this.socket=this.connection=e||new A;}get rawHeaders(){const e=this.headers,t=[];for(const r in e)if(Array.isArray(e[r]))for(const s of e[r])t.push(r,s);else t.push(r,e[r]);return t}get rawTrailers(){return []}setTimeout(e,t){return this}get headersDistinct(){return p(this.headers)}get trailersDistinct(){return p(this.trailers)}}function p(n){const e={};for(const[t,r]of Object.entries(n))t&&(e[t]=(Array.isArray(r)?r:[r]).filter(Boolean));return e}class w extends l$1{statusCode=200;statusMessage="";upgrading=false;chunkedEncoding=false;shouldKeepAlive=false;useChunkedEncodingByDefault=false;sendDate=false;finished=false;headersSent=false;strictContentLength=false;connection=null;socket=null;req;_headers={};constructor(e){super(),this.req=e;}assignSocket(e){e._httpMessage=this,this.socket=e,this.connection=e,this.emit("socket",e),this._flush();}_flush(){this.flushHeaders();}detachSocket(e){}writeContinue(e){}writeHead(e,t,r){e&&(this.statusCode=e),typeof t=="string"&&(this.statusMessage=t,t=void 0);const s=r||t;if(s&&!Array.isArray(s))for(const a in s)this.setHeader(a,s[a]);return this.headersSent=true,this}writeProcessing(){}setTimeout(e,t){return this}appendHeader(e,t){e=e.toLowerCase();const r=this._headers[e],s=[...Array.isArray(r)?r:[r],...Array.isArray(t)?t:[t]].filter(Boolean);return this._headers[e]=s.length>1?s:s[0],this}setHeader(e,t){return this._headers[e.toLowerCase()]=t,this}setHeaders(e){for(const[t,r]of Object.entries(e))this.setHeader(t,r);return this}getHeader(e){return this._headers[e.toLowerCase()]}getHeaders(){return this._headers}getHeaderNames(){return Object.keys(this._headers)}hasHeader(e){return e.toLowerCase()in this._headers}removeHeader(e){delete this._headers[e.toLowerCase()];}addTrailers(e){}flushHeaders(){}writeEarlyHints(e,t){typeof t=="function"&&t();}}const E=(()=>{const n=function(){};return n.prototype=Object.create(null),n})();function R(n={}){const e=new E,t=Array.isArray(n)||H(n)?n:Object.entries(n);for(const[r,s]of t)if(s){if(e[r]===void 0){e[r]=s;continue}e[r]=[...Array.isArray(e[r])?e[r]:[e[r]],...Array.isArray(s)?s:[s]];}return e}function H(n){return typeof n?.entries=="function"}function v(n={}){if(n instanceof Headers)return n;const e=new Headers;for(const[t,r]of Object.entries(n))if(r!==void 0){if(Array.isArray(r)){for(const s of r)e.append(t,String(s));continue}e.set(t,String(r));}return e}const S=new Set([101,204,205,304]);async function b(n,e){const t=new y,r=new w(t);t.url=e.url?.toString()||"/";let s;if(!t.url.startsWith("/")){const d=new URL(t.url);s=d.host,t.url=d.pathname+d.search+d.hash;}t.method=e.method||"GET",t.headers=R(e.headers||{}),t.headers.host||(t.headers.host=e.host||s||"localhost"),t.connection.encrypted=t.connection.encrypted||e.protocol==="https",t.body=e.body||null,t.__unenv__=e.context,await n(t,r);let a=r._data;(S.has(r.statusCode)||t.method.toUpperCase()==="HEAD")&&(a=null,delete r._headers["content-length"]);const u={status:r.statusCode,statusText:r.statusMessage,headers:r._headers,body:a};return t.destroy(),r.destroy(),u}async function C(n,e,t={}){try{const r=await b(n,{url:e,...t});return new Response(r.body,{status:r.status,statusText:r.statusText,headers:v(r.headers)})}catch(r){return new Response(r.toString(),{status:Number.parseInt(r.statusCode||r.code)||500,statusText:r.statusText})}}
 
 function hasProp(obj, prop) {
   try {
@@ -812,6 +1017,7 @@ function getRequestHeader(event, name) {
   const value = headers[name.toLowerCase()];
   return value;
 }
+const getHeader = getRequestHeader;
 function getRequestHost(event, opts = {}) {
   if (opts.xForwardedHost) {
     const _header = event.node.req.headers["x-forwarded-host"];
@@ -839,6 +1045,7 @@ function getRequestURL(event, opts = {}) {
 }
 
 const RawBodySymbol = Symbol.for("h3RawBody");
+const ParsedBodySymbol = Symbol.for("h3ParsedBody");
 const PayloadMethods$1 = ["PATCH", "POST", "PUT", "DELETE"];
 function readRawBody(event, encoding = "utf8") {
   assertMethod(event, PayloadMethods$1);
@@ -906,6 +1113,26 @@ function readRawBody(event, encoding = "utf8") {
   const result = encoding ? promise.then((buff) => buff.toString(encoding)) : promise;
   return result;
 }
+async function readBody(event, options = {}) {
+  const request = event.node.req;
+  if (hasProp(request, ParsedBodySymbol)) {
+    return request[ParsedBodySymbol];
+  }
+  const contentType = request.headers["content-type"] || "";
+  const body = await readRawBody(event);
+  let parsed;
+  if (contentType === "application/json") {
+    parsed = _parseJSON(body, options.strict ?? true);
+  } else if (contentType.startsWith("application/x-www-form-urlencoded")) {
+    parsed = _parseURLEncodedBody(body);
+  } else if (contentType.startsWith("text/")) {
+    parsed = body;
+  } else {
+    parsed = _parseJSON(body, options.strict ?? false);
+  }
+  request[ParsedBodySymbol] = parsed;
+  return parsed;
+}
 function getRequestWebStream(event) {
   if (!PayloadMethods$1.includes(event.method)) {
     return;
@@ -939,6 +1166,35 @@ function getRequestWebStream(event) {
       });
     }
   });
+}
+function _parseJSON(body = "", strict) {
+  if (!body) {
+    return void 0;
+  }
+  try {
+    return destr(body, { strict });
+  } catch {
+    throw createError$1({
+      statusCode: 400,
+      statusMessage: "Bad Request",
+      message: "Invalid JSON body"
+    });
+  }
+}
+function _parseURLEncodedBody(body) {
+  const form = new URLSearchParams(body);
+  const parsedForm = /* @__PURE__ */ Object.create(null);
+  for (const [key, value] of form.entries()) {
+    if (hasProp(parsedForm, key)) {
+      if (!Array.isArray(parsedForm[key])) {
+        parsedForm[key] = [parsedForm[key]];
+      }
+      parsedForm[key].push(value);
+    } else {
+      parsedForm[key] = value;
+    }
+  }
+  return parsedForm;
 }
 
 function handleCacheHeaders(event, opts) {
@@ -993,6 +1249,47 @@ function sanitizeStatusCode(statusCode, defaultStatusCode = 200) {
     return defaultStatusCode;
   }
   return statusCode;
+}
+
+function getDistinctCookieKey(name, opts) {
+  return [name, opts.domain || "", opts.path || "/"].join(";");
+}
+
+function parseCookies(event) {
+  return parse$1(event.node.req.headers.cookie || "");
+}
+function getCookie(event, name) {
+  return parseCookies(event)[name];
+}
+function setCookie(event, name, value, serializeOptions = {}) {
+  if (!serializeOptions.path) {
+    serializeOptions = { path: "/", ...serializeOptions };
+  }
+  const newCookie = serialize$2(name, value, serializeOptions);
+  const currentCookies = splitCookiesString(
+    event.node.res.getHeader("set-cookie")
+  );
+  if (currentCookies.length === 0) {
+    event.node.res.setHeader("set-cookie", newCookie);
+    return;
+  }
+  const newCookieKey = getDistinctCookieKey(name, serializeOptions);
+  event.node.res.removeHeader("set-cookie");
+  for (const cookie of currentCookies) {
+    const parsed = parseSetCookie(cookie);
+    const key = getDistinctCookieKey(parsed.name, parsed);
+    if (key === newCookieKey) {
+      continue;
+    }
+    event.node.res.appendHeader("set-cookie", cookie);
+  }
+  event.node.res.appendHeader("set-cookie", newCookie);
+}
+function deleteCookie(event, name, serializeOptions) {
+  setCookie(event, name, "", {
+    ...serializeOptions,
+    maxAge: 0
+  });
 }
 function splitCookiesString(cookiesString) {
   if (Array.isArray(cookiesString)) {
@@ -3301,6 +3598,18 @@ function useStorage(base = "") {
   return base ? prefixStorage(storage, base) : storage;
 }
 
+function serialize$1(o){return typeof o=="string"?`'${o}'`:new c().serialize(o)}const c=/*@__PURE__*/function(){class o{#t=new Map;compare(t,r){const e=typeof t,n=typeof r;return e==="string"&&n==="string"?t.localeCompare(r):e==="number"&&n==="number"?t-r:String.prototype.localeCompare.call(this.serialize(t,true),this.serialize(r,true))}serialize(t,r){if(t===null)return "null";switch(typeof t){case "string":return r?t:`'${t}'`;case "bigint":return `${t}n`;case "object":return this.$object(t);case "function":return this.$function(t)}return String(t)}serializeObject(t){const r=Object.prototype.toString.call(t);if(r!=="[object Object]")return this.serializeBuiltInType(r.length<10?`unknown:${r}`:r.slice(8,-1),t);const e=t.constructor,n=e===Object||e===void 0?"":e.name;if(n!==""&&globalThis[n]===e)return this.serializeBuiltInType(n,t);if(typeof t.toJSON=="function"){const i=t.toJSON();return n+(i!==null&&typeof i=="object"?this.$object(i):`(${this.serialize(i)})`)}return this.serializeObjectEntries(n,Object.entries(t))}serializeBuiltInType(t,r){const e=this["$"+t];if(e)return e.call(this,r);if(typeof r?.entries=="function")return this.serializeObjectEntries(t,r.entries());throw new Error(`Cannot serialize ${t}`)}serializeObjectEntries(t,r){const e=Array.from(r).sort((i,a)=>this.compare(i[0],a[0]));let n=`${t}{`;for(let i=0;i<e.length;i++){const[a,l]=e[i];n+=`${this.serialize(a,true)}:${this.serialize(l)}`,i<e.length-1&&(n+=",");}return n+"}"}$object(t){let r=this.#t.get(t);return r===void 0&&(this.#t.set(t,`#${this.#t.size}`),r=this.serializeObject(t),this.#t.set(t,r)),r}$function(t){const r=Function.prototype.toString.call(t);return r.slice(-15)==="[native code] }"?`${t.name||""}()[native]`:`${t.name}(${t.length})${r.replace(/\s*\n\s*/g,"")}`}$Array(t){let r="[";for(let e=0;e<t.length;e++)r+=this.serialize(t[e]),e<t.length-1&&(r+=",");return r+"]"}$Date(t){try{return `Date(${t.toISOString()})`}catch{return "Date(null)"}}$ArrayBuffer(t){return `ArrayBuffer[${new Uint8Array(t).join(",")}]`}$Set(t){return `Set${this.$Array(Array.from(t).sort((r,e)=>this.compare(r,e)))}`}$Map(t){return this.serializeObjectEntries("Map",t.entries())}}for(const s of ["Error","RegExp","URL"])o.prototype["$"+s]=function(t){return `${s}(${t})`};for(const s of ["Int8Array","Uint8Array","Uint8ClampedArray","Int16Array","Uint16Array","Int32Array","Uint32Array","Float32Array","Float64Array"])o.prototype["$"+s]=function(t){return `${s}[${t.join(",")}]`};for(const s of ["BigInt64Array","BigUint64Array"])o.prototype["$"+s]=function(t){return `${s}[${t.join("n,")}${t.length>0?"n":""}]`};return o}();
+
+function isEqual(object1, object2) {
+  if (object1 === object2) {
+    return true;
+  }
+  if (serialize$1(object1) === serialize$1(object2)) {
+    return true;
+  }
+  return false;
+}
+
 const e=globalThis.process?.getBuiltinModule?.("crypto")?.hash,r="sha256",s="base64url";function digest(t){if(e)return e(r,t,s);const o=createHash(r).update(t);return globalThis.process?.versions?.webcontainer?o.digest().toString(s):o.digest(s)}
 
 const Hasher = /* @__PURE__ */ (() => {
@@ -4007,7 +4316,7 @@ function _expandFromEnv(value) {
 const _inlineRuntimeConfig = {
   "app": {
     "baseURL": "/",
-    "buildId": "c29c8b9d-5623-4243-9663-7549052925f0",
+    "buildId": "1204f0c4-cf86-493b-b5af-644e52dc10f6",
     "buildAssetsDir": "/_nuxt/",
     "cdnURL": ""
   },
@@ -4034,7 +4343,33 @@ const _inlineRuntimeConfig = {
       }
     }
   },
-  "public": {}
+  "public": {
+    "supabase": {
+      "url": "https://ivbkynuqdngkmjoqvrgt.supabase.co",
+      "key": "sb_publishable_dv1geqSyCnvLauUUX58-tg_OKFF0KZc",
+      "redirect": false,
+      "redirectOptions": {
+        "login": "/login",
+        "callback": "/confirm",
+        "exclude": [],
+        "cookieRedirect": false,
+        "saveRedirectToCookie": false
+      },
+      "cookieName": "sb",
+      "cookiePrefix": "sb-ivbkynuqdngkmjoqvrgt-auth-token",
+      "useSsrCookies": true,
+      "cookieOptions": {
+        "maxAge": 28800,
+        "sameSite": "lax",
+        "secure": true
+      },
+      "clientOptions": {}
+    }
+  },
+  "supabase": {
+    "serviceKey": "",
+    "secretKey": ""
+  }
 };
 const envOptions = {
   prefix: "NITRO_",
@@ -4614,6 +4949,13 @@ const assets = {
     "mtime": "2025-12-28T16:55:42.605Z",
     "size": 22774,
     "path": "../public/images/google.png"
+  },
+  "/images/Grazac.png": {
+    "type": "image/png",
+    "etag": "\"891d-FErt8Q1bZk9QGXUw4ms/8MsiVxQ\"",
+    "mtime": "2025-12-29T06:51:57.591Z",
+    "size": 35101,
+    "path": "../public/images/Grazac.png"
   },
   "/images/Grid System in Graphic Design - Josef Muller Brockmann.jpg": {
     "type": "image/jpeg",
@@ -5196,159 +5538,194 @@ const assets = {
     "size": 110741,
     "path": "../public/images/Wolfgang-amadeus-mozart.jpg"
   },
-  "/_nuxt/BfRUA-Ve.js": {
+  "/_nuxt/3NJlTYg5.js": {
     "type": "text/javascript; charset=utf-8",
-    "etag": "\"eae-nmJiAO7o5bgsAq65BcIct2y3d6E\"",
-    "mtime": "2025-12-29T00:00:14.792Z",
-    "size": 3758,
-    "path": "../public/_nuxt/BfRUA-Ve.js"
+    "etag": "\"3a72-dEa8fnRRJrzxNHijDqDd4xx6i7g\"",
+    "mtime": "2025-12-29T21:29:29.989Z",
+    "size": 14962,
+    "path": "../public/_nuxt/3NJlTYg5.js"
   },
-  "/_nuxt/BGgdrHXp.js": {
+  "/_nuxt/B2cEfsXx.js": {
     "type": "text/javascript; charset=utf-8",
-    "etag": "\"1448-HHd96swfnMYxEH1qs456Jvohtqo\"",
-    "mtime": "2025-12-29T00:00:14.795Z",
-    "size": 5192,
-    "path": "../public/_nuxt/BGgdrHXp.js"
+    "etag": "\"1012-LasbAFDE6l/1hcivhCyxxD2B89s\"",
+    "mtime": "2025-12-29T21:29:30.009Z",
+    "size": 4114,
+    "path": "../public/_nuxt/B2cEfsXx.js"
   },
-  "/_nuxt/BXY1cK2B.js": {
+  "/_nuxt/BKnj_JVg.js": {
     "type": "text/javascript; charset=utf-8",
-    "etag": "\"2301-pzD68cp9OW4whNcjDpfvS5YIJRw\"",
-    "mtime": "2025-12-29T00:00:14.794Z",
-    "size": 8961,
-    "path": "../public/_nuxt/BXY1cK2B.js"
+    "etag": "\"d90-SAp43D/URL8HCeHiONdfJjs9cBA\"",
+    "mtime": "2025-12-29T21:29:29.987Z",
+    "size": 3472,
+    "path": "../public/_nuxt/BKnj_JVg.js"
   },
-  "/_nuxt/Bz5aWWAb.js": {
+  "/_nuxt/BQ1gbTFz.js": {
     "type": "text/javascript; charset=utf-8",
-    "etag": "\"9b9c-+FZsNYRdRL4S/5DLfdpq9S8LFbY\"",
-    "mtime": "2025-12-29T00:00:14.794Z",
-    "size": 39836,
-    "path": "../public/_nuxt/Bz5aWWAb.js"
+    "etag": "\"3cd-xcepPuCV7EXcg7pnIUSBfnuteos\"",
+    "mtime": "2025-12-29T21:29:29.987Z",
+    "size": 973,
+    "path": "../public/_nuxt/BQ1gbTFz.js"
   },
-  "/_nuxt/CHe-gQcu.js": {
+  "/_nuxt/CGpR5QYN.js": {
     "type": "text/javascript; charset=utf-8",
-    "etag": "\"b22-OtS/72AcrhJqejA2IVZxI6j31rk\"",
-    "mtime": "2025-12-29T00:00:14.794Z",
-    "size": 2850,
-    "path": "../public/_nuxt/CHe-gQcu.js"
-  },
-  "/_nuxt/DLhFZ3wB.js": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"2123-V+4CSvA5T6+iPFv2GIP7cFOiDeg\"",
-    "mtime": "2025-12-29T00:00:14.795Z",
-    "size": 8483,
-    "path": "../public/_nuxt/DLhFZ3wB.js"
-  },
-  "/_nuxt/DnOmEc7l.js": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"4319-tSjC1jqQYCOe1lBo7A+EI/tmLPU\"",
-    "mtime": "2025-12-29T00:00:14.794Z",
+    "etag": "\"4319-rSBLarsLL4mt77TFgURSHHte90I\"",
+    "mtime": "2025-12-29T21:29:29.987Z",
     "size": 17177,
-    "path": "../public/_nuxt/DnOmEc7l.js"
+    "path": "../public/_nuxt/CGpR5QYN.js"
   },
-  "/_nuxt/entry.qRa9jLfr.css": {
+  "/_nuxt/cms.tn0RQdqM.css": {
     "type": "text/css; charset=utf-8",
-    "etag": "\"f31a-BA6jNLDNub6/zK4YQC47cQTA2CM\"",
-    "mtime": "2025-12-29T00:00:14.792Z",
-    "size": 62234,
-    "path": "../public/_nuxt/entry.qRa9jLfr.css"
+    "etag": "\"0-2jmj7l5rSw0yVb/vlWAYkK/YBwk\"",
+    "mtime": "2025-12-29T21:29:29.981Z",
+    "size": 0,
+    "path": "../public/_nuxt/cms.tn0RQdqM.css"
+  },
+  "/_nuxt/CUYLtOR1.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"2533-zGCskLouMynFC7FxodValjqxLTs\"",
+    "mtime": "2025-12-29T21:29:29.987Z",
+    "size": 9523,
+    "path": "../public/_nuxt/CUYLtOR1.js"
+  },
+  "/_nuxt/CyxWfvzw.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"6b3d-6XZ3BDFWPfsffwb4csK0VQOgeHs\"",
+    "mtime": "2025-12-29T21:29:29.987Z",
+    "size": 27453,
+    "path": "../public/_nuxt/CyxWfvzw.js"
+  },
+  "/_nuxt/CzAqi-Yw.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"9e4b-fOSJ5ZFOE2n6RK57cKecgK83FwA\"",
+    "mtime": "2025-12-29T21:29:30.023Z",
+    "size": 40523,
+    "path": "../public/_nuxt/CzAqi-Yw.js"
+  },
+  "/_nuxt/D5ikONoL.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"8d8-2/xVhjYT2bhZsFATja2i2V9nyo8\"",
+    "mtime": "2025-12-29T21:29:29.987Z",
+    "size": 2264,
+    "path": "../public/_nuxt/D5ikONoL.js"
+  },
+  "/_nuxt/DC7q1vJY.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"187-NHiY5aeNloAbmKvIzORIVUzEqQs\"",
+    "mtime": "2025-12-29T21:29:29.989Z",
+    "size": 391,
+    "path": "../public/_nuxt/DC7q1vJY.js"
+  },
+  "/_nuxt/DflKGYJY.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"8d386-Bcg8hTq8TE53+w0x0DaO/NCCWUk\"",
+    "mtime": "2025-12-29T21:29:30.013Z",
+    "size": 578438,
+    "path": "../public/_nuxt/DflKGYJY.js"
+  },
+  "/_nuxt/entry.M9H8q-4R.css": {
+    "type": "text/css; charset=utf-8",
+    "etag": "\"116ce-CiXeTbIa9x+85nci3E79w3iK01E\"",
+    "mtime": "2025-12-29T21:29:29.987Z",
+    "size": 71374,
+    "path": "../public/_nuxt/entry.M9H8q-4R.css"
   },
   "/_nuxt/error-404.2GhCpCfF.css": {
     "type": "text/css; charset=utf-8",
     "etag": "\"97e-rj7LYDldeiZzQ/rAgQHuKm4R4CM\"",
-    "mtime": "2025-12-29T00:00:14.792Z",
+    "mtime": "2025-12-29T21:29:29.987Z",
     "size": 2430,
     "path": "../public/_nuxt/error-404.2GhCpCfF.css"
   },
   "/_nuxt/error-500.DqdIhFrl.css": {
     "type": "text/css; charset=utf-8",
     "etag": "\"773-5c6J9Uy3GU9ENVOfwDGwZL5dQKk\"",
-    "mtime": "2025-12-29T00:00:14.792Z",
+    "mtime": "2025-12-29T21:29:29.987Z",
     "size": 1907,
     "path": "../public/_nuxt/error-500.DqdIhFrl.css"
   },
   "/_nuxt/GoogleSansDisplay-Bold.DuPpFrTn.ttf": {
     "type": "font/ttf",
     "etag": "\"267b8-a2AyQju3LLa316MjE/Gtgb8GfKM\"",
-    "mtime": "2025-12-29T00:00:14.792Z",
+    "mtime": "2025-12-29T21:29:29.987Z",
     "size": 157624,
     "path": "../public/_nuxt/GoogleSansDisplay-Bold.DuPpFrTn.ttf"
   },
   "/_nuxt/GoogleSansDisplay-Medium.CQsfVe_b.ttf": {
     "type": "font/ttf",
     "etag": "\"268a4-HR8ia8SKz4hB9vZyP3tYxkQ0b4I\"",
-    "mtime": "2025-12-29T00:00:14.792Z",
+    "mtime": "2025-12-29T21:29:29.987Z",
     "size": 157860,
     "path": "../public/_nuxt/GoogleSansDisplay-Medium.CQsfVe_b.ttf"
   },
   "/_nuxt/GoogleSansDisplay-Regular.BtEhIT2z.ttf": {
     "type": "font/ttf",
     "etag": "\"267f4-C+o7Wrk0UEuYPl/f3kDIu6/aLj0\"",
-    "mtime": "2025-12-29T00:00:14.785Z",
+    "mtime": "2025-12-29T21:29:29.970Z",
     "size": 157684,
     "path": "../public/_nuxt/GoogleSansDisplay-Regular.BtEhIT2z.ttf"
   },
   "/_nuxt/GoogleSansText-Bold.vsh2es3t.ttf": {
     "type": "font/ttf",
     "etag": "\"1c8c4-g9SNdLxKxMF500OIs+7me6ecAXA\"",
-    "mtime": "2025-12-29T00:00:14.792Z",
+    "mtime": "2025-12-29T21:29:29.987Z",
     "size": 116932,
     "path": "../public/_nuxt/GoogleSansText-Bold.vsh2es3t.ttf"
   },
   "/_nuxt/GoogleSansText-Medium.BFm9TfYg.ttf": {
     "type": "font/ttf",
     "etag": "\"1c9f0-Y5T1btT2TYUPllx+FlNsNfhIKm4\"",
-    "mtime": "2025-12-29T00:00:14.792Z",
+    "mtime": "2025-12-29T21:29:29.987Z",
     "size": 117232,
     "path": "../public/_nuxt/GoogleSansText-Medium.BFm9TfYg.ttf"
   },
   "/_nuxt/GoogleSansText-Regular.BM9L9Qbs.ttf": {
     "type": "font/ttf",
     "etag": "\"1c8fc-Th7L5LgaelYO5FAWXUiPJZNHC/A\"",
-    "mtime": "2025-12-29T00:00:14.792Z",
+    "mtime": "2025-12-29T21:29:29.987Z",
     "size": 116988,
     "path": "../public/_nuxt/GoogleSansText-Regular.BM9L9Qbs.ttf"
   },
-  "/_nuxt/index.BXRhVyUC.css": {
+  "/_nuxt/index.BoYawoKz.css": {
     "type": "text/css; charset=utf-8",
-    "etag": "\"cd-7550onbSUUTTblBM5P3OeNm1+Ns\"",
-    "mtime": "2025-12-29T00:00:14.792Z",
+    "etag": "\"cd-F0oCwGTr9+MzMHRy+/1mO0LuMEc\"",
+    "mtime": "2025-12-29T21:29:29.987Z",
     "size": 205,
-    "path": "../public/_nuxt/index.BXRhVyUC.css"
+    "path": "../public/_nuxt/index.BoYawoKz.css"
   },
   "/_nuxt/index.CvBb_3kL.css": {
     "type": "text/css; charset=utf-8",
     "etag": "\"340-0OQ5ypAn4S9/wAnRNv/8gJimRbI\"",
-    "mtime": "2025-12-29T00:00:14.792Z",
+    "mtime": "2025-12-29T21:29:29.987Z",
     "size": 832,
     "path": "../public/_nuxt/index.CvBb_3kL.css"
+  },
+  "/_nuxt/jrZ1s8q_.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"53-sfLZ4JVZEZMhsP7bjvY2zYztLRg\"",
+    "mtime": "2025-12-29T21:29:29.989Z",
+    "size": 83,
+    "path": "../public/_nuxt/jrZ1s8q_.js"
   },
   "/_nuxt/LocationStamp.nUxjI2kD.css": {
     "type": "text/css; charset=utf-8",
     "etag": "\"e90-TNmdJWqJcsBrJtWT2nqscRoalZI\"",
-    "mtime": "2025-12-29T00:00:14.792Z",
+    "mtime": "2025-12-29T21:29:29.987Z",
     "size": 3728,
     "path": "../public/_nuxt/LocationStamp.nUxjI2kD.css"
   },
-  "/_nuxt/O1lNVKmW.js": {
+  "/_nuxt/vsIPVDDh.js": {
     "type": "text/javascript; charset=utf-8",
-    "etag": "\"d90-kZ8iMnHyA0IA26D4HsT7JnddFaQ\"",
-    "mtime": "2025-12-29T00:00:14.794Z",
-    "size": 3472,
-    "path": "../public/_nuxt/O1lNVKmW.js"
+    "etag": "\"eae-esit2QPxql7pot/xWEAnQOZWptw\"",
+    "mtime": "2025-12-29T21:29:29.987Z",
+    "size": 3758,
+    "path": "../public/_nuxt/vsIPVDDh.js"
   },
-  "/_nuxt/p6gsb40E.js": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"5c73f-VfyMQHoO37XoLKxQplFjXQxxD8w\"",
-    "mtime": "2025-12-29T00:00:14.792Z",
-    "size": 378687,
-    "path": "../public/_nuxt/p6gsb40E.js"
-  },
-  "/_nuxt/_slug_.PE5Rtx2f.css": {
+  "/_nuxt/_slug_.CKbZMw8r.css": {
     "type": "text/css; charset=utf-8",
-    "etag": "\"158-EkME0gjOZnnto2VqZ1AJivjd/e8\"",
-    "mtime": "2025-12-29T00:00:14.792Z",
-    "size": 344,
-    "path": "../public/_nuxt/_slug_.PE5Rtx2f.css"
+    "etag": "\"2ea-VQKievMCceR8Ym5lC7flUefY7Xg\"",
+    "mtime": "2025-12-29T21:29:30.019Z",
+    "size": 746,
+    "path": "../public/_nuxt/_slug_.CKbZMw8r.css"
   },
   "/images/projects/project-1.png": {
     "type": "image/png",
@@ -5387,17 +5764,17 @@ const assets = {
   },
   "/_nuxt/builds/latest.json": {
     "type": "application/json",
-    "etag": "\"47-Dxl9Xd/fP7YhQjVViqHmQeM7ICQ\"",
-    "mtime": "2025-12-29T00:00:30.870Z",
+    "etag": "\"47-7twtOWr28uobWcqZZ7CvPlOEYI0\"",
+    "mtime": "2025-12-29T21:29:49.764Z",
     "size": 71,
     "path": "../public/_nuxt/builds/latest.json"
   },
-  "/_nuxt/builds/meta/c29c8b9d-5623-4243-9663-7549052925f0.json": {
+  "/_nuxt/builds/meta/1204f0c4-cf86-493b-b5af-644e52dc10f6.json": {
     "type": "application/json",
-    "etag": "\"8b-g+qMKh+z7lohPQWewFuegzBWxZA\"",
-    "mtime": "2025-12-29T00:00:30.872Z",
+    "etag": "\"8b-D8Uot7cJRvmW/Ufg4m2KvjYGKSw\"",
+    "mtime": "2025-12-29T21:29:49.838Z",
     "size": 139,
-    "path": "../public/_nuxt/builds/meta/c29c8b9d-5623-4243-9663-7549052925f0.json"
+    "path": "../public/_nuxt/builds/meta/1204f0c4-cf86-493b-b5af-644e52dc10f6.json"
   }
 };
 
@@ -5593,10 +5970,24 @@ const _A4G_Ri = eventHandler((event) => {
 
 const _SxA8c9 = defineEventHandler(() => {});
 
+const _lazy_4eOPQ_ = () => import('../routes/api/auth.post.mjs');
+const _lazy_SPGxX1 = () => import('../routes/api/notes.delete.mjs');
+const _lazy_9R6u8K = () => import('../routes/api/notes.get.mjs');
+const _lazy_Bbgi5u = () => import('../routes/api/notes.post.mjs');
+const _lazy_c2GTZz = () => import('../routes/api/projects.delete.mjs');
+const _lazy_Xc1enw = () => import('../routes/api/projects.get.mjs');
+const _lazy_PHwkLL = () => import('../routes/api/projects.post.mjs');
 const _lazy_GSkdT3 = () => import('../routes/renderer.mjs').then(function (n) { return n.r; });
 
 const handlers = [
   { route: '', handler: _A4G_Ri, lazy: false, middleware: true, method: undefined },
+  { route: '/api/auth', handler: _lazy_4eOPQ_, lazy: true, middleware: false, method: "post" },
+  { route: '/api/notes', handler: _lazy_SPGxX1, lazy: true, middleware: false, method: "delete" },
+  { route: '/api/notes', handler: _lazy_9R6u8K, lazy: true, middleware: false, method: "get" },
+  { route: '/api/notes', handler: _lazy_Bbgi5u, lazy: true, middleware: false, method: "post" },
+  { route: '/api/projects', handler: _lazy_c2GTZz, lazy: true, middleware: false, method: "delete" },
+  { route: '/api/projects', handler: _lazy_Xc1enw, lazy: true, middleware: false, method: "get" },
+  { route: '/api/projects', handler: _lazy_PHwkLL, lazy: true, middleware: false, method: "post" },
   { route: '/__nuxt_error', handler: _lazy_GSkdT3, lazy: true, middleware: false, method: undefined },
   { route: '/__nuxt_island/**', handler: _SxA8c9, lazy: false, middleware: false, method: undefined },
   { route: '/**', handler: _lazy_GSkdT3, lazy: true, middleware: false, method: undefined }
@@ -5780,6 +6171,53 @@ function defineRenderHandler(render) {
     }
     return ctx.response.body;
   });
+}
+
+function parse(str, options) {
+  if (typeof str !== "string") {
+    throw new TypeError("argument str must be a string");
+  }
+  const obj = {};
+  const opt = options || {};
+  const dec = opt.decode || decode;
+  let index = 0;
+  while (index < str.length) {
+    const eqIdx = str.indexOf("=", index);
+    if (eqIdx === -1) {
+      break;
+    }
+    let endIdx = str.indexOf(";", index);
+    if (endIdx === -1) {
+      endIdx = str.length;
+    } else if (endIdx < eqIdx) {
+      index = str.lastIndexOf(";", eqIdx - 1) + 1;
+      continue;
+    }
+    const key = str.slice(index, eqIdx).trim();
+    if (opt?.filter && !opt?.filter(key)) {
+      index = endIdx + 1;
+      continue;
+    }
+    if (void 0 === obj[key]) {
+      let val = str.slice(eqIdx + 1, endIdx).trim();
+      if (val.codePointAt(0) === 34) {
+        val = val.slice(1, -1);
+      }
+      obj[key] = tryDecode(val, dec);
+    }
+    index = endIdx + 1;
+  }
+  return obj;
+}
+function decode(str) {
+  return str.includes("%") ? decodeURIComponent(str) : str;
+}
+function tryDecode(str, decode2) {
+  try {
+    return decode2(str);
+  } catch {
+    return str;
+  }
 }
 
 const debug = (...args) => {
@@ -6028,5 +6466,5 @@ function setupGracefulShutdown(listener, nitroApp) {
   });
 }
 
-export { $fetch as $, withoutTrailingSlash as A, trapUnhandledNodeErrors as a, useNitroApp as b, getResponseStatus as c, destr as d, defineRenderHandler as e, getQuery as f, getResponseStatusText as g, createError$1 as h, getRouteRules as i, joinRelativeURL as j, hasProtocol as k, isScriptProtocol as l, joinURL as m, sanitizeStatusCode as n, getContext as o, createHooks as p, executeAsync as q, toRouteMatcher as r, setupGracefulShutdown as s, toNodeListener as t, useRuntimeConfig as u, createRouter$1 as v, withQuery as w, defu as x, parseQuery as y, withTrailingSlash as z };
+export { $fetch as $, createRouter$1 as A, defu as B, klona as C, parse as D, getRequestHeader as E, isEqual as F, getCookie as G, deleteCookie as H, parseQuery as I, withTrailingSlash as J, withoutTrailingSlash as K, trapUnhandledNodeErrors as a, useNitroApp as b, defineEventHandler as c, destr as d, setCookie as e, createError$1 as f, getResponseStatusText as g, getResponseStatus as h, defineRenderHandler as i, joinRelativeURL as j, getQuery as k, getRouteRules as l, hasProtocol as m, isScriptProtocol as n, joinURL as o, sanitizeStatusCode as p, getContext as q, readBody as r, setupGracefulShutdown as s, toNodeListener as t, useRuntimeConfig as u, createHooks as v, withQuery as w, executeAsync as x, getHeader as y, toRouteMatcher as z };
 //# sourceMappingURL=nitro.mjs.map

@@ -1,0 +1,136 @@
+import { _ as __nuxt_component_0 } from './nuxt-link-BM6JTjrp.mjs';
+import { defineComponent, ref, withAsyncContext, computed, mergeProps, unref, withCtx, createBlock, createTextVNode, openBlock, createVNode, useSSRContext } from 'vue';
+import { ssrRenderAttrs, ssrRenderClass, ssrRenderComponent, ssrInterpolate, ssrRenderList, ssrRenderAttr, ssrIncludeBooleanAttr, ssrLooseContain } from 'vue/server-renderer';
+import { u as useSupabaseClient } from './useSupabaseClient-CkLFOMIR.mjs';
+import { u as useNotes } from './useNotes-Ddzju8C2.mjs';
+import { u as useProjects } from './useProjects-DXcGg8HH.mjs';
+import { _ as _export_sfc, a as useSeoMeta } from './server.mjs';
+import '../_/nitro.mjs';
+import 'node:http';
+import 'node:https';
+import 'node:events';
+import 'node:buffer';
+import 'node:fs';
+import 'node:path';
+import 'node:crypto';
+import 'node:url';
+import '../routes/renderer.mjs';
+import 'vue-bundle-renderer/runtime';
+import 'unhead/server';
+import 'devalue';
+import 'unhead/plugins';
+import 'unhead/utils';
+import 'vue-router';
+import '@supabase/ssr';
+
+const _sfc_main = /* @__PURE__ */ defineComponent({
+  __name: "cms",
+  __ssrInlineRender: true,
+  async setup(__props) {
+    let __temp, __restore;
+    useSupabaseClient();
+    const activeTab = ref("notes");
+    const view = ref("list");
+    const isEditing = ref(false);
+    ref(false);
+    const { fetchNotes, notes } = useNotes();
+    const { fetchProjects, projects } = useProjects();
+    [__temp, __restore] = withAsyncContext(() => Promise.all([fetchNotes(), fetchProjects()])), await __temp, __restore();
+    const cmsHeaderTitle = computed(() => activeTab.value === "notes" ? "Manage Notes" : "Manage Projects");
+    const activeTabLabel = computed(() => activeTab.value === "notes" ? "Note" : "Project");
+    const editHeaderTitle = computed(() => `${isEditing.value ? "Edit" : "New"} ${activeTabLabel.value}`);
+    const formData = ref({});
+    const tagsInput = ref("");
+    const toolsInput = ref("");
+    const wireframesInput = ref("");
+    const finalDesignsInput = ref("");
+    useSeoMeta({
+      title: "CMS - Lanre Segun",
+      robots: "noindex, nofollow"
+    });
+    return (_ctx, _push, _parent, _attrs) => {
+      const _component_NuxtLink = __nuxt_component_0;
+      _push(`<div${ssrRenderAttrs(mergeProps({ class: "min-h-screen bg-neutral-950 text-neutral-200 font-sans selection:bg-neutral-800" }, _attrs))} data-v-20066cfd><div class="fixed left-0 top-0 h-full w-64 border-r border-neutral-800 bg-neutral-900/50 p-6 flex flex-col gap-8" data-v-20066cfd><h1 class="text-2xl font-bold tracking-tight text-white" data-v-20066cfd>Local CMS</h1><nav class="flex flex-col gap-2" data-v-20066cfd><button class="${ssrRenderClass([unref(activeTab) === "notes" ? "bg-white text-black font-medium" : "hover:bg-neutral-800 text-neutral-400", "px-4 py-2 rounded-lg text-left transition-colors"])}" data-v-20066cfd> Notes </button><button class="${ssrRenderClass([unref(activeTab) === "projects" ? "bg-white text-black font-medium" : "hover:bg-neutral-800 text-neutral-400", "px-4 py-2 rounded-lg text-left transition-colors"])}" data-v-20066cfd> Projects </button></nav><div class="mt-auto" data-v-20066cfd>`);
+      _push(ssrRenderComponent(_component_NuxtLink, {
+        to: "/",
+        class: "text-sm text-neutral-500 hover:text-white transition-colors flex items-center gap-2"
+      }, {
+        default: withCtx((_, _push2, _parent2, _scopeId) => {
+          if (_push2) {
+            _push2(`<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-v-20066cfd${_scopeId}><path d="M15 18l-6-6 6-6" data-v-20066cfd${_scopeId}></path></svg> Back to Website `);
+          } else {
+            return [
+              (openBlock(), createBlock("svg", {
+                xmlns: "http://www.w3.org/2000/svg",
+                width: "16",
+                height: "16",
+                viewBox: "0 0 24 24",
+                fill: "none",
+                stroke: "currentColor",
+                "stroke-width": "2",
+                "stroke-linecap": "round",
+                "stroke-linejoin": "round"
+              }, [
+                createVNode("path", { d: "M15 18l-6-6 6-6" })
+              ])),
+              createTextVNode(" Back to Website ")
+            ];
+          }
+        }),
+        _: 1
+      }, _parent));
+      _push(`</div></div><main class="ml-64 p-12 max-w-5xl" data-v-20066cfd>`);
+      if (unref(view) === "list") {
+        _push(`<div class="flex flex-col gap-8" data-v-20066cfd><div class="flex justify-between items-center" data-v-20066cfd><h2 class="text-3xl font-light text-white" data-v-20066cfd>${ssrInterpolate(unref(cmsHeaderTitle))}</h2><button class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-medium transition-colors flex items-center gap-2" data-v-20066cfd><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-v-20066cfd><line x1="12" y1="5" x2="12" y2="19" data-v-20066cfd></line><line x1="5" y1="12" x2="19" y2="12" data-v-20066cfd></line></svg> New ${ssrInterpolate(unref(activeTabLabel))}</button></div><div class="flex flex-col gap-4" data-v-20066cfd>`);
+        if (unref(activeTab) === "notes") {
+          _push(`<!--[-->`);
+          ssrRenderList(unref(notes), (item) => {
+            _push(`<div class="p-4 rounded-xl border border-neutral-800 bg-neutral-900/30 hover:border-neutral-700 transition-colors flex justify-between items-center group" data-v-20066cfd><div class="flex flex-col gap-1" data-v-20066cfd><h3 class="font-medium text-white group-hover:text-blue-400 transition-colors" data-v-20066cfd>${ssrInterpolate(item.title)}</h3><span class="text-xs text-neutral-500" data-v-20066cfd>${ssrInterpolate(item.date)} • /notes/${ssrInterpolate(item.slug)}</span></div><div class="flex items-center gap-3" data-v-20066cfd><button class="text-sm p-2 hover:bg-neutral-800 rounded-md text-neutral-400 hover:text-white transition-colors" data-v-20066cfd>Edit</button><button class="text-sm p-2 hover:bg-red-900/20 rounded-md text-red-500 transition-colors" data-v-20066cfd>Delete</button></div></div>`);
+          });
+          _push(`<!--]-->`);
+        } else {
+          _push(`<!---->`);
+        }
+        if (unref(activeTab) === "projects") {
+          _push(`<!--[-->`);
+          ssrRenderList(unref(projects), (item) => {
+            _push(`<div class="p-4 rounded-xl border border-neutral-800 bg-neutral-900/30 hover:border-neutral-700 transition-colors flex justify-between items-center group" data-v-20066cfd><div class="flex flex-col gap-1" data-v-20066cfd><h3 class="font-medium text-white group-hover:text-blue-400 transition-colors" data-v-20066cfd>${ssrInterpolate(item.title)}</h3><span class="text-xs text-neutral-500" data-v-20066cfd>${ssrInterpolate(item.date)} • /projects/${ssrInterpolate(item.slug)}</span></div><div class="flex items-center gap-3" data-v-20066cfd><button class="text-sm p-2 hover:bg-neutral-800 rounded-md text-neutral-400 hover:text-white transition-colors" data-v-20066cfd>Edit</button><button class="text-sm p-2 hover:bg-red-900/20 rounded-md text-red-500 transition-colors" data-v-20066cfd>Delete</button></div></div>`);
+          });
+          _push(`<!--]-->`);
+        } else {
+          _push(`<!---->`);
+        }
+        if (unref(activeTab) === "notes" && unref(notes).length === 0 || unref(activeTab) === "projects" && unref(projects).length === 0) {
+          _push(`<div class="text-center py-12 text-neutral-600" data-v-20066cfd> No items found. Create one to get started. </div>`);
+        } else {
+          _push(`<!---->`);
+        }
+        _push(`</div></div>`);
+      } else {
+        _push(`<div class="flex flex-col gap-8" data-v-20066cfd><div class="flex items-center gap-4 mb-4" data-v-20066cfd><button class="p-2 hover:bg-neutral-800 rounded-full transition-colors text-neutral-400 hover:text-white" data-v-20066cfd><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-v-20066cfd><path d="M19 12H5" data-v-20066cfd></path><path d="M12 19l-7-7 7-7" data-v-20066cfd></path></svg></button><h2 class="text-2xl font-medium text-white" data-v-20066cfd>${ssrInterpolate(unref(editHeaderTitle))}</h2></div><form class="flex flex-col gap-10 max-w-5xl pb-20" data-v-20066cfd><section class="flex flex-col gap-6" data-v-20066cfd><h3 class="text-sm font-bold text-blue-500 uppercase tracking-widest border-b border-neutral-800 pb-2" data-v-20066cfd> Basic Info</h3><div class="grid grid-cols-1 md:grid-cols-2 gap-6" data-v-20066cfd><div class="flex flex-col gap-2" data-v-20066cfd><label class="text-xs uppercase tracking-wider text-neutral-500 font-medium" data-v-20066cfd>Title</label><input${ssrRenderAttr("value", unref(formData).title)} type="text" required class="bg-neutral-900 border border-neutral-800 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-white" data-v-20066cfd></div><div class="flex flex-col gap-2" data-v-20066cfd><label class="text-xs uppercase tracking-wider text-neutral-500 font-medium" data-v-20066cfd>Slug</label><input${ssrRenderAttr("value", unref(formData).slug)} type="text" required class="bg-neutral-900 border border-neutral-800 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-white" data-v-20066cfd></div><div class="flex flex-col gap-2" data-v-20066cfd><label class="text-xs uppercase tracking-wider text-neutral-500 font-medium" data-v-20066cfd>Subtitle</label><input${ssrRenderAttr("value", unref(formData).subtitle)} type="text" class="bg-neutral-900 border border-neutral-800 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-white" data-v-20066cfd></div><div class="flex flex-col gap-2" data-v-20066cfd><label class="text-xs uppercase tracking-wider text-neutral-500 font-medium" data-v-20066cfd>Year</label><input${ssrRenderAttr("value", unref(formData).year)} type="text" class="bg-neutral-900 border border-neutral-800 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-white" data-v-20066cfd></div><div class="flex flex-col gap-2" data-v-20066cfd><div class="flex justify-between items-center" data-v-20066cfd><label class="text-xs uppercase tracking-wider text-neutral-500 font-medium" data-v-20066cfd>Thumbnail Image Path</label><button type="button" class="text-[10px] text-blue-400 hover:text-blue-300 transition-colors uppercase font-bold tracking-widest" data-v-20066cfd>Upload</button><input type="file" class="hidden" accept="image/*" data-v-20066cfd></div><input${ssrRenderAttr("value", unref(formData).coverImage)} type="text" class="bg-neutral-900 border border-neutral-800 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-white" data-v-20066cfd></div><div class="flex items-center gap-8 pt-8 col-span-2 border-t border-neutral-800 mt-4" data-v-20066cfd><div class="flex items-center gap-4" data-v-20066cfd><label class="text-xs uppercase tracking-wider text-neutral-500 font-medium" data-v-20066cfd>Featured Project</label><input${ssrIncludeBooleanAttr(Array.isArray(unref(formData).featured) ? ssrLooseContain(unref(formData).featured, null) : unref(formData).featured) ? " checked" : ""} type="checkbox" class="w-5 h-5 accent-blue-600" data-v-20066cfd></div><div class="flex items-center gap-4" data-v-20066cfd><label class="text-xs uppercase tracking-wider text-neutral-500 font-medium" data-v-20066cfd>Is Figma Prototype</label><input${ssrIncludeBooleanAttr(Array.isArray(unref(formData).isFigma) ? ssrLooseContain(unref(formData).isFigma, null) : unref(formData).isFigma) ? " checked" : ""} type="checkbox" class="w-5 h-5 accent-blue-600" data-v-20066cfd></div></div><div class="flex flex-col gap-2 col-span-2" data-v-20066cfd><label class="text-xs uppercase tracking-wider text-neutral-500 font-medium" data-v-20066cfd>Project / Prototype Link</label><input${ssrRenderAttr("value", unref(formData).projectLink)} type="text" placeholder="https://..." class="bg-neutral-900 border border-neutral-800 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-white font-mono text-sm" data-v-20066cfd></div></div><div class="flex flex-col gap-2" data-v-20066cfd><label class="text-xs uppercase tracking-wider text-neutral-500 font-medium" data-v-20066cfd>Short Description</label><textarea rows="2" class="bg-neutral-900 border border-neutral-800 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-white" data-v-20066cfd>${ssrInterpolate(unref(formData).description)}</textarea></div></section>`);
+        if (unref(activeTab) === "projects") {
+          _push(`<!--[--><section class="flex flex-col gap-6" data-v-20066cfd><h3 class="text-sm font-bold text-blue-500 uppercase tracking-widest border-b border-neutral-800 pb-2" data-v-20066cfd> Client &amp; Role</h3><div class="grid grid-cols-1 md:grid-cols-2 gap-6" data-v-20066cfd><div class="flex flex-col gap-2" data-v-20066cfd><label class="text-xs uppercase tracking-wider text-neutral-500 font-medium" data-v-20066cfd>Client Name</label><input${ssrRenderAttr("value", unref(formData).client)} type="text" class="bg-neutral-900 border border-neutral-800 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-white" data-v-20066cfd></div><div class="flex flex-col gap-2" data-v-20066cfd><label class="text-xs uppercase tracking-wider text-neutral-500 font-medium" data-v-20066cfd>Industry</label><input${ssrRenderAttr("value", unref(formData).industry)} type="text" class="bg-neutral-900 border border-neutral-800 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-white" data-v-20066cfd></div><div class="flex flex-col gap-2" data-v-20066cfd><label class="text-xs uppercase tracking-wider text-neutral-500 font-medium" data-v-20066cfd>Duration</label><input${ssrRenderAttr("value", unref(formData).duration)} type="text" class="bg-neutral-900 border border-neutral-800 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-white" data-v-20066cfd></div><div class="flex flex-col gap-2" data-v-20066cfd><label class="text-xs uppercase tracking-wider text-neutral-500 font-medium" data-v-20066cfd>My Role</label><input${ssrRenderAttr("value", unref(formData).role)} type="text" class="bg-neutral-900 border border-neutral-800 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-white" data-v-20066cfd></div><div class="flex flex-col gap-2" data-v-20066cfd><label class="text-xs uppercase tracking-wider text-neutral-500 font-medium" data-v-20066cfd>Team Size</label><input${ssrRenderAttr("value", unref(formData).teamSize)} type="text" class="bg-neutral-900 border border-neutral-800 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-white" data-v-20066cfd></div><div class="flex flex-col gap-2" data-v-20066cfd><label class="text-xs uppercase tracking-wider text-neutral-500 font-medium" data-v-20066cfd>Tags (Comma separated)</label><input${ssrRenderAttr("value", unref(tagsInput))} type="text" class="bg-neutral-900 border border-neutral-800 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-white" data-v-20066cfd></div></div></section><section class="flex flex-col gap-6" data-v-20066cfd><h3 class="text-sm font-bold text-blue-500 uppercase tracking-widest border-b border-neutral-800 pb-2" data-v-20066cfd> Problem &amp; Strategy</h3><div class="flex flex-col gap-2" data-v-20066cfd><label class="text-xs uppercase tracking-wider text-neutral-500 font-medium" data-v-20066cfd>Problem Statement</label><textarea rows="3" class="bg-neutral-900 border border-neutral-800 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-white" data-v-20066cfd>${ssrInterpolate(unref(formData).problemStatement)}</textarea></div><div class="grid grid-cols-1 md:grid-cols-2 gap-6" data-v-20066cfd><div class="flex flex-col gap-2" data-v-20066cfd><label class="text-xs uppercase tracking-wider text-neutral-500 font-medium" data-v-20066cfd>Business Goal</label><textarea rows="3" class="bg-neutral-900 border border-neutral-800 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-white" data-v-20066cfd>${ssrInterpolate(unref(formData).businessGoal)}</textarea></div><div class="flex flex-col gap-2" data-v-20066cfd><label class="text-xs uppercase tracking-wider text-neutral-500 font-medium" data-v-20066cfd>User Goal</label><textarea rows="3" class="bg-neutral-900 border border-neutral-800 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-white" data-v-20066cfd>${ssrInterpolate(unref(formData).userGoal)}</textarea></div></div><div class="flex flex-col gap-2" data-v-20066cfd><label class="text-xs uppercase tracking-wider text-neutral-500 font-medium" data-v-20066cfd>Target Users</label><input${ssrRenderAttr("value", unref(formData).targetUsers)} type="text" class="bg-neutral-900 border border-neutral-800 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-white" data-v-20066cfd></div></section><section class="flex flex-col gap-6" data-v-20066cfd><h3 class="text-sm font-bold text-blue-500 uppercase tracking-widest border-b border-neutral-800 pb-2" data-v-20066cfd> Design Process</h3><div class="flex flex-col gap-2" data-v-20066cfd><label class="text-xs uppercase tracking-wider text-neutral-500 font-medium" data-v-20066cfd>Design Approach</label><textarea rows="3" class="bg-neutral-900 border border-neutral-800 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-white" data-v-20066cfd>${ssrInterpolate(unref(formData).designApproach)}</textarea></div><div class="grid grid-cols-1 md:grid-cols-2 gap-6" data-v-20066cfd><div class="flex flex-col gap-2" data-v-20066cfd><label class="text-xs uppercase tracking-wider text-neutral-500 font-medium" data-v-20066cfd>Research Methods</label><textarea rows="3" class="bg-neutral-900 border border-neutral-800 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-white" data-v-20066cfd>${ssrInterpolate(unref(formData).researchMethods)}</textarea></div><div class="flex flex-col gap-2" data-v-20066cfd><label class="text-xs uppercase tracking-wider text-neutral-500 font-medium" data-v-20066cfd>Key Insights</label><textarea rows="3" class="bg-neutral-900 border border-neutral-800 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-white" data-v-20066cfd>${ssrInterpolate(unref(formData).keyInsights)}</textarea></div></div></section><section class="flex flex-col gap-6" data-v-20066cfd><h3 class="text-sm font-bold text-blue-500 uppercase tracking-widest border-b border-neutral-800 pb-2" data-v-20066cfd> Visuals &amp; Galleries</h3><div class="flex flex-col gap-2" data-v-20066cfd><div class="flex justify-between items-center" data-v-20066cfd><label class="text-xs uppercase tracking-wider text-neutral-500 font-medium" data-v-20066cfd>Wireframes (One path per line)</label><button type="button" class="text-[10px] text-blue-400 hover:text-blue-300 transition-colors uppercase font-bold tracking-widest" data-v-20066cfd>Upload &amp; Add</button><input type="file" class="hidden" accept="image/*" data-v-20066cfd></div><textarea rows="4" class="bg-neutral-900 border border-neutral-800 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-white font-mono text-sm" data-v-20066cfd>${ssrInterpolate(unref(wireframesInput))}</textarea></div><div class="flex flex-col gap-2" data-v-20066cfd><div class="flex justify-between items-center" data-v-20066cfd><label class="text-xs uppercase tracking-wider text-neutral-500 font-medium" data-v-20066cfd>Final Designs (One path per line)</label><button type="button" class="text-[10px] text-blue-400 hover:text-blue-300 transition-colors uppercase font-bold tracking-widest" data-v-20066cfd>Upload &amp; Add</button><input type="file" class="hidden" accept="image/*" data-v-20066cfd></div><textarea rows="4" class="bg-neutral-900 border border-neutral-800 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-white font-mono text-sm" data-v-20066cfd>${ssrInterpolate(unref(finalDesignsInput))}</textarea></div></section><section class="flex flex-col gap-6" data-v-20066cfd><h3 class="text-sm font-bold text-blue-500 uppercase tracking-widest border-b border-neutral-800 pb-2" data-v-20066cfd> Outcome &amp; Impact</h3><div class="flex flex-col gap-2" data-v-20066cfd><label class="text-xs uppercase tracking-wider text-neutral-500 font-medium" data-v-20066cfd>Solution Summary</label><textarea rows="3" class="bg-neutral-900 border border-neutral-800 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-white" data-v-20066cfd>${ssrInterpolate(unref(formData).solutionSummary)}</textarea></div><div class="flex flex-col gap-2" data-v-20066cfd><label class="text-xs uppercase tracking-wider text-neutral-500 font-medium" data-v-20066cfd>Outcome / Impact</label><textarea rows="3" class="bg-neutral-900 border border-neutral-800 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-white" data-v-20066cfd>${ssrInterpolate(unref(formData).outcome)}</textarea></div><div class="flex flex-col gap-2" data-v-20066cfd><label class="text-xs uppercase tracking-wider text-neutral-500 font-medium" data-v-20066cfd>Learnings</label><textarea rows="3" class="bg-neutral-900 border border-neutral-800 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-white" data-v-20066cfd>${ssrInterpolate(unref(formData).learnings)}</textarea></div><div class="flex flex-col gap-2" data-v-20066cfd><label class="text-xs uppercase tracking-wider text-neutral-500 font-medium" data-v-20066cfd>Tools Used (Comma separated)</label><input${ssrRenderAttr("value", unref(toolsInput))} type="text" class="bg-neutral-900 border border-neutral-800 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-white" data-v-20066cfd></div></section><section class="flex flex-col gap-6" data-v-20066cfd><h3 class="text-sm font-bold text-neutral-600 uppercase tracking-widest border-b border-neutral-800 pb-2" data-v-20066cfd> Advanced / Raw Content</h3><div class="flex flex-col gap-2" data-v-20066cfd><div class="flex justify-between items-center" data-v-20066cfd><label class="text-xs uppercase tracking-wider text-neutral-500 font-medium" data-v-20066cfd>Extra Page Content (JSON Structure)</label><button type="button" class="text-[10px] text-blue-400 hover:text-blue-300 transition-colors uppercase font-bold tracking-widest" data-v-20066cfd>Upload Hero Image</button><input type="file" class="hidden" accept="image/*" data-v-20066cfd></div><textarea rows="10" class="bg-neutral-900 border border-neutral-800 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-white font-mono text-xs leading-relaxed" data-v-20066cfd>${ssrInterpolate(unref(formData).contentJson)}</textarea></div></section><!--]-->`);
+        } else {
+          _push(`<!---->`);
+        }
+        if (unref(activeTab) === "notes") {
+          _push(`<!--[--><div class="flex flex-col gap-2" data-v-20066cfd><label class="text-xs uppercase tracking-wider text-neutral-500 font-medium" data-v-20066cfd>Excerpt</label><textarea rows="2" class="bg-neutral-900 border border-neutral-800 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-white" data-v-20066cfd>${ssrInterpolate(unref(formData).excerpt)}</textarea></div><div class="flex flex-col gap-2" data-v-20066cfd><label class="text-xs uppercase tracking-wider text-neutral-500 font-medium" data-v-20066cfd>Content</label><textarea rows="10" class="bg-neutral-900 border border-neutral-800 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-white font-mono text-sm" data-v-20066cfd>${ssrInterpolate(unref(formData).content)}</textarea></div><div class="grid grid-cols-2 gap-6" data-v-20066cfd><div class="flex flex-col gap-2" data-v-20066cfd><label class="text-xs uppercase tracking-wider text-neutral-500 font-medium" data-v-20066cfd>Year (Filter)</label><input${ssrRenderAttr("value", unref(formData).year)} type="number" class="bg-neutral-900 border border-neutral-800 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-white" data-v-20066cfd></div><div class="flex flex-col gap-2" data-v-20066cfd><label class="text-xs uppercase tracking-wider text-neutral-500 font-medium" data-v-20066cfd>Month (Display)</label><input${ssrRenderAttr("value", unref(formData).month)} type="text" class="bg-neutral-900 border border-neutral-800 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-white" data-v-20066cfd></div></div><!--]-->`);
+        } else {
+          _push(`<!---->`);
+        }
+        _push(`<div class="border-t border-neutral-800 pt-10 flex gap-4 sticky bottom-0 bg-neutral-950/80 backdrop-blur-md pb-10" data-v-20066cfd><button type="button" class="px-8 py-3 rounded-lg border border-neutral-800 hover:bg-neutral-800 transition-colors font-medium" data-v-20066cfd>Cancel</button><button type="submit" class="px-8 py-3 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold transition-all shadow-xl shadow-blue-900/20" data-v-20066cfd>Save Project Changes</button></div></form></div>`);
+      }
+      _push(`</main></div>`);
+    };
+  }
+});
+const _sfc_setup = _sfc_main.setup;
+_sfc_main.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("pages/cms.vue");
+  return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
+};
+const cms = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-20066cfd"]]);
+
+export { cms as default };
+//# sourceMappingURL=cms-OBNYRdWK.mjs.map

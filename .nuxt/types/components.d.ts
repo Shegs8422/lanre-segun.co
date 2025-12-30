@@ -16,6 +16,7 @@ type LazyComponent<T> = DefineComponent<HydrationStrategies, {}, {}, {}, {}, {},
 interface _GlobalComponents {
   'EducationCard': typeof import("../../components/EducationCard.vue").default
   'FloatingDock': typeof import("../../components/FloatingDock.vue").default
+  'LoginModal': typeof import("../../components/LoginModal.vue").default
   'PolaroidPhoto': typeof import("../../components/PolaroidPhoto.vue").default
   'ProfileCard': typeof import("../../components/ProfileCard.vue").default
   'WidgetsBook3D': typeof import("../../components/widgets/Book3D.vue").default
@@ -53,6 +54,7 @@ interface _GlobalComponents {
   'NuxtIsland': typeof import("../../node_modules/nuxt/dist/app/components/nuxt-island").default
   'LazyEducationCard': LazyComponent<typeof import("../../components/EducationCard.vue").default>
   'LazyFloatingDock': LazyComponent<typeof import("../../components/FloatingDock.vue").default>
+  'LazyLoginModal': LazyComponent<typeof import("../../components/LoginModal.vue").default>
   'LazyPolaroidPhoto': LazyComponent<typeof import("../../components/PolaroidPhoto.vue").default>
   'LazyProfileCard': LazyComponent<typeof import("../../components/ProfileCard.vue").default>
   'LazyWidgetsBook3D': LazyComponent<typeof import("../../components/widgets/Book3D.vue").default>

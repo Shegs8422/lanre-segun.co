@@ -32,7 +32,7 @@
                 <div
                     class="lg:col-span-8 bg-[#0A0A0A] dark:bg-[#111111] rounded-2xl border border-white/10 p-12 flex items-center justify-center min-h-[450px] relative overflow-hidden">
                     <div
-                        class="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] [background-size:16px_16px]">
+                        class="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] bg-size-[16px_16px]">
                     </div>
                     <FloatingDock :demo="true" />
                 </div>
@@ -57,7 +57,7 @@
                 <div
                     class="lg:col-span-8 bg-[#0A0A0A] dark:bg-[#111111] rounded-2xl border border-white/10 p-12 flex items-center justify-center min-h-[450px] relative overflow-hidden">
                     <div
-                        class="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] [background-size:16px_16px]">
+                        class="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] bg-size-[16px_16px]">
                     </div>
                     <FlipClock />
                 </div>
@@ -83,7 +83,7 @@
                 <div
                     class="lg:col-span-8 bg-[#0A0A0A] dark:bg-[#111111] rounded-2xl border border-white/10 p-12 flex items-center justify-center min-h-[450px] relative overflow-hidden">
                     <div
-                        class="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] [background-size:16px_16px]">
+                        class="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] bg-size-[16px_16px]">
                     </div>
                     <Book3D cover="/images/image_3.png" color="#E32A24" :width="160" :height="220"
                         title="Design Systems" author="Alla Kholmatova" />
@@ -112,7 +112,7 @@
                 <div
                     class="lg:col-span-8 bg-[#0A0A0A] dark:bg-[#111111] rounded-2xl border border-white/10 p-12 flex items-center justify-center min-h-[450px] relative overflow-hidden">
                     <div
-                        class="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] [background-size:16px_16px]">
+                        class="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] bg-size-[16px_16px]">
                     </div>
                     <!-- Wrapper to reset rotation for demo -->
                     <div class="scale-110">
@@ -141,10 +141,10 @@
                 <div
                     class="lg:col-span-8 bg-[#0A0A0A] dark:bg-[#111111] rounded-2xl border border-white/10 p-12 flex items-center justify-center min-h-[450px] relative overflow-hidden">
                     <div
-                        class="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] [background-size:16px_16px]">
+                        class="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] bg-size-[16px_16px]">
                     </div>
-                    <VinylRecord :key="`demo-record`" cover="/images/image_16.jpg" album="Somewhere Only We Know"
-                        artist="Keane" musicFile="/audio/somewhere-only-we-know.mp3" />
+                    <VinylRecord :key="`demo-record`" cover="/images/Keane Hopes and fears.jpg"
+                        album="Somewhere Only We Know" artist="Keane" musicFile="/audio/somewhere-only-we-know.mp3" />
                 </div>
             </div>
 
@@ -169,7 +169,7 @@
                 <div
                     class="lg:col-span-8 bg-[#0A0A0A] dark:bg-[#111111] rounded-2xl border border-white/10 p-12 flex items-center justify-center min-h-[450px] relative overflow-hidden">
                     <div
-                        class="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] [background-size:16px_16px]">
+                        class="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] bg-size-[16px_16px]">
                     </div>
                     <ChessPoster />
                 </div>
@@ -193,7 +193,7 @@
                 <div
                     class="lg:col-span-8 bg-[#0A0A0A] dark:bg-[#111111] rounded-2xl border border-white/10 p-12 flex items-center justify-center min-h-[450px] relative overflow-hidden">
                     <div
-                        class="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] [background-size:16px_16px]">
+                        class="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] bg-size-[16px_16px]">
                     </div>
                     <div class="scale-125">
                         <LocationStamp />
@@ -214,10 +214,16 @@ import VinylRecord from '~/components/widgets/VinylRecord.vue'
 import ChessPoster from '~/components/widgets/ChessPoster.vue'
 import LocationStamp from '~/components/widgets/LocationStamp.vue'
 
-useHead({
+useSeoMeta({
     title: 'Craft | Lanre Segun',
-    meta: [
-        { name: 'description', content: 'A collection of interactive components and experiments.' }
-    ]
+    description: 'A collection of interactive components and experiments crafted with Vue, Tailwind, and GSAP. Explore the building blocks of this portfolio.',
+    ogTitle: 'Craft | Lanre Segun',
+    ogDescription: 'A collection of interactive components and experiments crafted with Vue, Tailwind, and GSAP. Explore the building blocks of this portfolio.',
+    ogImage: '/og-image.png',
+    ogUrl: 'https://lanre-segun.vercel.app/craft',
+    twitterTitle: 'Craft | Lanre Segun',
+    twitterDescription: 'A collection of interactive components and experiments crafted with Vue, Tailwind, and GSAP. Explore the building blocks of this portfolio.',
+    twitterImage: '/og-image.png',
+    twitterCard: 'summary'
 })
 </script>

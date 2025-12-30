@@ -22,14 +22,26 @@
                 </NuxtLink>
 
                 <div class="flex flex-col gap-3 px-2">
-                    <h3 class="text-2xl font-semibold tracking-tight">{{ project.title }}</h3>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm font-mono text-blue-500 font-bold uppercase tracking-widest">{{
+                            project.year || '2024' }}</span>
+                        <div v-if="project.featured"
+                            class="px-2 py-0.5 bg-yellow-500/10 text-yellow-500 text-[10px] font-bold rounded border border-yellow-500/20 uppercase tracking-tighter">
+                            Featured</div>
+                    </div>
+                    <h3 class="text-3xl font-bold tracking-tight">{{ project.title }}</h3>
                     <p class="text-muted-foreground text-lg max-w-xl leading-relaxed">
                         {{ project.description }}
                     </p>
+                    <div class="flex flex-wrap gap-2 mt-1">
+                        <span v-for="tag in project.tags" :key="tag"
+                            class="text-[10px] text-neutral-500 uppercase tracking-widest border border-neutral-800 px-2 py-0.5 rounded">{{
+                                tag }}</span>
+                    </div>
                     <NuxtLink :to="`/projects/${project.slug}`"
-                        class="text-primary font-medium flex items-center gap-2 hover:gap-3 transition-all w-fit mt-2">
-                        View Project Details
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        class="text-white bg-white/5 border border-white/10 px-6 py-2 rounded-full font-medium flex items-center gap-2 hover:bg-white/10 transition-all w-fit mt-4 text-sm">
+                        View Case Study
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M5 12h14" />
                             <path d="m12 5 7 7-7 7" />
@@ -47,8 +59,8 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 
-const { getAllProjects } = useProjects()
-const projects = getAllProjects()
+const { fetchProjects, projects } = useProjects()
+await fetchProjects()
 
 const activeProject = ref(0)
 const projectRefs = ref<any[]>([])
@@ -86,11 +98,17 @@ onUnmounted(() => {
     observer?.disconnect()
 })
 
-useHead({
+useSeoMeta({
     title: 'Projects - Lanre Segun',
-    meta: [
-        { name: 'description', content: 'Explore my latest design and development projects.' }
-    ]
+    description: 'Explore my latest design and development projects. Senior Product Designer bridging complex engineering and premium UI.',
+    ogTitle: 'Projects - Lanre Segun',
+    ogDescription: 'Explore my latest design and development projects. Senior Product Designer bridging complex engineering and premium UI.',
+    ogImage: '/og-image.png',
+    ogUrl: 'https://lanre-segun.vercel.app/projects',
+    twitterTitle: 'Projects - Lanre Segun',
+    twitterDescription: 'Explore my latest design and development projects. Senior Product Designer bridging complex engineering and premium UI.',
+    twitterImage: '/og-image.png',
+    twitterCard: 'summary'
 })
 </script>
 

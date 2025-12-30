@@ -44,7 +44,10 @@
                 </div>
 
                 <!-- Flip Clock - col 7, row 5 -->
-                <FlipClock classes="col-start-7 col-span-2 row-start-5 rotate-[4deg] bottom-[100px]" :stagger="12" />
+                <div class="col-start-7 col-span-2 row-start-5 rotate-[4deg] relative z-50 w-fit top-[40px] left-[60px]"
+                    style="--stagger: 12">
+                    <FlipClock />
+                </div>
 
                 <!-- 3D Books -->
                 <!-- Book 1 - The Path to Senior Designer -->
@@ -340,8 +343,20 @@ const bodyClass = computed(() => {
     return isMobile.value ? 'bg-background' : 'overflow-hidden bg-background'
 })
 
-useHead({
+useSeoMeta({
     title: 'Lanre Segun - Senior Product Designer | Interactive Portfolio',
+    description: 'C-Suite Senior Product Designer & Design Engineer. Specializing in Web3, Fintech, and SaaS with a focus on HCD and premium UI.',
+    ogTitle: 'Lanre Segun - Senior Product Designer | Interactive Portfolio',
+    ogDescription: 'C-Suite Senior Product Designer & Design Engineer. Specializing in Web3, Fintech, and SaaS with a focus on HCD and premium UI.',
+    ogImage: '/og-image.png',
+    ogUrl: 'https://lanre-segun.vercel.app',
+    twitterTitle: 'Lanre Segun - Senior Product Designer',
+    twitterDescription: 'Strategic Product Designer bridging complex engineering and premium UI.',
+    twitterImage: '/og-image.png',
+    twitterCard: 'summary'
+})
+
+useHead({
     bodyAttrs: {
         class: bodyClass
     }

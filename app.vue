@@ -23,11 +23,13 @@
     </NuxtPage>
 
     <div id="theme-toggle-script"></div>
+    <LoginModal ref="loginModal" />
   </div>
 </template>
 
 <script setup lang="ts">
 import FloatingDock from '~/components/FloatingDock.vue'
+import LoginModal from '~/components/LoginModal.vue'
 import gsap from 'gsap'
 
 // GSAP Page Transitions
@@ -58,7 +60,30 @@ const onLeave = (el: Element, done: () => void, path: string) => {
 }
 
 // Global Head / Theme Setup
+// Global Head / Theme Setup
 const { isDark } = useTheme()
+
+// Login Modal Logic
+const loginModal = ref<any>(null)
+
+const handleKeydown = (e: KeyboardEvent) => {
+  // Ignore if user is typing in an input/textarea
+  if (['INPUT', 'TEXTAREA'].includes((e.target as HTMLElement).tagName)) return
+  // Ignore if command/ctrl key is pressed
+  if (e.metaKey || e.ctrlKey || e.altKey) return
+
+  if (e.key.toLowerCase() === 'l') {
+    loginModal.value?.open()
+  }
+}
+
+onMounted(() => {
+  window.addEventListener('keydown', handleKeydown)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeydown)
+})
 
 useHead({
   bodyAttrs: {

@@ -5,8 +5,13 @@ export default defineNuxtConfig({
     devtools: { enabled: true },
     components: true,
     modules: [
-        '@tresjs/nuxt'
+        '@tresjs/nuxt',
+        '@nuxtjs/supabase'
     ],
+    supabase: {
+        redirect: false,
+        typesPath: './types/database.types.ts'
+    },
     css: ['~/assets/css/main.css'],
     app: {
         head: {
@@ -16,9 +21,8 @@ export default defineNuxtConfig({
             meta: [
                 { charset: 'utf-8' },
                 { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-                { name: 'description', content: 'C-Suite Senior Product Designer & Design Engineer. Specializing in Web3, Fintech, and SaaS with a focus on HCD and premium UI.' },
                 { name: 'author', content: 'Lanre Segun' },
-                { name: 'description', content: 'Design Engineer specializing in premium interactive interfaces and high-performance web applications.' },
+                { name: 'description', content: 'C-Suite Senior Product Designer & Design Engineer. Specializing in Web3, Fintech, and SaaS with a focus on HCD and premium UI.' },
                 // Open Graph
                 { property: 'og:type', content: 'website' },
                 { property: 'og:title', content: 'Lanre Segun - Senior Product Designer Portfolio' },
@@ -54,6 +58,9 @@ export default defineNuxtConfig({
         plugins: [
             tailwindcss(),
         ],
+        css: {
+            devSourcemap: true,
+        },
     },
     build: {
         transpile: ['gsap', 'three', '@vueuse/sound']

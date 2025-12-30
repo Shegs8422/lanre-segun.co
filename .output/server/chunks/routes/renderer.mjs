@@ -1,8 +1,9 @@
 import { createRenderer, getRequestDependencies, getPreloadLinks, getPrefetchLinks } from 'vue-bundle-renderer/runtime';
-import { j as joinRelativeURL, u as useRuntimeConfig, g as getResponseStatusText, c as getResponseStatus, e as defineRenderHandler, f as getQuery, h as createError, d as destr, i as getRouteRules, b as useNitroApp } from '../_/nitro.mjs';
+import { j as joinRelativeURL, u as useRuntimeConfig, g as getResponseStatusText, h as getResponseStatus, i as defineRenderHandler, k as getQuery, f as createError, d as destr, l as getRouteRules, b as useNitroApp } from '../_/nitro.mjs';
 import { renderToString } from 'vue/server-renderer';
 import { createHead as createHead$1, propsToString, renderSSRHead } from 'unhead/server';
 import { stringify, uneval } from 'devalue';
+import { FlatMetaPlugin } from 'unhead/plugins';
 import { walkResolver } from 'unhead/utils';
 import { toValue, isRef, hasInjectionContext, inject, ref, watchEffect, getCurrentInstance, onBeforeUnmount, onDeactivated, onActivated } from 'vue';
 
@@ -63,6 +64,16 @@ function clientUseHead(head, input, options = {}) {
   }
   return entry;
 }
+function useSeoMeta(input = {}, options = {}) {
+  const head = options.head || /* @__PURE__ */ injectHead();
+  head.use(FlatMetaPlugin);
+  const { title, titleTemplate, ...meta } = input;
+  return useHead({
+    title,
+    titleTemplate,
+    _flatMeta: meta
+  }, options);
+}
 
 // @__NO_SIDE_EFFECTS__
 function createHead(options = {}) {
@@ -74,7 +85,7 @@ function createHead(options = {}) {
   return head;
 }
 
-const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"name":"description","content":"C-Suite Senior Product Designer & Design Engineer. Specializing in Web3, Fintech, and SaaS with a focus on HCD and premium UI."},{"name":"author","content":"Lanre Segun"},{"name":"description","content":"Design Engineer specializing in premium interactive interfaces and high-performance web applications."},{"property":"og:type","content":"website"},{"property":"og:title","content":"Lanre Segun - Senior Product Designer Portfolio"},{"property":"og:description","content":"Interactive portfolio of Lanre Segun, exploring the intersection of design and engineering."},{"property":"og:image","content":"/og-image.png"},{"property":"og:url","content":"https://lanre-segun.vercel.app"},{"name":"twitter:card","content":"summary_large_image"},{"name":"twitter:title","content":"Lanre Segun - Senior Product Designer"},{"name":"twitter:description","content":"Strategic Product Designer bridging complex engineering and premium UI."},{"name":"twitter:image","content":"/og-image.png"},{"name":"twitter:creator","content":"@Olusegun51"}],"link":[{"rel":"canonical","href":"https://lanre-segun.vercel.app"},{"rel":"preconnect","href":"https://fonts.googleapis.com"},{"rel":"preconnect","href":"https://fonts.gstatic.com","crossorigin":""},{"rel":"stylesheet","href":"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=DM+Mono:wght@400;500&display=swap"}],"style":[],"script":[],"noscript":[],"htmlAttrs":{"lang":"en"}};
+const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"name":"author","content":"Lanre Segun"},{"name":"description","content":"C-Suite Senior Product Designer & Design Engineer. Specializing in Web3, Fintech, and SaaS with a focus on HCD and premium UI."},{"property":"og:type","content":"website"},{"property":"og:title","content":"Lanre Segun - Senior Product Designer Portfolio"},{"property":"og:description","content":"Interactive portfolio of Lanre Segun, exploring the intersection of design and engineering."},{"property":"og:image","content":"/og-image.png"},{"property":"og:url","content":"https://lanre-segun.vercel.app"},{"name":"twitter:card","content":"summary_large_image"},{"name":"twitter:title","content":"Lanre Segun - Senior Product Designer"},{"name":"twitter:description","content":"Strategic Product Designer bridging complex engineering and premium UI."},{"name":"twitter:image","content":"/og-image.png"},{"name":"twitter:creator","content":"@Olusegun51"}],"link":[{"rel":"canonical","href":"https://lanre-segun.vercel.app"},{"rel":"preconnect","href":"https://fonts.googleapis.com"},{"rel":"preconnect","href":"https://fonts.gstatic.com","crossorigin":""},{"rel":"stylesheet","href":"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=DM+Mono:wght@400;500&display=swap"}],"style":[],"script":[],"noscript":[],"htmlAttrs":{"lang":"en"}};
 
 const appRootTag = "div";
 
@@ -426,5 +437,5 @@ const renderer$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty
   default: renderer
 }, Symbol.toStringTag, { value: 'Module' }));
 
-export { baseURL as b, headSymbol as h, publicAssetsURL as p, renderer$1 as r, useHead as u };
+export { useHead as a, baseURL as b, headSymbol as h, publicAssetsURL as p, renderer$1 as r, useSeoMeta as u };
 //# sourceMappingURL=renderer.mjs.map

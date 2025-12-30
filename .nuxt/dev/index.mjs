@@ -3,7 +3,7 @@ import { Server } from 'node:http';
 import { resolve, dirname, join } from 'node:path';
 import nodeCrypto from 'node:crypto';
 import { parentPort, threadId } from 'node:worker_threads';
-import { defineEventHandler, handleCacheHeaders, splitCookiesString, createEvent, fetchWithEvent, isEvent, eventHandler, setHeaders, sendRedirect, proxyRequest, getRequestHeader, setResponseHeaders, setResponseStatus, send, getRequestHeaders, setResponseHeader, appendResponseHeader, getRequestURL, getResponseHeader, removeResponseHeader, createError, getQuery as getQuery$1, readBody, createApp, createRouter as createRouter$1, toNodeListener, lazyEventHandler, getResponseStatus, getRouterParam, getResponseStatusText } from 'file://C:/Users/Lanre%20Segun/Desktop/Investors/node_modules/h3/dist/index.mjs';
+import { defineEventHandler, handleCacheHeaders, splitCookiesString, createEvent, fetchWithEvent, isEvent, eventHandler, setHeaders, sendRedirect, proxyRequest, getRequestHeader, setResponseHeaders, setResponseStatus, send, getRequestHeaders, setResponseHeader, appendResponseHeader, getRequestURL, getResponseHeader, removeResponseHeader, createError, getQuery as getQuery$1, readBody, createApp, createRouter as createRouter$1, toNodeListener, lazyEventHandler, getResponseStatus, getRouterParam, setCookie, getResponseStatusText } from 'file://C:/Users/Lanre%20Segun/Desktop/Investors/node_modules/h3/dist/index.mjs';
 import { escapeHtml } from 'file://C:/Users/Lanre%20Segun/Desktop/Investors/node_modules/@vue/shared/dist/shared.cjs.js';
 import { createRenderer, getRequestDependencies, getPreloadLinks, getPrefetchLinks } from 'file://C:/Users/Lanre%20Segun/Desktop/Investors/node_modules/vue-bundle-renderer/dist/runtime.mjs';
 import { parseURL, withoutBase, joinURL, getQuery, withQuery, withTrailingSlash, decodePath, withLeadingSlash, withoutTrailingSlash, joinRelativeURL } from 'file://C:/Users/Lanre%20Segun/Desktop/Investors/node_modules/ufo/dist/index.mjs';
@@ -647,7 +647,33 @@ const _inlineRuntimeConfig = {
       }
     }
   },
-  "public": {}
+  "public": {
+    "supabase": {
+      "url": "https://ivbkynuqdngkmjoqvrgt.supabase.co",
+      "key": "sb_publishable_dv1geqSyCnvLauUUX58-tg_OKFF0KZc",
+      "redirect": false,
+      "redirectOptions": {
+        "login": "/login",
+        "callback": "/confirm",
+        "exclude": [],
+        "cookieRedirect": false,
+        "saveRedirectToCookie": false
+      },
+      "cookieName": "sb",
+      "cookiePrefix": "sb-ivbkynuqdngkmjoqvrgt-auth-token",
+      "useSsrCookies": true,
+      "cookieOptions": {
+        "maxAge": 28800,
+        "sameSite": "lax",
+        "secure": true
+      },
+      "clientOptions": {}
+    }
+  },
+  "supabase": {
+    "serviceKey": "",
+    "secretKey": ""
+  }
 };
 const envOptions = {
   prefix: "NITRO_",
@@ -1359,7 +1385,7 @@ const _uWot3k5bg4klsAQsQ7WC8xQFDN1c6GuBGpQaB_Py83o = (function(nitro) {
 
 const rootDir = "C:/Users/Lanre Segun/Desktop/Investors";
 
-const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"name":"description","content":"C-Suite Senior Product Designer & Design Engineer. Specializing in Web3, Fintech, and SaaS with a focus on HCD and premium UI."},{"name":"author","content":"Lanre Segun"},{"name":"description","content":"Design Engineer specializing in premium interactive interfaces and high-performance web applications."},{"property":"og:type","content":"website"},{"property":"og:title","content":"Lanre Segun - Senior Product Designer Portfolio"},{"property":"og:description","content":"Interactive portfolio of Lanre Segun, exploring the intersection of design and engineering."},{"property":"og:image","content":"/og-image.png"},{"property":"og:url","content":"https://lanre-segun.vercel.app"},{"name":"twitter:card","content":"summary_large_image"},{"name":"twitter:title","content":"Lanre Segun - Senior Product Designer"},{"name":"twitter:description","content":"Strategic Product Designer bridging complex engineering and premium UI."},{"name":"twitter:image","content":"/og-image.png"},{"name":"twitter:creator","content":"@Olusegun51"}],"link":[{"rel":"canonical","href":"https://lanre-segun.vercel.app"},{"rel":"preconnect","href":"https://fonts.googleapis.com"},{"rel":"preconnect","href":"https://fonts.gstatic.com","crossorigin":""},{"rel":"stylesheet","href":"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=DM+Mono:wght@400;500&display=swap"}],"style":[],"script":[],"noscript":[],"htmlAttrs":{"lang":"en"}};
+const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"name":"author","content":"Lanre Segun"},{"name":"description","content":"C-Suite Senior Product Designer & Design Engineer. Specializing in Web3, Fintech, and SaaS with a focus on HCD and premium UI."},{"property":"og:type","content":"website"},{"property":"og:title","content":"Lanre Segun - Senior Product Designer Portfolio"},{"property":"og:description","content":"Interactive portfolio of Lanre Segun, exploring the intersection of design and engineering."},{"property":"og:image","content":"/og-image.png"},{"property":"og:url","content":"https://lanre-segun.vercel.app"},{"name":"twitter:card","content":"summary_large_image"},{"name":"twitter:title","content":"Lanre Segun - Senior Product Designer"},{"name":"twitter:description","content":"Strategic Product Designer bridging complex engineering and premium UI."},{"name":"twitter:image","content":"/og-image.png"},{"name":"twitter:creator","content":"@Olusegun51"}],"link":[{"rel":"canonical","href":"https://lanre-segun.vercel.app"},{"rel":"preconnect","href":"https://fonts.googleapis.com"},{"rel":"preconnect","href":"https://fonts.gstatic.com","crossorigin":""},{"rel":"stylesheet","href":"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=DM+Mono:wght@400;500&display=swap"}],"style":[],"script":[],"noscript":[],"htmlAttrs":{"lang":"en"}};
 
 const appRootTag = "div";
 
@@ -1864,10 +1890,12 @@ async function getIslandContext(event) {
   return ctx;
 }
 
+const _lazy_4eOPQ_ = () => Promise.resolve().then(function () { return auth_post$1; });
 const _lazy_GSkdT3 = () => Promise.resolve().then(function () { return renderer$1; });
 
 const handlers = [
   { route: '', handler: _A4G_Ri, lazy: false, middleware: true, method: undefined },
+  { route: '/api/auth', handler: _lazy_4eOPQ_, lazy: true, middleware: false, method: "post" },
   { route: '/__nuxt_error', handler: _lazy_GSkdT3, lazy: true, middleware: false, method: undefined },
   { route: '/__nuxt_island/**', handler: _SxA8c9, lazy: false, middleware: false, method: undefined },
   { route: '/**', handler: _lazy_GSkdT3, lazy: true, middleware: false, method: undefined }
@@ -2199,6 +2227,33 @@ const styles = {};
 const styles$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   __proto__: null,
   default: styles
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const auth_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  const password = body.password;
+  const CORRECT_PASSWORD = process.env.CMS_PASSWORD || "admin123";
+  if (password === CORRECT_PASSWORD) {
+    setCookie(event, "auth_token", "logged-in-secret-token", {
+      httpOnly: false,
+      // Allow client JS to read for UI state if needed, but better true for security. 
+      // For this simple case, we might check cookie existence in middleware.
+      maxAge: 60 * 60 * 24 * 7,
+      // 1 week
+      path: "/"
+    });
+    return { success: true };
+  } else {
+    throw createError({
+      statusCode: 401,
+      statusMessage: "Unauthorized"
+    });
+  }
+});
+
+const auth_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: auth_post
 }, Symbol.toStringTag, { value: 'Module' }));
 
 function renderPayloadResponse(ssrContext) {

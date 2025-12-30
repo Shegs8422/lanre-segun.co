@@ -1,8 +1,9 @@
-import process from 'node:process';globalThis._importMeta_=globalThis._importMeta_||{url:"file:///_entry.js",env:process.env};import { defineComponent, shallowRef, getCurrentInstance, provide, cloneVNode, h, createElementBlock, hasInjectionContext, inject, toRef, isRef, ref, Suspense, Fragment, useSSRContext, createApp, reactive, shallowReactive, computed, mergeProps, withCtx, createTextVNode, createVNode, resolveDynamicComponent, Transition, createBlock, openBlock, onErrorCaptured, onServerPrefetch, unref, effectScope, isReadonly, isShallow, isReactive, toRaw, defineAsyncComponent, getCurrentScope } from 'vue';
-import { k as hasProtocol, l as isScriptProtocol, m as joinURL, w as withQuery, n as sanitizeStatusCode, o as getContext, $ as $fetch, p as createHooks, q as executeAsync, h as createError$1, r as toRouteMatcher, v as createRouter$1, x as defu } from '../_/nitro.mjs';
-import { u as useHead$1, h as headSymbol, b as baseURL } from '../routes/renderer.mjs';
+import process from 'node:process';globalThis._importMeta_=globalThis._importMeta_||{url:"file:///_entry.js",env:process.env};import { defineComponent, hasInjectionContext, inject, shallowRef, getCurrentInstance, provide, cloneVNode, h, createElementBlock, toRef, isRef, ref, Suspense, Fragment, useSSRContext, createApp, reactive, shallowReactive, unref, mergeProps, computed, withCtx, createTextVNode, createVNode, resolveDynamicComponent, Transition, createBlock, openBlock, onErrorCaptured, onServerPrefetch, effectScope, isReadonly, isShallow, isReactive, toRaw, nextTick, defineAsyncComponent, getCurrentScope } from 'vue';
+import { m as hasProtocol, n as isScriptProtocol, o as joinURL, w as withQuery, p as sanitizeStatusCode, q as getContext, $ as $fetch, v as createHooks, x as executeAsync, y as getHeader, f as createError$1, z as toRouteMatcher, A as createRouter$1, B as defu, e as setCookie, d as destr, C as klona, D as parse, E as getRequestHeader, F as isEqual, G as getCookie, H as deleteCookie } from '../_/nitro.mjs';
+import { u as useSeoMeta$1, a as useHead$1, h as headSymbol, b as baseURL } from '../routes/renderer.mjs';
 import { RouterView, createMemoryHistory, createRouter, START_LOCATION } from 'vue-router';
-import { ssrRenderAttrs, ssrRenderComponent, ssrRenderVNode, ssrRenderSuspense } from 'vue/server-renderer';
+import { createServerClient, parseCookieHeader } from '@supabase/ssr';
+import { ssrRenderAttrs, ssrRenderAttr, ssrInterpolate, ssrIncludeBooleanAttr, ssrRenderComponent, ssrRenderVNode, ssrRenderSuspense } from 'vue/server-renderer';
 import 'node:http';
 import 'node:https';
 import 'node:events';
@@ -14,6 +15,7 @@ import 'node:url';
 import 'vue-bundle-renderer/runtime';
 import 'unhead/server';
 import 'devalue';
+import 'unhead/plugins';
 import 'unhead/utils';
 
 if (!globalThis.$fetch) {
@@ -382,24 +384,34 @@ async function getRouteRules(arg) {
 }
 const _routes = [
   {
+    name: "cms",
+    path: "/cms",
+    component: () => import('./cms-OBNYRdWK.mjs')
+  },
+  {
     name: "craft",
     path: "/craft",
-    component: () => import('./craft-Cs7fmBx3.mjs')
+    component: () => import('./craft-CMo6_GN4.mjs')
   },
   {
     name: "index",
     path: "/",
-    component: () => import('./index-p7rHz1Ro.mjs')
+    component: () => import('./index-CDU7-FZR.mjs')
+  },
+  {
+    name: "notes",
+    path: "/notes",
+    component: () => import('./notes-Cx-Tbzjb.mjs')
   },
   {
     name: "projects",
     path: "/projects",
-    component: () => import('./index-BL-dJM6c.mjs')
+    component: () => import('./index-COMyfeTT.mjs')
   },
   {
     name: "projects-slug",
     path: "/projects/:slug()",
-    component: () => import('./_slug_-BPxxyx06.mjs')
+    component: () => import('./_slug_-CNxH7uQY.mjs')
   }
 ];
 const ROUTE_KEY_PARENTHESES_RE = /(:\w+)\([^)]+\)/g;
@@ -507,6 +519,95 @@ const validate = /* @__PURE__ */ defineNuxtRouteMiddleware(async (to, from) => {
   });
   return error;
 });
+function injectHead(nuxtApp) {
+  const nuxt = nuxtApp || useNuxtApp();
+  return nuxt.ssrContext?.head || nuxt.runWithContext(() => {
+    if (hasInjectionContext()) {
+      const head = inject(headSymbol);
+      if (!head) {
+        throw new Error("[nuxt] [unhead] Missing Unhead instance.");
+      }
+      return head;
+    }
+  });
+}
+function useHead(input, options = {}) {
+  const head = options.head || injectHead(options.nuxt);
+  return useHead$1(input, { head, ...options });
+}
+function useSeoMeta(input, options = {}) {
+  const head = options.head || injectHead(options.nuxt);
+  return useSeoMeta$1(input, { head, ...options });
+}
+function useRequestEvent(nuxtApp) {
+  nuxtApp ||= useNuxtApp();
+  return nuxtApp.ssrContext?.event;
+}
+const CookieDefaults = {
+  path: "/",
+  watch: true,
+  decode: (val) => destr(decodeURIComponent(val)),
+  encode: (val) => encodeURIComponent(typeof val === "string" ? val : JSON.stringify(val))
+};
+function useCookie(name, _opts) {
+  const opts = { ...CookieDefaults, ..._opts };
+  opts.filter ??= (key) => key === name;
+  const cookies = readRawCookies(opts) || {};
+  let delay;
+  if (opts.maxAge !== void 0) {
+    delay = opts.maxAge * 1e3;
+  } else if (opts.expires) {
+    delay = opts.expires.getTime() - Date.now();
+  }
+  const hasExpired = delay !== void 0 && delay <= 0;
+  const cookieValue = klona(hasExpired ? void 0 : cookies[name] ?? opts.default?.());
+  const cookie = ref(cookieValue);
+  {
+    const nuxtApp = useNuxtApp();
+    const writeFinalCookieValue = () => {
+      if (opts.readonly || isEqual(cookie.value, cookies[name])) {
+        return;
+      }
+      nuxtApp._cookies ||= {};
+      if (name in nuxtApp._cookies) {
+        if (isEqual(cookie.value, nuxtApp._cookies[name])) {
+          return;
+        }
+      }
+      nuxtApp._cookies[name] = cookie.value;
+      writeServerCookie(useRequestEvent(nuxtApp), name, cookie.value, opts);
+    };
+    const unhook = nuxtApp.hooks.hookOnce("app:rendered", writeFinalCookieValue);
+    nuxtApp.hooks.hookOnce("app:error", () => {
+      unhook();
+      return writeFinalCookieValue();
+    });
+  }
+  return cookie;
+}
+function readRawCookies(opts = {}) {
+  {
+    return parse(getRequestHeader(useRequestEvent(), "cookie") || "", opts);
+  }
+}
+function writeServerCookie(event, name, value, opts = {}) {
+  if (event) {
+    if (value !== null && value !== void 0) {
+      return setCookie(event, name, value, opts);
+    }
+    if (getCookie(event, name) !== void 0) {
+      return deleteCookie(event, name, opts);
+    }
+  }
+}
+const auth_45global = /* @__PURE__ */ defineNuxtRouteMiddleware((to, from) => {
+  if (to.path.startsWith("/cms")) {
+    const authCookie = useCookie("auth_token");
+    if (!authCookie.value) {
+      return navigateTo("/");
+    }
+  }
+});
 const manifest_45route_45rule = /* @__PURE__ */ defineNuxtRouteMiddleware(async (to) => {
   {
     return;
@@ -514,6 +615,7 @@ const manifest_45route_45rule = /* @__PURE__ */ defineNuxtRouteMiddleware(async 
 });
 const globalMiddleware = [
   validate,
+  auth_45global,
   manifest_45route_45rule
 ];
 const namedMiddleware = {};
@@ -712,22 +814,140 @@ const plugin = /* @__PURE__ */ defineNuxtPlugin({
     return { provide: { router } };
   }
 });
-function injectHead(nuxtApp) {
-  const nuxt = nuxtApp || useNuxtApp();
-  return nuxt.ssrContext?.head || nuxt.runWithContext(() => {
-    if (hasInjectionContext()) {
-      const head = inject(headSymbol);
-      if (!head) {
-        throw new Error("[nuxt] [unhead] Missing Unhead instance.");
+async function fetchWithRetry(req, init4) {
+  const retries = 3;
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      return await fetch(req, init4);
+    } catch (error) {
+      if (init4?.signal?.aborted) {
+        throw error;
       }
-      return head;
+      if (attempt === retries) {
+        console.error(`Error fetching request ${req}`, error, init4);
+        throw error;
+      }
+      console.warn(`Retrying fetch attempt ${attempt + 1} for request: ${req}`);
+      await new Promise((resolve) => setTimeout(resolve, 100 * attempt));
     }
-  });
+  }
+  throw new Error("Unreachable code");
 }
-function useHead(input, options = {}) {
-  const head = options.head || injectHead(options.nuxt);
-  return useHead$1(input, { head, ...options });
+function setCookies(event, cookies) {
+  const response = event.node.res;
+  const headersWritable = () => !response.headersSent && !response.writableEnded;
+  if (!headersWritable()) {
+    return;
+  }
+  for (const { name, value, options } of cookies) {
+    if (!headersWritable()) {
+      break;
+    }
+    setCookie(event, name, value, options);
+  }
 }
+const serverSupabaseClient = async (event) => {
+  if (!event.context._supabaseClient) {
+    const { url, key, cookiePrefix, cookieOptions, clientOptions: { auth = {}, global = {} } } = (/* @__PURE__ */ useRuntimeConfig()).public.supabase;
+    event.context._supabaseClient = createServerClient(url, key, {
+      auth,
+      cookies: {
+        getAll: () => parseCookieHeader(getHeader(event, "Cookie") ?? ""),
+        setAll: (cookies) => setCookies(event, cookies)
+      },
+      cookieOptions: {
+        ...cookieOptions,
+        name: cookiePrefix
+      },
+      global: {
+        fetch: fetchWithRetry,
+        ...global
+      }
+    });
+  }
+  return event.context._supabaseClient;
+};
+const serverSupabaseUser = async (event) => {
+  const client = await serverSupabaseClient(event);
+  const { data, error } = await client.auth.getClaims();
+  if (error) {
+    throw createError$1({ statusMessage: error?.message });
+  }
+  return data?.claims ?? null;
+};
+const serverSupabaseSession = async (event) => {
+  const client = await serverSupabaseClient(event);
+  const { data: { session }, error } = await client.auth.getSession();
+  if (error) {
+    throw createError$1({ statusMessage: error?.message });
+  }
+  delete session?.user;
+  return session;
+};
+const useStateKeyPrefix = "$s";
+function useState(...args) {
+  const autoKey = typeof args[args.length - 1] === "string" ? args.pop() : void 0;
+  if (typeof args[0] !== "string") {
+    args.unshift(autoKey);
+  }
+  const [_key, init4] = args;
+  if (!_key || typeof _key !== "string") {
+    throw new TypeError("[nuxt] [useState] key must be a string: " + _key);
+  }
+  if (init4 !== void 0 && typeof init4 !== "function") {
+    throw new Error("[nuxt] [useState] init must be a function: " + init4);
+  }
+  const key = useStateKeyPrefix + _key;
+  const nuxtApp = useNuxtApp();
+  const state = toRef(nuxtApp.payload.state, key);
+  if (state.value === void 0 && init4) {
+    const initialValue = init4();
+    if (isRef(initialValue)) {
+      nuxtApp.payload.state[key] = initialValue;
+      return initialValue;
+    }
+    state.value = initialValue;
+  }
+  return state;
+}
+const useSupabaseSession = () => useState("supabase_session", () => null);
+const useSupabaseUser = () => useState("supabase_user", () => null);
+const supabase_server_NZuw_NDm2ZtOgvg4QqXN_Xqdg_KPvGuBBWKrLH15GWY = /* @__PURE__ */ defineNuxtPlugin({
+  name: "supabase",
+  enforce: "pre",
+  async setup({ provide: provide2 }) {
+    let __temp, __restore;
+    const { url, key, cookiePrefix, useSsrCookies, cookieOptions, clientOptions } = (/* @__PURE__ */ useRuntimeConfig()).public.supabase;
+    const event = useRequestEvent();
+    const client = createServerClient(url, key, {
+      ...clientOptions,
+      cookies: {
+        getAll: () => parseCookieHeader(getHeader(event, "Cookie") ?? ""),
+        setAll: (cookies) => setCookies(event, cookies)
+      },
+      cookieOptions: {
+        ...cookieOptions,
+        name: cookiePrefix
+      },
+      global: {
+        fetch: fetchWithRetry,
+        ...clientOptions.global
+      }
+    });
+    provide2("supabase", { client });
+    if (useSsrCookies) {
+      const [
+        session,
+        user
+      ] = ([__temp, __restore] = executeAsync(() => Promise.all([
+        serverSupabaseSession(event).catch(() => null),
+        serverSupabaseUser(event).catch(() => null)
+      ])), __temp = await __temp, __restore(), __temp);
+      useSupabaseSession().value = session;
+      useSupabaseUser().value = user;
+    }
+  }
+});
 function definePayloadReducer(name, reduce) {
   {
     useNuxtApp().ssrContext._payloadReducers[name] = reduce;
@@ -756,6 +976,7 @@ const components_plugin_4kY4pyzJIYX99vmMAAIorFf3CnAaptHitJgf7JxiED8 = /* @__PURE
 const plugins = [
   unhead_k2P3m_ZDyjlr2mMYnoDPwavjsDN8hBlk9cFai0bbopU,
   plugin,
+  supabase_server_NZuw_NDm2ZtOgvg4QqXN_Xqdg_KPvGuBBWKrLH15GWY,
   revive_payload_server_MVtmlZaQpj6ApFmshWfUWl5PehCebzaBf2NuRMiIbms,
   components_plugin_4kY4pyzJIYX99vmMAAIorFf3CnAaptHitJgf7JxiED8
 ];
@@ -1158,6 +1379,52 @@ function normalizeSlot(slot, data) {
   const slotContent = slot(data);
   return slotContent.length === 1 ? h(slotContent[0]) : h(Fragment, void 0, slotContent);
 }
+const _sfc_main$3 = /* @__PURE__ */ defineComponent({
+  __name: "LoginModal",
+  __ssrInlineRender: true,
+  setup(__props, { expose: __expose }) {
+    const isOpen = ref(false);
+    const password = ref("");
+    const error = ref("");
+    const loading = ref(false);
+    const passwordInput = ref(null);
+    useRouter();
+    const open = () => {
+      isOpen.value = true;
+      nextTick(() => {
+        passwordInput.value?.focus();
+      });
+    };
+    __expose({ open });
+    return (_ctx, _push, _parent, _attrs) => {
+      if (unref(isOpen)) {
+        _push(`<div${ssrRenderAttrs(mergeProps({ class: "fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm" }, _attrs))} data-v-aff80015><div class="bg-neutral-900 border border-neutral-800 p-8 rounded-2xl w-full max-w-sm shadow-2xl relative" data-v-aff80015><button class="absolute top-4 right-4 text-neutral-500 hover:text-white" data-v-aff80015><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-v-aff80015><line x1="18" y1="6" x2="6" y2="18" data-v-aff80015></line><line x1="6" y1="6" x2="18" y2="18" data-v-aff80015></line></svg></button><h2 class="text-xl font-bold text-white mb-6" data-v-aff80015>Restricted Access</h2><form class="flex flex-col gap-4" data-v-aff80015><input${ssrRenderAttr("value", unref(password))} type="password" placeholder="Enter password..." class="bg-black/50 border border-neutral-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-blue-500 transition-colors" data-v-aff80015><button type="submit" class="bg-white text-black font-medium py-3 rounded-lg hover:bg-neutral-200 transition-colors"${ssrIncludeBooleanAttr(unref(loading)) ? " disabled" : ""} data-v-aff80015>${ssrInterpolate(unref(loading) ? "Checking..." : "Enter CMS")}</button></form>`);
+        if (unref(error)) {
+          _push(`<p class="text-red-500 text-sm mt-4 text-center" data-v-aff80015>${ssrInterpolate(unref(error))}</p>`);
+        } else {
+          _push(`<!---->`);
+        }
+        _push(`</div></div>`);
+      } else {
+        _push(`<!---->`);
+      }
+    };
+  }
+});
+const _export_sfc = (sfc, props) => {
+  const target = sfc.__vccOpts || sfc;
+  for (const [key, val] of props) {
+    target[key] = val;
+  }
+  return target;
+};
+const _sfc_setup$3 = _sfc_main$3.setup;
+_sfc_main$3.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("components/LoginModal.vue");
+  return _sfc_setup$3 ? _sfc_setup$3(props, ctx) : void 0;
+};
+const LoginModal = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$3, [["__scopeId", "data-v-aff80015"]]), { __name: "LoginModal" });
 function _assertThisInitialized(self) {
   if (self === void 0) {
     throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
@@ -5142,32 +5409,6 @@ _forEachName("x,y,z,top,right,bottom,left,width,height,fontSize,padding,margin,p
 gsap.registerPlugin(CSSPlugin);
 var gsapWithCSS = gsap.registerPlugin(CSSPlugin) || gsap;
 gsapWithCSS.core.Tween;
-const useStateKeyPrefix = "$s";
-function useState(...args) {
-  const autoKey = typeof args[args.length - 1] === "string" ? args.pop() : void 0;
-  if (typeof args[0] !== "string") {
-    args.unshift(autoKey);
-  }
-  const [_key, init4] = args;
-  if (!_key || typeof _key !== "string") {
-    throw new TypeError("[nuxt] [useState] key must be a string: " + _key);
-  }
-  if (init4 !== void 0 && typeof init4 !== "function") {
-    throw new Error("[nuxt] [useState] init must be a function: " + init4);
-  }
-  const key = useStateKeyPrefix + _key;
-  const nuxtApp = useNuxtApp();
-  const state = toRef(nuxtApp.payload.state, key);
-  if (state.value === void 0 && init4) {
-    const initialValue = init4();
-    if (isRef(initialValue)) {
-      nuxtApp.payload.state[key] = initialValue;
-      return initialValue;
-    }
-    state.value = initialValue;
-  }
-  return state;
-}
 const useTheme = () => {
   const isDark = useState("theme", () => true);
   const toggleTheme = () => {
@@ -5212,6 +5453,7 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
       });
     };
     const { isDark } = useTheme();
+    const loginModal = ref(null);
     useHead({
       bodyAttrs: {
         class: "bg-background"
@@ -5318,7 +5560,12 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
         }),
         _: 1
       }, _parent));
-      _push(`<div id="theme-toggle-script"></div></div>`);
+      _push(`<div id="theme-toggle-script"></div>`);
+      _push(ssrRenderComponent(LoginModal, {
+        ref_key: "loginModal",
+        ref: loginModal
+      }, null, _parent));
+      _push(`</div>`);
     };
   }
 });
@@ -5342,8 +5589,8 @@ const _sfc_main$1 = {
     const statusMessage = _error.statusMessage ?? (is404 ? "Page Not Found" : "Internal Server Error");
     const description = _error.message || _error.toString();
     const stack = void 0;
-    const _Error404 = defineAsyncComponent(() => import('./error-404-gtc_T4iA.mjs'));
-    const _Error = defineAsyncComponent(() => import('./error-500-BFdOq9Ee.mjs'));
+    const _Error404 = defineAsyncComponent(() => import('./error-404-D2Vq58m8.mjs'));
+    const _Error = defineAsyncComponent(() => import('./error-500-Ct-IS5Op.mjs'));
     const ErrorTemplate = is404 ? _Error404 : _Error;
     return (_ctx, _push, _parent, _attrs) => {
       _push(ssrRenderComponent(unref(ErrorTemplate), mergeProps({ statusCode: unref(statusCode), statusMessage: unref(statusMessage), description: unref(description), stack: unref(stack) }, _attrs), null, _parent));
@@ -5424,5 +5671,5 @@ let entry;
 }
 const entry_default = (ssrContext) => entry(ssrContext);
 
-export { __nuxt_component_0 as _, useTheme as a, useRoute as b, useRouter as c, useNuxtApp as d, entry_default as default, useRuntimeConfig as e, nuxtLinkDefaults as f, navigateTo as n, resolveRouteObject as r, useHead as u };
+export { _export_sfc as _, useSeoMeta as a, useTheme as b, useRoute as c, __nuxt_component_0 as d, entry_default as default, useState as e, useRouter as f, useNuxtApp as g, useRuntimeConfig as h, nuxtLinkDefaults as i, navigateTo as n, resolveRouteObject as r, useHead as u };
 //# sourceMappingURL=server.mjs.map
