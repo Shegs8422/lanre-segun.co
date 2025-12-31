@@ -324,12 +324,13 @@
             <div
                 class="relative w-full h-full max-w-7xl bg-[#1e1e1e] rounded-3xl overflow-hidden border border-white/10 flex flex-col shadow-2xl animate-modal-in">
                 <!-- Modal Header -->
-                <div class="flex items-center justify-between p-6 border-b border-white/5 order-last md:order-first">
+                <div class="flex items-center justify-between p-6 border-b border-white/5 bg-[#1A1A1A] relative z-10">
                     <div class="flex flex-col">
-                        <h3 class="text-lg font-bold">{{ project.title }} Prototype</h3>
-                        <p class="text-xs text-muted-foreground">Interactive Figma Preview</p>
+                        <h3 class="text-lg font-bold text-white">{{ project.title }} Prototype</h3>
+                        <p class="text-xs text-white/50">Interactive Figma Preview</p>
                     </div>
-                    <button @click="showPrototype = false" class="p-3 hover:bg-white/5 rounded-full transition-colors">
+                    <button @click="showPrototype = false"
+                        class="p-3 hover:bg-white/5 rounded-full transition-colors text-white">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -339,9 +340,20 @@
                 </div>
 
                 <!-- Iframe Container -->
-                <div class="flex-1 w-full relative bg-black">
-                    <iframe :src="formattedLink" class="absolute inset-0 w-full h-full border-0"
-                        allowfullscreen></iframe>
+                <div class="flex-1 w-full relative bg-black flex items-center justify-center overflow-hidden">
+                    <!-- Loading Spinner -->
+                    <div class="absolute inset-0 flex flex-col items-center justify-center gap-4 z-0">
+                        <div class="w-10 h-10 border-4 border-white/10 border-t-blue-500 rounded-full animate-spin">
+                        </div>
+                        <p class="text-[10px] text-white/30 uppercase tracking-[0.2em] font-bold">Initializing Preview
+                        </p>
+                    </div>
+
+                    <iframe v-if="formattedLink" :src="formattedLink"
+                        class="absolute inset-0 w-full h-full border-0 z-10"
+                        allow="autoplay; clipboard-write; draw-viewer; encrypted-media; fullscreen; picture-in-picture"
+                        allowfullscreen loading="lazy">
+                    </iframe>
                 </div>
 
                 <!-- Mobile Close (Extra) -->
@@ -375,7 +387,11 @@ const formattedLink = computed(() => {
     // Support for full iframe embed codes (extract src URL)
     if (raw.includes('<iframe')) {
         const match = raw.match(/src="([^"]+)"/)
-        if (match && match[1]) raw = match[1]
+        if (match && match[1]) {
+            raw = match[1]
+            // Unescape common HTML entities like &amp; often found in figma embed codes
+            raw = raw.replace(/&amp;/g, '&')
+        }
     }
 
     let link = raw.trim()
