@@ -179,7 +179,7 @@
                                         {{ item.title }}</h3>
                                     <div class="flex items-center gap-2 text-xs font-medium text-muted-foreground">
                                         <span class="px-2 py-0.5 bg-muted rounded uppercase tracking-wider">{{ item.year
-                                            }}</span>
+                                        }}</span>
                                         <span class="opacity-40">•</span>
                                         <span class="font-mono">{{ item.slug }}</span>
                                     </div>
@@ -316,12 +316,12 @@
                                         (Card Preview)</label>
                                     <button type="button"
                                         @click="openFieldAiModal('excerpt', 'Draft a short, compelling excerpt for this note')"
-                                        class="text-[10px] font-bold text-purple-500 uppercase hover:text-purple-400 transition-colors flex items-center gap-1">
-                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                                                d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                        class="btn-gemini">
+                                        <svg class="w-3 h-3 text-[#C084FC]" viewBox="0 0 24 24" fill="currentColor">
+                                            <path
+                                                d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" />
                                         </svg>
-                                        Magic Draft
+                                        <span class="text-gemini">Gemini</span>
                                     </button>
                                 </div>
                                 <textarea v-model="formData.excerpt" rows="2" placeholder="Brief summary of the note..."
@@ -397,12 +397,12 @@
                                             Introduction</label>
                                         <button type="button"
                                             @click="openFieldAiModal('content.introduction', 'Write an engaging project introduction')"
-                                            class="text-[10px] font-bold text-purple-500 uppercase hover:text-purple-400 transition-colors flex items-center gap-1">
-                                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                                                    d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                            class="btn-gemini">
+                                            <svg class="w-3 h-3 text-[#C084FC]" viewBox="0 0 24 24" fill="currentColor">
+                                                <path
+                                                    d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" />
                                             </svg>
-                                            Magic Write
+                                            <span class="text-gemini">Gemini</span>
                                         </button>
                                     </div>
                                     <textarea v-model="formData.content.introduction" rows="3"
@@ -416,13 +416,13 @@
                                                 Statement</label>
                                             <button type="button"
                                                 @click="openFieldAiModal('problemStatement', 'Define the core problem being solved')"
-                                                class="text-[10px] font-bold text-purple-500 uppercase hover:text-purple-400 transition-colors flex items-center gap-1">
-                                                <svg class="w-3 h-3" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                                class="btn-gemini">
+                                                <svg class="w-3 h-3 text-[#C084FC]" viewBox="0 0 24 24"
+                                                    fill="currentColor">
+                                                    <path
+                                                        d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" />
                                                 </svg>
-                                                Magic Write
+                                                <span class="text-gemini">Gemini</span>
                                             </button>
                                         </div>
                                         <textarea v-model="formData.problemStatement" rows="3"
@@ -438,8 +438,13 @@
                                                     Goal</label>
                                                 <button type="button"
                                                     @click="openFieldAiModal('businessGoal', 'Draft the business objectives')"
-                                                    class="text-[10px] font-bold text-purple-500 uppercase hover:text-purple-400">
-                                                    Draft
+                                                    class="btn-gemini">
+                                                    <svg class="w-2.5 h-2.5 text-[#C084FC]" viewBox="0 0 24 24"
+                                                        fill="currentColor">
+                                                        <path
+                                                            d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" />
+                                                    </svg>
+                                                    <span class="text-gemini">Gemini</span>
                                                 </button>
                                             </div>
                                             <textarea v-model="formData.businessGoal" rows="2"
@@ -452,8 +457,13 @@
                                                     Goal</label>
                                                 <button type="button"
                                                     @click="openFieldAiModal('userGoal', 'Draft the user needs/goals')"
-                                                    class="text-[10px] font-bold text-purple-500 uppercase hover:text-purple-400">
-                                                    Draft
+                                                    class="btn-gemini">
+                                                    <svg class="w-2.5 h-2.5 text-[#C084FC]" viewBox="0 0 24 24"
+                                                        fill="currentColor">
+                                                        <path
+                                                            d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" />
+                                                    </svg>
+                                                    <span class="text-gemini">Gemini</span>
                                                 </button>
                                             </div>
                                             <textarea v-model="formData.userGoal" rows="2"
@@ -468,8 +478,13 @@
                                                 Approach</label>
                                             <button type="button"
                                                 @click="openFieldAiModal('designApproach', 'Draft the design methodology and approach')"
-                                                class="text-[10px] font-bold text-purple-500 uppercase hover:text-purple-400">
-                                                Draft
+                                                class="btn-gemini">
+                                                <svg class="w-2.5 h-2.5 text-[#C084FC]" viewBox="0 0 24 24"
+                                                    fill="currentColor">
+                                                    <path
+                                                        d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" />
+                                                </svg>
+                                                <span class="text-gemini">Gemini</span>
                                             </button>
                                         </div>
                                         <textarea v-model="formData.designApproach" rows="3"
@@ -493,8 +508,13 @@
                                                     Methods</label>
                                                 <button type="button"
                                                     @click="openFieldAiModal('researchMethods', 'List and explain research methods used')"
-                                                    class="text-[10px] font-bold text-purple-500 uppercase hover:text-purple-400">
-                                                    Draft
+                                                    class="btn-gemini">
+                                                    <svg class="w-2.5 h-2.5 text-[#C084FC]" viewBox="0 0 24 24"
+                                                        fill="currentColor">
+                                                        <path
+                                                            d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" />
+                                                    </svg>
+                                                    <span class="text-gemini">Gemini</span>
                                                 </button>
                                             </div>
                                             <textarea v-model="formData.researchMethods" rows="2"
@@ -507,8 +527,13 @@
                                                     Insights</label>
                                                 <button type="button"
                                                     @click="openFieldAiModal('keyInsights', 'Summarize key user research findings')"
-                                                    class="text-[10px] font-bold text-purple-500 uppercase hover:text-purple-400">
-                                                    Draft
+                                                    class="btn-gemini">
+                                                    <svg class="w-2.5 h-2.5 text-[#C084FC]" viewBox="0 0 24 24"
+                                                        fill="currentColor">
+                                                        <path
+                                                            d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" />
+                                                    </svg>
+                                                    <span class="text-gemini">Gemini</span>
                                                 </button>
                                             </div>
                                             <textarea v-model="formData.keyInsights" rows="2"
@@ -567,8 +592,13 @@
                                                 Summary</label>
                                             <button type="button"
                                                 @click="openFieldAiModal('solutionSummary', 'Summarize the final solution and why it works')"
-                                                class="text-[10px] font-bold text-purple-500 uppercase hover:text-purple-400">
-                                                Magic Write
+                                                class="btn-gemini">
+                                                <svg class="w-2.5 h-2.5 text-[#C084FC]" viewBox="0 0 24 24"
+                                                    fill="currentColor">
+                                                    <path
+                                                        d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" />
+                                                </svg>
+                                                <span class="text-gemini">Gemini</span>
                                             </button>
                                         </div>
                                         <textarea v-model="formData.solutionSummary" rows="3"
@@ -583,8 +613,13 @@
                                                 / Conclusion</label>
                                             <button type="button"
                                                 @click="openFieldAiModal('outcome', 'Write the project impact and conclusion')"
-                                                class="text-[10px] font-bold text-purple-500 uppercase hover:text-purple-400">
-                                                Magic Write
+                                                class="btn-gemini">
+                                                <svg class="w-2.5 h-2.5 text-[#C084FC]" viewBox="0 0 24 24"
+                                                    fill="currentColor">
+                                                    <path
+                                                        d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" />
+                                                </svg>
+                                                <span class="text-gemini">Gemini</span>
                                             </button>
                                         </div>
                                         <textarea v-model="formData.outcome" rows="3"
@@ -598,8 +633,13 @@
                                                 Learnings</label>
                                             <button type="button"
                                                 @click="openFieldAiModal('learnings', 'Draft the key takeaways and personal growth items')"
-                                                class="text-[10px] font-bold text-purple-500 uppercase hover:text-purple-400">
-                                                Magic Write
+                                                class="btn-gemini">
+                                                <svg class="w-2.5 h-2.5 text-[#C084FC]" viewBox="0 0 24 24"
+                                                    fill="currentColor">
+                                                    <path
+                                                        d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" />
+                                                </svg>
+                                                <span class="text-gemini">Gemini</span>
                                             </button>
                                         </div>
                                         <textarea v-model="formData.learnings" rows="3"
@@ -617,13 +657,12 @@
                                                 the step-by-step
                                                 journey of this project (Research, Ideation, etc).</p>
                                         </div>
-                                        <button type="button" @click="openSectionsAiModal"
-                                            class="flex items-center gap-2 px-4 py-2 bg-linear-to-r from-purple-600 to-blue-600 rounded-full text-[11px] font-black uppercase tracking-widest text-white shadow-lg shadow-blue-500/20 hover:scale-105 active:scale-95 transition-all">
-                                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                                                    d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                        <button type="button" @click="openSectionsAiModal" class="btn-gemini">
+                                            <svg class="w-3 h-3 text-[#C084FC]" viewBox="0 0 24 24" fill="currentColor">
+                                                <path
+                                                    d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" />
                                             </svg>
-                                            Magic Generate
+                                            <span class="text-gemini">Gemini</span>
                                         </button>
                                     </div>
                                     <ProjectSectionBuilder v-model="formData.content.sections" />
@@ -657,9 +696,8 @@
                     <div class="flex items-center gap-4">
                         <div
                             class="w-10 h-10 rounded-2xl bg-linear-to-tr from-purple-500 to-blue-500 flex items-center justify-center text-white">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            <svg class="w-5 h-5 fill-white" viewBox="0 0 24 24">
+                                <path d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" />
                             </svg>
                         </div>
                         <div>
@@ -681,10 +719,10 @@
                         <button @click="showAiModal = false"
                             class="flex-1 px-6 py-3 rounded-xl border border-border text-sm font-bold hover:bg-muted transition-colors">Cancel</button>
                         <button @click="generateAiProcess" :disabled="isAiGenerating || !aiPrompt"
-                            class="flex-2 px-6 py-3 rounded-xl bg-blue-600 text-white text-sm font-bold shadow-lg shadow-blue-500/20 hover:bg-blue-500 transition-all flex items-center justify-center gap-2">
+                            class="btn-gemini-primary flex-2">
                             <span v-if="isAiGenerating"
                                 class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
-                            {{ isAiGenerating ? 'Drafting...' : 'Generate' }}
+                            {{ isAiGenerating ? 'Synergizing...' : 'Gemini' }}
                         </button>
                     </div>
                 </div>
@@ -1050,6 +1088,8 @@ useSeoMeta({ title: 'CMS Control Center - Lanre Segun', robots: 'noindex, nofoll
 </script>
 
 <style scoped>
+@reference "tailwindcss";
+
 .toast-enter-active,
 .toast-leave-active {
     transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -1067,6 +1107,44 @@ useSeoMeta({ title: 'CMS Control Center - Lanre Segun', robots: 'noindex, nofoll
 
 .cms-input {
     transition: all 200ms ease;
+}
+
+.btn-gemini {
+    @apply flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest transition-all duration-300;
+    border: 1.5px solid transparent;
+    background: linear-gradient(var(--color-background, #fff), var(--color-background, #fff)) padding-box,
+        linear-gradient(to right, #FF70B8, #C084FC, #70AFFF) border-box;
+}
+
+.btn-gemini:hover {
+    @apply scale-105;
+    box-shadow: 0 0 20px rgba(192, 132, 252, 0.4);
+}
+
+.btn-gemini-primary {
+    @apply px-6 py-3 rounded-2xl bg-linear-to-r from-[#FF70B8] via-[#C084FC] to-[#70AFFF] text-white text-sm font-black transition-all flex items-center justify-center gap-2;
+    box-shadow: 0 4px 15px rgba(192, 132, 252, 0.2);
+}
+
+.btn-gemini-primary:hover:not(:disabled) {
+    @apply scale-[1.02];
+    box-shadow: 0 0 25px rgba(192, 132, 252, 0.5);
+}
+
+.btn-gemini-primary:active:not(:disabled) {
+    @apply scale-95;
+}
+
+.btn-gemini-primary:disabled {
+    @apply opacity-50 cursor-not-allowed;
+}
+
+.text-gemini {
+    background: linear-gradient(to right, #FF70B8, #C084FC, #70AFFF);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
 }
 
 /* Custom scrollbars without @apply */
