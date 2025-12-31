@@ -70,19 +70,37 @@
 
             <nav class="flex flex-col gap-2 pt-20 lg:pt-0">
                 <button @click="handleTabChange('notes')"
-                    class="px-4 py-2 rounded-lg text-left transition-all duration-200" :withCheck="true"
-                    :class="activeTab === 'notes' ? 'bg-foreground text-background font-medium shadow-md' : 'text-muted-foreground hover:bg-muted hover:text-foreground'">
-                    Notes
+                    class="px-4 py-2.5 rounded-xl text-left transition-all duration-300 flex items-center gap-3 group"
+                    :class="activeTab === 'notes' ? 'bg-blue-600 text-white font-bold shadow-lg shadow-blue-500/20' : 'text-muted-foreground hover:bg-muted hover:text-foreground'">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="opacity-70 group-hover:opacity-100">
+                        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+                        <polyline points="14 2 14 8 20 8" />
+                    </svg>
+                    <span>Notes</span>
                 </button>
                 <button @click="handleTabChange('projects')"
-                    class="px-4 py-2 rounded-lg text-left transition-all duration-200"
-                    :class="activeTab === 'projects' ? 'bg-foreground text-background font-medium shadow-md' : 'text-muted-foreground hover:bg-muted hover:text-foreground'">
-                    Projects
+                    class="px-4 py-2.5 rounded-xl text-left transition-all duration-300 flex items-center gap-3 group"
+                    :class="activeTab === 'projects' ? 'bg-emerald-600 text-white font-bold shadow-lg shadow-emerald-500/20' : 'text-muted-foreground hover:bg-muted hover:text-foreground'">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="opacity-70 group-hover:opacity-100">
+                        <path d="M12 2H2v10h10V2zM12 12H2v10h10V12zM22 2h-10v10h10V2zM22 12h-10v10h10V12z" />
+                    </svg>
+                    <span>Projects</span>
                 </button>
                 <button @click="handleTabChange('gallery')"
-                    class="px-4 py-2 rounded-lg text-left transition-all duration-200"
-                    :class="activeTab === 'gallery' ? 'bg-foreground text-background font-medium shadow-md' : 'text-muted-foreground hover:bg-muted hover:text-foreground'">
-                    Gallery
+                    class="px-4 py-2.5 rounded-xl text-left transition-all duration-300 flex items-center gap-3 group"
+                    :class="activeTab === 'gallery' ? 'bg-purple-600 text-white font-bold shadow-lg shadow-purple-500/20' : 'text-muted-foreground hover:bg-muted hover:text-foreground'">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="opacity-70 group-hover:opacity-100">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                        <circle cx="8.5" cy="8.5" r="1.5" />
+                        <polyline points="21 15 16 10 5 21" />
+                    </svg>
+                    <span>Gallery</span>
                 </button>
             </nav>
 
@@ -108,17 +126,21 @@
                 <!-- List View -->
                 <div v-if="view === 'list'" class="flex flex-col gap-8">
                     <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
-                        <h2 class="text-2xl lg:text-3xl font-medium tracking-tight text-foreground">{{ cmsHeaderTitle }}
-                        </h2>
+                        <div class="flex flex-col gap-1">
+                            <h2 class="text-2xl lg:text-3xl font-bold tracking-tight text-foreground">{{ cmsHeaderTitle
+                                }}</h2>
+                            <p class="text-xs text-muted-foreground font-medium">Manage and curate your {{
+                                activeTabLabel.toLowerCase() }} collection</p>
+                        </div>
                         <button @click="createNew"
-                            class="w-full sm:w-auto px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-bold transition-all shadow-lg shadow-blue-500/10 flex items-center justify-center gap-2 active:scale-95">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                                stroke-linejoin="round">
+                            class="w-full sm:w-auto px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-2xl font-black transition-all shadow-xl shadow-blue-500/20 flex items-center justify-center gap-2.5 active:scale-95 group">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                stroke-linejoin="round" class="group-hover:rotate-90 transition-transform duration-300">
                                 <line x1="12" y1="5" x2="12" y2="19" />
-                                <line x1="5" y1="12" x2="19" />
+                                <line x1="5" y1="12" x2="19" y2="12" />
                             </svg>
-                            New {{ activeTabLabel }}
+                            <span class="uppercase tracking-widest text-[11px]">New {{ activeTabLabel }}</span>
                         </button>
                     </div>
 
@@ -154,15 +176,18 @@
 
                             <!-- Large Upload Trigger for Gallery -->
                             <button @click="(($refs.massGalleryInput as any).click())"
-                                class="aspect-3/4 border-2 border-dashed border-border rounded-xl flex flex-col items-center justify-center gap-2 hover:bg-muted/50 transition-colors group">
+                                class="aspect-4/3 border-2 border-dashed border-border rounded-xl flex flex-col items-center justify-center gap-3 hover:bg-muted/50 transition-all group bg-component/10">
                                 <div
-                                    class="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-all">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                                            d="M12 4v16m8-8H4" />
+                                    class="w-12 h-12 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-500 group-hover:bg-blue-500 group-hover:text-white group-hover:scale-110 transition-all duration-300">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <line x1="12" y1="5" x2="12" y2="19" />
+                                        <line x1="5" y1="12" x2="19" y2="12" />
                                     </svg>
                                 </div>
-                                <span class="text-xs font-bold text-muted-foreground tracking-wider uppercase">Add
+                                <span
+                                    class="text-[10px] font-black text-muted-foreground tracking-[0.2em] uppercase group-hover:text-foreground transition-colors">Add
                                     Photos</span>
                                 <input type="file" ref="massGalleryInput" class="hidden"
                                     @change="handleImageUpload($event, 'massGallery')" multiple accept="image/*">
@@ -173,15 +198,29 @@
                         <template v-else>
                             <div v-for="item in activeItems" :key="(item as any).slug || (item as any).id"
                                 class="p-5 rounded-2xl border border-border bg-component/50 dark:bg-white/2 shadow-sm hover:shadow-md hover:border-blue-500/40 transition-all flex flex-col sm:flex-row justify-between sm:items-center gap-4 group">
-                                <div class="flex flex-col gap-1.5">
-                                    <h3
-                                        class="font-bold text-base lg:text-lg text-foreground group-hover:text-blue-500 transition-colors leading-tight">
-                                        {{ item.title }}</h3>
+                                <div class="flex flex-col gap-1.5 grow">
+                                    <div class="flex items-center gap-2">
+                                        <h3
+                                            class="font-bold text-base lg:text-lg text-foreground group-hover:text-blue-500 transition-colors leading-tight">
+                                            {{ item.title }}</h3>
+                                        <NuxtLink v-if="activeTab !== 'gallery'"
+                                            :to="activeTab === 'notes' ? `/notes/${item.slug}` : `/projects/${item.slug}`"
+                                            target="_blank"
+                                            class="p-1.5 text-muted-foreground hover:text-blue-500 hover:bg-blue-500/10 rounded-lg transition-all"
+                                            title="View Live">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                                stroke-linecap="round" stroke-linejoin="round">
+                                                <path
+                                                    d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3" />
+                                            </svg>
+                                        </NuxtLink>
+                                    </div>
                                     <div class="flex items-center gap-2 text-xs font-medium text-muted-foreground">
                                         <span class="px-2 py-0.5 bg-muted rounded uppercase tracking-wider">{{ item.year
-                                        }}</span>
+                                            }}</span>
                                         <span class="opacity-40">•</span>
-                                        <span class="font-mono">{{ item.slug }}</span>
+                                        <span class="font-mono text-[10px]">{{ item.slug }}</span>
                                     </div>
                                 </div>
                                 <div class="flex items-center gap-3">
@@ -225,17 +264,28 @@
                     <form @submit.prevent="saveItem" class="flex flex-col gap-10 lg:max-w-5xl pb-32">
                         <!-- Basic Info Section -->
                         <section
-                            class="flex flex-col gap-8 bg-component/30 p-6 lg:p-8 rounded-3xl border border-border">
-                            <div class="flex items-center gap-3">
+                            class="flex flex-col gap-10 bg-component/10 p-8 lg:p-10 rounded-[2.5rem] border border-border/50 shadow-sm relative overflow-hidden group/section">
+                            <div
+                                class="absolute top-0 left-0 w-1 h-full bg-blue-600 opacity-0 group-focus-within/section:opacity-100 transition-opacity">
+                            </div>
+                            <div class="flex items-center gap-4">
                                 <div
-                                    class="w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-500">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    class="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-500 shadow-inner">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path
+                                            d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+                                        <polyline points="14 2 14 8 20 8" />
                                     </svg>
                                 </div>
-                                <h3 class="text-sm font-bold uppercase tracking-widest text-foreground/60">Basic
-                                    Metadata</h3>
+                                <div class="flex flex-col gap-0.5">
+                                    <h3 class="text-sm font-black uppercase tracking-[0.2em] text-foreground/80">Basic
+                                        Metadata</h3>
+                                    <p class="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">
+                                        Core project
+                                        identification</p>
+                                </div>
                             </div>
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -313,17 +363,27 @@
 
                         <!-- Content Section -->
                         <section
-                            class="flex flex-col gap-8 bg-component/30 p-6 lg:p-8 rounded-3xl border border-border">
-                            <div class="flex items-center gap-3">
+                            class="flex flex-col gap-10 bg-component/10 p-8 lg:p-10 rounded-[2.5rem] border border-border/50 shadow-sm relative overflow-hidden group/section">
+                            <div
+                                class="absolute top-0 left-0 w-1 h-full bg-emerald-600 opacity-0 group-focus-within/section:opacity-100 transition-opacity">
+                            </div>
+                            <div class="flex items-center gap-4">
                                 <div
-                                    class="w-8 h-8 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-500">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                    class="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center text-emerald-500 shadow-inner">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path d="M11 4H4v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5" />
+                                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
                                     </svg>
                                 </div>
-                                <h3 class="text-sm font-bold uppercase tracking-widest text-foreground/60">Rich Content
-                                </h3>
+                                <div class="flex flex-col gap-0.5">
+                                    <h3 class="text-sm font-black uppercase tracking-[0.2em] text-foreground/80">Rich
+                                        Content</h3>
+                                    <p class="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">
+                                        Storytelling and
+                                        case study details</p>
+                                </div>
                             </div>
 
                             <div v-if="activeTab === 'notes'" class="flex flex-col gap-8">
@@ -723,10 +783,16 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-col gap-2">
+                    <div class="flex flex-col gap-4">
                         <label class="text-[10px] font-bold uppercase tracking-widest text-muted-foreground px-1">What
                             should I
                             focus on?</label>
+                        <div class="flex flex-wrap gap-2 mb-1">
+                            <button v-for="chip in promptChips" :key="chip" type="button" @click="aiPrompt = chip"
+                                class="px-3 py-1.5 rounded-full bg-muted/50 border border-border text-[10px] font-bold uppercase tracking-wider text-muted-foreground hover:bg-blue-500/10 hover:text-blue-500 hover:border-blue-500/50 transition-all">
+                                {{ chip }}
+                            </button>
+                        </div>
                         <textarea v-model="aiPrompt" rows="4"
                             placeholder="e.g. Focus on how we built the design system and tested it with 10 user interviews..."
                             class="cms-input bg-muted/30 border-2 border-border rounded-2xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-sm leading-relaxed"></textarea>
@@ -803,6 +869,44 @@ const showToast = (title: string, message: string, type: 'success' | 'error' | '
     toast.value = { show: true, title, message, type }
     setTimeout(() => { toast.value.show = false }, 4000)
 }
+
+// Keyboard Shortcuts (Ctrl+S for save)
+const onKeyDown = (e: KeyboardEvent) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+        e.preventDefault()
+        if (view.value === 'edit') saveItem()
+    }
+    if (e.key === 'Escape' && showAiModal.value) {
+        showAiModal.value = false
+    }
+}
+
+onMounted(() => {
+    window.addEventListener('keydown', onKeyDown)
+})
+
+onUnmounted(() => {
+    window.removeEventListener('keydown', onKeyDown)
+})
+
+// Smart Slug Generation
+watch(() => formData.value.title, (newTitle) => {
+    if (!isEditing.value && newTitle) {
+        formData.value.slug = newTitle
+            .toLowerCase()
+            .replace(/[^\w\s-]/g, '')
+            .replace(/\s+/g, '-')
+            .replace(/-+/g, '-')
+            .trim()
+    }
+})
+
+const promptChips = computed(() => {
+    if (aiMode.value === 'sections') {
+        return ['Discovery', 'Design Process', 'Final Results', 'Tech Stack']
+    }
+    return ['Summarize accurately', 'Make it compelling', 'Professional tone', 'Focus on impact']
+})
 
 const toastClasses = computed(() => {
     switch (toast.value.type) {
@@ -1107,7 +1211,18 @@ useSeoMeta({ title: 'CMS Control Center - Lanre Segun', robots: 'noindex, nofoll
 }
 
 .cms-input {
-    transition: all 200ms ease;
+    @apply transition-all duration-300 focus:border-blue-500;
+    border: 1.5px solid hsl(var(--border) / 0.4);
+    background-color: hsl(var(--background) / 0.5);
+}
+
+.cms-input:hover {
+    background-color: hsl(var(--background));
+}
+
+.cms-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px hsl(var(--blue-500, 217 91% 60%) / 0.1);
 }
 
 .btn-gemini {
