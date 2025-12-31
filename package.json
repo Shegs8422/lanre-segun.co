@@ -10,6 +10,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "@nuxtjs/supabase": "^2.0.3",
     "@tresjs/core": "^3.7.0",
     "@types/bcryptjs": "^2.4.6",

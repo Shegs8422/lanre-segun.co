@@ -9,8 +9,7 @@ export default defineNuxtConfig({
         '@nuxtjs/supabase'
     ],
     supabase: {
-        redirect: false,
-        typesPath: './types/database.types.ts'
+        redirect: false
     },
     css: ['~/assets/css/main.css'],
     app: {
@@ -64,5 +63,8 @@ export default defineNuxtConfig({
     },
     build: {
         transpile: ['gsap', 'three', '@vueuse/sound']
+    },
+    runtimeConfig: {
+        geminiApiKey: ''
     }
 })

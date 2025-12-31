@@ -5,6 +5,7 @@ import nodeCrypto from 'node:crypto';
 import { parentPort, threadId } from 'node:worker_threads';
 import { defineEventHandler, handleCacheHeaders, splitCookiesString, createEvent, fetchWithEvent, isEvent, eventHandler, setHeaders, sendRedirect, proxyRequest, getRequestHeader, setResponseHeaders, setResponseStatus, send, getRequestHeaders, setResponseHeader, appendResponseHeader, getRequestURL, getResponseHeader, removeResponseHeader, createError, getQuery as getQuery$1, readBody, createApp, createRouter as createRouter$1, toNodeListener, lazyEventHandler, getResponseStatus, getRouterParam, setCookie, getHeader, getCookie, deleteCookie, getResponseStatusText } from 'file://C:/Users/Lanre%20Segun/Desktop/lanre-segun.co/node_modules/h3/dist/index.mjs';
 import { escapeHtml } from 'file://C:/Users/Lanre%20Segun/Desktop/lanre-segun.co/node_modules/@vue/shared/dist/shared.cjs.js';
+import { GoogleGenerativeAI } from 'file://C:/Users/Lanre%20Segun/Desktop/lanre-segun.co/node_modules/@google/generative-ai/dist/index.mjs';
 import { createServerClient, parseCookieHeader } from 'file://C:/Users/Lanre%20Segun/Desktop/lanre-segun.co/node_modules/@supabase/ssr/dist/main/index.js';
 import { createRenderer, getRequestDependencies, getPreloadLinks, getPrefetchLinks } from 'file://C:/Users/Lanre%20Segun/Desktop/lanre-segun.co/node_modules/vue-bundle-renderer/dist/runtime.mjs';
 import { parseURL, withoutBase, joinURL, getQuery, withQuery, withTrailingSlash, decodePath, withLeadingSlash, withoutTrailingSlash, joinRelativeURL } from 'file://C:/Users/Lanre%20Segun/Desktop/lanre-segun.co/node_modules/ufo/dist/index.mjs';
@@ -671,6 +672,7 @@ const _inlineRuntimeConfig = {
       "clientOptions": {}
     }
   },
+  "geminiApiKey": "",
   "supabase": {
     "serviceKey": "",
     "secretKey": ""
@@ -1481,7 +1483,22 @@ const plugins = [
 _IgiEwhgW32gMDxTQHgSX0rR0BT8Tph82HUmNdzd_sk
 ];
 
-const assets = {};
+const assets = {
+  "/index.mjs": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"17e76-mG4U/P1+XAJwgiPLay3/VWKNUH4\"",
+    "mtime": "2025-12-31T08:31:00.316Z",
+    "size": 97910,
+    "path": "index.mjs"
+  },
+  "/index.mjs.map": {
+    "type": "application/json",
+    "etag": "\"5a9c3-EdH4kOXPdV3Fviyy3N0Bak/WiUw\"",
+    "mtime": "2025-12-31T08:31:00.317Z",
+    "size": 371139,
+    "path": "index.mjs.map"
+  }
+};
 
 function readAsset (id) {
   const serverDir = dirname$1(fileURLToPath(globalThis._importMeta_.url));
@@ -1891,6 +1908,7 @@ async function getIslandContext(event) {
   return ctx;
 }
 
+const _lazy__V38k4 = () => Promise.resolve().then(function () { return aiGenerate_post$1; });
 const _lazy_WJedLS = () => Promise.resolve().then(function () { return auth_post$1; });
 const _lazy_9SIwC0 = () => Promise.resolve().then(function () { return resetPassword_post$1; });
 const _lazy_48aujO = () => Promise.resolve().then(function () { return setup_post$1; });
@@ -1899,6 +1917,7 @@ const _lazy_CI2tUg = () => Promise.resolve().then(function () { return renderer$
 
 const handlers = [
   { route: '', handler: _4g24XU, lazy: false, middleware: true, method: undefined },
+  { route: '/api/ai-generate', handler: _lazy__V38k4, lazy: true, middleware: false, method: "post" },
   { route: '/api/auth', handler: _lazy_WJedLS, lazy: true, middleware: false, method: "post" },
   { route: '/api/auth/reset-password', handler: _lazy_9SIwC0, lazy: true, middleware: false, method: "post" },
   { route: '/api/security/setup', handler: _lazy_48aujO, lazy: true, middleware: false, method: "post" },
@@ -2234,6 +2253,75 @@ const styles = {};
 const styles$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   __proto__: null,
   default: styles
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const aiGenerate_post = defineEventHandler(async (event) => {
+  const config = useRuntimeConfig();
+  const body = await readBody(event);
+  const { prompt, context, type = "sections" } = body;
+  const apiKey = process.env.GEMINI_API_KEY || config.geminiApiKey;
+  if (!apiKey) {
+    throw createError({
+      statusCode: 500,
+      statusMessage: "Gemini API Key missing. Please set GEMINI_API_KEY in .env"
+    });
+  }
+  const genAI = new GoogleGenerativeAI(apiKey);
+  const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+  let systemPrompt = "";
+  if (type === "sections") {
+    systemPrompt = `
+            You are an expert UX Case Study writer. Generate structured "Process" sections for a design portfolio.
+            
+            PROJECT CONTEXT:
+            ${JSON.stringify(context, null, 2)}
+            
+            USER FOCUS/PROMPT:
+            ${prompt}
+            
+            INSTRUCTIONS:
+            1. Generate 3 to 5 distinct process sections.
+            2. Return ONLY a JSON object with this schema:
+               { "sections": [{ "title": "string", "content": "string", "layout": "text-only|image-full|split-left|split-right|grid", "type": "text|image|grid" }] }
+        `;
+  } else {
+    systemPrompt = `
+            You are a professional UX writer and technical blogger. Generate high-quality content for the following field.
+            
+            CONTEXT:
+            ${JSON.stringify(context, null, 2)}
+            
+            USER INSTRUCTION:
+            ${prompt}
+            
+            INSTRUCTIONS:
+            1. Return only the raw text content for the field.
+            2. Do not include titles, labels, or markdown code blocks unless it's body content.
+            3. Keep the tone professional, elevated, and concise.
+        `;
+  }
+  try {
+    const result = await model.generateContent(systemPrompt);
+    const response = await result.response;
+    const text = response.text();
+    if (type === "sections") {
+      const jsonStr = text.replace(/```json/g, "").replace(/```/g, "").trim();
+      return JSON.parse(jsonStr);
+    } else {
+      return { text: text.trim().replace(/^"|"$/g, "") };
+    }
+  } catch (e) {
+    console.error("Gemini Error:", e);
+    throw createError({
+      statusCode: 500,
+      statusMessage: "AI Generation failed: " + e.message
+    });
+  }
+});
+
+const aiGenerate_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: aiGenerate_post
 }, Symbol.toStringTag, { value: 'Module' }));
 
 async function fetchWithRetry(req, init) {

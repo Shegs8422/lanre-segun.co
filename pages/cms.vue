@@ -179,7 +179,7 @@
                                         {{ item.title }}</h3>
                                     <div class="flex items-center gap-2 text-xs font-medium text-muted-foreground">
                                         <span class="px-2 py-0.5 bg-muted rounded uppercase tracking-wider">{{ item.year
-                                        }}</span>
+                                            }}</span>
                                         <span class="opacity-40">•</span>
                                         <span class="font-mono">{{ item.slug }}</span>
                                     </div>
@@ -310,15 +310,23 @@
                             </div>
 
                             <div v-if="activeTab === 'notes'" class="flex flex-col gap-8">
-                                <div class="flex flex-col gap-2.5">
+                                <div class="flex justify-between items-center px-1">
                                     <label
                                         class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Excerpt
                                         (Card Preview)</label>
-                                    <textarea v-model="formData.excerpt" rows="2"
-                                        placeholder="Brief summary of the note..."
-                                        class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground leading-relaxed"></textarea>
+                                    <button type="button"
+                                        @click="openFieldAiModal('excerpt', 'Draft a short, compelling excerpt for this note')"
+                                        class="text-[10px] font-bold text-purple-500 uppercase hover:text-purple-400 transition-colors flex items-center gap-1">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                        </svg>
+                                        Magic Draft
+                                    </button>
                                 </div>
-                                <div class="flex flex-col gap-2.5">
+                                <textarea v-model="formData.excerpt" rows="2" placeholder="Brief summary of the note..."
+                                    class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground leading-relaxed"></textarea>
+                                <div class="flex flex-col gap-2.5 mt-8">
                                     <div class="flex justify-between items-center px-1">
                                         <label
                                             class="text-xs font-bold uppercase tracking-wider text-muted-foreground">Body
@@ -383,19 +391,40 @@
                                     <h4 class="text-sm font-bold uppercase tracking-widest text-blue-500">Project
                                         Narrative</h4>
 
-                                    <div class="flex flex-col gap-2.5">
+                                    <div class="flex justify-between items-center px-1">
                                         <label
                                             class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Project
                                             Introduction</label>
-                                        <textarea v-model="formData.content.introduction" rows="3"
-                                            placeholder="A brief hook about the project..."
-                                            class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed"></textarea>
+                                        <button type="button"
+                                            @click="openFieldAiModal('content.introduction', 'Write an engaging project introduction')"
+                                            class="text-[10px] font-bold text-purple-500 uppercase hover:text-purple-400 transition-colors flex items-center gap-1">
+                                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                    d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                            </svg>
+                                            Magic Write
+                                        </button>
                                     </div>
+                                    <textarea v-model="formData.content.introduction" rows="3"
+                                        placeholder="A brief hook about the project..."
+                                        class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed"></textarea>
 
                                     <div class="flex flex-col gap-2.5">
-                                        <label
-                                            class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Problem
-                                            Statement</label>
+                                        <div class="flex justify-between items-center px-1">
+                                            <label
+                                                class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Problem
+                                                Statement</label>
+                                            <button type="button"
+                                                @click="openFieldAiModal('problemStatement', 'Define the core problem being solved')"
+                                                class="text-[10px] font-bold text-purple-500 uppercase hover:text-purple-400 transition-colors flex items-center gap-1">
+                                                <svg class="w-3 h-3" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                                </svg>
+                                                Magic Write
+                                            </button>
+                                        </div>
                                         <textarea v-model="formData.problemStatement" rows="3"
                                             placeholder="What challenge were we solving?"
                                             class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed"></textarea>
@@ -403,25 +432,46 @@
 
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                                         <div class="flex flex-col gap-2.5">
-                                            <label
-                                                class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Business
-                                                Goal</label>
+                                            <div class="flex justify-between items-center px-1">
+                                                <label
+                                                    class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Business
+                                                    Goal</label>
+                                                <button type="button"
+                                                    @click="openFieldAiModal('businessGoal', 'Draft the business objectives')"
+                                                    class="text-[10px] font-bold text-purple-500 uppercase hover:text-purple-400">
+                                                    Draft
+                                                </button>
+                                            </div>
                                             <textarea v-model="formData.businessGoal" rows="2"
                                                 class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed"></textarea>
                                         </div>
                                         <div class="flex flex-col gap-2.5">
-                                            <label
-                                                class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">User
-                                                Goal</label>
+                                            <div class="flex justify-between items-center px-1">
+                                                <label
+                                                    class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">User
+                                                    Goal</label>
+                                                <button type="button"
+                                                    @click="openFieldAiModal('userGoal', 'Draft the user needs/goals')"
+                                                    class="text-[10px] font-bold text-purple-500 uppercase hover:text-purple-400">
+                                                    Draft
+                                                </button>
+                                            </div>
                                             <textarea v-model="formData.userGoal" rows="2"
                                                 class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed"></textarea>
                                         </div>
                                     </div>
 
                                     <div class="flex flex-col gap-2.5">
-                                        <label
-                                            class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Design
-                                            Approach</label>
+                                        <div class="flex justify-between items-center px-1">
+                                            <label
+                                                class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Design
+                                                Approach</label>
+                                            <button type="button"
+                                                @click="openFieldAiModal('designApproach', 'Draft the design methodology and approach')"
+                                                class="text-[10px] font-bold text-purple-500 uppercase hover:text-purple-400">
+                                                Draft
+                                            </button>
+                                        </div>
                                         <textarea v-model="formData.designApproach" rows="3"
                                             class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed"></textarea>
                                     </div>
@@ -437,16 +487,30 @@
 
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                                         <div class="flex flex-col gap-2.5">
-                                            <label
-                                                class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Research
-                                                Methods</label>
+                                            <div class="flex justify-between items-center px-1">
+                                                <label
+                                                    class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Research
+                                                    Methods</label>
+                                                <button type="button"
+                                                    @click="openFieldAiModal('researchMethods', 'List and explain research methods used')"
+                                                    class="text-[10px] font-bold text-purple-500 uppercase hover:text-purple-400">
+                                                    Draft
+                                                </button>
+                                            </div>
                                             <textarea v-model="formData.researchMethods" rows="2"
                                                 class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed"></textarea>
                                         </div>
                                         <div class="flex flex-col gap-2.5">
-                                            <label
-                                                class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Key
-                                                Insights</label>
+                                            <div class="flex justify-between items-center px-1">
+                                                <label
+                                                    class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Key
+                                                    Insights</label>
+                                                <button type="button"
+                                                    @click="openFieldAiModal('keyInsights', 'Summarize key user research findings')"
+                                                    class="text-[10px] font-bold text-purple-500 uppercase hover:text-purple-400">
+                                                    Draft
+                                                </button>
+                                            </div>
                                             <textarea v-model="formData.keyInsights" rows="2"
                                                 class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed"></textarea>
                                         </div>
@@ -497,27 +561,47 @@
                                     </div>
 
                                     <div class="flex flex-col gap-2.5">
-                                        <label
-                                            class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Solution
-                                            Summary</label>
+                                        <div class="flex justify-between items-center px-1">
+                                            <label
+                                                class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Solution
+                                                Summary</label>
+                                            <button type="button"
+                                                @click="openFieldAiModal('solutionSummary', 'Summarize the final solution and why it works')"
+                                                class="text-[10px] font-bold text-purple-500 uppercase hover:text-purple-400">
+                                                Magic Write
+                                            </button>
+                                        </div>
                                         <textarea v-model="formData.solutionSummary" rows="3"
                                             placeholder="Direct response to the problem..."
                                             class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed"></textarea>
                                     </div>
 
                                     <div class="flex flex-col gap-2.5">
-                                        <label
-                                            class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Outcome
-                                            /
-                                            Conclusion</label>
+                                        <div class="flex justify-between items-center px-1">
+                                            <label
+                                                class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Outcome
+                                                / Conclusion</label>
+                                            <button type="button"
+                                                @click="openFieldAiModal('outcome', 'Write the project impact and conclusion')"
+                                                class="text-[10px] font-bold text-purple-500 uppercase hover:text-purple-400">
+                                                Magic Write
+                                            </button>
+                                        </div>
                                         <textarea v-model="formData.outcome" rows="3"
                                             class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed"></textarea>
                                     </div>
 
                                     <div class="flex flex-col gap-2.5">
-                                        <label
-                                            class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Key
-                                            Learnings</label>
+                                        <div class="flex justify-between items-center px-1">
+                                            <label
+                                                class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Key
+                                                Learnings</label>
+                                            <button type="button"
+                                                @click="openFieldAiModal('learnings', 'Draft the key takeaways and personal growth items')"
+                                                class="text-[10px] font-bold text-purple-500 uppercase hover:text-purple-400">
+                                                Magic Write
+                                            </button>
+                                        </div>
                                         <textarea v-model="formData.learnings" rows="3"
                                             class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed"></textarea>
                                     </div>
@@ -525,12 +609,22 @@
 
                                 <!-- Process Sections -->
                                 <div class="flex flex-col gap-8 pt-6 border-t border-border">
-                                    <div class="flex flex-col gap-1">
-                                        <h4 class="text-sm font-bold uppercase tracking-widest text-blue-500">Execution
-                                            Process</h4>
-                                        <p class="text-[10px] text-muted-foreground px-1 font-medium italic">Define the
-                                            step-by-step
-                                            journey of this project (Research, Ideation, etc).</p>
+                                    <div class="flex items-center justify-between gap-4">
+                                        <div class="flex flex-col gap-1">
+                                            <h4 class="text-sm font-bold uppercase tracking-widest text-blue-500">
+                                                Execution Process</h4>
+                                            <p class="text-[10px] text-muted-foreground px-1 font-medium italic">Define
+                                                the step-by-step
+                                                journey of this project (Research, Ideation, etc).</p>
+                                        </div>
+                                        <button type="button" @click="openSectionsAiModal"
+                                            class="flex items-center gap-2 px-4 py-2 bg-linear-to-r from-purple-600 to-blue-600 rounded-full text-[11px] font-black uppercase tracking-widest text-white shadow-lg shadow-blue-500/20 hover:scale-105 active:scale-95 transition-all">
+                                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                    d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                            </svg>
+                                            Magic Generate
+                                        </button>
                                     </div>
                                     <ProjectSectionBuilder v-model="formData.content.sections" />
                                 </div>
@@ -553,6 +647,49 @@
                 </div>
             </template>
         </main>
+
+        <!-- AI Generator Modal -->
+        <Transition name="fade">
+            <div v-if="showAiModal" class="fixed inset-0 z-200 flex items-center justify-center p-6">
+                <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" @click="showAiModal = false"></div>
+                <div
+                    class="relative w-full max-w-md bg-background border border-border p-8 rounded-[32px] shadow-2xl flex flex-col gap-6 animate-fade-in-up">
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="w-10 h-10 rounded-2xl bg-linear-to-tr from-purple-500 to-blue-500 flex items-center justify-center text-white">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg">AI Content Assistant</h3>
+                            <p class="text-xs text-muted-foreground">Draft your process using Gemini</p>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col gap-2">
+                        <label class="text-[10px] font-bold uppercase tracking-widest text-muted-foreground px-1">What
+                            should I
+                            focus on?</label>
+                        <textarea v-model="aiPrompt" rows="4"
+                            placeholder="e.g. Focus on how we built the design system and tested it with 10 user interviews..."
+                            class="cms-input bg-muted/30 border-2 border-border rounded-2xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-sm leading-relaxed"></textarea>
+                    </div>
+
+                    <div class="flex gap-3">
+                        <button @click="showAiModal = false"
+                            class="flex-1 px-6 py-3 rounded-xl border border-border text-sm font-bold hover:bg-muted transition-colors">Cancel</button>
+                        <button @click="generateAiProcess" :disabled="isAiGenerating || !aiPrompt"
+                            class="flex-2 px-6 py-3 rounded-xl bg-blue-600 text-white text-sm font-bold shadow-lg shadow-blue-500/20 hover:bg-blue-500 transition-all flex items-center justify-center gap-2">
+                            <span v-if="isAiGenerating"
+                                class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                            {{ isAiGenerating ? 'Drafting...' : 'Generate' }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </Transition>
 
         <!-- Security Setup for first-time login -->
         <LazySecuritySetup ref="securitySetup" />
@@ -579,6 +716,26 @@ const formData = ref<any>({})
 const tagsInput = ref('')
 const toolsInput = ref('')
 const wireframesInput = ref('')
+
+// AI State
+const isAiGenerating = ref(false)
+const aiPrompt = ref('')
+const showAiModal = ref(false)
+const aiMode = ref<'sections' | 'text'>('sections')
+const aiTargetField = ref('')
+
+const openFieldAiModal = (field: string, suggestion: string) => {
+    aiMode.value = 'text'
+    aiTargetField.value = field
+    aiPrompt.value = suggestion
+    showAiModal.value = true
+}
+
+const openSectionsAiModal = () => {
+    aiMode.value = 'sections'
+    aiPrompt.value = 'Draft a complete process for this project focusing on discovery, design, and results...'
+    showAiModal.value = true
+}
 
 const toast = ref({
     show: false,
@@ -629,6 +786,69 @@ onMounted(async () => {
         loading.value = false
     }
 })
+
+const generateAiProcess = async () => {
+    if (!aiPrompt.value) return
+    isAiGenerating.value = true
+
+    try {
+        const isSections = aiMode.value === 'sections'
+
+        // Pass relevant project context to the AI
+        const context = {
+            title: formData.value.title,
+            role: formData.value.role,
+            industry: formData.value.industry,
+            problemStatement: formData.value.problemStatement,
+            designApproach: formData.value.designApproach,
+            activeTab: activeTab.value
+        }
+
+        const response: any = await $fetch('/api/ai-generate', {
+            method: 'POST',
+            body: {
+                prompt: aiPrompt.value,
+                type: aiMode.value,
+                context,
+                currentField: aiTargetField.value
+            }
+        })
+
+        if (isSections && response.sections) {
+            if (formData.value.content.sections?.length > 0) {
+                if (confirm('Replace current process sections with AI generated draft?')) {
+                    formData.value.content.sections = response.sections
+                } else if (confirm('Append AI results to your current process?')) {
+                    formData.value.content.sections.push(...response.sections)
+                }
+            } else {
+                if (!formData.value.content) formData.value.content = { sections: [] }
+                formData.value.content.sections = response.sections
+            }
+            showToast('Ready', 'Process steps generated by AI.', 'success')
+        } else if (!isSections && response.text) {
+            // Logic to update specific fields including nested ones (like content.introduction)
+            const fieldPath = aiTargetField.value
+            const keys = fieldPath.split('.')
+
+            if (keys.length === 2) {
+                if (!formData.value[keys[0]]) formData.value[keys[0]] = {}
+                formData.value[keys[0]][keys[1]] = response.text
+            } else {
+                formData.value[fieldPath] = response.text
+            }
+            showToast('Success', 'Content drafted by AI.', 'success')
+        }
+
+        showAiModal.value = false
+        aiPrompt.value = ''
+    } catch (e: any) {
+        console.error('AI Generation Error:', e)
+        showToast('AI Failure', e.message || 'Gemini processing failed', 'error')
+    } finally {
+        isAiGenerating.value = false
+    }
+}
 
 const handleTabChange = (tab: 'notes' | 'projects' | 'gallery') => {
     activeTab.value = tab
