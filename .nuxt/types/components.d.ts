@@ -24,6 +24,7 @@ interface _GlobalComponents {
   'ProfileCard': typeof import("../../components/ProfileCard.vue").default
   'ProjectSectionBuilder': typeof import("../../components/ProjectSectionBuilder.vue").default
   'SecuritySetup': typeof import("../../components/SecuritySetup.vue").default
+  'WidgetsAnimatedLogo': typeof import("../../components/widgets/AnimatedLogo.vue").default
   'WidgetsBook3D': typeof import("../../components/widgets/Book3D.vue").default
   'WidgetsChessPoster': typeof import("../../components/widgets/ChessPoster.vue").default
   'WidgetsDraggableCanvas': typeof import("../../components/widgets/DraggableCanvas.vue").default
@@ -67,6 +68,7 @@ interface _GlobalComponents {
   'LazyProfileCard': LazyComponent<typeof import("../../components/ProfileCard.vue").default>
   'LazyProjectSectionBuilder': LazyComponent<typeof import("../../components/ProjectSectionBuilder.vue").default>
   'LazySecuritySetup': LazyComponent<typeof import("../../components/SecuritySetup.vue").default>
+  'LazyWidgetsAnimatedLogo': LazyComponent<typeof import("../../components/widgets/AnimatedLogo.vue").default>
   'LazyWidgetsBook3D': LazyComponent<typeof import("../../components/widgets/Book3D.vue").default>
   'LazyWidgetsChessPoster': LazyComponent<typeof import("../../components/widgets/ChessPoster.vue").default>
   'LazyWidgetsDraggableCanvas': LazyComponent<typeof import("../../components/widgets/DraggableCanvas.vue").default>

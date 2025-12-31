@@ -183,9 +183,10 @@ const handleClick = () => {
     stop()
     stopTrack()
   } else {
-    // Ensure global sound is enabled before playing
+    // If sound is disabled, do not play or toggle
     if (!isSoundEnabled.value) {
-      toggleSound()
+      console.log('Sound is disabled. Click the floating dock to unmute.')
+      return
     }
 
     play()

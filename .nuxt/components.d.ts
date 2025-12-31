@@ -24,6 +24,7 @@ export const PolaroidPhoto: typeof import("../components/PolaroidPhoto.vue").def
 export const ProfileCard: typeof import("../components/ProfileCard.vue").default
 export const ProjectSectionBuilder: typeof import("../components/ProjectSectionBuilder.vue").default
 export const SecuritySetup: typeof import("../components/SecuritySetup.vue").default
+export const WidgetsAnimatedLogo: typeof import("../components/widgets/AnimatedLogo.vue").default
 export const WidgetsBook3D: typeof import("../components/widgets/Book3D.vue").default
 export const WidgetsChessPoster: typeof import("../components/widgets/ChessPoster.vue").default
 export const WidgetsDraggableCanvas: typeof import("../components/widgets/DraggableCanvas.vue").default
@@ -67,6 +68,7 @@ export const LazyPolaroidPhoto: LazyComponent<typeof import("../components/Polar
 export const LazyProfileCard: LazyComponent<typeof import("../components/ProfileCard.vue").default>
 export const LazyProjectSectionBuilder: LazyComponent<typeof import("../components/ProjectSectionBuilder.vue").default>
 export const LazySecuritySetup: LazyComponent<typeof import("../components/SecuritySetup.vue").default>
+export const LazyWidgetsAnimatedLogo: LazyComponent<typeof import("../components/widgets/AnimatedLogo.vue").default>
 export const LazyWidgetsBook3D: LazyComponent<typeof import("../components/widgets/Book3D.vue").default>
 export const LazyWidgetsChessPoster: LazyComponent<typeof import("../components/widgets/ChessPoster.vue").default>
 export const LazyWidgetsDraggableCanvas: LazyComponent<typeof import("../components/widgets/DraggableCanvas.vue").default>

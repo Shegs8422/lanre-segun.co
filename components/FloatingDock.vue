@@ -45,34 +45,37 @@
 
       <!-- Main Floating Dock (Updated with Active Logic) -->
       <div
-        class="w-full px-2 py-2 bg-component border border-border sm:overflow-visible rounded-2xl w-fit flex h-[3.5rem] items-center gap-2 relative z-10 shadow-[_0_1px_1px_-0.5px_rgba(0,0,0,0.04),_0_3px_3px_-1.5px_rgba(0,0,0,0.04),_0_12px_12px_-6px_rgba(0,0,0,0.04)]"
+        class="w-full px-1.5 sm:px-2 py-2 bg-component border border-border sm:overflow-visible rounded-2xl w-fit flex h-[3.2rem] sm:h-[3.5rem] items-center gap-1 sm:gap-2 relative z-10 shadow-[_0_1px_1px_-0.5px_rgba(0,0,0,0.04),_0_3px_3px_-1.5px_rgba(0,0,0,0.04),_0_12px_12px_-6px_rgba(0,0,0,0.04)]"
         style="will-change: auto; transform: none;">
         <!-- Nav Links with Active State Logic -->
+        <!-- Home -->
         <!-- Home -->
         <template v-if="!demo">
           <NuxtLink to="/" @click="playInteraction"
             class="shrink-0 overflow-hidden flex h-10 rounded-xl items-center justify-center transition-all duration-300 hover:bg-accent relative"
-            :class="isActive('/') ? 'w-auto px-4 bg-secondary text-secondary-foreground' : 'w-10 px-[10px]'">
+            :class="isActive('/') ? 'w-auto px-3 sm:px-4 bg-secondary text-secondary-foreground' : 'w-10 px-2 sm:px-[10px]'">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
               class="h-5 w-5 shrink-0 relative z-10">
               <path stroke="currentColor" stroke-linejoin="round" stroke-width="2"
                 d="M9.5 16.5V20H6a2 2 0 0 1-2-2v-7.948a2 2 0 0 1 .867-1.648l6-4.125a2 2 0 0 1 2.266 0l6 4.125A2 2 0 0 1 20 10.052V18a2 2 0 0 1-2 2h-3.5v-3.5a2.5 2.5 0 0 0-5 0Z">
               </path>
             </svg>
-            <span v-if="isActive('/')" class="ml-2 font-medium text-sm whitespace-nowrap">Home</span>
+            <span v-if="isActive('/')"
+              class="ml-1.5 sm:ml-2 font-medium text-xs sm:text-sm whitespace-nowrap">Home</span>
           </NuxtLink>
         </template>
         <template v-else>
           <div @click="handleDemoClick('/')"
             class="shrink-0 overflow-hidden flex h-10 rounded-xl items-center justify-center transition-all duration-300 hover:bg-accent relative cursor-pointer"
-            :class="isActive('/') ? 'w-auto px-4 bg-secondary text-secondary-foreground' : 'w-10 px-[10px]'">
+            :class="isActive('/') ? 'w-auto px-3 sm:px-4 bg-secondary text-secondary-foreground' : 'w-10 px-2 sm:px-[10px]'">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
               class="h-5 w-5 shrink-0 relative z-10">
               <path stroke="currentColor" stroke-linejoin="round" stroke-width="2"
                 d="M9.5 16.5V20H6a2 2 0 0 1-2-2v-7.948a2 2 0 0 1 .867-1.648l6-4.125a2 2 0 0 1 2.266 0l6 4.125A2 2 0 0 1 20 10.052V18a2 2 0 0 1-2 2h-3.5v-3.5a2.5 2.5 0 0 0-5 0Z">
               </path>
             </svg>
-            <span v-if="isActive('/')" class="ml-2 font-medium text-sm whitespace-nowrap">Home</span>
+            <span v-if="isActive('/')"
+              class="ml-1.5 sm:ml-2 font-medium text-xs sm:text-sm whitespace-nowrap">Home</span>
           </div>
         </template>
 
@@ -80,27 +83,29 @@
         <template v-if="!demo">
           <NuxtLink to="/projects" @click="playInteraction"
             class="shrink-0 overflow-hidden flex h-10 rounded-xl items-center justify-center transition-all duration-300 hover:bg-accent relative"
-            :class="isActive('/projects') ? 'w-auto px-4 bg-secondary text-secondary-foreground' : 'w-10 px-[10px]'">
+            :class="isActive('/projects') ? 'w-auto px-3 sm:px-4 bg-secondary text-secondary-foreground' : 'w-10 px-2 sm:px-[10px]'">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
               class="h-5 w-5 shrink-0 relative z-10">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M12 12 4.5 7.781m7.5 4.22v8.5m0-8.5 7.5-4.22m.5.889v6.66a2 2 0 0 1-1.02 1.744l-6 3.375a2 2 0 0 1-1.96 0l-6-3.375A2 2 0 0 1 4 15.33V8.67a2 2 0 0 1 1.02-1.743l6-3.375a2 2 0 0 1 1.96 0l6 3.375A2 2 0 0 1 20 8.67">
               </path>
             </svg>
-            <span v-if="isActive('/projects')" class="ml-2 font-medium text-sm whitespace-nowrap">Projects</span>
+            <span v-if="isActive('/projects')"
+              class="ml-1.5 sm:ml-2 font-medium text-xs sm:text-sm whitespace-nowrap">Projects</span>
           </NuxtLink>
         </template>
         <template v-else>
           <div @click="handleDemoClick('/projects')"
             class="shrink-0 overflow-hidden flex h-10 rounded-xl items-center justify-center transition-all duration-300 hover:bg-accent relative cursor-pointer"
-            :class="isActive('/projects') ? 'w-auto px-4 bg-secondary text-secondary-foreground' : 'w-10 px-[10px]'">
+            :class="isActive('/projects') ? 'w-auto px-3 sm:px-4 bg-secondary text-secondary-foreground' : 'w-10 px-2 sm:px-[10px]'">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
               class="h-5 w-5 shrink-0 relative z-10">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M12 12 4.5 7.781m7.5 4.22v8.5m0-8.5 7.5-4.22m.5.889v6.66a2 2 0 0 1-1.02 1.744l-6 3.375a2 2 0 0 1-1.96 0l-6-3.375A2 2 0 0 1 4 15.33V8.67a2 2 0 0 1 1.02-1.743l6-3.375a2 2 0 0 1 1.96 0l6 3.375A2 2 0 0 1 20 8.67">
               </path>
             </svg>
-            <span v-if="isActive('/projects')" class="ml-2 font-medium text-sm whitespace-nowrap">Projects</span>
+            <span v-if="isActive('/projects')"
+              class="ml-1.5 sm:ml-2 font-medium text-xs sm:text-sm whitespace-nowrap">Projects</span>
           </div>
         </template>
 
@@ -108,7 +113,7 @@
         <template v-if="!demo">
           <NuxtLink to="/craft" @click="playInteraction"
             class="shrink-0 overflow-hidden flex h-10 rounded-xl items-center justify-center transition-all duration-300 hover:bg-accent relative"
-            :class="isActive('/craft') ? 'w-auto px-4 bg-secondary text-secondary-foreground' : 'w-10 px-[10px]'">
+            :class="isActive('/craft') ? 'w-auto px-3 sm:px-4 bg-secondary text-secondary-foreground' : 'w-10 px-2 sm:px-[10px]'">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
               class="h-5 w-5 shrink-0 relative z-10">
               <path
@@ -118,13 +123,14 @@
                 d="M9.5 12.5L16.3358 19.3358C17.1168 20.1168 18.3832 20.1168 19.1642 19.3358L19.3358 19.1642C20.1168 18.3832 20.1168 17.1168 19.3358 16.3358L12.5 9.5"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
             </svg>
-            <span v-if="isActive('/craft')" class="ml-2 font-medium text-sm whitespace-nowrap">Craft</span>
+            <span v-if="isActive('/craft')"
+              class="ml-1.5 sm:ml-2 font-medium text-xs sm:text-sm whitespace-nowrap">Craft</span>
           </NuxtLink>
         </template>
         <template v-else>
           <div @click="handleDemoClick('/craft')"
             class="shrink-0 overflow-hidden flex h-10 rounded-xl items-center justify-center transition-all duration-300 hover:bg-accent relative cursor-pointer"
-            :class="isActive('/craft') ? 'w-auto px-4 bg-secondary text-secondary-foreground' : 'w-10 px-[10px]'">
+            :class="isActive('/craft') ? 'w-auto px-3 sm:px-4 bg-secondary text-secondary-foreground' : 'w-10 px-2 sm:px-[10px]'">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
               class="h-5 w-5 shrink-0 relative z-10">
               <path
@@ -134,7 +140,8 @@
                 d="M9.5 12.5L16.3358 19.3358C17.1168 20.1168 18.3832 20.1168 19.1642 19.3358L19.3358 19.1642C20.1168 18.3832 20.1168 17.1168 19.3358 16.3358L12.5 9.5"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
             </svg>
-            <span v-if="isActive('/craft')" class="ml-2 font-medium text-sm whitespace-nowrap">Craft</span>
+            <span v-if="isActive('/craft')"
+              class="ml-1.5 sm:ml-2 font-medium text-xs sm:text-sm whitespace-nowrap">Craft</span>
           </div>
         </template>
 
@@ -142,27 +149,29 @@
         <template v-if="!demo">
           <NuxtLink to="/notes" @click="playInteraction"
             class="shrink-0 overflow-hidden flex h-10 rounded-xl items-center justify-center transition-all duration-300 hover:bg-accent relative"
-            :class="isActive('/notes') ? 'w-auto px-4 bg-secondary text-secondary-foreground' : 'w-10 px-[10px]'">
+            :class="isActive('/notes') ? 'w-auto px-3 sm:px-4 bg-secondary text-secondary-foreground' : 'w-10 px-2 sm:px-[10px]'">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
               class="h-5 w-5 shrink-0 relative z-10">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M9 3.5H6.5a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2H9m0-17h8.5a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H9m0-17v17M13 8h2.5M13 12h2.5">
               </path>
             </svg>
-            <span v-if="isActive('/notes')" class="ml-2 font-medium text-sm whitespace-nowrap">Notes</span>
+            <span v-if="isActive('/notes')"
+              class="ml-1.5 sm:ml-2 font-medium text-xs sm:text-sm whitespace-nowrap">Notes</span>
           </NuxtLink>
         </template>
         <template v-else>
           <div @click="handleDemoClick('/notes')"
             class="shrink-0 overflow-hidden flex h-10 rounded-xl items-center justify-center transition-all duration-300 hover:bg-accent relative cursor-pointer"
-            :class="isActive('/notes') ? 'w-auto px-4 bg-secondary text-secondary-foreground' : 'w-10 px-[10px]'">
+            :class="isActive('/notes') ? 'w-auto px-3 sm:px-4 bg-secondary text-secondary-foreground' : 'w-10 px-2 sm:px-[10px]'">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
               class="h-5 w-5 shrink-0 relative z-10">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M9 3.5H6.5a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2H9m0-17h8.5a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H9m0-17v17M13 8h2.5M13 12h2.5">
               </path>
             </svg>
-            <span v-if="isActive('/notes')" class="ml-2 font-medium text-sm whitespace-nowrap">Notes</span>
+            <span v-if="isActive('/notes')"
+              class="ml-1.5 sm:ml-2 font-medium text-xs sm:text-sm whitespace-nowrap">Notes</span>
           </div>
         </template>
 
@@ -170,7 +179,7 @@
         <template v-if="!demo">
           <NuxtLink to="/photos" @click="playInteraction"
             class="shrink-0 overflow-hidden flex h-10 rounded-xl items-center justify-center transition-all duration-300 hover:bg-accent relative"
-            :class="isActive('/photos') ? 'w-auto px-4 bg-secondary text-secondary-foreground' : 'w-10 px-[10px]'">
+            :class="isActive('/photos') ? 'w-auto px-3 sm:px-4 bg-secondary text-secondary-foreground' : 'w-10 px-2 sm:px-[10px]'">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
               class="h-5 w-5 shrink-0 relative z-10">
               <path stroke="currentColor" stroke-linecap="square" stroke-linejoin="round" stroke-width="2"
@@ -179,13 +188,14 @@
               <path stroke="currentColor" stroke-linecap="square" stroke-linejoin="round" stroke-width="2"
                 d="M15 13a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
             </svg>
-            <span v-if="isActive('/photos')" class="ml-2 font-medium text-sm whitespace-nowrap">Gallery</span>
+            <span v-if="isActive('/photos')"
+              class="ml-1.5 sm:ml-2 font-medium text-xs sm:text-sm whitespace-nowrap">Gallery</span>
           </NuxtLink>
         </template>
         <template v-else>
           <div @click="handleDemoClick('/photos')"
             class="shrink-0 overflow-hidden flex h-10 rounded-xl items-center justify-center transition-all duration-300 hover:bg-accent relative cursor-pointer"
-            :class="isActive('/photos') ? 'w-auto px-4 bg-secondary text-secondary-foreground' : 'w-10 px-[10px]'">
+            :class="isActive('/photos') ? 'w-auto px-3 sm:px-4 bg-secondary text-secondary-foreground' : 'w-10 px-2 sm:px-[10px]'">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
               class="h-5 w-5 shrink-0 relative z-10">
               <path stroke="currentColor" stroke-linecap="square" stroke-linejoin="round" stroke-width="2"
@@ -194,7 +204,8 @@
               <path stroke="currentColor" stroke-linecap="square" stroke-linejoin="round" stroke-width="2"
                 d="M15 13a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
             </svg>
-            <span v-if="isActive('/photos')" class="ml-2 font-medium text-sm whitespace-nowrap">Gallery</span>
+            <span v-if="isActive('/photos')"
+              class="ml-1.5 sm:ml-2 font-medium text-xs sm:text-sm whitespace-nowrap">Gallery</span>
           </div>
         </template>
 

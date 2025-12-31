@@ -76,6 +76,12 @@ export const useClientSound = (src: string, options: UseSoundOptions = {}) => {
   }
 
   const play = (opts?: any) => {
+    const { isSoundEnabled } = useAlbumPlayer()
+    if (!isSoundEnabled.value) {
+      console.log('[useClientSound] Play blocked: Sound is disabled.')
+      return
+    }
+
     console.log('[useClientSound] Play requested for:', src)
     if (!sound.value) init()
 
