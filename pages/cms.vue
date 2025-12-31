@@ -268,6 +268,22 @@
                                     <input v-model="formData.year" type="text" placeholder="2024"
                                         class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground font-medium">
                                 </div>
+                                <div class="flex flex-col gap-2.5">
+                                    <label
+                                        class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Live
+                                        Project
+                                        Link</label>
+                                    <input v-model="formData.projectLink" type="text" placeholder="https://..."
+                                        class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground font-mono text-sm leading-relaxed">
+                                </div>
+                                <div class="flex items-center gap-3 px-1 pt-2">
+                                    <input type="checkbox" v-model="formData.isFigma" id="isFigma"
+                                        class="w-5 h-5 rounded border-border text-blue-500 focus:ring-blue-500 bg-background">
+                                    <label for="isFigma"
+                                        class="text-xs font-bold uppercase tracking-wider text-foreground cursor-pointer">This
+                                        is a
+                                        Figma Prototype</label>
+                                </div>
 
                                 <div class="flex flex-col gap-3 lg:col-span-2">
                                     <div class="flex justify-between items-center px-1">
@@ -954,44 +970,28 @@ const saveItem = async () => {
                 if (formData.value[f] !== undefined) payload[f] = formData.value[f]
             })
         } else {
-            // Strict fields for Projects table
+            // Mapping for Projects table
             const projectFields = [
                 'id', 'title', 'year', 'slug', 'client', 'industry', 'duration',
                 'role', 'problemStatement', 'businessGoal', 'userGoal',
                 'targetUsers', 'designApproach', 'researchMethods', 'keyInsights',
-                'solutionSummary', 'outcome', 'learnings', 'content', 'featured'
+                'solutionSummary', 'outcome', 'learnings', 'content', 'featured',
+                'subtitle', 'teamSize', 'projectLink', 'isFigma', 'coverImage'
             ]
 
             projectFields.forEach(f => {
-                const dbField = f.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`)
-                if (formData.value[f] !== undefined) payload[dbField] = formData.value[f]
+                if (formData.value[f] !== undefined) {
+                    // Convert camelCase to snake_case for DB
+                    const dbField = f.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`)
+                    payload[dbField] = formData.value[f]
+                }
             })
 
-            // Map arrays and specific fields
-            payload.tags = tagsInput.value.split(',').map(s => s.trim()).filter(Boolean)
-            payload.tools = toolsInput.value.split(',').map(s => s.trim()).filter(Boolean)
-            payload.wireframes = wireframesInput.value.split('\n').map(s => s.trim()).filter(Boolean)
-            payload.final_designs = (formData.value.finalDesigns || [])
-            payload.cover_image = formData.value.coverImage
-            payload.project_link = formData.value.projectLink
-            payload.is_figma = formData.value.isFigma
-            payload.team_size = formData.value.teamSize
-            payload.subtitle = formData.value.subtitle
-            payload.industry = formData.value.industry
-            payload.duration = formData.value.duration
-            payload.role = formData.value.role
-            payload.problem_statement = formData.value.problemStatement
-            payload.business_goal = formData.value.businessGoal
-            payload.user_goal = formData.value.userGoal
-            payload.target_users = formData.value.targetUsers
-            payload.design_approach = formData.value.designApproach
-            payload.research_methods = formData.value.researchMethods
-            payload.key_insights = formData.value.keyInsights
-            payload.solution_summary = formData.value.solutionSummary
-            payload.outcome = formData.value.outcome
-            payload.learnings = formData.value.learnings
-            payload.content = formData.value.content
-            payload.featured = formData.value.featured
+            // Array fields
+            if (tagsInput.value) payload.tags = tagsInput.value.split(',').map(s => s.trim()).filter(Boolean)
+            if (toolsInput.value) payload.tools = toolsInput.value.split(',').map(s => s.trim()).filter(Boolean)
+            if (wireframesInput.value) payload.wireframes = wireframesInput.value.split('\n').map(s => s.trim()).filter(Boolean)
+            if (formData.value.finalDesigns) payload.final_designs = formData.value.finalDesigns
         }
 
         // Remove ID if empty to let Supabase generate one (for new items)

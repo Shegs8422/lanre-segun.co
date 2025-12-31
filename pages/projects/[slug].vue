@@ -17,7 +17,7 @@
 
                     <button v-if="project.projectLink" @click="handleProjectLink"
                         class="w-fit flex items-center gap-2 px-6 py-2 rounded-full bg-blue-600 hover:bg-blue-500 transition-colors text-sm font-bold text-white shadow-lg shadow-blue-500/20">
-                        {{ project.isFigma ? 'View Prototype' : 'Go to Project' }}
+                        {{ project.isFigma ? 'View Prototype' : 'See Live Project' }}
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
