@@ -272,8 +272,9 @@
                                     <label
                                         class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Live
                                         Project
-                                        Link</label>
-                                    <input v-model="formData.projectLink" type="text" placeholder="https://..."
+                                        Link (URL or Iframe)</label>
+                                    <input v-model="formData.projectLink" type="text"
+                                        placeholder="Paste link or full <iframe> code..."
                                         class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground font-mono text-sm leading-relaxed">
                                 </div>
                                 <div class="flex items-center gap-3 px-1 pt-2">

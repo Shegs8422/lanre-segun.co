@@ -29,8 +29,10 @@
                             class="px-2 py-0.5 bg-yellow-500/10 text-yellow-500 text-[10px] font-bold rounded border border-yellow-500/20 uppercase tracking-tighter">
                             Featured</div>
                     </div>
-                    <h3 class="text-3xl font-bold tracking-tight">{{ project.title }}</h3>
-                    <p class="text-muted-foreground text-lg max-w-xl leading-relaxed">
+                    <h3 class="text-4xl font-black tracking-tighter leading-none">{{ project.title }}</h3>
+                    <p v-if="project.subtitle" class="text-lg text-blue-400/80 font-medium italic -mt-1">{{
+                        project.subtitle }}</p>
+                    <p class="text-muted-foreground text-lg max-w-xl leading-relaxed mt-1">
                         {{ project.description }}
                     </p>
                     <div class="flex flex-wrap gap-2 mt-1">

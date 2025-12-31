@@ -39,25 +39,29 @@
                 </div>
 
                 <!-- Snapshot Meta Grid -->
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 pt-8 border-t border-white/10 mt-4">
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-8 pt-8 border-t border-white/10 mt-4">
                     <div class="flex flex-col gap-1">
                         <span
                             class="text-[10px] uppercase tracking-widest text-muted-foreground font-bold">Client</span>
-                        <span class="text-sm font-medium">{{ project.client || 'N/A' }}</span>
+                        <span class="text-sm font-medium truncate">{{ project.client || 'N/A' }}</span>
                     </div>
                     <div class="flex flex-col gap-1">
                         <span class="text-[10px] uppercase tracking-widest text-muted-foreground font-bold">Role</span>
-                        <span class="text-sm font-medium">{{ project.role || 'N/A' }}</span>
+                        <span class="text-sm font-medium truncate">{{ project.role || 'N/A' }}</span>
                     </div>
                     <div class="flex flex-col gap-1">
                         <span
                             class="text-[10px] uppercase tracking-widest text-muted-foreground font-bold">Industry</span>
-                        <span class="text-sm font-medium">{{ project.industry || 'N/A' }}</span>
+                        <span class="text-sm font-medium truncate">{{ project.industry || 'N/A' }}</span>
                     </div>
                     <div class="flex flex-col gap-1">
                         <span
                             class="text-[10px] uppercase tracking-widest text-muted-foreground font-bold">Duration</span>
-                        <span class="text-sm font-medium">{{ project.duration || 'N/A' }}</span>
+                        <span class="text-sm font-medium truncate">{{ project.duration || 'N/A' }}</span>
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <span class="text-[10px] uppercase tracking-widest text-muted-foreground font-bold">Team</span>
+                        <span class="text-sm font-medium truncate">{{ project.teamSize || 'N/A' }}</span>
                     </div>
                 </div>
             </header>
@@ -116,6 +120,11 @@
                                 Research, Audits, Benchmarking.` }}</p>
                         </div>
                         <div class="flex flex-col gap-4">
+                            <h4 class="text-sm font-bold uppercase tracking-widest opacity-40">Target Users</h4>
+                            <p class="text-muted-foreground leading-relaxed">{{ project.targetUsers || `Stakeholders,
+                                Primary Users, Admin.` }}</p>
+                        </div>
+                        <div class="flex flex-col gap-4 md:col-span-2 border-t border-white/5 pt-8">
                             <h4 class="text-sm font-bold uppercase tracking-widest opacity-40">Key Insights</h4>
                             <p class="text-muted-foreground leading-relaxed">{{ project.keyInsights || `Identifying core
                                 pain points in existing workflows.` }}</p>
@@ -220,6 +229,20 @@
                 </div>
             </div>
 
+            <!-- Solution Highlights -->
+            <section v-if="project.solutionSummary" class="flex flex-col gap-10 animate-fade-in-up">
+                <div class="flex flex-col gap-4">
+                    <h3 class="text-xs font-bold text-emerald-500 uppercase tracking-widest">The Fix</h3>
+                    <h2 class="text-3xl font-bold tracking-tight">Solution Summary</h2>
+                </div>
+                <div class="p-10 rounded-3xl bg-emerald-500/5 border border-emerald-500/10">
+                    <p
+                        class="text-xl leading-relaxed text-foreground/90 font-light italic pl-4 border-l-2 border-emerald-500">
+                        "{{ project.solutionSummary }}"
+                    </p>
+                </div>
+            </section>
+
             <!-- Outcomes & Tools -->
             <section class="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-20 animate-fade-in-up">
                 <div class="md:col-span-4 flex flex-col gap-4">
@@ -317,7 +340,7 @@
 
                 <!-- Iframe Container -->
                 <div class="flex-1 w-full relative bg-black">
-                    <iframe :src="project.projectLink" class="absolute inset-0 w-full h-full border-0"
+                    <iframe :src="formattedLink" class="absolute inset-0 w-full h-full border-0"
                         allowfullscreen></iframe>
                 </div>
 
@@ -345,13 +368,43 @@ const adjacent = computed(() => getAdjacentProjects(route.params.slug as string)
 
 const showPrototype = ref(false)
 
+const formattedLink = computed(() => {
+    let raw = project.value?.projectLink || ''
+    if (!raw) return ''
+
+    // Support for full iframe embed codes (extract src URL)
+    if (raw.includes('<iframe')) {
+        const match = raw.match(/src="([^"]+)"/)
+        if (match && match[1]) raw = match[1]
+    }
+
+    let link = raw.trim()
+
+    // Ensure absolute URL (prevents 'refused to connect' by current domain)
+    if (!link.startsWith('http')) {
+        link = 'https://' + link
+    }
+
+    // Auto-transform standard Figma links to Embed format
+    if (project.value?.isFigma) {
+        const isStandardFigma = link.includes('figma.com/') && (link.includes('/file/') || link.includes('/proto/') || link.includes('/design/'))
+        const isAlreadyEmbed = link.includes('figma.com/embed')
+
+        if (isStandardFigma && !isAlreadyEmbed) {
+            return `https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(link)}`
+        }
+    }
+
+    return link
+})
+
 const handleProjectLink = () => {
     if (!project.value?.projectLink) return
 
     if (project.value.isFigma) {
         showPrototype.value = true
     } else {
-        window.open(project.value.projectLink, '_blank')
+        window.open(formattedLink.value, '_blank')
     }
 }
 
