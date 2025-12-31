@@ -1388,7 +1388,7 @@ const _yOjy7KOYVayk6rK598ebNeaxgOla0kbh9cJQW1cd89E = (function(nitro) {
 
 const rootDir = "C:/Users/Lanre Segun/Desktop/lanre-segun.co";
 
-const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"name":"author","content":"Lanre Segun"},{"name":"description","content":"C-Suite Senior Product Designer & Design Engineer. Specializing in Web3, Fintech, and SaaS with a focus on HCD and premium UI."},{"property":"og:type","content":"website"},{"property":"og:title","content":"Lanre Segun - Senior Product Designer Portfolio"},{"property":"og:description","content":"Interactive portfolio of Lanre Segun, exploring the intersection of design and engineering."},{"property":"og:image","content":"/og-image.png"},{"property":"og:url","content":"https://lanre-segun.vercel.app"},{"name":"twitter:card","content":"summary_large_image"},{"name":"twitter:title","content":"Lanre Segun - Senior Product Designer"},{"name":"twitter:description","content":"Strategic Product Designer bridging complex engineering and premium UI."},{"name":"twitter:image","content":"/og-image.png"},{"name":"twitter:creator","content":"@Olusegun51"}],"link":[{"rel":"canonical","href":"https://lanre-segun.vercel.app"},{"rel":"preconnect","href":"https://fonts.googleapis.com"},{"rel":"preconnect","href":"https://fonts.gstatic.com","crossorigin":""},{"rel":"stylesheet","href":"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=DM+Mono:wght@400;500&display=swap"}],"style":[],"script":[],"noscript":[],"htmlAttrs":{"lang":"en"}};
+const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"name":"author","content":"Lanre Segun"},{"name":"description","content":"C-Suite Senior Product Designer & Design Engineer. Specializing in Web3, Fintech, and SaaS with a focus on HCD and premium UI."},{"property":"og:type","content":"website"},{"property":"og:title","content":"Lanre Segun - Senior Product Designer Portfolio"},{"property":"og:description","content":"Interactive portfolio of Lanre Segun, exploring the intersection of design and engineering."},{"property":"og:image","content":"/og-image.png"},{"property":"og:url","content":"https://lanre-segun.vercel.app"},{"name":"twitter:card","content":"summary_large_image"},{"name":"twitter:title","content":"Lanre Segun - Senior Product Designer"},{"name":"twitter:description","content":"Strategic Product Designer bridging complex engineering and premium UI."},{"name":"twitter:image","content":"/og-image.png"},{"name":"twitter:creator","content":"@Olusegun51"}],"link":[{"rel":"canonical","href":"https://lanre-segun.vercel.app"},{"rel":"preconnect","href":"https://fonts.googleapis.com"},{"rel":"preconnect","href":"https://fonts.gstatic.com","crossorigin":""},{"rel":"stylesheet","href":"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Outfit:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&family=Kalam:wght@400;700&display=swap"}],"style":[],"script":[],"noscript":[],"htmlAttrs":{"lang":"en"}};
 
 const appRootTag = "div";
 
@@ -1483,22 +1483,7 @@ const plugins = [
 _IgiEwhgW32gMDxTQHgSX0rR0BT8Tph82HUmNdzd_sk
 ];
 
-const assets = {
-  "/index.mjs": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"17e76-mG4U/P1+XAJwgiPLay3/VWKNUH4\"",
-    "mtime": "2025-12-31T08:31:00.316Z",
-    "size": 97910,
-    "path": "index.mjs"
-  },
-  "/index.mjs.map": {
-    "type": "application/json",
-    "etag": "\"5a9c3-EdH4kOXPdV3Fviyy3N0Bak/WiUw\"",
-    "mtime": "2025-12-31T08:31:00.317Z",
-    "size": 371139,
-    "path": "index.mjs.map"
-  }
-};
+const assets = {};
 
 function readAsset (id) {
   const serverDir = dirname$1(fileURLToPath(globalThis._importMeta_.url));

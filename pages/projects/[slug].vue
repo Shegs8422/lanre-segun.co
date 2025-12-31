@@ -33,7 +33,8 @@
                             class="px-3 py-1 bg-blue-500/10 text-blue-400 text-xs font-medium rounded-full border border-blue-500/20 uppercase tracking-widest">{{
                                 tag }}</span>
                     </div>
-                    <h1 class="text-5xl md:text-7xl font-bold tracking-tighter leading-tight">{{ project.title }}</h1>
+                    <h1 class="text-5xl md:text-7xl font-display font-bold tracking-tighter leading-tight">{{
+                        project.title }}</h1>
                     <p class="text-muted-foreground text-xl md:text-2xl font-light max-w-2xl leading-relaxed">{{
                         project.subtitle || project.description }}</p>
                 </div>
@@ -78,8 +79,8 @@
             <!-- Problem & Goals -->
             <section class="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-20 animate-fade-in-up delay-200">
                 <div class="md:col-span-4 flex flex-col gap-4">
-                    <h3 class="text-xs font-bold text-blue-500 uppercase tracking-widest">01. Context</h3>
-                    <h2 class="text-3xl font-bold tracking-tight">The Challenge</h2>
+                    <h3 class="text-xs font-display font-bold text-blue-500 uppercase tracking-widest">01. Context</h3>
+                    <h2 class="text-3xl font-display font-bold tracking-tight">The Challenge</h2>
                 </div>
                 <div class="md:col-span-8 flex flex-col gap-12">
                     <p

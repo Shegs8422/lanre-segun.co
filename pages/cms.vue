@@ -44,7 +44,7 @@
         <!-- Mobile Header Toggle -->
         <div
             class="lg:hidden fixed top-0 left-0 right-0 h-16 bg-background/80 backdrop-blur-md border-b border-border z-160 flex items-center justify-between px-6 transition-colors">
-            <h1 class="text-xl font-bold tracking-tight text-foreground">Local CMS</h1>
+            <h1 class="text-xl font-display font-medium tracking-tight text-foreground">Local CMS</h1>
             <button @click="isSidebarOpen = !isSidebarOpen"
                 class="p-2 -mr-2 text-muted-foreground hover:text-foreground">
                 <svg v-if="!isSidebarOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -66,7 +66,7 @@
             'fixed left-0 top-0 h-full w-64 border-r border-border bg-component dark:bg-black/90 p-6 flex flex-col gap-8 backdrop-blur-xl z-150 transition-transform duration-300 lg:translate-x-0',
             isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
         ]">
-            <h1 class="hidden lg:block text-2xl font-bold tracking-tight text-foreground">Local CMS</h1>
+            <h1 class="hidden lg:block text-2xl font-display font-black tracking-tight text-foreground">Local CMS</h1>
 
             <nav class="flex flex-col gap-2 pt-20 lg:pt-0">
                 <button @click="handleTabChange('notes')"
@@ -991,10 +991,11 @@ const generateAiProcess = async () => {
             const keys = fieldPath.split('.')
 
             if (keys.length === 2) {
-                if (!formData.value[keys[0]]) formData.value[keys[0]] = {}
-                formData.value[keys[0]][keys[1]] = response.text
+                const k1 = keys[0] as keyof typeof formData.value
+                if (!formData.value[k1]) (formData.value as any)[k1] = {}
+                    ; (formData.value as any)[k1][keys[1]] = response.text
             } else {
-                formData.value[fieldPath] = response.text
+                ; (formData.value as any)[fieldPath] = response.text
             }
             showToast('Success', 'Content drafted by AI.', 'success')
         }
@@ -1173,7 +1174,7 @@ const handleImageUpload = async (event: Event, field: string) => {
             else if (field === 'noteContent') formData.value.content = (formData.value.content || '') + `\n\n![Image](${publicUrl})\n\n`
             else if (field === 'wireframes') wireframesInput.value += (wireframesInput.value ? '\n' : '') + publicUrl
             else if (field === 'massGallery') {
-                const { error: insErr } = await supabase.from('gallery').insert({ url: publicUrl, order_index: galleryItems.value.length })
+                const { error: insErr } = await (supabase.from('gallery') as any).insert({ url: publicUrl, order_index: galleryItems.value.length })
                 if (insErr) throw insErr
                 pendingUploads.value = Math.max(0, pendingUploads.value - 1)
             }

@@ -9,7 +9,7 @@
 
     <!-- Content (z-10 to stay above bubble) -->
     <div class="relative z-10 flex flex-col gap-4">
-      <p class="font-medium" :class="{ 'text-white': activeColor }">Education & Certification</p>
+      <p class="font-display font-medium" :class="{ 'text-white': activeColor }">Education & Certification</p>
 
       <ul class="flex flex-col gap-4" @mouseleave="onLeave">
         <li v-for="(item, index) in education" :key="index"

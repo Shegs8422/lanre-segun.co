@@ -8,7 +8,7 @@
         </span>
         <div class="flex flex-1 justify-between items-center">
           <div class="flex flex-col">
-            <p class="text-base sm:text-xl font-medium"> Lanre Segun </p>
+            <p class="text-base sm:text-xl font-display font-medium"> Lanre Segun </p>
             <p class="text-base font-medium text-muted-foreground"> Senior Product Designer </p>
           </div>
           <div class="sm:size-10 size-8">
@@ -90,12 +90,11 @@
         </div>
       </div>
       <div data-orientation="horizontal" role="none"
-        class="h-[1px] w-full grow my-1.5 sm:my-2 shrink mix-blend-multiply dark:mix-blend-lighten bg-transparent border-t-[1px] border-dashed">
+        class="h-px w-full grow my-1.5 sm:my-2 shrink mix-blend-multiply dark:mix-blend-lighten bg-transparent border-t border-dashed">
       </div>
       <ul class="flex flex-col gap-4">
-        <li class="flex flex-row gap-4 inline-flex items-center justify-center">
-          <div
-            class="hidden sm:block h-10 w-10 flex-none inline-flex items-center justify-center rounded-sm bg-[#1798D5] flex-none">
+        <li class="flex gap-4 items-center">
+          <div class="hidden sm:flex h-10 w-10 items-center justify-center rounded-sm bg-[#1798D5] flex-none">
           </div>
           <div class="flex flex-row w-full justify-between sm:items-center gap-4">
             <div class="flex flex-col">
@@ -107,9 +106,8 @@
               Nov 2025</div>
           </div>
         </li>
-        <li class="flex flex-row gap-4 inline-flex items-center justify-center">
-          <div
-            class="hidden sm:block size-10 flex-none inline-flex items-center justify-center rounded-sm bg-[#00A868] flex-none">
+        <li class="flex gap-4 items-center">
+          <div class="hidden sm:flex size-10 items-center justify-center rounded-sm bg-[#00A868] flex-none">
           </div>
           <div class="flex flex-row w-full justify-between sm:items-center gap-4">
             <div class="flex flex-col">
@@ -121,9 +119,8 @@
               Apr 2025 - Sep 2025</div>
           </div>
         </li>
-        <li class="flex flex-row gap-4 inline-flex items-center justify-center">
-          <div
-            class="hidden sm:block h-10 w-10 flex-none inline-flex items-center justify-center rounded-sm bg-[#FF530A] flex-none">
+        <li class="flex gap-4 items-center">
+          <div class="hidden sm:flex h-10 w-10 items-center justify-center rounded-sm bg-[#FF530A] flex-none">
           </div>
           <div class="flex flex-row w-full justify-between sm:items-center gap-4">
             <div class="flex flex-col">

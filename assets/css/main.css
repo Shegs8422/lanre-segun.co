@@ -1,6 +1,11 @@
 @import "tailwindcss";
 
 @theme {
+  --font-sans: var(--font-sans);
+  --font-display: var(--font-display);
+  --font-mono: var(--font-mono);
+  --font-handwritten: var(--font-handwritten);
+
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
   --color-component: hsl(var(--component));
@@ -52,15 +57,16 @@
   --radius: 0.5rem;
 
   /* FONTS */
-  --font-sans: 'Google Sans Text', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-display: 'Google Sans Display', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  /* Fallback until Sohne is properly loaded */
+  --font-sans: 'Google Sans Text', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Google Sans Display', 'Outfit', system-ui, -apple-system, sans-serif;
+  --font-mono: 'DM Mono', monospace;
+  --font-handwritten: 'Kalam', cursive;
 }
 
 /* FONT FACES */
 @font-face {
   font-family: 'Google Sans Display';
-  src: url('/assets/fonts/GoogleSansDisplay-Regular.ttf') format('truetype');
+  src: url('../fonts/GoogleSansDisplay-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -68,7 +74,7 @@
 
 @font-face {
   font-family: 'Google Sans Display';
-  src: url('/assets/fonts/GoogleSansDisplay-Medium.ttf') format('truetype');
+  src: url('../fonts/GoogleSansDisplay-Medium.ttf') format('truetype');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -76,7 +82,7 @@
 
 @font-face {
   font-family: 'Google Sans Display';
-  src: url('/assets/fonts/GoogleSansDisplay-Bold.ttf') format('truetype');
+  src: url('../fonts/GoogleSansDisplay-Bold.ttf') format('truetype');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -84,7 +90,7 @@
 
 @font-face {
   font-family: 'Google Sans Text';
-  src: url('/assets/fonts/GoogleSansText-Regular.ttf') format('truetype');
+  src: url('../fonts/GoogleSansText-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -92,7 +98,7 @@
 
 @font-face {
   font-family: 'Google Sans Text';
-  src: url('/assets/fonts/GoogleSansText-Medium.ttf') format('truetype');
+  src: url('../fonts/GoogleSansText-Medium.ttf') format('truetype');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -100,7 +106,7 @@
 
 @font-face {
   font-family: 'Google Sans Text';
-  src: url('/assets/fonts/GoogleSansText-Bold.ttf') format('truetype');
+  src: url('../fonts/GoogleSansText-Bold.ttf') format('truetype');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -140,6 +146,7 @@ body {
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
   font-family: var(--font-sans);
+  font-feature-settings: "cv02", "cv03", "cv04", "ss01";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   /* Custom Cursor */
