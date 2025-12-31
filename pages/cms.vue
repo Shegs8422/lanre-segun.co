@@ -128,7 +128,7 @@
                             class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
                             <!-- Pending Upload Skeletons -->
                             <div v-for="n in pendingUploads" :key="'skeleton-' + n"
-                                class="aspect-[3/4] bg-muted rounded-xl animate-pulse flex items-center justify-center border border-border">
+                                class="aspect-3/4 bg-muted rounded-xl animate-pulse flex items-center justify-center border border-border">
                                 <svg class="w-8 h-8 text-muted-foreground/20 animate-spin" fill="none"
                                     viewBox="0 0 24 24">
                                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
@@ -140,7 +140,7 @@
                             </div>
 
                             <div v-for="item in galleryItems" :key="item.id"
-                                class="group relative aspect-[3/4] bg-muted rounded-xl overflow-hidden border border-border">
+                                class="group relative aspect-4/3 bg-muted rounded-xl overflow-hidden border border-border">
                                 <img :src="item.url"
                                     class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                                 <div
@@ -153,8 +153,8 @@
                             </div>
 
                             <!-- Large Upload Trigger for Gallery -->
-                            <button @click="$refs.massGalleryInput.click()"
-                                class="aspect-[3/4] border-2 border-dashed border-border rounded-xl flex flex-col items-center justify-center gap-2 hover:bg-muted/50 transition-colors group">
+                            <button @click="(($refs.massGalleryInput as any).click())"
+                                class="aspect-3/4 border-2 border-dashed border-border rounded-xl flex flex-col items-center justify-center gap-2 hover:bg-muted/50 transition-colors group">
                                 <div
                                     class="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-all">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -171,7 +171,7 @@
 
                         <!-- Standard Items List (Notes/Projects) -->
                         <template v-else>
-                            <div v-for="item in activeItems" :key="item.slug || item.id"
+                            <div v-for="item in activeItems" :key="(item as any).slug || (item as any).id"
                                 class="p-5 rounded-2xl border border-border bg-component/50 dark:bg-white/2 shadow-sm hover:shadow-md hover:border-blue-500/40 transition-all flex flex-col sm:flex-row justify-between sm:items-center gap-4 group">
                                 <div class="flex flex-col gap-1.5">
                                     <h3
@@ -179,7 +179,7 @@
                                         {{ item.title }}</h3>
                                     <div class="flex items-center gap-2 text-xs font-medium text-muted-foreground">
                                         <span class="px-2 py-0.5 bg-muted rounded uppercase tracking-wider">{{ item.year
-                                            }}</span>
+                                        }}</span>
                                         <span class="opacity-40">•</span>
                                         <span class="font-mono">{{ item.slug }}</span>
                                     </div>
@@ -274,7 +274,8 @@
                                         <label
                                             class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Featured
                                             Image / Cover</label>
-                                        <button type="button" @click="$refs.coverInput.click()" :disabled="isUploading"
+                                        <button type="button" @click="(($refs.coverInput as any).click())"
+                                            :disabled="isUploading"
                                             class="text-[11px] font-bold text-blue-500 uppercase flex items-center gap-1.5 hover:text-blue-400">
                                             <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
@@ -322,7 +323,7 @@
                                         <label
                                             class="text-xs font-bold uppercase tracking-wider text-muted-foreground">Body
                                             Text (Supports Markdown)</label>
-                                        <button type="button" @click="$refs.noteImageInput.click()"
+                                        <button type="button" @click="(($refs.noteImageInput as any).click())"
                                             :disabled="isUploading"
                                             class="text-[11px] font-bold text-blue-500 uppercase flex items-center gap-1.5 hover:text-blue-400">
                                             <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -340,7 +341,8 @@
                                 </div>
                             </div>
 
-                            <div v-if="activeTab === 'projects'" class="flex flex-col gap-8">
+                            <div v-if="activeTab === 'projects'" class="flex flex-col gap-10">
+                                <!-- Core Details -->
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                                     <div class="flex flex-col gap-2.5">
                                         <label
@@ -351,36 +353,144 @@
                                     </div>
                                     <div class="flex flex-col gap-2.5">
                                         <label
-                                            class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Your
-                                            Role</label>
-                                        <input v-model="formData.role" type="text"
+                                            class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Role</label>
+                                        <input v-model="formData.role" type="text" placeholder="Lead Product Designer"
                                             class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground font-medium">
                                     </div>
-                                    <div class="flex flex-col gap-2.5 col-span-1 lg:col-span-2">
+                                    <div class="flex flex-col gap-2.5">
                                         <label
-                                            class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Tags
-                                            (Comma Separated)</label>
-                                        <input v-model="tagsInput" type="text" placeholder="Design System, SaaS, React"
-                                            class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground">
+                                            class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Industry</label>
+                                        <input v-model="formData.industry" type="text" placeholder="Fintech, SaaS, etc."
+                                            class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground font-medium">
+                                    </div>
+                                    <div class="flex flex-col gap-2.5">
+                                        <label
+                                            class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Duration</label>
+                                        <input v-model="formData.duration" type="text" placeholder="3 Months"
+                                            class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground font-medium">
                                     </div>
                                 </div>
 
-                                <div class="flex flex-col gap-4">
-                                    <div class="flex justify-between items-end px-1">
+                                <!-- Narrative / Strategy -->
+                                <div class="flex flex-col gap-8 pt-6 border-t border-border">
+                                    <h4 class="text-sm font-bold uppercase tracking-widest text-blue-500">Project
+                                        Narrative</h4>
+
+                                    <div class="flex flex-col gap-2.5">
                                         <label
-                                            class="text-xs font-bold uppercase tracking-wider text-muted-foreground">Gallery
-                                            Assets</label>
-                                        <button type="button" @click="$refs.galleryInput.click()"
-                                            :disabled="isUploading"
-                                            class="text-[11px] font-bold text-blue-500 uppercase bg-blue-500/10 px-4 py-1.5 rounded-full hover:bg-blue-500/20 transition-colors">
-                                            {{ isUploading ? '...' : 'Add to Gallery' }}
-                                        </button>
-                                        <input type="file" ref="galleryInput" class="hidden"
-                                            @change="handleImageUpload($event, 'wireframes')" multiple accept="image/*">
+                                            class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Problem
+                                            Statement</label>
+                                        <textarea v-model="formData.problemStatement" rows="3"
+                                            placeholder="What challenge were we solving?"
+                                            class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed"></textarea>
                                     </div>
-                                    <textarea v-model="wireframesInput" rows="6"
-                                        placeholder="https://image1.jpg&#10;https://image2.jpg"
-                                        class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground font-mono text-sm leading-relaxed"></textarea>
+
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                        <div class="flex flex-col gap-2.5">
+                                            <label
+                                                class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Business
+                                                Goal</label>
+                                            <textarea v-model="formData.businessGoal" rows="2"
+                                                class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed"></textarea>
+                                        </div>
+                                        <div class="flex flex-col gap-2.5">
+                                            <label
+                                                class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">User
+                                                Goal</label>
+                                            <textarea v-model="formData.userGoal" rows="2"
+                                                class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed"></textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex flex-col gap-2.5">
+                                        <label
+                                            class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Design
+                                            Approach</label>
+                                        <textarea v-model="formData.designApproach" rows="3"
+                                            class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed"></textarea>
+                                    </div>
+
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                        <div class="flex flex-col gap-2.5">
+                                            <label
+                                                class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Research
+                                                Methods</label>
+                                            <textarea v-model="formData.researchMethods" rows="2"
+                                                class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed"></textarea>
+                                        </div>
+                                        <div class="flex flex-col gap-2.5">
+                                            <label
+                                                class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Key
+                                                Insights</label>
+                                            <textarea v-model="formData.keyInsights" rows="2"
+                                                class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Assets & Metadata -->
+                                <div class="flex flex-col gap-8 pt-6 border-t border-border">
+                                    <h4 class="text-sm font-bold uppercase tracking-widest text-blue-500">Assets & Tools
+                                    </h4>
+
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                        <div class="flex flex-col gap-2.5">
+                                            <label
+                                                class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Tags
+                                                (Comma Separated)</label>
+                                            <input v-model="tagsInput" type="text"
+                                                placeholder="Design System, SaaS, React"
+                                                class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground">
+                                        </div>
+                                        <div class="flex flex-col gap-2.5">
+                                            <label
+                                                class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Tools
+                                                (Comma Separated)</label>
+                                            <input v-model="toolsInput" type="text"
+                                                placeholder="Figma, Adobe, Midjourney"
+                                                class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground">
+                                        </div>
+                                    </div>
+
+                                    <div class="flex flex-col gap-4">
+                                        <div class="flex justify-between items-end px-1">
+                                            <label
+                                                class="text-xs font-bold uppercase tracking-wider text-muted-foreground">Gallery
+                                                Assets (Wireframes)</label>
+                                            <button type="button" @click="(($refs.galleryInput as any).click())"
+                                                :disabled="isUploading"
+                                                class="text-[11px] font-bold text-blue-500 uppercase bg-blue-500/10 px-4 py-1.5 rounded-full hover:bg-blue-500/20 transition-colors">
+                                                Add to Gallery
+                                            </button>
+                                            <input type="file" ref="galleryInput" class="hidden"
+                                                @change="handleImageUpload($event, 'wireframes')" multiple
+                                                accept="image/*">
+                                        </div>
+                                        <textarea v-model="wireframesInput" rows="4"
+                                            placeholder="Full URLs to images, one per line"
+                                            class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground font-mono text-sm leading-relaxed"></textarea>
+                                    </div>
+
+                                    <div class="flex flex-col gap-2.5">
+                                        <label
+                                            class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Outcome
+                                            /
+                                            Conclusion</label>
+                                        <textarea v-model="formData.outcome" rows="3"
+                                            class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed"></textarea>
+                                    </div>
+                                </div>
+
+                                <!-- Process Sections -->
+                                <div class="flex flex-col gap-8 pt-6 border-t border-border">
+                                    <div class="flex flex-col gap-1">
+                                        <h4 class="text-sm font-bold uppercase tracking-widest text-blue-500">Execution
+                                            Process</h4>
+                                        <p class="text-[10px] text-muted-foreground px-1 font-medium italic">Define the
+                                            step-by-step
+                                            journey of this project (Research, Ideation, etc).</p>
+                                    </div>
+                                    <ProjectSectionBuilder v-model="formData.content.sections" />
                                 </div>
                             </div>
                         </section>
@@ -425,6 +535,7 @@ const pendingUploads = ref(0)
 // Form State
 const formData = ref<any>({})
 const tagsInput = ref('')
+const toolsInput = ref('')
 const wireframesInput = ref('')
 
 const toast = ref({
@@ -477,7 +588,7 @@ onMounted(async () => {
     }
 })
 
-const handleTabChange = (tab: 'notes' | 'projects') => {
+const handleTabChange = (tab: 'notes' | 'projects' | 'gallery') => {
     activeTab.value = tab
     view.value = 'list'
     isSidebarOpen.value = false
@@ -497,6 +608,7 @@ const createNew = () => {
     isEditing.value = false
     formData.value = { featured: false, isFigma: false, projectLink: '' }
     tagsInput.value = ''
+    toolsInput.value = ''
     wireframesInput.value = ''
 
     if (activeTab.value === 'notes') {
@@ -515,6 +627,7 @@ const editItem = (item: any) => {
     isEditing.value = true
     formData.value = { ...item }
     tagsInput.value = item.tags ? item.tags.join(', ') : ''
+    toolsInput.value = item.tools ? item.tools.join(', ') : ''
     wireframesInput.value = item.wireframes ? item.wireframes.join('\n') : ''
     view.value = 'edit'
     if (process.client) window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -556,13 +669,23 @@ const saveItem = async () => {
 
             // Map arrays and specific fields
             payload.tags = tagsInput.value.split(',').map(s => s.trim()).filter(Boolean)
+            payload.tools = toolsInput.value.split(',').map(s => s.trim()).filter(Boolean)
             payload.wireframes = wireframesInput.value.split('\n').map(s => s.trim()).filter(Boolean)
-            payload.tools = (formData.value.tools || [])
             payload.final_designs = (formData.value.finalDesigns || [])
             payload.cover_image = formData.value.coverImage
             payload.project_link = formData.value.projectLink
             payload.is_figma = formData.value.isFigma
             payload.team_size = formData.value.teamSize
+            payload.industry = formData.value.industry
+            payload.duration = formData.value.duration
+            payload.role = formData.value.role
+            payload.problem_statement = formData.value.problemStatement
+            payload.business_goal = formData.value.businessGoal
+            payload.user_goal = formData.value.userGoal
+            payload.design_approach = formData.value.designApproach
+            payload.research_methods = formData.value.researchMethods
+            payload.key_insights = formData.value.keyInsights
+            payload.outcome = formData.value.outcome
         }
 
         // Remove ID if empty to let Supabase generate one (for new items)

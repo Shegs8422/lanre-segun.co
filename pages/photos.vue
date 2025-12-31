@@ -22,7 +22,7 @@
 
                 <!-- Close Button -->
                 <button @click="closeLightbox"
-                    class="absolute top-10 right-10 z-[120] w-12 h-12 flex items-center justify-center bg-foreground/10 hover:bg-foreground/20 rounded-full text-foreground transition-all active:scale-95 shadow-2xl">
+                    class="absolute top-10 right-10 z-120 w-12 h-12 flex items-center justify-center bg-foreground/10 hover:bg-foreground/20 rounded-full text-foreground transition-all active:scale-95 shadow-2xl">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -31,22 +31,21 @@
                 </button>
 
                 <!-- Carousel Container -->
-                <div class="relative w-full h-full flex items-center justify-center">
+                <div class="relative w-full h-full flex items-center justify-center overflow-hidden">
 
                     <!-- Navigation (Desktop Only) -->
                     <button v-if="!isMobile" @click.stop="prev"
-                        class="absolute left-8 lg:left-24 z-[120] w-12 h-12 flex items-center justify-center bg-black/60 hover:bg-black/80 rounded-full text-white transition-all active:scale-90 shadow-xl">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        class="fixed left-8 lg:left-12 z-130 w-14 h-14 flex items-center justify-center bg-white/10 hover:bg-white/20 backdrop-blur-xl border border-white/20 rounded-full text-white transition-all active:scale-90 shadow-2xl">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="m15 18-6-6 6-6" />
                         </svg>
                     </button>
 
                     <button v-if="!isMobile" @click.stop="next"
-                        class="absolute right-8 lg:left-24 z-[120] w-12 h-12 flex items-center justify-center bg-black/60 hover:bg-black/80 rounded-full text-white transition-all active:scale-90 shadow-xl"
-                        style="left: auto; right: 6rem;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        class="fixed right-8 lg:right-12 z-130 w-14 h-14 flex items-center justify-center bg-white/10 hover:bg-white/20 backdrop-blur-xl border border-white/20 rounded-full text-white transition-all active:scale-90 shadow-2xl">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="m9 18 6-6-6-6" />
                         </svg>
                     </button>
@@ -55,12 +54,13 @@
                     <div ref="trackRef"
                         class="flex items-center h-full w-full transition-transform duration-700 ease-[cubic-bezier(0.2,1,0.2,1)] will-change-transform"
                         :class="[
-                            isMobile ? 'overflow-x-auto snap-x snap-mandatory no-scrollbar' : 'gap-[var(--carousel-gap)]'
+                            isMobile ? 'overflow-x-auto snap-x snap-mandatory no-scrollbar' : ''
                         ]" :style="!isMobile ? {
-                            transform: `translateX(calc(50vw - (var(--card-width) / 2) - (${currentIndex} * (var(--card-width) + var(--carousel-gap)))))`
+                            transform: `translateX(calc(50vw - (var(--card-width) / 2) - (${currentIndex} * (var(--card-width) + var(--carousel-gap)))))`,
+                            gap: 'var(--carousel-gap)'
                         } : {}" @scroll="handleMobileScroll">
                         <div v-for="(item, index) in galleryItems" :key="item.id + '-slide'" :id="'slide-' + index"
-                            class="relative flex-shrink-0 transition-all duration-700 ease-[cubic-bezier(0.2,1,0.2,1)]"
+                            class="relative shrink-0 transition-all duration-700 ease-[cubic-bezier(0.2,1,0.2,1)]"
                             :class="[
                                 isMobile ? 'w-screen h-full flex items-center justify-center snap-center' : 'opacity-40 scale-[0.85]',
                                 !isMobile && index === currentIndex ? 'opacity-100 scale-100 z-10' : ''
@@ -131,6 +131,23 @@ const syncMobileScroll = (index: number) => {
     }
 }
 
+// Support for hash fragments (e.g. #slide-2)
+const handleHash = () => {
+    const hash = window.location.hash
+    if (hash && hash.startsWith('#slide-')) {
+        const index = parseInt(hash.replace('#slide-', ''))
+        if (!isNaN(index) && index >= 0 && index < galleryItems.value.length) {
+            openLightbox(index)
+        }
+    }
+}
+
+watch(galleryItems, (newItems) => {
+    if (newItems.length > 0) {
+        handleHash()
+    }
+}, { immediate: true })
+
 const handleMobileScroll = (e: Event) => {
     if (!isMobile.value) return
     const target = e.target as HTMLElement
@@ -170,11 +187,6 @@ useSeoMeta({
 </script>
 
 <style scoped>
-:root {
-    --card-width: 40vw;
-    --carousel-gap: 1.5rem;
-}
-
 .no-scrollbar::-webkit-scrollbar {
     display: none;
 }
@@ -196,5 +208,17 @@ useSeoMeta({
 
 .will-change-transform {
     will-change: transform;
+}
+
+:root {
+    --card-width: 450px;
+    --carousel-gap: 3rem;
+}
+
+@media (min-width: 1024px) {
+    :root {
+        --card-width: 30vw;
+        --carousel-gap: 4rem;
+    }
 }
 </style>

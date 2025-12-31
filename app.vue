@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-background text-foreground overflow-y-auto">
+  <div class="min-h-screen bg-background text-foreground">
     <Html lang="en">
 
     <Head>
@@ -87,10 +87,37 @@ useHead({
   bodyAttrs: {
     class: 'bg-background'
   },
+  titleTemplate: (titleChunk) => {
+    return titleChunk ? `${titleChunk} | Lanre Segun` : 'Lanre Segun - Design Engineer';
+  },
+  meta: [
+    {
+      name: 'theme-color',
+      content: computed(() => isDark.value ? '#000000' : '#ffffff')
+    },
+    {
+      name: 'apple-mobile-web-app-status-bar-style',
+      content: computed(() => isDark.value ? 'black-translucent' : 'default')
+    }
+  ],
   link: [
     { rel: 'icon', type: 'image/png', href: computed(() => isDark.value ? '/black.png' : '/white.png') }
   ],
   script: [
+    // Google Tag (gtag.js)
+    {
+      src: 'https://www.googletagmanager.com/gtag/js?id=G-HS3KT78WJT',
+      async: true
+    },
+    {
+      innerHTML: `
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-HS3KT78WJT');
+      `,
+      type: 'text/javascript'
+    },
     {
       innerHTML: `!function(){try{var d=document.documentElement,c=d.classList;c.remove('light','dark');var e=localStorage.getItem('theme');if('system'===e||(!e&&true)){var t='(prefers-color-scheme: dark)',m=window.matchMedia(t);if(m.media!==t||m.matches){d.style.colorScheme='dark';c.add('dark')}else{d.style.colorScheme='light';c.add('light')}}else if(e){c.add(e||'')}if(e==='light'||e==='dark')d.style.colorScheme=e}catch(e){}}()`
     }

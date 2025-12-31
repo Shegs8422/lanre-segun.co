@@ -22,6 +22,7 @@ interface _GlobalComponents {
   'PasswordRecovery': typeof import("../../components/PasswordRecovery.vue").default
   'PolaroidPhoto': typeof import("../../components/PolaroidPhoto.vue").default
   'ProfileCard': typeof import("../../components/ProfileCard.vue").default
+  'ProjectSectionBuilder': typeof import("../../components/ProjectSectionBuilder.vue").default
   'SecuritySetup': typeof import("../../components/SecuritySetup.vue").default
   'WidgetsBook3D': typeof import("../../components/widgets/Book3D.vue").default
   'WidgetsChessPoster': typeof import("../../components/widgets/ChessPoster.vue").default
@@ -64,6 +65,7 @@ interface _GlobalComponents {
   'LazyPasswordRecovery': LazyComponent<typeof import("../../components/PasswordRecovery.vue").default>
   'LazyPolaroidPhoto': LazyComponent<typeof import("../../components/PolaroidPhoto.vue").default>
   'LazyProfileCard': LazyComponent<typeof import("../../components/ProfileCard.vue").default>
+  'LazyProjectSectionBuilder': LazyComponent<typeof import("../../components/ProjectSectionBuilder.vue").default>
   'LazySecuritySetup': LazyComponent<typeof import("../../components/SecuritySetup.vue").default>
   'LazyWidgetsBook3D': LazyComponent<typeof import("../../components/widgets/Book3D.vue").default>
   'LazyWidgetsChessPoster': LazyComponent<typeof import("../../components/widgets/ChessPoster.vue").default>

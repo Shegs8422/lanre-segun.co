@@ -64,11 +64,11 @@
 
             <!-- Hero Image -->
             <div
-                class="w-full aspect-[16/9] rounded-3xl overflow-hidden shadow-2xl animate-fade-in-up delay-100 bg-white/5 relative group">
+                class="w-full aspect-video rounded-3xl overflow-hidden shadow-2xl animate-fade-in-up delay-100 bg-white/5 relative group">
                 <img v-if="project.coverImage || project.content.heroImage"
                     :src="project.coverImage || project.content.heroImage" :alt="project.title"
                     class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                <div class="absolute inset-0 bg-linear-to-t from-black/20 to-transparent"></div>
             </div>
 
             <!-- Problem & Goals -->
@@ -132,7 +132,7 @@
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div v-for="(img, i) in project.wireframes" :key="i"
-                        class="rounded-2xl overflow-hidden bg-white/5 aspect-[16/10] border border-white/5">
+                        class="rounded-2xl overflow-hidden bg-white/5 aspect-16/10 border border-white/5">
                         <img :src="img" class="w-full h-full object-cover">
                     </div>
                 </div>
@@ -152,25 +152,71 @@
                 </div>
             </section>
 
-            <!-- Dynamic Sections (from old structure) -->
-            <div v-if="project.content.sections?.length" class="flex flex-col gap-20 py-20 border-y border-white/5">
-                <div v-for="(section, idx) in project.content.sections" :key="idx" class="flex flex-col gap-8">
-                    <div v-if="section.type === 'image'"
-                        class="w-full aspect-video rounded-2xl overflow-hidden bg-white/5 relative group">
-                        <img :src="section.image" class="w-full h-full object-cover">
-                        <p v-if="section.caption"
-                            class="absolute bottom-4 left-4 text-xs font-medium text-white/50 bg-black/50 px-2 py-1 rounded backdrop-blur-md">
-                            {{ section.caption }}</p>
+            <!-- Dynamic Process Sections -->
+            <div v-if="project.content.sections?.length" class="flex flex-col gap-32 py-20 border-y border-white/5">
+                <div v-for="(section, idx) in project.content.sections" :key="idx"
+                    class="flex flex-col gap-10 animate-fade-in-up">
+
+                    <!-- Section Header -->
+                    <div v-if="section.title" class="flex flex-col gap-4">
+                        <h3 class="text-xs font-bold text-blue-500 uppercase tracking-widest">Process Stage</h3>
+                        <h2 class="text-3xl font-bold tracking-tight">{{ section.title }}</h2>
                     </div>
-                    <p v-if="section.type === 'text'"
-                        class="text-xl leading-relaxed text-muted-foreground max-w-3xl mx-auto text-center">{{
-                            section.content }}</p>
-                    <div v-if="section.type === 'grid'" class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div v-for="(img, i) in section.images" :key="i"
-                            class="rounded-2xl overflow-hidden bg-white/5 aspect-[4/3]">
-                            <img :src="img" class="w-full h-full object-cover">
+
+                    <!-- Layout: Text Only -->
+                    <div v-if="section.layout === 'text-only' || !section.layout" class="max-w-3xl">
+                        <p class="text-lg leading-relaxed text-muted-foreground">{{ section.content }}</p>
+                    </div>
+
+                    <!-- Layout: Full Width Image -->
+                    <div v-else-if="section.layout === 'image-full' || section.type === 'image'"
+                        class="w-full flex flex-col gap-8">
+                        <p v-if="section.content" class="text-lg leading-relaxed text-muted-foreground max-w-3xl mb-4">
+                            {{ section.content }}</p>
+                        <div
+                            class="w-full aspect-video rounded-3xl overflow-hidden bg-white/5 border border-white/10 group">
+                            <img :src="section.image || section.url"
+                                class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105">
                         </div>
                     </div>
+
+                    <!-- Layout: Split Left (Image Left, Text Right) -->
+                    <div v-else-if="section.layout === 'split-left'"
+                        class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
+                        <div
+                            class="md:col-span-7 aspect-video rounded-2xl overflow-hidden bg-white/5 border border-white/10">
+                            <img :src="section.image" class="w-full h-full object-cover">
+                        </div>
+                        <div class="md:col-span-5 flex flex-col gap-6">
+                            <p class="text-lg leading-relaxed text-muted-foreground">{{ section.content }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Layout: Split Right (Text Left, Image Right) -->
+                    <div v-else-if="section.layout === 'split-right'"
+                        class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
+                        <div class="md:col-span-5 flex flex-col gap-6 order-2 md:order-1">
+                            <p class="text-lg leading-relaxed text-muted-foreground">{{ section.content }}</p>
+                        </div>
+                        <div
+                            class="md:col-span-7 aspect-video rounded-2xl overflow-hidden bg-white/5 border border-white/10 order-1 md:order-2">
+                            <img :src="section.image" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+
+                    <!-- Layout: Grid -->
+                    <div v-else-if="section.layout === 'grid' || section.type === 'grid'" class="flex flex-col gap-8">
+                        <p v-if="section.content" class="text-lg leading-relaxed text-muted-foreground max-w-3xl">{{
+                            section.content }}</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div v-for="(img, i) in (section.images || [])" :key="i"
+                                class="rounded-2xl overflow-hidden bg-white/5 aspect-4/3 border border-white/5 group">
+                                <img :src="img"
+                                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
@@ -249,7 +295,7 @@
     <!-- Figma Prototype Modal -->
     <Transition name="fade">
         <div v-if="showPrototype && project?.projectLink"
-            class="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-12">
+            class="fixed inset-0 z-100 flex items-center justify-center p-4 md:p-12">
             <div class="absolute inset-0 bg-black/90 backdrop-blur-xl" @click="showPrototype = false"></div>
 
             <div

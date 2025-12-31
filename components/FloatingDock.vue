@@ -3,8 +3,8 @@
     demo ? 'relative flex justify-center' : 'fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-4'
   ]">
 
-    <!-- Drag to Move Label (Bouncy) - Only show on home page -->
-    <div v-if="route.path === '/' && !demo"
+    <!-- Drag to Move Label (Bouncy) - Only show on home page and desktop -->
+    <div v-if="route.path === '/' && !demo && !isMobile"
       class="flex items-center gap-2 px-3 py-1.5 bg-[#1A1A1A] text-white rounded-full text-xs font-medium animate-bounce shadow-lg border border-white/10">
       <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5">
@@ -45,7 +45,7 @@
 
       <!-- Main Floating Dock (Updated with Active Logic) -->
       <div
-        class="w-full px-2 py-2 bg-component border scrollbar-none overflow-y-hidden overflow-x-auto sm:overflow-visible rounded-2xl w-fit flex h-[3.5rem] items-center gap-2 relative z-10 shadow-[_0_1px_1px_-0.5px_rgba(0,0,0,0.04),_0_3px_3px_-1.5px_rgba(0,0,0,0.04),_0_12px_12px_-6px_rgba(0,0,0,0.04)] max-w-[95vw]"
+        class="w-full px-2 py-2 bg-component border border-border sm:overflow-visible rounded-2xl w-fit flex h-[3.5rem] items-center gap-2 relative z-10 shadow-[_0_1px_1px_-0.5px_rgba(0,0,0,0.04),_0_3px_3px_-1.5px_rgba(0,0,0,0.04),_0_12px_12px_-6px_rgba(0,0,0,0.04)]"
         style="will-change: auto; transform: none;">
         <!-- Nav Links with Active State Logic -->
         <!-- Home -->
@@ -260,6 +260,19 @@ const { isDark, toggleTheme: performToggle } = useTheme()
 const route = useRoute()
 const activeDemoTab = ref('/') // Local state for demo mode active tab simulation
 
+// Mobile detection
+const isMobile = ref(false)
+
+onMounted(() => {
+  if (process.client) {
+    const checkMobile = () => {
+      isMobile.value = window.innerWidth <= 768
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+  }
+})
+
 // GSAP Transitions for Mini Control
 const onMiniControlEnter = (el: Element, done: () => void) => {
   gsap.fromTo(el,
@@ -331,9 +344,8 @@ const handleStopMusic = () => {
   stopTrack()
 }
 
-onMounted(() => {
-  // Theme is handled by useTheme composable
-})
+
+
 </script>
 
 <style scoped>

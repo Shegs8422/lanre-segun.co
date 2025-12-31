@@ -1,16 +1,21 @@
 <template>
     <ClientOnly>
         <!-- Mobile View (≤768px) -->
-        <div v-if="isMobile" class="min-h-screen bg-canvas relative overflow-y-auto">
-            <!-- Background layers -->
-            <div class="absolute inset-0 bg-linear-grid bg-[size:16px_16px] bg-[position:12px_12px]"></div>
-            <div class="absolute inset-0 opacity-60 bg-cover bg-center z-10"
+        <div v-if="isMobile" class="relative h-screen overflow-y-auto bg-background scrollbar-mobile touch-pan-y">
+            <!-- Background layers - Fixed to stay behind during scroll -->
+            <div class="fixed inset-0 bg-linear-grid bg-size-[16px_16px] bg-position-[12px_12px] pointer-events-none">
+            </div>
+            <div class="fixed inset-0 opacity-60 bg-cover bg-center z-10 pointer-events-none"
                 style="background-image: url('/images/Layer-window.png')"></div>
-            <div class="absolute inset-0 bg-linear-big-grid bg-[size:80px_80px] bg-[position:-4px_-4px] z-20"></div>
-            <div class="absolute inset-0 bg-diagonal-grid bg-[size:80px_80px] bg-[position:-2.5px_-2.5px] z-30"></div>
+            <div
+                class="fixed inset-0 bg-linear-big-grid bg-size-[80px_80px] bg-position-[-4px_-4px] z-20 pointer-events-none">
+            </div>
+            <div
+                class="fixed inset-0 bg-diagonal-grid bg-size-[80px_80px] bg-position-[-2.5px_-2.5px] z-30 pointer-events-none">
+            </div>
 
-            <!-- Content -->
-            <div class="relative z-40 flex flex-col items-center gap-6 p-6 pt-24 pb-32">
+            <!-- Content Area -->
+            <div class="relative z-40 flex flex-col items-center gap-12 p-6 pt-24 pb-32">
                 <ProfileCard />
                 <EducationCard />
             </div>
@@ -155,7 +160,7 @@
 
                 <!-- Figma Logo -->
                 <div style="--stagger:41"
-                    class="select-none bg-white p-4 border-4 border-white rounded-xl relative col-start-8 row-start-3 w-fit h-fit rotate-[12deg] left-[40px] shadow-lg">
+                    class="select-none bg-white p-4 border-4 border-white rounded-xl relative col-start-8 row-start-3 w-fit h-fit rotate-12 left-[40px] shadow-lg">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="80" height="80" viewBox="0 0 96 96"
                         id="Figma--Streamline-Svg-Logos">
                         <path fill="#0acf83"
@@ -220,7 +225,7 @@
                     style="--stagger:8" src="/images/image_4.png">
 
                 <img draggable="false" alt="Profile example" width="321" height="86"
-                    class="rotate-[10deg] pointer-events-none select-none relative col-start-7 row-start-5 right-[40px]"
+                    class="rotate-10 pointer-events-none select-none relative col-start-7 row-start-5 right-[40px]"
                     style="--stagger:14" src="/images/image_2.png">
 
                 <img draggable="false" alt="Profile example" width="160" height="142"
@@ -228,7 +233,7 @@
                     style="--stagger:16" src="/images/image_6.png">
 
                 <img draggable="false" alt="Profile example" width="98" height="160"
-                    class="select-none pointer-events-none relative col-start-1 row-start-6 top-[80px] left-[40px] rotate-[36deg]"
+                    class="select-none pointer-events-none relative col-start-1 row-start-6 top-[80px] left-[40px] rotate-36"
                     style="--stagger:11" src="/images/image_1.png">
 
                 <img draggable="false" alt="Mojo Sticker" width="80"
@@ -277,7 +282,7 @@
                 <DraggableWidget
                     class="relative max-w-[100vw] col-start-3 row-start-4 w-fit h-fit col-span-1 bottom-[160px] left-[100px]"
                     style="--stagger: 3">
-                    <div class="rotate-[14deg] transition-transform hover:scale-105 duration-300">
+                    <div class="rotate-14 transition-transform hover:scale-105 duration-300">
                         <PolaroidPhoto src="/images/image_21.jpg" alt="Profile example" />
                     </div>
                 </DraggableWidget>
@@ -285,7 +290,7 @@
                 <DraggableWidget
                     class="relative max-w-[100vw] col-start-2 row-start-5 w-fit h-fit col-span-1 bottom-[160px] left-[240px]"
                     style="--stagger: 4">
-                    <div class="rotate-[-12deg] transition-transform hover:scale-105 duration-300">
+                    <div class="-rotate-12 transition-transform hover:scale-105 duration-300">
                         <PolaroidPhoto src="/images/image_2.jpg" alt="Profile example" />
                     </div>
                 </DraggableWidget>
@@ -293,7 +298,7 @@
                 <DraggableWidget
                     class="relative max-w-[100vw] col-start-6 row-start-4 w-fit h-fit col-span-1 bottom-[180px] left-[80px]"
                     style="--stagger: 5">
-                    <div class="rotate-[2deg] transition-transform hover:scale-105 duration-300">
+                    <div class="rotate-2 transition-transform hover:scale-105 duration-300">
                         <PolaroidPhoto src="/images/image_14.png" alt="Profile example" />
                     </div>
                 </DraggableWidget>
@@ -363,7 +368,30 @@ useHead({
 })
 </script>
 
-<style>
+<style scoped>
+/* Ensure scrollbars are visible on mobile if they were hidden globally */
+@media (max-width: 768px) {
+    .scrollbar-mobile {
+        scrollbar-width: thin;
+        scrollbar-color: rgba(155, 155, 155, 0.5) transparent;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .scrollbar-mobile::-webkit-scrollbar {
+        width: 4px;
+        display: block !important;
+    }
+
+    .scrollbar-mobile::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .scrollbar-mobile::-webkit-scrollbar-thumb {
+        background-color: rgba(155, 155, 155, 0.5);
+        border-radius: 20px;
+    }
+}
+
 /* Animation for staggered elements */
 [style*="--stagger"] {
     animation: fadeInUp 0.6s ease-out forwards;

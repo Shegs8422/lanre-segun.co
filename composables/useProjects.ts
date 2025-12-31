@@ -34,8 +34,10 @@ export interface Project {
         introduction: string
         sections: {
             type: 'image' | 'text' | 'grid'
+            layout?: 'text-only' | 'image-full' | 'split-left' | 'split-right' | 'grid'
             content?: string
             image?: string
+            url?: string // Legacy support
             images?: string[]
             caption?: string
             title?: string
