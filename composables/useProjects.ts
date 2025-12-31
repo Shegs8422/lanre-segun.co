@@ -81,6 +81,8 @@ export const useProjects = () => {
                 keyInsights: item.key_insights,
                 finalDesigns: item.final_designs,
                 solutionSummary: item.solution_summary,
+                learnings: item.learnings,
+                subtitle: item.subtitle,
                 projectLink: item.project_link,
                 isFigma: item.is_figma
             }))

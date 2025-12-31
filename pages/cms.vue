@@ -369,12 +369,28 @@
                                         <input v-model="formData.duration" type="text" placeholder="3 Months"
                                             class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground font-medium">
                                     </div>
+                                    <div class="flex flex-col gap-2.5">
+                                        <label
+                                            class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Team
+                                            Size</label>
+                                        <input v-model="formData.teamSize" type="text" placeholder="5 Members"
+                                            class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground font-medium">
+                                    </div>
                                 </div>
 
                                 <!-- Narrative / Strategy -->
                                 <div class="flex flex-col gap-8 pt-6 border-t border-border">
                                     <h4 class="text-sm font-bold uppercase tracking-widest text-blue-500">Project
                                         Narrative</h4>
+
+                                    <div class="flex flex-col gap-2.5">
+                                        <label
+                                            class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Project
+                                            Introduction</label>
+                                        <textarea v-model="formData.content.introduction" rows="3"
+                                            placeholder="A brief hook about the project..."
+                                            class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed"></textarea>
+                                    </div>
 
                                     <div class="flex flex-col gap-2.5">
                                         <label
@@ -408,6 +424,15 @@
                                             Approach</label>
                                         <textarea v-model="formData.designApproach" rows="3"
                                             class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed"></textarea>
+                                    </div>
+
+                                    <div class="flex flex-col gap-2.5">
+                                        <label
+                                            class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Target
+                                            Users</label>
+                                        <input v-model="formData.targetUsers" type="text"
+                                            placeholder="Gen Z, Professionals, etc."
+                                            class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm">
                                     </div>
 
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -473,10 +498,27 @@
 
                                     <div class="flex flex-col gap-2.5">
                                         <label
+                                            class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Solution
+                                            Summary</label>
+                                        <textarea v-model="formData.solutionSummary" rows="3"
+                                            placeholder="Direct response to the problem..."
+                                            class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed"></textarea>
+                                    </div>
+
+                                    <div class="flex flex-col gap-2.5">
+                                        <label
                                             class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Outcome
                                             /
                                             Conclusion</label>
                                         <textarea v-model="formData.outcome" rows="3"
+                                            class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed"></textarea>
+                                    </div>
+
+                                    <div class="flex flex-col gap-2.5">
+                                        <label
+                                            class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Key
+                                            Learnings</label>
+                                        <textarea v-model="formData.learnings" rows="3"
                                             class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed"></textarea>
                                     </div>
                                 </div>
@@ -676,16 +718,22 @@ const saveItem = async () => {
             payload.project_link = formData.value.projectLink
             payload.is_figma = formData.value.isFigma
             payload.team_size = formData.value.teamSize
+            payload.subtitle = formData.value.subtitle
             payload.industry = formData.value.industry
             payload.duration = formData.value.duration
             payload.role = formData.value.role
             payload.problem_statement = formData.value.problemStatement
             payload.business_goal = formData.value.businessGoal
             payload.user_goal = formData.value.userGoal
+            payload.target_users = formData.value.targetUsers
             payload.design_approach = formData.value.designApproach
             payload.research_methods = formData.value.researchMethods
             payload.key_insights = formData.value.keyInsights
+            payload.solution_summary = formData.value.solutionSummary
             payload.outcome = formData.value.outcome
+            payload.learnings = formData.value.learnings
+            payload.content = formData.value.content
+            payload.featured = formData.value.featured
         }
 
         // Remove ID if empty to let Supabase generate one (for new items)
