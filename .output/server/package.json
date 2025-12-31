@@ -5,6 +5,7 @@
   "private": true,
   "dependencies": {
     "@babel/parser": "7.28.5",
+    "@google/generative-ai": "0.24.1",
     "@supabase/auth-js": "2.89.0",
     "@supabase/functions-js": "2.89.0",
     "@supabase/postgrest-js": "2.89.0",

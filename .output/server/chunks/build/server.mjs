@@ -1,5 +1,5 @@
 import process from 'node:process';globalThis._importMeta_=globalThis._importMeta_||{url:"file:///_entry.js",env:process.env};import { hasInjectionContext, inject, toRef, isRef, getCurrentInstance, defineComponent, ref, h, Suspense, Fragment, defineAsyncComponent, useSSRContext, createApp, reactive, provide, shallowReactive, computed, mergeProps, withCtx, createTextVNode, createVNode, unref, resolveDynamicComponent, Transition, createBlock, openBlock, onErrorCaptured, onServerPrefetch, effectScope, shallowRef, isReadonly, isShallow, isReactive, toRaw, getCurrentScope } from 'vue';
-import { p as hasProtocol, q as isScriptProtocol, v as joinURL, w as withQuery, x as sanitizeStatusCode, y as getContext, $ as $fetch, z as createHooks, A as executeAsync, i as getHeader, f as createError$1, B as toRouteMatcher, C as createRouter$1, D as defu, e as setCookie, d as destr, E as klona, F as parse, G as getRequestHeader, H as isEqual, g as getCookie, h as deleteCookie } from '../_/nitro.mjs';
+import { p as hasProtocol, q as isScriptProtocol, v as joinURL, w as withQuery, x as sanitizeStatusCode, y as getContext, $ as $fetch, z as createHooks, A as executeAsync, i as getHeader, e as createError$1, B as toRouteMatcher, C as createRouter$1, D as defu, f as setCookie, d as destr, E as klona, F as parse, G as getRequestHeader, H as isEqual, g as getCookie, h as deleteCookie } from '../_/nitro.mjs';
 import { u as useSeoMeta$1, a as useHead$1, h as headSymbol, b as baseURL } from '../routes/renderer.mjs';
 import { RouterView, createMemoryHistory, createRouter, START_LOCATION } from 'vue-router';
 import { createServerClient, parseCookieHeader } from '@supabase/ssr';
@@ -386,22 +386,22 @@ const _routes = [
   {
     name: "cms",
     path: "/cms",
-    component: () => import('./cms-BRRsjZIP.mjs')
+    component: () => import('./cms-Bqr0eTtY.mjs')
   },
   {
     name: "craft",
     path: "/craft",
-    component: () => import('./craft-dl00C2e0.mjs')
+    component: () => import('./craft-Cx53W1YT.mjs')
   },
   {
     name: "index",
     path: "/",
-    component: () => import('./index-uKc8DGIw.mjs')
+    component: () => import('./index-CQdASlVS.mjs')
   },
   {
     name: "photos",
     path: "/photos",
-    component: () => import('./photos-dnNEnPO0.mjs')
+    component: () => import('./photos-CsrXZDxq.mjs')
   },
   {
     name: "notes",
@@ -416,12 +416,12 @@ const _routes = [
   {
     name: "projects",
     path: "/projects",
-    component: () => import('./index-BBbUM3Ft.mjs')
+    component: () => import('./index-wpGs_vvu.mjs')
   },
   {
     name: "projects-slug",
     path: "/projects/:slug()",
-    component: () => import('./_slug_-DUReNSvf.mjs')
+    component: () => import('./_slug_-BjcRhT5E.mjs')
   }
 ];
 const ROUTE_KEY_PARENTHESES_RE = /(:\w+)\([^)]+\)/g;
@@ -5356,7 +5356,7 @@ const useTheme = () => {
     setTheme
   };
 };
-const __nuxt_component_3_lazy = defineAsyncComponent(() => import('./FloatingDock-CGCOsBJa.mjs').then((n) => n.b).then((c) => c.default || c));
+const __nuxt_component_3_lazy = defineAsyncComponent(() => import('./FloatingDock-CSB0DJoP.mjs').then((n) => n.b).then((c) => c.default || c));
 const __nuxt_component_5_lazy = defineAsyncComponent(() => import('./LoginModal-DGjqbTYd.mjs').then((c) => c.default || c));
 const _sfc_main$2 = /* @__PURE__ */ defineComponent({
   __name: "app",
@@ -5394,10 +5394,37 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
       bodyAttrs: {
         class: "bg-background"
       },
+      titleTemplate: (titleChunk) => {
+        return titleChunk ? `${titleChunk} | Lanre Segun` : "Lanre Segun - Design Engineer";
+      },
+      meta: [
+        {
+          name: "theme-color",
+          content: computed(() => isDark.value ? "#000000" : "#ffffff")
+        },
+        {
+          name: "apple-mobile-web-app-status-bar-style",
+          content: computed(() => isDark.value ? "black-translucent" : "default")
+        }
+      ],
       link: [
         { rel: "icon", type: "image/png", href: computed(() => isDark.value ? "/black.png" : "/white.png") }
       ],
       script: [
+        // Google Tag (gtag.js)
+        {
+          src: "https://www.googletagmanager.com/gtag/js?id=G-HS3KT78WJT",
+          async: true
+        },
+        {
+          innerHTML: `
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-HS3KT78WJT');
+      `,
+          type: "text/javascript"
+        },
         {
           innerHTML: `!function(){try{var d=document.documentElement,c=d.classList;c.remove('light','dark');var e=localStorage.getItem('theme');if('system'===e||(!e&&true)){var t='(prefers-color-scheme: dark)',m=window.matchMedia(t);if(m.media!==t||m.matches){d.style.colorScheme='dark';c.add('dark')}else{d.style.colorScheme='light';c.add('light')}}else if(e){c.add(e||'')}if(e==='light'||e==='dark')d.style.colorScheme=e}catch(e){}}()`
         }
@@ -5410,7 +5437,7 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
       const _component_LazyFloatingDock = __nuxt_component_3_lazy;
       const _component_NuxtPage = __nuxt_component_4;
       const _component_LazyLoginModal = __nuxt_component_5_lazy;
-      _push(`<div${ssrRenderAttrs(mergeProps({ class: "min-h-screen bg-background text-foreground overflow-y-auto" }, _attrs))}>`);
+      _push(`<div${ssrRenderAttrs(mergeProps({ class: "min-h-screen bg-background text-foreground" }, _attrs))}>`);
       _push(ssrRenderComponent(_component_Html, { lang: "en" }, {
         default: withCtx((_, _push2, _parent2, _scopeId) => {
           if (_push2) {

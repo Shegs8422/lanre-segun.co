@@ -1,5 +1,5 @@
 import { createServerClient, parseCookieHeader } from '@supabase/ssr';
-import { e as setCookie, u as useRuntimeConfig, i as getHeader } from './nitro.mjs';
+import { f as setCookie, u as useRuntimeConfig, i as getHeader } from './nitro.mjs';
 
 async function fetchWithRetry(req, init) {
   const retries = 3;

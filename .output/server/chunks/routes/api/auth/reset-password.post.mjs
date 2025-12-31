@@ -1,4 +1,4 @@
-import { c as defineEventHandler, r as readBody, g as getCookie, f as createError, h as deleteCookie } from '../../../_/nitro.mjs';
+import { c as defineEventHandler, r as readBody, g as getCookie, e as createError, h as deleteCookie } from '../../../_/nitro.mjs';
 import { s as serverSupabaseClient } from '../../../_/serverSupabaseClient.mjs';
 import 'node:http';
 import 'node:https';

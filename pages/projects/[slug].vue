@@ -1,11 +1,55 @@
 <template>
     <div
-        class="fixed inset-0 bg-background text-foreground overflow-y-auto scroll-smooth scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent z-50">
-        <div v-if="project" class="max-w-5xl mx-auto px-6 py-12 md:py-24 flex flex-col gap-24">
+        class="fixed inset-0 bg-background text-foreground overflow-y-auto scroll-smooth scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent z-50 project-page-container">
+
+        <!-- Interactive Preloader -->
+        <div v-if="isPreloading"
+            class="fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center p-6 text-white font-mono overflow-hidden">
+            <div
+                class="terminal-box w-full max-w-2xl border border-white/10 rounded-xl p-8 bg-zinc-950/50 backdrop-blur-xl relative">
+                <div class="absolute top-0 left-0 w-full h-1 bg-blue-500/20">
+                    <div class="h-full bg-blue-500 preloader-progress-bar" :style="{ width: preloaderProgress + '%' }">
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-4">
+                    <div class="flex justify-between items-center border-b border-white/5 pb-4 mb-2">
+                        <span
+                            class="text-[10px] uppercase tracking-[0.3em] font-black text-blue-500">System.Initialize()</span>
+                        <span class="text-[10px] uppercase tracking-[0.3em] font-black text-white/20">{{
+                            Math.floor(preloaderProgress) }}% Complete</span>
+                    </div>
+
+                    <div class="terminal-lines flex flex-col gap-1 overflow-hidden h-32">
+                        <p v-for="(line, i) in terminalLog" :key="i"
+                            class="text-[10px] md:text-xs leading-relaxed opacity-70 animate-terminal-line">
+                            <span class="text-blue-500">></span> {{ line }}
+                        </p>
+                    </div>
+
+                    <div class="flex items-center gap-4 mt-8 opacity-40">
+                        <div class="grow h-px bg-white/10"></div>
+                        <div class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
+                        <div class="grow h-px bg-white/10"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Floating Background Elements -->
+            <div class="absolute inset-0 z-[-1] opacity-20">
+                <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/10 blur-[120px] rounded-full animate-float">
+                </div>
+                <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 blur-[120px] rounded-full animate-float"
+                    style="animation-delay: -2s"></div>
+            </div>
+        </div>
+
+        <div v-if="project" class="max-w-5xl mx-auto px-6 py-12 md:py-24 flex flex-col gap-24 project-content-wrapper"
+            :class="{ 'opacity-0': isPreloading }">
 
             <!-- Header Section -->
-            <header class="flex flex-col gap-10 animate-fade-in-up">
-                <div class="flex items-center justify-between">
+            <header class="flex flex-col gap-10">
+                <div class="flex items-center justify-between entrance-reveal">
                     <NuxtLink to="/projects"
                         class="w-fit flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 transition-colors text-sm font-medium">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
@@ -28,56 +72,46 @@
                 </div>
 
                 <div class="flex flex-col gap-6">
-                    <div class="flex flex-wrap gap-2">
+                    <div class="flex flex-wrap gap-2 entrance-reveal">
                         <span v-for="tag in project.tags" :key="tag"
                             class="px-3 py-1 bg-blue-500/10 text-blue-400 text-xs font-medium rounded-full border border-blue-500/20 uppercase tracking-widest">{{
                                 tag }}</span>
                     </div>
-                    <h1 class="text-5xl md:text-7xl font-display font-bold tracking-tighter leading-tight">{{
-                        project.title }}</h1>
-                    <p class="text-muted-foreground text-xl md:text-2xl font-light max-w-2xl leading-relaxed">{{
-                        project.subtitle || project.description }}</p>
+                    <h1
+                        class="text-5xl md:text-7xl font-display font-bold tracking-tighter leading-tight overflow-hidden project-title-reveal">
+                        <span v-for="(word, i) in (project.title || '').split(' ')" :key="i"
+                            class="inline-block project-title-word mr-[0.3em]">
+                            {{ word }}
+                        </span>
+                    </h1>
+                    <p
+                        class="text-muted-foreground text-xl md:text-2xl font-light max-w-2xl leading-relaxed entrance-reveal">
+                        {{ project.subtitle || project.description }}
+                    </p>
                 </div>
 
                 <!-- Snapshot Meta Grid -->
-                <div class="grid grid-cols-2 md:grid-cols-5 gap-8 pt-8 border-t border-white/10 mt-4">
-                    <div class="flex flex-col gap-1">
-                        <span
-                            class="text-[10px] uppercase tracking-widest text-muted-foreground font-bold">Client</span>
-                        <span class="text-sm font-medium truncate">{{ project.client || 'N/A' }}</span>
-                    </div>
-                    <div class="flex flex-col gap-1">
-                        <span class="text-[10px] uppercase tracking-widest text-muted-foreground font-bold">Role</span>
-                        <span class="text-sm font-medium truncate">{{ project.role || 'N/A' }}</span>
-                    </div>
-                    <div class="flex flex-col gap-1">
-                        <span
-                            class="text-[10px] uppercase tracking-widest text-muted-foreground font-bold">Industry</span>
-                        <span class="text-sm font-medium truncate">{{ project.industry || 'N/A' }}</span>
-                    </div>
-                    <div class="flex flex-col gap-1">
-                        <span
-                            class="text-[10px] uppercase tracking-widest text-muted-foreground font-bold">Duration</span>
-                        <span class="text-sm font-medium truncate">{{ project.duration || 'N/A' }}</span>
-                    </div>
-                    <div class="flex flex-col gap-1">
-                        <span class="text-[10px] uppercase tracking-widest text-muted-foreground font-bold">Team</span>
-                        <span class="text-sm font-medium truncate">{{ project.teamSize || 'N/A' }}</span>
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-8 pt-8 border-t border-white/10 mt-4 meta-grid">
+                    <div v-for="(val, label) in { Client: project.client, Role: project.role, Industry: project.industry, Duration: project.duration, Team: project.teamSize }"
+                        :key="label" class="flex flex-col gap-1 meta-item">
+                        <span class="text-[10px] uppercase tracking-widest text-muted-foreground font-bold">{{ label
+                            }}</span>
+                        <span class="text-sm font-medium truncate">{{ val || 'N/A' }}</span>
                     </div>
                 </div>
             </header>
 
             <!-- Hero Image -->
             <div
-                class="w-full aspect-video rounded-3xl overflow-hidden shadow-2xl animate-fade-in-up delay-100 bg-white/5 relative group">
-                <img v-if="project.coverImage || project.content.heroImage"
-                    :src="project.coverImage || project.content.heroImage" :alt="project.title"
-                    class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105">
-                <div class="absolute inset-0 bg-linear-to-t from-black/20 to-transparent"></div>
+                class="w-full aspect-video rounded-3xl overflow-hidden shadow-2xl bg-white/5 relative group hero-image-container">
+                <img v-if="project.coverImage || project.content?.heroImage"
+                    :src="project.coverImage || project.content?.heroImage" :alt="project.title"
+                    class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 hero-image-parallax">
+                <div class="absolute inset-0 bg-linear-to-t from-black/40 to-transparent"></div>
             </div>
 
             <!-- Problem & Goals -->
-            <section class="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-20 animate-fade-in-up delay-200">
+            <section class="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-20 scroll-reveal">
                 <div class="md:col-span-4 flex flex-col gap-4">
                     <h3 class="text-xs font-display font-bold text-blue-500 uppercase tracking-widest">01. Context</h3>
                     <h2 class="text-3xl font-display font-bold tracking-tight">The Challenge</h2>
@@ -91,82 +125,77 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
                         <div class="flex flex-col gap-4">
                             <h4 class="text-sm font-bold uppercase tracking-widest opacity-40">Business Goal</h4>
-                            <p class="text-muted-foreground leading-relaxed">{{ project.businessGoal || `Defining key
-                                business objectives for the project revival.` }}</p>
+                            <p class="text-muted-foreground leading-relaxed">{{ project.businessGoal || `Defining
+                                objectives for the project revival.` }}</p>
                         </div>
                         <div class="flex flex-col gap-4">
                             <h4 class="text-sm font-bold uppercase tracking-widest opacity-40">User Goal</h4>
                             <p class="text-muted-foreground leading-relaxed">{{ project.userGoal || `Prioritizing user
-                                needs and friction-less experiences.` }}</p>
+                                needs and experiences.` }}</p>
                         </div>
                     </div>
                 </div>
             </section>
 
             <!-- Process & Approach -->
-            <section class="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-20 animate-fade-in-up">
+            <section class="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-20 scroll-reveal">
                 <div class="md:col-span-4 flex flex-col gap-4">
                     <h3 class="text-xs font-bold text-blue-500 uppercase tracking-widest">02. Execution</h3>
                     <h2 class="text-3xl font-bold tracking-tight">Design Approach</h2>
                 </div>
                 <div class="md:col-span-8 flex flex-col gap-12">
                     <p class="text-lg leading-relaxed text-muted-foreground">{{ project.designApproach ||
-                        project.content.introduction }}</p>
+                        project.content?.introduction }}</p>
 
                     <div
                         class="grid grid-cols-1 md:grid-cols-2 gap-12 bg-white/5 p-8 rounded-2xl border border-white/10">
-                        <div class="flex flex-col gap-4">
-                            <h4 class="text-sm font-bold uppercase tracking-widest opacity-40">Methods</h4>
-                            <p class="text-muted-foreground leading-relaxed">{{ project.researchMethods || `User
-                                Research, Audits, Benchmarking.` }}</p>
-                        </div>
-                        <div class="flex flex-col gap-4">
-                            <h4 class="text-sm font-bold uppercase tracking-widest opacity-40">Target Users</h4>
-                            <p class="text-muted-foreground leading-relaxed">{{ project.targetUsers || `Stakeholders,
-                                Primary Users, Admin.` }}</p>
+                        <div v-for="(val, label) in { Methods: project.researchMethods, 'Target Users': project.targetUsers }"
+                            :key="label" class="flex flex-col gap-4">
+                            <h4 class="text-sm font-bold uppercase tracking-widest opacity-40">{{ label }}</h4>
+                            <p class="text-muted-foreground leading-relaxed">{{ val || 'In-depth analysis.' }}</p>
                         </div>
                         <div class="flex flex-col gap-4 md:col-span-2 border-t border-white/5 pt-8">
                             <h4 class="text-sm font-bold uppercase tracking-widest opacity-40">Key Insights</h4>
                             <p class="text-muted-foreground leading-relaxed">{{ project.keyInsights || `Identifying core
-                                pain points in existing workflows.` }}</p>
+                                pain points in workflows.` }}</p>
                         </div>
                     </div>
                 </div>
             </section>
 
             <!-- Wireframes Gallery -->
-            <section v-if="project.wireframes?.length" class="flex flex-col gap-10 animate-fade-in-up">
+            <section v-if="project.wireframes?.length" class="flex flex-col gap-10 scroll-reveal">
                 <div class="flex flex-col gap-4">
                     <h3 class="text-xs font-bold text-blue-500 uppercase tracking-widest">03. Iteration</h3>
                     <h2 class="text-3xl font-bold tracking-tight">Wireframes & Workflows</h2>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div v-for="(img, i) in project.wireframes" :key="i"
-                        class="rounded-2xl overflow-hidden bg-white/5 aspect-16/10 border border-white/5">
-                        <img :src="img" class="w-full h-full object-cover">
+                        class="rounded-2xl overflow-hidden bg-white/5 aspect-16/10 border border-white/5 group">
+                        <img :src="img" class="w-full h-full object-cover transition-transform group-hover:scale-105">
                     </div>
                 </div>
             </section>
 
             <!-- Final Designs Gallery -->
-            <section v-if="project.finalDesigns?.length" class="flex flex-col gap-10 animate-fade-in-up">
+            <section v-if="project.finalDesigns?.length" class="flex flex-col gap-10 scroll-reveal">
                 <div class="flex flex-col gap-4">
                     <h3 class="text-xs font-bold text-blue-500 uppercase tracking-widest">04. Visual System</h3>
                     <h2 class="text-3xl font-bold tracking-tight">The Final Solution</h2>
                 </div>
                 <div class="flex flex-col gap-12">
                     <div v-for="(img, i) in project.finalDesigns" :key="i"
-                        class="rounded-3xl overflow-hidden bg-white/5 border border-white/10">
-                        <img :src="img" class="w-full h-full object-cover">
+                        class="rounded-3xl overflow-hidden bg-white/5 border border-white/10 group">
+                        <img :src="img"
+                            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.02]">
                     </div>
                 </div>
             </section>
 
             <!-- Dynamic Process Sections -->
-            <div v-if="project.content.sections?.length" class="flex flex-col gap-32 py-20 border-y border-white/5">
+            <div v-if="project.content?.sections?.length" class="flex flex-col gap-32 py-20 border-y border-white/5">
                 <div v-for="(section, idx) in project.content.sections" :key="idx"
-                    class="flex flex-col gap-10 animate-fade-in-up">
-
+                    class="flex flex-col gap-10 scroll-reveal">
                     <!-- Section Header -->
                     <div v-if="section.title" class="flex flex-col gap-4">
                         <h3 class="text-xs font-bold text-blue-500 uppercase tracking-widest">Process Stage</h3>
@@ -190,27 +219,29 @@
                         </div>
                     </div>
 
-                    <!-- Layout: Split Left (Image Left, Text Right) -->
+                    <!-- Layout: Split Left -->
                     <div v-else-if="section.layout === 'split-left'"
                         class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
                         <div
-                            class="md:col-span-7 aspect-video rounded-2xl overflow-hidden bg-white/5 border border-white/10">
-                            <img :src="section.image" class="w-full h-full object-cover">
+                            class="md:col-span-7 aspect-video rounded-2xl overflow-hidden bg-white/5 border border-white/10 group">
+                            <img :src="section.image"
+                                class="w-full h-full object-cover transition-transform group-hover:scale-105">
                         </div>
                         <div class="md:col-span-5 flex flex-col gap-6">
                             <p class="text-lg leading-relaxed text-muted-foreground">{{ section.content }}</p>
                         </div>
                     </div>
 
-                    <!-- Layout: Split Right (Text Left, Image Right) -->
+                    <!-- Layout: Split Right -->
                     <div v-else-if="section.layout === 'split-right'"
                         class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
                         <div class="md:col-span-5 flex flex-col gap-6 order-2 md:order-1">
                             <p class="text-lg leading-relaxed text-muted-foreground">{{ section.content }}</p>
                         </div>
                         <div
-                            class="md:col-span-7 aspect-video rounded-2xl overflow-hidden bg-white/5 border border-white/10 order-1 md:order-2">
-                            <img :src="section.image" class="w-full h-full object-cover">
+                            class="md:col-span-7 aspect-video rounded-2xl overflow-hidden bg-white/5 border border-white/10 order-1 md:order-2 group">
+                            <img :src="section.image"
+                                class="w-full h-full object-cover transition-transform group-hover:scale-105">
                         </div>
                     </div>
 
@@ -226,17 +257,16 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
 
             <!-- Solution Highlights -->
-            <section v-if="project.solutionSummary" class="flex flex-col gap-10 animate-fade-in-up">
+            <section v-if="project.solutionSummary" class="flex flex-col gap-10 scroll-reveal">
                 <div class="flex flex-col gap-4">
                     <h3 class="text-xs font-bold text-emerald-500 uppercase tracking-widest">The Fix</h3>
                     <h2 class="text-3xl font-bold tracking-tight">Solution Summary</h2>
                 </div>
-                <div class="p-10 rounded-3xl bg-emerald-500/5 border border-emerald-500/10">
+                <div class="p-10 rounded-3xl bg-emerald-500/5 border border-emerald-500/10 backdrop-blur-sm">
                     <p
                         class="text-xl leading-relaxed text-foreground/90 font-light italic pl-4 border-l-2 border-emerald-500">
                         "{{ project.solutionSummary }}"
@@ -245,14 +275,14 @@
             </section>
 
             <!-- Outcomes & Tools -->
-            <section class="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-20 animate-fade-in-up">
+            <section class="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-20 scroll-reveal">
                 <div class="md:col-span-4 flex flex-col gap-4">
                     <h3 class="text-xs font-bold text-blue-500 uppercase tracking-widest">05. Conclusion</h3>
                     <h2 class="text-3xl font-bold tracking-tight">The Impact</h2>
                 </div>
                 <div class="md:col-span-8 flex flex-col gap-12">
                     <p class="text-lg leading-relaxed text-muted-foreground">{{ project.outcome ||
-                        project.content.results.description }}</p>
+                        project.content?.results?.description }}</p>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
                         <div class="flex flex-col gap-4">
@@ -272,20 +302,8 @@
                 </div>
             </section>
 
-            <!-- Metadata Metrics (Legacy Support) -->
-            <div v-if="project.content.results.metrics?.length"
-                class="grid grid-cols-1 md:grid-cols-3 gap-6 animate-fade-in-up">
-                <div v-for="(metric, mIdx) in project.content.results.metrics" :key="mIdx"
-                    class="p-8 rounded-2xl border border-white/10 bg-white/5 flex flex-col gap-2 group hover:bg-white/10 transition-colors">
-                    <span
-                        class="text-xs text-muted-foreground font-bold uppercase tracking-widest group-hover:text-blue-400 transition-colors">{{
-                            metric.label }}</span>
-                    <span class="text-4xl font-bold text-white">{{ metric.value }}</span>
-                </div>
-            </div>
-
             <!-- Footer Navigation -->
-            <footer class="flex justify-between items-center py-12 border-t border-white/10 mt-12">
+            <footer class="flex justify-between items-center py-12 border-t border-white/10 mt-12 scroll-reveal">
                 <NuxtLink v-if="adjacent.prev" :to="`/projects/${adjacent.prev.slug}`"
                     class="flex flex-col gap-1 group text-left max-w-[40%]">
                     <span
@@ -295,7 +313,6 @@
                         adjacent.prev.title }}</span>
                 </NuxtLink>
                 <div v-else class="w-1"></div>
-
                 <NuxtLink v-if="adjacent.next" :to="`/projects/${adjacent.next.slug}`"
                     class="flex flex-col gap-1 group text-right items-end max-w-[40%]">
                     <span
@@ -305,174 +322,284 @@
                         adjacent.next.title }}</span>
                 </NuxtLink>
             </footer>
-
         </div>
 
+        <!-- Not Found State -->
         <div v-else class="h-screen flex items-center justify-center">
             <div class="flex flex-col items-center gap-4">
                 <p class="text-muted-foreground">Project not found</p>
-                <NuxtLink to="/projects" class="text-primary hover:underline">Back to Projects</NuxtLink>
+                <NuxtLink to="/projects"
+                    class="text-primary hover:underline font-bold uppercase tracking-widest text-xs">Back to Projects
+                </NuxtLink>
             </div>
         </div>
-    </div>
 
-    <!-- Figma Prototype Modal -->
-    <Transition name="fade">
-        <div v-if="showPrototype && project?.projectLink"
-            class="fixed inset-0 z-100 flex items-center justify-center p-4 md:p-12">
-            <div class="absolute inset-0 bg-black/90 backdrop-blur-xl" @click="showPrototype = false"></div>
-
-            <div
-                class="relative w-full h-full max-w-7xl bg-[#1e1e1e] rounded-3xl overflow-hidden border border-white/10 flex flex-col shadow-2xl animate-modal-in">
-                <!-- Modal Header -->
-                <div class="flex items-center justify-between p-6 border-b border-white/5 bg-[#1A1A1A] relative z-10">
-                    <div class="flex flex-col">
-                        <h3 class="text-lg font-bold text-white">{{ project.title }} Prototype</h3>
-                        <p class="text-xs text-white/50">Interactive Figma Preview</p>
-                    </div>
-                    <button @click="showPrototype = false"
-                        class="p-3 hover:bg-white/5 rounded-full transition-colors text-white">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="18" y1="6" x2="6" y2="18"></line>
-                            <line x1="6" y1="6" x2="18" y2="18"></line>
-                        </svg>
-                    </button>
-                </div>
-
-                <!-- Iframe Container -->
-                <div class="flex-1 w-full relative bg-black flex items-center justify-center overflow-hidden">
-                    <!-- Loading Spinner -->
-                    <div class="absolute inset-0 flex flex-col items-center justify-center gap-4 z-0">
-                        <div class="w-10 h-10 border-4 border-white/10 border-t-blue-500 rounded-full animate-spin">
+        <!-- Figma Prototype Modal -->
+        <Teleport to="body">
+            <Transition name="fade">
+                <div v-if="showPrototype && project?.projectLink"
+                    class="fixed inset-0 z-[1000] flex items-center justify-center p-4 md:p-12 bg-black/95 backdrop-blur-2xl">
+                    <div class="absolute inset-0 z-0" @click="showPrototype = false"></div>
+                    <div
+                        class="relative w-full h-full max-w-7xl bg-[#1e1e1e] rounded-3xl overflow-hidden border border-white/10 flex flex-col shadow-2xl animate-modal-in z-10">
+                        <div class="flex items-center justify-between p-6 border-b border-white/5 bg-[#1A1A1A]">
+                            <div class="flex flex-col">
+                                <h3 class="text-lg font-bold text-white uppercase tracking-tighter">{{ project.title }}
+                                    Prototype</h3>
+                                <p class="text-[10px] text-white/40 uppercase tracking-widest">Interactive Cloud Preview
+                                </p>
+                            </div>
+                            <button @click="showPrototype = false"
+                                class="p-3 hover:bg-white/5 rounded-full transition-all hover:rotate-90 text-white/50 hover:text-white">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </button>
                         </div>
-                        <p class="text-[10px] text-white/30 uppercase tracking-[0.2em] font-bold">Initializing Preview
-                        </p>
+                        <div class="flex-1 w-full relative bg-black flex items-center justify-center overflow-hidden">
+                            <div class="absolute inset-0 flex flex-col items-center justify-center gap-4 z-0">
+                                <div
+                                    class="w-12 h-12 border-4 border-white/10 border-t-blue-500 rounded-full animate-spin">
+                                </div>
+                                <p class="text-[10px] text-white/30 uppercase tracking-[0.2em] font-black">Initializing
+                                    Simulation</p>
+                            </div>
+                            <iframe v-if="formattedLink" :src="formattedLink"
+                                class="absolute inset-0 w-full h-full border-0 z-10"
+                                allow="autoplay; clipboard-write; draw-viewer; encrypted-media; fullscreen; picture-in-picture"
+                                allowfullscreen loading="lazy"></iframe>
+                        </div>
                     </div>
-
-                    <iframe v-if="formattedLink" :src="formattedLink"
-                        class="absolute inset-0 w-full h-full border-0 z-10"
-                        allow="autoplay; clipboard-write; draw-viewer; encrypted-media; fullscreen; picture-in-picture"
-                        allowfullscreen loading="lazy">
-                    </iframe>
                 </div>
-
-                <!-- Mobile Close (Extra) -->
-                <button @click="showPrototype = false"
-                    class="md:hidden absolute top-4 right-4 p-2 bg-black/50 backdrop-blur-md rounded-full border border-white/10 text-white z-10">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                </button>
-            </div>
-        </div>
-    </Transition>
+            </Transition>
+        </Teleport>
+    </div>
 </template>
 
 <script setup lang="ts">
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+if (process.client) {
+    gsap.registerPlugin(ScrollTrigger)
+}
+
 const route = useRoute()
 const { getProjectBySlug, getAdjacentProjects, fetchProjects } = useProjects()
-await fetchProjects()
 
+// Preloader State
+const isPreloading = ref(true)
+const preloaderProgress = ref(0)
+const terminalLog = ref<string[]>([])
+const fullLogLines = [
+    "Establishing neural link with archive...",
+    "Retrieving encrypted project metadata...",
+    "Accessing high-fidelity visual assets...",
+    "Synchronizing layout parameters...",
+    "Decrypting solution summaries...",
+    "Compiling interaction modules...",
+    "Finalizing design matrices...",
+    "Connection stable. Redirecting user..."
+]
+
+// Data Fetching
+await fetchProjects()
 const project = computed(() => getProjectBySlug(route.params.slug as string))
 const adjacent = computed(() => getAdjacentProjects(route.params.slug as string))
-
 const showPrototype = ref(false)
 
+// GSAP Animations
+onMounted(() => {
+    if (!project.value) return
+
+    // 1. Terminal Preloader Animation
+    const preloaderTimeline = gsap.timeline({
+        onComplete: () => {
+            gsap.to(".terminal-box", {
+                scale: 1.1,
+                opacity: 0,
+                duration: 0.6,
+                ease: "power4.in",
+                onComplete: () => {
+                    isPreloading.value = false
+                    initProjectAnimations()
+                }
+            })
+        }
+    })
+
+    preloaderTimeline.to(preloaderProgress, {
+        value: 100,
+        duration: 3,
+        ease: "none",
+        onUpdate: () => {
+            const currentLine = Math.floor((preloaderProgress.value / 100) * fullLogLines.length)
+            if (fullLogLines[currentLine] && !terminalLog.value.includes(fullLogLines[currentLine])) {
+                terminalLog.value.push(fullLogLines[currentLine])
+            }
+        }
+    })
+
+    const initProjectAnimations = () => {
+        nextTick(() => {
+            const ctx = gsap.context(() => {
+                // Entrance Sequence
+                const entranceTl = gsap.timeline()
+
+                entranceTl.from(".project-page-container", {
+                    clipPath: "inset(0% 0% 100% 0%)",
+                    duration: 1.4,
+                    ease: "power4.inOut"
+                })
+
+                entranceTl.from(".project-title-word", {
+                    y: 100,
+                    opacity: 0,
+                    rotateX: -45,
+                    stagger: 0.05,
+                    duration: 1,
+                    ease: "power4.out"
+                }, "-=0.6")
+
+                entranceTl.from(".entrance-reveal", {
+                    y: 30,
+                    opacity: 0,
+                    stagger: 0.1,
+                    duration: 0.8,
+                    ease: "power2.out"
+                }, "-=0.8")
+
+                entranceTl.from(".meta-item", {
+                    scaleX: 0,
+                    transformOrigin: "left",
+                    opacity: 0,
+                    stagger: 0.08,
+                    duration: 0.8,
+                    ease: "power3.out"
+                }, "-=1")
+
+                entranceTl.from(".hero-image-container", {
+                    scale: 0.95,
+                    opacity: 0,
+                    duration: 1.2,
+                    ease: "power3.out"
+                }, "-=1")
+
+                // Scroll Reveals
+                gsap.utils.toArray<HTMLElement>('.scroll-reveal').forEach((section) => {
+                    gsap.from(section, {
+                        scrollTrigger: {
+                            trigger: section,
+                            scroller: ".project-page-container",
+                            start: "top 95%",
+                            toggleActions: "play none none none"
+                        },
+                        y: 40,
+                        opacity: 0,
+                        duration: 1,
+                        ease: "power3.out"
+                    })
+                })
+
+                // Hero Parallax
+                gsap.to('.hero-image-parallax', {
+                    scrollTrigger: {
+                        trigger: '.hero-image-container',
+                        scroller: ".project-page-container",
+                        start: "top top",
+                        end: "bottom top",
+                        scrub: true
+                    },
+                    yPercent: 30,
+                    scale: 1.15,
+                    opacity: 0.5,
+                    ease: "none"
+                })
+            })
+        })
+    }
+})
+
+// Link Processing
 const formattedLink = computed(() => {
     let raw = project.value?.projectLink || ''
     if (!raw) return ''
-
-    // Support for full iframe embed codes (extract src URL)
     if (raw.includes('<iframe')) {
         const match = raw.match(/src="([^"]+)"/)
         if (match && match[1]) {
-            raw = match[1]
-            // Unescape common HTML entities like &amp; often found in figma embed codes
-            raw = raw.replace(/&amp;/g, '&')
+            raw = match[1].replace(/&amp;/g, '&')
         }
     }
-
     let link = raw.trim()
-
-    // Ensure absolute URL (prevents 'refused to connect' by current domain)
-    if (!link.startsWith('http')) {
-        link = 'https://' + link
-    }
-
-    // Auto-transform standard Figma links to Embed format
+    if (!link.startsWith('http')) link = 'https://' + link
     if (project.value?.isFigma) {
         const isStandardFigma = link.includes('figma.com/') && (link.includes('/file/') || link.includes('/proto/') || link.includes('/design/'))
         const isAlreadyEmbed = link.includes('figma.com/embed')
-
         if (isStandardFigma && !isAlreadyEmbed) {
             return `https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(link)}`
         }
     }
-
     return link
 })
 
 const handleProjectLink = () => {
     if (!project.value?.projectLink) return
-
-    if (project.value.isFigma) {
-        showPrototype.value = true
-    } else {
-        window.open(formattedLink.value, '_blank')
-    }
+    project.value.isFigma ? showPrototype.value = true : window.open(formattedLink.value, '_blank')
 }
 
 // SEO
 useSeoMeta({
-    title: () => project.value ? `${project.value.title} - Lanre Segun` : 'Project Not Found',
-    description: () => project.value?.description || 'Project details and case study.',
-    ogTitle: () => project.value ? `${project.value.title} - Lanre Segun` : 'Project Not Found',
-    ogDescription: () => project.value?.description || 'Project details and case study.',
-    ogImage: () => project.value?.coverImage || '/og-image.png',
-    ogUrl: () => `https://lanre-segun.vercel.app/projects/${project.value?.slug || ''}`,
-    twitterTitle: () => project.value ? `${project.value.title} - Lanre Segun` : 'Project Not Found',
-    twitterDescription: () => project.value?.description || 'Project details and case study.',
-    twitterImage: () => project.value?.coverImage || '/og-image.png',
-    twitterCard: 'summary'
+    title: () => project.value ? `${project.value.title} - Lanre Segun` : 'Project',
+    description: () => project.value?.description || 'Case study.',
+    ogImage: () => project.value?.coverImage || '/og-image.png'
 })
 
-// Scroll to top on route change within the component
+// Scroll behavior
 watch(() => route.params.slug, () => {
     if (process.client) {
         window.scrollTo(0, 0)
-        const container = document.querySelector('.overflow-y-auto')
-        if (container) container.scrollTo(0, 0)
+        document.querySelector('.overflow-y-auto')?.scrollTo(0, 0)
     }
 })
 </script>
 
 <style scoped>
-.animate-fade-in-up {
-    animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    opacity: 0;
-    transform: translateY(20px);
+.font-mono {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
-.delay-100 {
-    animation-delay: 0.1s;
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0) scale(1);
+    }
+
+    50% {
+        transform: translateY(-30px) scale(1.1);
+    }
 }
 
-.delay-200 {
-    animation-delay: 0.2s;
+.animate-float {
+    animation: float 10s ease-in-out infinite;
 }
 
-@keyframes fadeInUp {
+.animate-terminal-line {
+    animation: terminalLineIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes terminalLineIn {
     from {
+        transform: translateX(-10px);
         opacity: 0;
-        transform: translateY(20px);
     }
 
     to {
-        opacity: 1;
-        transform: translateY(0);
+        transform: translateX(0);
+        opacity: 0.7;
     }
 }
 
@@ -500,5 +627,22 @@ watch(() => route.params.slug, () => {
 .fade-enter-from,
 .fade-leave-to {
     opacity: 0;
+}
+
+::-webkit-scrollbar {
+    width: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
 }
 </style>

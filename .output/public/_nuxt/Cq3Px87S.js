@@ -1,1 +1,0 @@
-import{u as s}from"./Be2WDdq4.js";import{R as o}from"./CsyFDgvD.js";const u=()=>{const a=s(),r=o("gallery-items",()=>[]);return{galleryItems:r,fetchGallery:async()=>{try{const{data:e,error:t}=await a.from("gallery").select("*").order("order_index",{ascending:!0});if(t)throw t;r.value=e||[]}catch(e){console.error("Gallery Fetch Error:",e)}}}};export{u};
