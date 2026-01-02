@@ -637,6 +637,16 @@ const _inlineRuntimeConfig = {
       "/__nuxt_error": {
         "cache": false
       },
+      "/**": {
+        "headers": {
+          "Content-Security-Policy": "default-src 'self' https: data: 'unsafe-inline' 'unsafe-eval'; img-src 'self' https: data: blob:; connect-src 'self' https:;",
+          "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+          "X-Frame-Options": "DENY",
+          "X-Content-Type-Options": "nosniff",
+          "Referrer-Policy": "strict-origin-when-cross-origin",
+          "Permissions-Policy": "camera=(), microphone=(), geolocation=()"
+        }
+      },
       "/_nuxt/builds/meta/**": {
         "headers": {
           "cache-control": "public, max-age=31536000, immutable"
@@ -1483,7 +1493,22 @@ const plugins = [
 _IgiEwhgW32gMDxTQHgSX0rR0BT8Tph82HUmNdzd_sk
 ];
 
-const assets = {};
+const assets = {
+  "/index.mjs": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"17f35-jp4dc+Ocrw7MLMNfYmurIlKb2tU\"",
+    "mtime": "2026-01-02T15:06:12.993Z",
+    "size": 98101,
+    "path": "index.mjs"
+  },
+  "/index.mjs.map": {
+    "type": "application/json",
+    "etag": "\"5b324-Q5/x8pO9TibEwNfPCYJfXH+KfS8\"",
+    "mtime": "2026-01-02T15:06:12.993Z",
+    "size": 373540,
+    "path": "index.mjs.map"
+  }
+};
 
 function readAsset (id) {
   const serverDir = dirname$1(fileURLToPath(globalThis._importMeta_.url));

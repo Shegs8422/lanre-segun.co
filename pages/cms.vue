@@ -293,22 +293,21 @@
                                     <label
                                         class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Display
                                         Title</label>
-                                    <input v-model="formData.title" type="text" required placeholder="Project Name"
+                                    <input v-model="formData.title" type="text" required placeholder="Note Title"
                                         class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground font-medium">
                                 </div>
                                 <div class="flex flex-col gap-2.5">
                                     <label
                                         class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Identifier
                                         (Slug)</label>
-                                    <input v-model="formData.slug" type="text" required placeholder="project-slug"
+                                    <input v-model="formData.slug" type="text" required placeholder="note-slug"
                                         class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground font-mono">
                                 </div>
                                 <div class="flex flex-col gap-2.5">
                                     <label
                                         class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Short
                                         Subtitle</label>
-                                    <input v-model="formData.subtitle" type="text"
-                                        placeholder="Design System Architecture"
+                                    <input v-model="formData.subtitle" type="text" placeholder="Note Subtitle"
                                         class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground font-medium">
                                 </div>
                                 <div class="flex flex-col gap-2.5">
@@ -318,24 +317,6 @@
                                     <input v-model="formData.year" type="text" placeholder="2024"
                                         class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground font-medium">
                                 </div>
-                                <div class="flex flex-col gap-2.5">
-                                    <label
-                                        class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Live
-                                        Project
-                                        Link (URL or Iframe)</label>
-                                    <input v-model="formData.projectLink" type="text"
-                                        placeholder="Paste link or full <iframe> code..."
-                                        class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground font-mono text-sm leading-relaxed">
-                                </div>
-                                <div class="flex items-center gap-3 px-1 pt-2">
-                                    <input type="checkbox" v-model="formData.isFigma" id="isFigma"
-                                        class="w-5 h-5 rounded border-border text-blue-500 focus:ring-blue-500 bg-background">
-                                    <label for="isFigma"
-                                        class="text-xs font-bold uppercase tracking-wider text-foreground cursor-pointer">This
-                                        is a
-                                        Figma Prototype</label>
-                                </div>
-
                                 <div class="flex flex-col gap-3 lg:col-span-2">
                                     <div class="flex justify-between items-center px-1">
                                         <label
@@ -408,15 +389,29 @@
                                         <label
                                             class="text-xs font-bold uppercase tracking-wider text-muted-foreground">Body
                                             Text (Supports Markdown)</label>
-                                        <button type="button" @click="(($refs.noteImageInput as any).click())"
-                                            :disabled="isUploading"
-                                            class="text-[11px] font-bold text-blue-500 uppercase flex items-center gap-1.5 hover:text-blue-400">
-                                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                                                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h14a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                            </svg>
-                                            Insert Image
-                                        </button>
+                                        <div class="flex items-center gap-3">
+                                            <button type="button"
+                                                @click="openFieldAiModal('content', 'Draft a professional and detailed note about this topic')"
+                                                class="btn-gemini">
+                                                <svg class="w-2.5 h-2.5 text-[#C084FC]" viewBox="0 0 24 24"
+                                                    fill="currentColor">
+                                                    <path
+                                                        d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" />
+                                                </svg>
+                                                <span class="text-gemini">Gemini</span>
+                                            </button>
+                                            <button type="button" @click="(($refs.noteImageInput as any).click())"
+                                                :disabled="isUploading"
+                                                class="text-[11px] font-bold text-blue-500 uppercase flex items-center gap-1.5 hover:text-blue-400">
+                                                <svg class="w-3 h-3" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2.5"
+                                                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h14a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                </svg>
+                                                Insert Image
+                                            </button>
+                                        </div>
                                         <input type="file" ref="noteImageInput" class="hidden"
                                             @change="handleImageUpload($event, 'noteContent')" accept="image/*">
                                     </div>
@@ -992,8 +987,10 @@ const generateAiProcess = async () => {
 
             if (keys.length === 2) {
                 const k1 = keys[0] as keyof typeof formData.value
-                if (!formData.value[k1]) (formData.value as any)[k1] = {}
-                    ; (formData.value as any)[k1][keys[1]] = response.text
+                if (k1 && formData.value) {
+                    if (!(formData.value as any)[k1]) (formData.value as any)[k1] = {}
+                        ; (formData.value as any)[k1][keys[1]] = response.text
+                }
             } else {
                 ; (formData.value as any)[fieldPath] = response.text
             }

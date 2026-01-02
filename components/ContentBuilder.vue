@@ -102,19 +102,108 @@ const props = defineProps<{
 const emit = defineEmits(['update:modelValue'])
 const supabase = useSupabaseClient()
 
-// Initialize blocks from HTML string (simple parsing) or start empty
-const initializeBlocks = (): Block[] => {
-    if (!props.modelValue) return []
+// Initialize blocks from HTML string or start empty
+const initializeBlocks = (htmlValue: string): Block[] => {
+    if (!htmlValue) return []
 
-    return [{
-        id: Math.random().toString(36).substr(2, 9),
-        type: 'text',
-        heading: 'Legacy Content',
-        body: props.modelValue
-    }]
+    // Simple parser: try to break down sections
+    const blocksArr: Block[] = []
+
+    // Very basic extraction of sections
+    const sectionRegex = /<section[^>]*>([\s\S]*?)<\/section>/g
+    let match
+    let lastIndex = 0
+
+    while ((match = sectionRegex.exec(htmlValue)) !== null) {
+        const content = match[1] || ''
+        const headingMatch = content.match(/<h2[^>]*>(.*?)<\/h2>/)
+        const heading = headingMatch ? (headingMatch[1] || '') : ''
+
+        // Remove heading from content to get body
+        let body = content.replace(/<h2[^>]*>.*?<\/h2>/, '')
+        // Convert <p> tags back to newlines for editing
+        body = body.replace(/<p[^>]*>(.*?)<\/p>/g, '$1\n\n').trim()
+
+        blocksArr.push({
+            id: Math.random().toString(36).substr(2, 9),
+            type: 'text',
+            heading,
+            body
+        })
+        lastIndex = sectionRegex.lastIndex
+    }
+
+    // Handle figure/images
+    const figureRegex = /<figure[^>]*>[\s\S]*?src="(.*?)"[\s\S]*?<\/figure>/g
+    while ((match = figureRegex.exec(htmlValue)) !== null) {
+        if (match[1]) {
+            blocksArr.push({
+                id: Math.random().toString(36).substr(2, 9),
+                type: 'image',
+                url: match[1]
+            })
+        }
+    }
+
+    // If still empty but we have content, it's probably legacy or raw text
+    if (blocksArr.length === 0 && htmlValue) {
+        blocksArr.push({
+            id: Math.random().toString(36).substr(2, 9),
+            type: 'text',
+            heading: 'AI Draft/Imported Content',
+            body: htmlValue.replace(/<[^>]+>/g, '\n\n').trim() // Simple strip tags
+        })
+    }
+
+    return blocksArr
 }
 
-const blocks = ref<Block[]>(initializeBlocks())
+const blocks = ref<Block[]>(initializeBlocks(props.modelValue))
+
+// Watch for external updates (like from AI)
+watch(() => props.modelValue, (newVal) => {
+    // Only update if it's different from our current internal state
+    // We do a simple comparison to avoid selection jumping/racing
+    if (newVal && newVal !== serializeCurrentBlocks()) {
+        blocks.value = initializeBlocks(newVal)
+    }
+})
+
+const serializeCurrentBlocks = () => {
+    let html = ''
+    blocks.value.forEach(block => {
+        if (block.type === 'text') {
+            html += `<section class="mb-12">`
+            if (block.heading) {
+                html += `<h2 class="text-2xl font-bold mb-4 text-foreground">${block.heading}</h2>`
+            }
+            if (block.body) {
+                // Support basic markdown: bold, italic, links
+                let body = block.body
+                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                    .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" class="text-blue-500 hover:underline" target="_blank">$1</a>')
+
+                const paragraphs = body.split(/\n\s*\n/)
+                paragraphs.forEach(p => {
+                    if (p.trim()) {
+                        if (p.trim().startsWith('<p') || p.trim().startsWith('<ul') || p.trim().startsWith('<ol')) {
+                            html += p.trim()
+                        } else {
+                            html += `<p class="mb-4 text-lg leading-relaxed opacity-80">${p.trim()}</p>`
+                        }
+                    }
+                })
+            }
+            html += `</section>`
+        } else if (block.type === 'image' && block.url) {
+            html += `<figure class="my-12">
+                <img src="${block.url}" class="w-full rounded-2xl border border-border shadow-2xl" alt="Section Image" loading="lazy">
+            </figure>`
+        }
+    })
+    return html
+}
 const fileInputs = ref<any>({})
 
 const addBlock = (type: 'text' | 'image') => {
@@ -136,9 +225,11 @@ const removeBlock = (index: number) => {
 const moveBlock = (index: number, direction: number) => {
     const newIndex = index + direction
     if (newIndex >= 0 && newIndex < blocks.value.length) {
-        const item = blocks.value.splice(index, 1)[0]
-        blocks.value.splice(newIndex, 0, item)
-        emitUpdate()
+        const removedItem = blocks.value.splice(index, 1)[0]
+        if (removedItem) {
+            blocks.value.splice(newIndex, 0, removedItem)
+            emitUpdate()
+        }
     }
 }
 
@@ -159,9 +250,14 @@ const handleImageUpload = async (event: Event, index: number) => {
         const { error: uploadError } = await supabase.storage.from('portfolio').upload(filePath, file)
         if (uploadError) throw uploadError
 
-        const { data: { publicUrl } } = supabase.storage.from('portfolio').getPublicUrl(filePath)
-        blocks.value[index].url = publicUrl
-        emitUpdate()
+        const { data } = supabase.storage.from('portfolio').getPublicUrl(filePath)
+        if (data?.publicUrl) {
+            const block = blocks.value[index]
+            if (block) {
+                block.url = data.publicUrl
+                emitUpdate()
+            }
+        }
     } catch (e) {
         console.error('Upload failed', e)
         alert('Upload failed')
@@ -169,35 +265,6 @@ const handleImageUpload = async (event: Event, index: number) => {
 }
 
 const emitUpdate = () => {
-    // Serialize blocks to HTML
-    let html = ''
-
-    blocks.value.forEach(block => {
-        if (block.type === 'text') {
-            html += `<section class="mb-12">`
-            if (block.heading) {
-                html += `<h2 class="text-2xl font-bold mb-4 text-foreground">${block.heading}</h2>`
-            }
-            if (block.body) {
-                const paragraphs = block.body.split(/\n\s*\n/)
-                paragraphs.forEach(p => {
-                    if (p.trim()) {
-                        if (p.trim().startsWith('<')) {
-                            html += p
-                        } else {
-                            html += `<p class="mb-4 text-lg leading-relaxed opacity-80">${p.trim()}</p>`
-                        }
-                    }
-                })
-            }
-            html += `</section>`
-        } else if (block.type === 'image' && block.url) {
-            html += `<figure class="my-12">
-                <img src="${block.url}" class="w-full rounded-2xl border border-border shadow-2xl" alt="Section Image" loading="lazy">
-            </figure>`
-        }
-    })
-
-    emit('update:modelValue', html)
+    emit('update:modelValue', serializeCurrentBlocks())
 }
 </script>

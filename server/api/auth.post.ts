@@ -16,7 +16,6 @@ export default defineEventHandler(async (event) => {
     const CORRECT_PASSWORD = config?.password_override || process.env.CMS_PASSWORD || 'admin123'
 
     if (password === CORRECT_PASSWORD) {
-        // Set cookie
         setCookie(event, 'auth_token', 'logged-in-secret-token', {
             httpOnly: false,
             secure: process.env.NODE_ENV === 'production',

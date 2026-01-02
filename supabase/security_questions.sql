@@ -37,12 +37,16 @@ CREATE POLICY "Full access"
 
 -- Trigger for updated_at
 CREATE OR REPLACE FUNCTION update_modified_column()
-RETURNS TRIGGER AS $$
+RETURNS TRIGGER 
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public, pg_catalog
+AS $$
 BEGIN
   NEW.updated_at = NOW();
   RETURN NEW;
 END;
-$$ LANGUAGE plpgsql;
+$$;
 
 DROP TRIGGER IF EXISTS update_security_questions_modtime ON security_questions;
 CREATE TRIGGER update_security_questions_modtime

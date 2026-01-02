@@ -386,17 +386,17 @@ const _routes = [
   {
     name: "cms",
     path: "/cms",
-    component: () => import('./cms-Bqr0eTtY.mjs')
+    component: () => import('./cms-BW7IMeGp.mjs')
   },
   {
     name: "craft",
     path: "/craft",
-    component: () => import('./craft-Cx53W1YT.mjs')
+    component: () => import('./craft-yVIsGAPe.mjs')
   },
   {
     name: "index",
     path: "/",
-    component: () => import('./index-CQdASlVS.mjs')
+    component: () => import('./index-T8nxtFN9.mjs')
   },
   {
     name: "photos",
@@ -421,7 +421,7 @@ const _routes = [
   {
     name: "projects-slug",
     path: "/projects/:slug()",
-    component: () => import('./_slug_-BjcRhT5E.mjs')
+    component: () => import('./_slug_-qKXn0EIV.mjs')
   }
 ];
 const ROUTE_KEY_PARENTHESES_RE = /(:\w+)\([^)]+\)/g;
@@ -5356,7 +5356,7 @@ const useTheme = () => {
     setTheme
   };
 };
-const __nuxt_component_3_lazy = defineAsyncComponent(() => import('./FloatingDock-CSB0DJoP.mjs').then((n) => n.b).then((c) => c.default || c));
+const __nuxt_component_3_lazy = defineAsyncComponent(() => import('./FloatingDock-SyAI4_sy.mjs').then((n) => n.b).then((c) => c.default || c));
 const __nuxt_component_5_lazy = defineAsyncComponent(() => import('./LoginModal-DGjqbTYd.mjs').then((c) => c.default || c));
 const _sfc_main$2 = /* @__PURE__ */ defineComponent({
   __name: "app",

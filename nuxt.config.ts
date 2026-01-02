@@ -66,5 +66,17 @@ export default defineNuxtConfig({
     },
     runtimeConfig: {
         geminiApiKey: ''
+    },
+    routeRules: {
+        '/**': {
+            headers: {
+                'Content-Security-Policy': "default-src 'self' https: data: 'unsafe-inline' 'unsafe-eval'; img-src 'self' https: data: blob:; connect-src 'self' https:;",
+                'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload',
+                'X-Frame-Options': 'DENY',
+                'X-Content-Type-Options': 'nosniff',
+                'Referrer-Policy': 'strict-origin-when-cross-origin',
+                'Permissions-Policy': 'camera=(), microphone=(), geolocation=()'
+            }
+        }
     }
 })

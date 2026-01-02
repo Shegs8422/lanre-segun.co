@@ -61,7 +61,7 @@
 
                     <button v-if="project.projectLink" @click="handleProjectLink"
                         class="w-fit flex items-center gap-2 px-6 py-2 rounded-full bg-blue-600 hover:bg-blue-500 transition-colors text-sm font-bold text-white shadow-lg shadow-blue-500/20">
-                        {{ project.isFigma ? 'View Prototype' : 'See Live Project' }}
+                        {{ project.isFigma ? 'View File Preview' : 'See Live Project' }}
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
@@ -345,19 +345,34 @@
                         <div class="flex items-center justify-between p-6 border-b border-white/5 bg-[#1A1A1A]">
                             <div class="flex flex-col">
                                 <h3 class="text-lg font-bold text-white uppercase tracking-tighter">{{ project.title }}
-                                    Prototype</h3>
+                                    {{ project.isFigma ? 'Design Feed' : 'Session' }}</h3>
                                 <p class="text-[10px] text-white/40 uppercase tracking-widest">Interactive Cloud Preview
                                 </p>
                             </div>
-                            <button @click="showPrototype = false"
-                                class="p-3 hover:bg-white/5 rounded-full transition-all hover:rotate-90 text-white/50 hover:text-white">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                                </svg>
-                            </button>
+                            <div class="flex items-center gap-3">
+                                <a :href="formattedLink" target="_blank"
+                                    class="p-3 hover:bg-white/5 rounded-full transition-all text-white/30 hover:text-white group flex items-center gap-2">
+                                    <span
+                                        class="text-[10px] font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Open
+                                        Original</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                        <polyline points="15 3 21 3 21 9"></polyline>
+                                        <line x1="10" y1="14" x2="21" y2="3"></line>
+                                    </svg>
+                                </a>
+                                <button @click="showPrototype = false"
+                                    class="p-3 hover:bg-white/5 rounded-full transition-all hover:rotate-90 text-white/50 hover:text-white">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
                         <div class="flex-1 w-full relative bg-black flex items-center justify-center overflow-hidden">
                             <div class="absolute inset-0 flex flex-col items-center justify-center gap-4 z-0">
@@ -368,9 +383,9 @@
                                     Simulation</p>
                             </div>
                             <iframe v-if="formattedLink" :src="formattedLink"
-                                class="absolute inset-0 w-full h-full border-0 z-10"
-                                allow="autoplay; clipboard-write; draw-viewer; encrypted-media; fullscreen; picture-in-picture"
-                                allowfullscreen loading="lazy"></iframe>
+                                class="absolute inset-0 w-full h-full border-0 z-10 bg-black"
+                                allow="autoplay; clipboard-read; clipboard-write; draw-viewer; encrypted-media; fullscreen; picture-in-picture; xr-spatial-tracking"
+                                referrerpolicy="no-referrer-when-downgrade" allowfullscreen loading="eager"></iframe>
                         </div>
                     </div>
                 </div>
@@ -527,21 +542,31 @@ onMounted(() => {
 const formattedLink = computed(() => {
     let raw = project.value?.projectLink || ''
     if (!raw) return ''
+
+    // 1. Extract from iframe if pasted directly
     if (raw.includes('<iframe')) {
         const match = raw.match(/src="([^"]+)"/)
         if (match && match[1]) {
             raw = match[1].replace(/&amp;/g, '&')
         }
     }
+
     let link = raw.trim()
-    if (!link.startsWith('http')) link = 'https://' + link
+    if (!link.startsWith('http') && !link.startsWith('//')) {
+        link = 'https://' + link
+    }
+
+    // 2. Figma-specific embedding logic
     if (project.value?.isFigma) {
-        const isStandardFigma = link.includes('figma.com/') && (link.includes('/file/') || link.includes('/proto/') || link.includes('/design/'))
-        const isAlreadyEmbed = link.includes('figma.com/embed')
-        if (isStandardFigma && !isAlreadyEmbed) {
+        const isFigmaURL = link.includes('figma.com')
+        const isEmbedURL = link.includes('/embed') || link.includes('embed?')
+
+        if (isFigmaURL && !isEmbedURL) {
+            // Clean common link noise before encoding to be safe
             return `https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(link)}`
         }
     }
+
     return link
 })
 
