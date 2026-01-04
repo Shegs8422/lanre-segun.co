@@ -1,6 +1,6 @@
 /// <reference types="@tresjs/nuxt" />
-/// <reference types="@nuxtjs/supabase" />
 /// <reference types="@nuxt/telemetry" />
+/// <reference types="@nuxtjs/supabase" />
 /// <reference types="@nuxt/devtools" />
 /// <reference path="types/modules.d.ts" />
 /// <reference path="types/runtime-config.d.ts" />

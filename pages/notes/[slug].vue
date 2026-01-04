@@ -66,8 +66,12 @@ const formattedDate = computed(() => {
         day: '2-digit'
     })
 })
-// No parsing needed as content is now stored as HTML structure
-const parsedContent = computed(() => note.value?.content || '')
+// No parsing needed if stored as HTML, but fallback for raw markdown
+const parsedContent = computed(() => {
+    const content = note.value?.content || ''
+    if (content.trim().startsWith('<')) return content
+    return parseMarkdown(content)
+})
 
 useSeoMeta({
     title: () => note.value ? `${note.value.title} - Lanre Segun` : 'Note Not Found',
@@ -137,5 +141,55 @@ useSeoMeta({
     margin: 2rem 0;
     color: var(--foreground);
     opacity: 0.7;
+}
+.prose table {
+    width: 100%;
+    margin: 2rem 0;
+    border-collapse: collapse;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 1rem;
+    overflow: hidden;
+    border: 1px solid var(--border);
+}
+
+.prose th {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    border-bottom: 2px solid var(--border);
+}
+
+.prose td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.95rem;
+    color: var(--foreground);
+    opacity: 0.8;
+}
+
+.prose pre {
+    background: #0d1117;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    border: 1px solid var(--border);
+    margin: 2rem 0;
+    overflow-x: auto;
+    font-size: 0.875rem;
+    line-height: 1.6;
+}
+
+.prose code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+.prose p code {
+    background: rgba(59, 130, 246, 0.1);
+    color: #60a5fa;
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.4rem;
+    font-size: 0.9em;
 }
 </style>

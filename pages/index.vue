@@ -316,7 +316,8 @@
                 <DraggableWidget
                     class="relative max-w-[100vw] col-start-3 row-start-4 w-fit h-fit col-span-1 bottom-[160px] left-[100px] entrance-stagger"
                     style="--stagger: 3">
-                    <div class="rotate-14 transition-transform hover:scale-105 duration-300">
+                    <div
+                        class="rotate-14 transition-transform hover:scale-105 duration-300 border border-black/10 dark:border-white/10 shadow-xl bg-white dark:bg-[#1A1A1A] p-3 pb-8">
                         <PolaroidPhoto src="/images/image_21.jpg" alt="Polaroid 1" />
                     </div>
                 </DraggableWidget>
@@ -324,7 +325,8 @@
                 <DraggableWidget
                     class="relative max-w-[100vw] col-start-2 row-start-5 w-fit h-fit col-span-1 bottom-[160px] left-[240px] entrance-stagger"
                     style="--stagger: 4">
-                    <div class="-rotate-12 transition-transform hover:scale-105 duration-300">
+                    <div
+                        class="-rotate-12 transition-transform hover:scale-105 duration-300 border border-black/10 dark:border-white/10 shadow-xl bg-white dark:bg-[#1A1A1A] p-3 pb-8">
                         <PolaroidPhoto src="/images/image_2.jpg" alt="Polaroid 2" />
                     </div>
                 </DraggableWidget>
@@ -332,7 +334,8 @@
                 <DraggableWidget
                     class="relative max-w-[100vw] col-start-6 row-start-4 w-fit h-fit col-span-1 bottom-[180px] left-[80px] entrance-stagger"
                     style="--stagger: 5">
-                    <div class="rotate-2 transition-transform hover:scale-105 duration-300">
+                    <div
+                        class="rotate-2 transition-transform hover:scale-105 duration-300 border border-black/10 dark:border-white/10 shadow-xl bg-white dark:bg-[#1A1A1A] p-3 pb-8">
                         <PolaroidPhoto src="/images/image_14.png" alt="Polaroid 3" />
                     </div>
                 </DraggableWidget>
@@ -340,7 +343,8 @@
                 <DraggableWidget
                     class="relative max-w-[100vw] col-start-6 row-start-5 w-fit h-fit col-span-1 bottom-[200px] right-[70px] entrance-stagger"
                     style="--stagger: 6">
-                    <div class="rotate-[8deg] transition-transform hover:scale-105 duration-300">
+                    <div
+                        class="rotate-[8deg] transition-transform hover:scale-105 duration-300 border border-black/10 dark:border-white/10 shadow-xl bg-white dark:bg-[#1A1A1A] p-3 pb-8">
                         <PolaroidPhoto src="/images/segun.jpg" alt="Polaroid 4" />
                     </div>
                 </DraggableWidget>

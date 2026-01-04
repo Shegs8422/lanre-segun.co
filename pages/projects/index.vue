@@ -32,9 +32,9 @@
                     <h3 class="text-4xl font-black tracking-tighter leading-none">{{ project.title }}</h3>
                     <p v-if="project.subtitle" class="text-lg text-blue-400/80 font-medium italic -mt-1">{{
                         project.subtitle }}</p>
-                    <p class="text-muted-foreground text-lg max-w-xl leading-relaxed mt-1">
-                        {{ project.description }}
-                    </p>
+                    <div class="text-muted-foreground text-lg max-w-xl leading-relaxed mt-1"
+                        v-html="parseMarkdown(project.description)">
+                    </div>
                     <div class="flex flex-wrap gap-2 mt-1">
                         <span v-for="tag in project.tags" :key="tag"
                             class="text-[10px] text-neutral-500 uppercase tracking-widest border border-neutral-800 px-2 py-0.5 rounded">{{
@@ -126,5 +126,15 @@ useSeoMeta({
 
 .project-item {
     will-change: transform, opacity;
+}
+
+:deep(.markdown-container strong) {
+    font-weight: 800;
+    color: white;
+}
+
+:deep(.markdown-container em) {
+    font-style: italic;
+    opacity: 0.9;
 }
 </style>

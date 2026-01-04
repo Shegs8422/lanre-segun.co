@@ -37,6 +37,7 @@ export { useLayout } from '../composables/useLayout';
 export { useNotes, Note } from '../composables/useNotes';
 export { useProjects, Project } from '../composables/useProjects';
 export { useTheme } from '../composables/useTheme';
+export { parseMarkdown } from '../utils/markdown';
 export { useSupabaseClient } from '../node_modules/@nuxtjs/supabase/dist/runtime/composables/useSupabaseClient';
 export { useSupabaseCookieRedirect } from '../node_modules/@nuxtjs/supabase/dist/runtime/composables/useSupabaseCookieRedirect';
 export { useSupabaseSession } from '../node_modules/@nuxtjs/supabase/dist/runtime/composables/useSupabaseSession';

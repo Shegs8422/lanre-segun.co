@@ -178,22 +178,7 @@ const serializeCurrentBlocks = () => {
                 html += `<h2 class="text-2xl font-bold mb-4 text-foreground">${block.heading}</h2>`
             }
             if (block.body) {
-                // Support basic markdown: bold, italic, links
-                let body = block.body
-                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                    .replace(/\*(.*?)\*/g, '<em>$1</em>')
-                    .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" class="text-blue-500 hover:underline" target="_blank">$1</a>')
-
-                const paragraphs = body.split(/\n\s*\n/)
-                paragraphs.forEach(p => {
-                    if (p.trim()) {
-                        if (p.trim().startsWith('<p') || p.trim().startsWith('<ul') || p.trim().startsWith('<ol')) {
-                            html += p.trim()
-                        } else {
-                            html += `<p class="mb-4 text-lg leading-relaxed opacity-80">${p.trim()}</p>`
-                        }
-                    }
-                })
+                html += parseMarkdown(block.body)
             }
             html += `</section>`
         } else if (block.type === 'image' && block.url) {
@@ -240,9 +225,8 @@ const triggerImageUpload = (index: number) => {
 
 const handleImageUpload = async (event: Event, index: number) => {
     const input = event.target as HTMLInputElement
-    if (!input.files?.length) return
-
-    const file = input.files[0]
+    const file = input.files?.[0]
+    if (!file) return
     const fileExt = file.name.split('.').pop()
     const filePath = `uploads/${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`
 

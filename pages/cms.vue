@@ -1,6 +1,25 @@
 <template>
-    <div
-        class="min-h-screen bg-background text-foreground font-sans selection:bg-neutral-800 transition-colors duration-300">
+    <div class="min-h-screen bg-background text-foreground font-sans selection:bg-neutral-800">
+
+        <!-- Full Page Initial Loader (Stops FOUC) -->
+        <div v-if="loading" class="fixed inset-0 z-200 flex items-center justify-center bg-background">
+            <div class="flex flex-col items-center gap-6">
+                <div class="relative">
+                    <div class="w-16 h-16 rounded-full border-t-2 border-r-2 border-blue-600 animate-spin"></div>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <svg class="w-6 h-6 text-blue-600/50 animate-pulse" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="flex flex-col items-center gap-1">
+                    <p class="text-[11px] font-black uppercase tracking-[0.4em] text-foreground/80">Synchronizing</p>
+                    <p class="text-[9px] font-bold uppercase tracking-[0.2em] text-muted-foreground/60">CMS Control
+                        Center</p>
+                </div>
+            </div>
+        </div>
+
         <!-- Toast Notification -->
         <Transition name="toast">
             <div v-if="toast.show"
@@ -41,88 +60,87 @@
             </div>
         </Transition>
 
-        <!-- Mobile Header Toggle -->
-        <div
-            class="lg:hidden fixed top-0 left-0 right-0 h-16 bg-background/80 backdrop-blur-md border-b border-border z-160 flex items-center justify-between px-6 transition-colors">
-            <h1 class="text-xl font-display font-medium tracking-tight text-foreground">Local CMS</h1>
-            <button @click="isSidebarOpen = !isSidebarOpen"
-                class="p-2 -mr-2 text-muted-foreground hover:text-foreground">
-                <svg v-if="!isSidebarOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
-                </svg>
-                <svg v-else class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
-        </div>
-
-        <!-- Sidebar Overlay -->
-        <div v-show="isSidebarOpen" @click="isSidebarOpen = false"
-            class="lg:hidden fixed inset-0 bg-black/40 dark:bg-black/60 z-140 backdrop-blur-sm transition-opacity duration-300">
-        </div>
-
-        <!-- Sidebar / Nav -->
-        <aside :class="[
-            'fixed left-0 top-0 h-full w-64 border-r border-border bg-component dark:bg-black/90 p-6 flex flex-col gap-8 backdrop-blur-xl z-150 transition-transform duration-300 lg:translate-x-0',
-            isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        ]">
-            <h1 class="hidden lg:block text-2xl font-display font-black tracking-tight text-foreground">Local CMS</h1>
-
-            <nav class="flex flex-col gap-2 pt-20 lg:pt-0">
-                <button @click="handleTabChange('notes')"
-                    class="px-4 py-2.5 rounded-xl text-left transition-all duration-300 flex items-center gap-3 group"
-                    :class="activeTab === 'notes' ? 'bg-blue-600 text-white font-bold shadow-lg shadow-blue-500/20' : 'text-muted-foreground hover:bg-muted hover:text-foreground'">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="opacity-70 group-hover:opacity-100">
-                        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
-                        <polyline points="14 2 14 8 20 8" />
+        <template v-if="!loading">
+            <!-- Mobile Header Toggle -->
+            <div
+                class="lg:hidden fixed top-0 left-0 right-0 h-16 bg-background/80 backdrop-blur-md border-b border-border z-160 flex items-center justify-between px-6 transition-colors">
+                <h1 class="text-xl font-display font-medium tracking-tight text-foreground">Local CMS</h1>
+                <button @click="isSidebarOpen = !isSidebarOpen"
+                    class="p-2 -mr-2 text-muted-foreground hover:text-foreground">
+                    <svg v-if="!isSidebarOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16m-7 6h7" />
                     </svg>
-                    <span>Notes</span>
+                    <svg v-else class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
                 </button>
-                <button @click="handleTabChange('projects')"
-                    class="px-4 py-2.5 rounded-xl text-left transition-all duration-300 flex items-center gap-3 group"
-                    :class="activeTab === 'projects' ? 'bg-emerald-600 text-white font-bold shadow-lg shadow-emerald-500/20' : 'text-muted-foreground hover:bg-muted hover:text-foreground'">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="opacity-70 group-hover:opacity-100">
-                        <path d="M12 2H2v10h10V2zM12 12H2v10h10V12zM22 2h-10v10h10V2zM22 12h-10v10h10V12z" />
-                    </svg>
-                    <span>Projects</span>
-                </button>
-                <button @click="handleTabChange('gallery')"
-                    class="px-4 py-2.5 rounded-xl text-left transition-all duration-300 flex items-center gap-3 group"
-                    :class="activeTab === 'gallery' ? 'bg-purple-600 text-white font-bold shadow-lg shadow-purple-500/20' : 'text-muted-foreground hover:bg-muted hover:text-foreground'">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="opacity-70 group-hover:opacity-100">
-                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-                        <circle cx="8.5" cy="8.5" r="1.5" />
-                        <polyline points="21 15 16 10 5 21" />
-                    </svg>
-                    <span>Gallery</span>
-                </button>
-            </nav>
-
-            <div class="mt-auto">
-                <NuxtLink to="/"
-                    class="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M15 18l-6-6 6-6" />
-                    </svg>
-                    Back to Website
-                </NuxtLink>
-            </div>
-        </aside>
-
-        <!-- Main Content -->
-        <main :class="['lg:ml-64 p-6 lg:p-12 max-w-full lg:max-w-5xl transition-all pt-24 lg:pt-12']">
-            <div v-if="loading" class="flex items-center justify-center py-20">
-                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
             </div>
 
-            <template v-else>
+            <!-- Sidebar Overlay -->
+            <div v-show="isSidebarOpen" @click="isSidebarOpen = false"
+                class="lg:hidden fixed inset-0 bg-black/40 dark:bg-black/60 z-140 backdrop-blur-sm transition-opacity duration-300">
+            </div>
+
+            <!-- Sidebar / Nav -->
+            <aside :class="[
+                'fixed left-0 top-0 h-full w-64 border-r border-border bg-component dark:bg-black/90 p-6 flex flex-col gap-8 backdrop-blur-xl z-150 transition-transform duration-300 lg:translate-x-0',
+                isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+            ]">
+                <h1 class="hidden lg:block text-2xl font-display font-black tracking-tight text-foreground">Local CMS
+                </h1>
+
+                <nav class="flex flex-col gap-2 pt-20 lg:pt-0">
+                    <button @click="handleTabChange('notes')"
+                        class="px-4 py-2.5 rounded-xl text-left transition-all duration-300 flex items-center gap-3 group"
+                        :class="activeTab === 'notes' ? 'bg-blue-600 text-white font-bold shadow-lg shadow-blue-500/20' : 'text-muted-foreground hover:bg-muted hover:text-foreground'">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="opacity-70 group-hover:opacity-100">
+                            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+                            <polyline points="14 2 14 8 20 8" />
+                        </svg>
+                        <span>Notes</span>
+                    </button>
+                    <button @click="handleTabChange('projects')"
+                        class="px-4 py-2.5 rounded-xl text-left transition-all duration-300 flex items-center gap-3 group"
+                        :class="activeTab === 'projects' ? 'bg-emerald-600 text-white font-bold shadow-lg shadow-emerald-500/20' : 'text-muted-foreground hover:bg-muted hover:text-foreground'">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="opacity-70 group-hover:opacity-100">
+                            <path d="M12 2H2v10h10V2zM12 12H2v10h10V12zM22 2h-10v10h10V2zM22 12h-10v10h10V12z" />
+                        </svg>
+                        <span>Projects</span>
+                    </button>
+                    <button @click="handleTabChange('gallery')"
+                        class="px-4 py-2.5 rounded-xl text-left transition-all duration-300 flex items-center gap-3 group"
+                        :class="activeTab === 'gallery' ? 'bg-purple-600 text-white font-bold shadow-lg shadow-purple-500/20' : 'text-muted-foreground hover:bg-muted hover:text-foreground'">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="opacity-70 group-hover:opacity-100">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                            <circle cx="8.5" cy="8.5" r="1.5" />
+                            <polyline points="21 15 16 10 5 21" />
+                        </svg>
+                        <span>Gallery</span>
+                    </button>
+                </nav>
+
+                <div class="mt-auto">
+                    <NuxtLink to="/"
+                        class="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M15 18l-6-6 6-6" />
+                        </svg>
+                        Back to Website
+                    </NuxtLink>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main :class="['lg:ml-64 p-6 lg:p-12 max-w-full lg:max-w-5xl pt-24 lg:pt-12 min-h-screen']">
                 <!-- List View -->
                 <div v-if="view === 'list'" class="flex flex-col gap-8">
                     <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
@@ -203,7 +221,7 @@
                                         <h3
                                             class="font-bold text-base lg:text-lg text-foreground group-hover:text-blue-500 transition-colors leading-tight">
                                             {{ item.title }}</h3>
-                                        <NuxtLink v-if="activeTab !== 'gallery'"
+                                        <NuxtLink
                                             :to="activeTab === 'notes' ? `/notes/${item.slug}` : `/projects/${item.slug}`"
                                             target="_blank"
                                             class="p-1.5 text-muted-foreground hover:text-blue-500 hover:bg-blue-500/10 rounded-lg transition-all"
@@ -455,6 +473,49 @@
                                             Size</label>
                                         <input v-model="formData.teamSize" type="text" placeholder="5 Members"
                                             class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground font-medium">
+                                    </div>
+                                    <div class="flex flex-col gap-2.5 md:col-span-2 pt-4">
+                                        <div class="flex flex-col gap-4">
+                                            <div class="flex items-center justify-between px-1">
+                                                <label
+                                                    class="text-xs font-bold uppercase tracking-wider text-muted-foreground">External
+                                                    Project Link</label>
+                                                <div class="flex items-center gap-4">
+                                                    <label class="flex items-center gap-2 cursor-pointer group">
+                                                        <input type="radio" :value="false" v-model="formData.isFigma"
+                                                            class="hidden">
+                                                        <div class="w-3.5 h-3.5 rounded-full border-2 border-border flex items-center justify-center transition-all group-hover:border-blue-500"
+                                                            :class="{ 'bg-blue-500 border-blue-500': !formData.isFigma }">
+                                                            <div v-show="!formData.isFigma"
+                                                                class="w-1 h-1 rounded-full bg-white"></div>
+                                                        </div>
+                                                        <span
+                                                            class="text-[10px] font-black uppercase tracking-widest transition-colors"
+                                                            :class="formData.isFigma ? 'text-muted-foreground' : 'text-blue-500'">Live
+                                                            Website</span>
+                                                    </label>
+
+                                                    <label class="flex items-center gap-2 cursor-pointer group">
+                                                        <input type="radio" :value="true" v-model="formData.isFigma"
+                                                            class="hidden">
+                                                        <div class="w-3.5 h-3.5 rounded-full border-2 border-border flex items-center justify-center transition-all group-hover:border-blue-500"
+                                                            :class="{ 'bg-blue-500 border-blue-500': formData.isFigma }">
+                                                            <div v-show="formData.isFigma"
+                                                                class="w-1 h-1 rounded-full bg-white"></div>
+                                                        </div>
+                                                        <span
+                                                            class="text-[10px] font-black uppercase tracking-widest transition-colors"
+                                                            :class="!formData.isFigma ? 'text-muted-foreground' : 'text-blue-500'">Figma
+                                                            File Preview</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <input v-model="formData.projectLink" type="text" placeholder="https://..."
+                                                class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground font-mono text-sm leading-relaxed">
+                                            <p class="text-[10px] text-muted-foreground px-1 font-medium italic">
+                                                {{ projectLinkHelpText }}
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -756,8 +817,8 @@
                         </div>
                     </form>
                 </div>
-            </template>
-        </main>
+            </main>
+        </template>
 
         <!-- AI Generator Modal -->
         <Transition name="fade">
@@ -769,7 +830,7 @@
                         <div
                             class="w-10 h-10 rounded-2xl bg-linear-to-tr from-purple-500 to-blue-500 flex items-center justify-center text-white">
                             <svg class="w-5 h-5 fill-white" viewBox="0 0 24 24">
-                                <path d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" />
+                                <path d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L12 2L9.15 9.15L12 2Z" />
                             </svg>
                         </div>
                         <div>
@@ -801,6 +862,46 @@
                             <span v-if="isAiGenerating"
                                 class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
                             {{ isAiGenerating ? 'Synergizing...' : 'Gemini' }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </Transition>
+
+        <!-- Custom Delete Modal -->
+        <Transition name="fade">
+            <div v-if="showDeleteModal" class="fixed inset-0 z-210 flex items-center justify-center p-6">
+                <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" @click="showDeleteModal = false"></div>
+                <div
+                    class="relative w-full max-w-sm bg-background border border-border p-8 rounded-[32px] shadow-2xl flex flex-col gap-6 animate-fade-in-up">
+                    <div class="flex flex-col items-center text-center gap-4">
+                        <div
+                            class="w-16 h-16 rounded-full bg-red-500/10 flex items-center justify-center text-red-500 px-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path
+                                    d="M3 6h18m-2 0v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6m3 0V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+                            </svg>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <h3 class="font-black text-xl tracking-tight">Delete {{ deleteIntent.type === 'gallery' ?
+                                'Photo' :
+                                (deleteIntent.type === 'note' ? 'Note' : 'Project') }}?</h3>
+                            <p class="text-sm text-muted-foreground leading-relaxed">Are you absolutely sure? This
+                                action will
+                                permanently remove this entry from your portfolio. This cannot be undone.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col gap-3">
+                        <button @click="confirmDelete" :disabled="isDeleting"
+                            class="w-full py-4 bg-red-500 hover:bg-red-600 text-white rounded-2xl font-black uppercase tracking-widest text-[11px] transition-all shadow-xl shadow-red-500/20 active:scale-95 disabled:opacity-50">
+                            {{ isDeleting ? 'Removing...' : 'Permanently Delete' }}
+                        </button>
+                        <button @click="showDeleteModal = false"
+                            class="w-full py-4 text-muted-foreground font-bold text-xs hover:text-foreground transition-colors">
+                            Cancel
                         </button>
                     </div>
                 </div>
@@ -853,6 +954,16 @@ const openSectionsAiModal = () => {
     showAiModal.value = true
 }
 
+// Delete State
+const showDeleteModal = ref(false)
+const isDeleting = ref(false)
+const deleteIntent = ref<{ item: any, type: 'note' | 'project' | 'gallery' }>({ item: null, type: 'note' })
+
+const deleteItem = (item: any, type: 'note' | 'project' | 'gallery') => {
+    deleteIntent.value = { item, type }
+    showDeleteModal.value = true
+}
+
 const toast = ref({
     show: false,
     title: '',
@@ -871,8 +982,9 @@ const onKeyDown = (e: KeyboardEvent) => {
         e.preventDefault()
         if (view.value === 'edit') saveItem()
     }
-    if (e.key === 'Escape' && showAiModal.value) {
-        showAiModal.value = false
+    if (e.key === 'Escape') {
+        if (showAiModal.value) showAiModal.value = false
+        if (showDeleteModal.value) showDeleteModal.value = false
     }
 }
 
@@ -989,7 +1101,8 @@ const generateAiProcess = async () => {
                 const k1 = keys[0] as keyof typeof formData.value
                 if (k1 && formData.value) {
                     if (!(formData.value as any)[k1]) (formData.value as any)[k1] = {}
-                        ; (formData.value as any)[k1][keys[1]] = response.text
+                    const k2 = keys[1]!
+                        ; (formData.value as any)[k1][k2] = response.text
                 }
             } else {
                 ; (formData.value as any)[fieldPath] = response.text
@@ -1022,6 +1135,13 @@ const activeTabLabel = computed(() => {
     return activeTab.value === 'notes' ? 'Note' : 'Project'
 })
 const editHeaderTitle = computed(() => `${isEditing.value ? 'Refine' : 'Add'} ${activeTabLabel.value}`)
+
+const projectLinkHelpText = computed(() => {
+    return formData.value.isFigma
+        ? 'Paste the direct Figma file link or embed code. We will handle the rest.'
+        : 'Enter the public URL for the live project.'
+})
+
 
 const createNew = () => {
     isEditing.value = false
@@ -1116,8 +1236,11 @@ const saveItem = async () => {
     }
 }
 
-const deleteItem = async (item: any, type: 'note' | 'project' | 'gallery') => {
-    if (!confirm('Are you sure you want to remove this entry? This action cannot be undone.')) return
+const confirmDelete = async () => {
+    const { item, type } = deleteIntent.value
+    if (!item) return
+
+    isDeleting.value = true
     try {
         let table = ''
         let column = ''
@@ -1129,12 +1252,12 @@ const deleteItem = async (item: any, type: 'note' | 'project' | 'gallery') => {
             value = item.id
         } else {
             table = type === 'note' ? 'notes' : 'projects'
-            column = type === 'note' ? 'id' : 'slug'
-            value = type === 'note' ? item.id : item.slug
+            column = 'slug'
+            value = item.slug
         }
 
         if (!value) {
-            showToast('Error', 'Missing identifier for deletion.', 'error')
+            showToast('Error', `Missing identifier (${column}) for deletion.`, 'error')
             return
         }
 
@@ -1142,11 +1265,15 @@ const deleteItem = async (item: any, type: 'note' | 'project' | 'gallery') => {
         if (error) throw error
 
         if (type === 'gallery') await fetchGallery()
-        else await (activeTab.value === 'notes' ? fetchNotes() : fetchProjects())
-        showToast('Deleted', 'Entry removed successfully.', 'success')
-    } catch (e) {
+        else await (type === 'note' ? fetchNotes() : fetchProjects())
+
+        showToast('Deleted', `${type.charAt(0).toUpperCase() + type.slice(1)} removed successfully.`, 'success')
+        showDeleteModal.value = false
+    } catch (e: any) {
         console.error('Delete Error:', e)
-        showToast('Error', 'Deletion failed.', 'error')
+        showToast('Error', e.message || 'Deletion failed.', 'error')
+    } finally {
+        isDeleting.value = false
     }
 }
 

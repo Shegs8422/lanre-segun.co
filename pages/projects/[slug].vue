@@ -4,7 +4,7 @@
 
         <!-- Interactive Preloader -->
         <div v-if="isPreloading"
-            class="fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center p-6 text-white font-mono overflow-hidden">
+            class="fixed inset-0 z-100 bg-black flex flex-col items-center justify-center p-6 text-white font-mono overflow-hidden">
             <div
                 class="terminal-box w-full max-w-2xl border border-white/10 rounded-xl p-8 bg-zinc-950/50 backdrop-blur-xl relative">
                 <div class="absolute top-0 left-0 w-full h-1 bg-blue-500/20">
@@ -44,7 +44,8 @@
             </div>
         </div>
 
-        <div v-if="project" class="max-w-5xl mx-auto px-6 py-12 md:py-24 flex flex-col gap-24 project-content-wrapper"
+        <div v-if="project"
+            class="max-w-5xl mx-auto px-6 pt-24 pb-12 md:py-24 flex flex-col gap-24 project-content-wrapper"
             :class="{ 'opacity-0': isPreloading }">
 
             <!-- Header Section -->
@@ -95,7 +96,7 @@
                     <div v-for="(val, label) in { Client: project.client, Role: project.role, Industry: project.industry, Duration: project.duration, Team: project.teamSize }"
                         :key="label" class="flex flex-col gap-1 meta-item">
                         <span class="text-[10px] uppercase tracking-widest text-muted-foreground font-bold">{{ label
-                            }}</span>
+                        }}</span>
                         <span class="text-sm font-medium truncate">{{ val || 'N/A' }}</span>
                     </div>
                 </div>
@@ -117,21 +118,22 @@
                     <h2 class="text-3xl font-display font-bold tracking-tight">The Challenge</h2>
                 </div>
                 <div class="md:col-span-8 flex flex-col gap-12">
-                    <p
-                        class="text-xl leading-relaxed text-foreground/90 font-light italic border-l-2 border-blue-500 pl-8 py-2">
-                        "{{ project.problemStatement || project.description }}"
-                    </p>
+                    <div class="text-xl leading-relaxed text-foreground/90 font-light italic border-l-2 border-blue-500 pl-8 py-2 markdown-container"
+                        v-html="parseMarkdown(project.problemStatement || project.description)">
+                    </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
                         <div class="flex flex-col gap-4">
                             <h4 class="text-sm font-bold uppercase tracking-widest opacity-40">Business Goal</h4>
-                            <p class="text-muted-foreground leading-relaxed">{{ project.businessGoal || `Defining
-                                objectives for the project revival.` }}</p>
+                            <div class="text-muted-foreground leading-relaxed markdown-container"
+                                v-html="parseMarkdown(project.businessGoal || `Defining objectives for the project revival.`)">
+                            </div>
                         </div>
                         <div class="flex flex-col gap-4">
                             <h4 class="text-sm font-bold uppercase tracking-widest opacity-40">User Goal</h4>
-                            <p class="text-muted-foreground leading-relaxed">{{ project.userGoal || `Prioritizing user
-                                needs and experiences.` }}</p>
+                            <div class="text-muted-foreground leading-relaxed markdown-container"
+                                v-html="parseMarkdown(project.userGoal || `Prioritizing user needs and experiences.`)">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -144,20 +146,22 @@
                     <h2 class="text-3xl font-bold tracking-tight">Design Approach</h2>
                 </div>
                 <div class="md:col-span-8 flex flex-col gap-12">
-                    <p class="text-lg leading-relaxed text-muted-foreground">{{ project.designApproach ||
-                        project.content?.introduction }}</p>
+                    <div class="text-lg leading-relaxed text-muted-foreground markdown-container"
+                        v-html="parseMarkdown(project.designApproach || project.content?.introduction)"></div>
 
                     <div
                         class="grid grid-cols-1 md:grid-cols-2 gap-12 bg-white/5 p-8 rounded-2xl border border-white/10">
                         <div v-for="(val, label) in { Methods: project.researchMethods, 'Target Users': project.targetUsers }"
                             :key="label" class="flex flex-col gap-4">
                             <h4 class="text-sm font-bold uppercase tracking-widest opacity-40">{{ label }}</h4>
-                            <p class="text-muted-foreground leading-relaxed">{{ val || 'In-depth analysis.' }}</p>
+                            <div class="text-muted-foreground leading-relaxed markdown-container"
+                                v-html="parseMarkdown(val || 'In-depth analysis.')"></div>
                         </div>
                         <div class="flex flex-col gap-4 md:col-span-2 border-t border-white/5 pt-8">
                             <h4 class="text-sm font-bold uppercase tracking-widest opacity-40">Key Insights</h4>
-                            <p class="text-muted-foreground leading-relaxed">{{ project.keyInsights || `Identifying core
-                                pain points in workflows.` }}</p>
+                            <div class="text-muted-foreground leading-relaxed markdown-container"
+                                v-html="parseMarkdown(project.keyInsights || `Identifying core pain points in workflows.`)">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -204,14 +208,16 @@
 
                     <!-- Layout: Text Only -->
                     <div v-if="section.layout === 'text-only' || !section.layout" class="max-w-3xl">
-                        <p class="text-lg leading-relaxed text-muted-foreground">{{ section.content }}</p>
+                        <div class="text-lg leading-relaxed text-muted-foreground markdown-container"
+                            v-html="parseMarkdown(section.content)"></div>
                     </div>
 
                     <!-- Layout: Full Width Image -->
                     <div v-else-if="section.layout === 'image-full' || section.type === 'image'"
                         class="w-full flex flex-col gap-8">
-                        <p v-if="section.content" class="text-lg leading-relaxed text-muted-foreground max-w-3xl mb-4">
-                            {{ section.content }}</p>
+                        <div v-if="section.content"
+                            class="text-lg leading-relaxed text-muted-foreground max-w-3xl mb-4 markdown-container"
+                            v-html="parseMarkdown(section.content)"></div>
                         <div
                             class="w-full aspect-video rounded-3xl overflow-hidden bg-white/5 border border-white/10 group">
                             <img :src="section.image || section.url"
@@ -228,7 +234,8 @@
                                 class="w-full h-full object-cover transition-transform group-hover:scale-105">
                         </div>
                         <div class="md:col-span-5 flex flex-col gap-6">
-                            <p class="text-lg leading-relaxed text-muted-foreground">{{ section.content }}</p>
+                            <div class="text-lg leading-relaxed text-muted-foreground markdown-container"
+                                v-html="parseMarkdown(section.content)"></div>
                         </div>
                     </div>
 
@@ -236,7 +243,8 @@
                     <div v-else-if="section.layout === 'split-right'"
                         class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
                         <div class="md:col-span-5 flex flex-col gap-6 order-2 md:order-1">
-                            <p class="text-lg leading-relaxed text-muted-foreground">{{ section.content }}</p>
+                            <div class="text-lg leading-relaxed text-muted-foreground markdown-container"
+                                v-html="parseMarkdown(section.content)"></div>
                         </div>
                         <div
                             class="md:col-span-7 aspect-video rounded-2xl overflow-hidden bg-white/5 border border-white/10 order-1 md:order-2 group">
@@ -247,8 +255,9 @@
 
                     <!-- Layout: Grid -->
                     <div v-else-if="section.layout === 'grid' || section.type === 'grid'" class="flex flex-col gap-8">
-                        <p v-if="section.content" class="text-lg leading-relaxed text-muted-foreground max-w-3xl">{{
-                            section.content }}</p>
+                        <div v-if="section.content"
+                            class="text-lg leading-relaxed text-muted-foreground max-w-3xl markdown-container"
+                            v-html="parseMarkdown(section.content)"></div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <div v-for="(img, i) in (section.images || [])" :key="i"
                                 class="rounded-2xl overflow-hidden bg-white/5 aspect-4/3 border border-white/5 group">
@@ -267,10 +276,9 @@
                     <h2 class="text-3xl font-bold tracking-tight">Solution Summary</h2>
                 </div>
                 <div class="p-10 rounded-3xl bg-emerald-500/5 border border-emerald-500/10 backdrop-blur-sm">
-                    <p
-                        class="text-xl leading-relaxed text-foreground/90 font-light italic pl-4 border-l-2 border-emerald-500">
-                        "{{ project.solutionSummary }}"
-                    </p>
+                    <div class="text-xl leading-relaxed text-foreground/90 font-light italic pl-4 border-l-2 border-emerald-500 markdown-container"
+                        v-html="parseMarkdown(project.solutionSummary)">
+                    </div>
                 </div>
             </section>
 
@@ -281,14 +289,15 @@
                     <h2 class="text-3xl font-bold tracking-tight">The Impact</h2>
                 </div>
                 <div class="md:col-span-8 flex flex-col gap-12">
-                    <p class="text-lg leading-relaxed text-muted-foreground">{{ project.outcome ||
-                        project.content?.results?.description }}</p>
+                    <div class="text-lg leading-relaxed text-muted-foreground markdown-container"
+                        v-html="parseMarkdown(project.outcome || project.content?.results?.description)"></div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
                         <div class="flex flex-col gap-4">
                             <h4 class="text-sm font-bold uppercase tracking-widest opacity-40">Learnings</h4>
-                            <p class="text-muted-foreground leading-relaxed">{{ project.learnings || `Iterative testing
-                                is key to solving complex UX problems.` }}</p>
+                            <div class="text-muted-foreground leading-relaxed markdown-container"
+                                v-html="parseMarkdown(project.learnings || `Iterative testing is key to solving complex UX problems.`)">
+                            </div>
                         </div>
                         <div class="flex flex-col gap-4">
                             <h4 class="text-sm font-bold uppercase tracking-widest opacity-40">Tools Used</h4>
@@ -338,7 +347,7 @@
         <Teleport to="body">
             <Transition name="fade">
                 <div v-if="showPrototype && project?.projectLink"
-                    class="fixed inset-0 z-[1000] flex items-center justify-center p-4 md:p-12 bg-black/95 backdrop-blur-2xl">
+                    class="fixed inset-0 z-1000 flex items-center justify-center p-4 md:p-12 bg-black/95 backdrop-blur-2xl">
                     <div class="absolute inset-0 z-0" @click="showPrototype = false"></div>
                     <div
                         class="relative w-full h-full max-w-7xl bg-[#1e1e1e] rounded-3xl overflow-hidden border border-white/10 flex flex-col shadow-2xl animate-modal-in z-10">
@@ -669,5 +678,82 @@ watch(() => route.params.slug, () => {
 
 ::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.2);
+}
+
+.markdown-container :deep(strong) {
+    font-weight: 700;
+    color: white;
+}
+
+.markdown-container :deep(em) {
+    font-style: italic;
+    opacity: 0.9;
+}
+
+.markdown-container :deep(ul) {
+    list-style-type: disc;
+    margin-left: 1.5rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.markdown-container :deep(li) {
+    margin-bottom: 0.5rem;
+}
+
+.markdown-container :deep(p) {
+    margin-bottom: 1rem;
+}
+
+.markdown-container :deep(a) {
+    color: #3b82f6;
+    text-decoration: underline;
+    transition: opacity 0.2s;
+}
+
+.markdown-container :deep(a:hover) {
+    opacity: 0.8;
+}
+
+.markdown-container :deep(table) {
+    width: 100%;
+    margin: 2rem 0;
+    border-collapse: collapse;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 1rem;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.markdown-container :deep(th) {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.markdown-container :deep(td) {
+    padding: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.markdown-container :deep(pre) {
+    background: #0d1117;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin: 2rem 0;
+    overflow-x: auto;
+    font-size: 0.875rem;
+    line-height: 1.6;
+}
+
+.markdown-container :deep(code) {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 </style>

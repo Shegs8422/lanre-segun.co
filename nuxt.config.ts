@@ -65,12 +65,12 @@ export default defineNuxtConfig({
         transpile: ['gsap', 'three', '@vueuse/sound']
     },
     runtimeConfig: {
-        geminiApiKey: ''
+        geminiApiKey: process.env.NUXT_GEMINI_API_KEY || ''
     },
     routeRules: {
         '/**': {
             headers: {
-                'Content-Security-Policy': "default-src 'self' https: data: 'unsafe-inline' 'unsafe-eval'; img-src 'self' https: data: blob:; connect-src 'self' https:;",
+                'Content-Security-Policy': "default-src 'self' https: data: 'unsafe-inline' 'unsafe-eval'; img-src 'self' https: data: blob:; connect-src 'self' https:; worker-src 'self' blob:; child-src 'self' blob:; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob:;",
                 'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload',
                 'X-Frame-Options': 'DENY',
                 'X-Content-Type-Options': 'nosniff',

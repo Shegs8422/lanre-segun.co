@@ -53,7 +53,7 @@
         <template v-if="!demo">
           <NuxtLink to="/" @click="playInteraction"
             class="shrink-0 overflow-hidden flex h-10 rounded-xl items-center justify-center transition-all duration-300 hover:bg-accent relative"
-            :class="isActive('/') ? 'w-auto px-3 sm:px-4 bg-secondary text-secondary-foreground' : 'w-10 px-2 sm:px-[10px]'">
+            :class="isActive('/') ? 'w-auto px-4 sm:px-5 bg-foreground text-background font-bold shadow-md shadow-black/10 dark:shadow-white/10' : 'w-10 px-2 sm:px-[10px] text-muted-foreground hover:text-foreground hover:bg-black/5 dark:hover:bg-white/5'">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
               class="h-5 w-5 shrink-0 relative z-10">
               <path stroke="currentColor" stroke-linejoin="round" stroke-width="2"
@@ -67,7 +67,7 @@
         <template v-else>
           <div @click="handleDemoClick('/')"
             class="shrink-0 overflow-hidden flex h-10 rounded-xl items-center justify-center transition-all duration-300 hover:bg-accent relative cursor-pointer"
-            :class="isActive('/') ? 'w-auto px-3 sm:px-4 bg-secondary text-secondary-foreground' : 'w-10 px-2 sm:px-[10px]'">
+            :class="isActive('/') ? 'w-auto px-4 sm:px-5 bg-foreground text-background font-bold shadow-md shadow-black/10 dark:shadow-white/10' : 'w-10 px-2 sm:px-[10px] text-muted-foreground hover:text-foreground hover:bg-black/5 dark:hover:bg-white/5'">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
               class="h-5 w-5 shrink-0 relative z-10">
               <path stroke="currentColor" stroke-linejoin="round" stroke-width="2"
@@ -83,7 +83,7 @@
         <template v-if="!demo">
           <NuxtLink to="/projects" @click="playInteraction"
             class="shrink-0 overflow-hidden flex h-10 rounded-xl items-center justify-center transition-all duration-300 hover:bg-accent relative"
-            :class="isActive('/projects') ? 'w-auto px-3 sm:px-4 bg-secondary text-secondary-foreground' : 'w-10 px-2 sm:px-[10px]'">
+            :class="isActive('/projects') ? 'w-auto px-4 sm:px-5 bg-foreground text-background font-bold shadow-md shadow-black/10 dark:shadow-white/10' : 'w-10 px-2 sm:px-[10px] text-muted-foreground hover:text-foreground hover:bg-black/5 dark:hover:bg-white/5'">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
               class="h-5 w-5 shrink-0 relative z-10">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -97,7 +97,7 @@
         <template v-else>
           <div @click="handleDemoClick('/projects')"
             class="shrink-0 overflow-hidden flex h-10 rounded-xl items-center justify-center transition-all duration-300 hover:bg-accent relative cursor-pointer"
-            :class="isActive('/projects') ? 'w-auto px-3 sm:px-4 bg-secondary text-secondary-foreground' : 'w-10 px-2 sm:px-[10px]'">
+            :class="isActive('/projects') ? 'w-auto px-4 sm:px-5 bg-foreground text-background font-bold shadow-md shadow-black/10 dark:shadow-white/10' : 'w-10 px-2 sm:px-[10px] text-muted-foreground hover:text-foreground hover:bg-black/5 dark:hover:bg-white/5'">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
               class="h-5 w-5 shrink-0 relative z-10">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -113,7 +113,7 @@
         <template v-if="!demo">
           <NuxtLink to="/craft" @click="playInteraction"
             class="shrink-0 overflow-hidden flex h-10 rounded-xl items-center justify-center transition-all duration-300 hover:bg-accent relative"
-            :class="isActive('/craft') ? 'w-auto px-3 sm:px-4 bg-secondary text-secondary-foreground' : 'w-10 px-2 sm:px-[10px]'">
+            :class="isActive('/craft') ? 'w-auto px-4 sm:px-5 bg-foreground text-background font-bold shadow-md shadow-black/10 dark:shadow-white/10' : 'w-10 px-2 sm:px-[10px] text-muted-foreground hover:text-foreground hover:bg-black/5 dark:hover:bg-white/5'">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
               class="h-5 w-5 shrink-0 relative z-10">
               <path
@@ -130,7 +130,7 @@
         <template v-else>
           <div @click="handleDemoClick('/craft')"
             class="shrink-0 overflow-hidden flex h-10 rounded-xl items-center justify-center transition-all duration-300 hover:bg-accent relative cursor-pointer"
-            :class="isActive('/craft') ? 'w-auto px-3 sm:px-4 bg-secondary text-secondary-foreground' : 'w-10 px-2 sm:px-[10px]'">
+            :class="isActive('/craft') ? 'w-auto px-4 sm:px-5 bg-foreground text-background font-bold shadow-md shadow-black/10 dark:shadow-white/10' : 'w-10 px-2 sm:px-[10px] text-muted-foreground hover:text-foreground hover:bg-black/5 dark:hover:bg-white/5'">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
               class="h-5 w-5 shrink-0 relative z-10">
               <path
@@ -149,7 +149,7 @@
         <template v-if="!demo">
           <NuxtLink to="/notes" @click="playInteraction"
             class="shrink-0 overflow-hidden flex h-10 rounded-xl items-center justify-center transition-all duration-300 hover:bg-accent relative"
-            :class="isActive('/notes') ? 'w-auto px-3 sm:px-4 bg-secondary text-secondary-foreground' : 'w-10 px-2 sm:px-[10px]'">
+            :class="isActive('/notes') ? 'w-auto px-4 sm:px-5 bg-foreground text-background font-bold shadow-md shadow-black/10 dark:shadow-white/10' : 'w-10 px-2 sm:px-[10px] text-muted-foreground hover:text-foreground hover:bg-black/5 dark:hover:bg-white/5'">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
               class="h-5 w-5 shrink-0 relative z-10">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -163,7 +163,7 @@
         <template v-else>
           <div @click="handleDemoClick('/notes')"
             class="shrink-0 overflow-hidden flex h-10 rounded-xl items-center justify-center transition-all duration-300 hover:bg-accent relative cursor-pointer"
-            :class="isActive('/notes') ? 'w-auto px-3 sm:px-4 bg-secondary text-secondary-foreground' : 'w-10 px-2 sm:px-[10px]'">
+            :class="isActive('/notes') ? 'w-auto px-4 sm:px-5 bg-foreground text-background font-bold shadow-md shadow-black/10 dark:shadow-white/10' : 'w-10 px-2 sm:px-[10px] text-muted-foreground hover:text-foreground hover:bg-black/5 dark:hover:bg-white/5'">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
               class="h-5 w-5 shrink-0 relative z-10">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -179,7 +179,7 @@
         <template v-if="!demo">
           <NuxtLink to="/photos" @click="playInteraction"
             class="shrink-0 overflow-hidden flex h-10 rounded-xl items-center justify-center transition-all duration-300 hover:bg-accent relative"
-            :class="isActive('/photos') ? 'w-auto px-3 sm:px-4 bg-secondary text-secondary-foreground' : 'w-10 px-2 sm:px-[10px]'">
+            :class="isActive('/photos') ? 'w-auto px-4 sm:px-5 bg-foreground text-background font-bold shadow-md shadow-black/10 dark:shadow-white/10' : 'w-10 px-2 sm:px-[10px] text-muted-foreground hover:text-foreground hover:bg-black/5 dark:hover:bg-white/5'">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
               class="h-5 w-5 shrink-0 relative z-10">
               <path stroke="currentColor" stroke-linecap="square" stroke-linejoin="round" stroke-width="2"
@@ -195,7 +195,7 @@
         <template v-else>
           <div @click="handleDemoClick('/photos')"
             class="shrink-0 overflow-hidden flex h-10 rounded-xl items-center justify-center transition-all duration-300 hover:bg-accent relative cursor-pointer"
-            :class="isActive('/photos') ? 'w-auto px-3 sm:px-4 bg-secondary text-secondary-foreground' : 'w-10 px-2 sm:px-[10px]'">
+            :class="isActive('/photos') ? 'w-auto px-4 sm:px-5 bg-foreground text-background font-bold shadow-md shadow-black/10 dark:shadow-white/10' : 'w-10 px-2 sm:px-[10px] text-muted-foreground hover:text-foreground hover:bg-black/5 dark:hover:bg-white/5'">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
               class="h-5 w-5 shrink-0 relative z-10">
               <path stroke="currentColor" stroke-linecap="square" stroke-linejoin="round" stroke-width="2"

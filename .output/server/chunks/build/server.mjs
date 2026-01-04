@@ -386,17 +386,17 @@ const _routes = [
   {
     name: "cms",
     path: "/cms",
-    component: () => import('./cms-BW7IMeGp.mjs')
+    component: () => import('./cms-Df2LgBlW.mjs')
   },
   {
     name: "craft",
     path: "/craft",
-    component: () => import('./craft-yVIsGAPe.mjs')
+    component: () => import('./craft-CdsSTmic.mjs')
   },
   {
     name: "index",
     path: "/",
-    component: () => import('./index-T8nxtFN9.mjs')
+    component: () => import('./index-Cwnob_fv.mjs')
   },
   {
     name: "photos",
@@ -411,17 +411,17 @@ const _routes = [
   {
     name: "notes-slug",
     path: "/notes/:slug()",
-    component: () => import('./_slug_-D3QOOcPe.mjs')
+    component: () => import('./_slug_-D9Nxsm6h.mjs')
   },
   {
     name: "projects",
     path: "/projects",
-    component: () => import('./index-wpGs_vvu.mjs')
+    component: () => import('./index-BARfLK2U.mjs')
   },
   {
     name: "projects-slug",
     path: "/projects/:slug()",
-    component: () => import('./_slug_-qKXn0EIV.mjs')
+    component: () => import('./_slug_-DfRERMlp.mjs')
   }
 ];
 const ROUTE_KEY_PARENTHESES_RE = /(:\w+)\([^)]+\)/g;
@@ -5356,7 +5356,7 @@ const useTheme = () => {
     setTheme
   };
 };
-const __nuxt_component_3_lazy = defineAsyncComponent(() => import('./FloatingDock-SyAI4_sy.mjs').then((n) => n.b).then((c) => c.default || c));
+const __nuxt_component_3_lazy = defineAsyncComponent(() => import('./FloatingDock-BGw1fNkd.mjs').then((n) => n.b).then((c) => c.default || c));
 const __nuxt_component_5_lazy = defineAsyncComponent(() => import('./LoginModal-DGjqbTYd.mjs').then((c) => c.default || c));
 const _sfc_main$2 = /* @__PURE__ */ defineComponent({
   __name: "app",
