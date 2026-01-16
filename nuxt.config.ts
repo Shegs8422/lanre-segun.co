@@ -3,11 +3,28 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineNuxtConfig({
     compatibilityDate: '2025-12-26',
     devtools: { enabled: true },
-    components: true,
+    components: [
+        {
+            path: '~/components',
+            pathPrefix: false,
+        },
+    ],
     modules: [
         '@tresjs/nuxt',
-        '@nuxtjs/supabase'
+        '@nuxtjs/supabase',
+        '@nuxt/eslint',
+        '@nuxt/image',
+        '@nuxtjs/sitemap',
+        '@nuxtjs/robots',
+        'nuxt-schema-org'
     ],
+    site: {
+        url: 'https://lanre-segun-co.vercel.app',
+        name: 'Lanre Segun - Senior Product Designer'
+    },
+    image: {
+        domains: ['res.cloudinary.com', 'images.unsplash.com', 'source.unsplash.com', 'loremflickr.com', 'lanre-segun.vercel.app']
+    },
     supabase: {
         redirect: false
     },

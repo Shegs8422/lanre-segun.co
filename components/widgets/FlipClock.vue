@@ -1,5 +1,5 @@
 <template>
-  <div class="flip-clock-container" ref="containerRef" data-no-drag="true">
+  <div ref="containerRef" class="flip-clock-container" data-no-drag="true">
     <div class="countdown flex gap-4 lg:gap-8 items-center h-[100px] w-fit">
       <!-- Hours Group -->
       <div class="flex gap-1 group-h">
@@ -7,11 +7,11 @@
           <li v-for="n in 3" :key="`h1-${n - 1}`" :class="getDigitClass(0, n - 1)">
             <span>
               <div class="up">
-                <div class="shadow"></div>
+                <div class="shadow"/>
                 <div class="inn">{{ n - 1 }}</div>
               </div>
               <div class="down">
-                <div class="shadow"></div>
+                <div class="shadow"/>
                 <div class="inn">{{ n - 1 }}</div>
               </div>
             </span>
@@ -21,11 +21,11 @@
           <li v-for="n in 10" :key="`h2-${n - 1}`" :class="getDigitClass(1, n - 1)">
             <span>
               <div class="up">
-                <div class="shadow"></div>
+                <div class="shadow"/>
                 <div class="inn">{{ n - 1 }}</div>
               </div>
               <div class="down">
-                <div class="shadow"></div>
+                <div class="shadow"/>
                 <div class="inn">{{ n - 1 }}</div>
               </div>
             </span>
@@ -39,11 +39,11 @@
           <li v-for="n in 6" :key="`m1-${n - 1}`" :class="getDigitClass(2, n - 1)">
             <span>
               <div class="up">
-                <div class="shadow"></div>
+                <div class="shadow"/>
                 <div class="inn">{{ n - 1 }}</div>
               </div>
               <div class="down">
-                <div class="shadow"></div>
+                <div class="shadow"/>
                 <div class="inn">{{ n - 1 }}</div>
               </div>
             </span>
@@ -53,11 +53,11 @@
           <li v-for="n in 10" :key="`m2-${n - 1}`" :class="getDigitClass(3, n - 1)">
             <span>
               <div class="up">
-                <div class="shadow"></div>
+                <div class="shadow"/>
                 <div class="inn">{{ n - 1 }}</div>
               </div>
               <div class="down">
-                <div class="shadow"></div>
+                <div class="shadow"/>
                 <div class="inn">{{ n - 1 }}</div>
               </div>
             </span>
@@ -71,11 +71,11 @@
           <li v-for="n in 6" :key="`s1-${n - 1}`" :class="getDigitClass(4, n - 1)">
             <span>
               <div class="up">
-                <div class="shadow"></div>
+                <div class="shadow"/>
                 <div class="inn">{{ n - 1 }}</div>
               </div>
               <div class="down">
-                <div class="shadow"></div>
+                <div class="shadow"/>
                 <div class="inn">{{ n - 1 }}</div>
               </div>
             </span>
@@ -85,11 +85,11 @@
           <li v-for="n in 10" :key="`s2-${n - 1}`" :class="getDigitClass(5, n - 1)">
             <span>
               <div class="up">
-                <div class="shadow"></div>
+                <div class="shadow"/>
                 <div class="inn">{{ n - 1 }}</div>
               </div>
               <div class="down">
-                <div class="shadow"></div>
+                <div class="shadow"/>
                 <div class="inn">{{ n - 1 }}</div>
               </div>
             </span>

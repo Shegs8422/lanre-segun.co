@@ -2,9 +2,11 @@
     <div class="min-h-screen bg-background text-foreground selection:bg-blue-500/20">
         <div class="max-w-3xl mx-auto px-6 pt-32 pb-40 flex flex-col gap-12">
             <!-- Back Button -->
-            <NuxtLink to="/notes"
+            <NuxtLink
+to="/notes"
                 class="w-fit flex items-center gap-2 px-4 py-2 bg-component border border-border rounded-xl text-sm font-bold text-muted-foreground hover:text-foreground hover:border-blue-500/40 transition-all active:scale-95 group">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                <svg
+xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
                     class="transition-transform group-hover:-translate-x-1">
                     <path d="M19 12H5" />
@@ -14,7 +16,7 @@
             </NuxtLink>
 
             <div v-if="pending" class="flex items-center justify-center py-20">
-                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"/>
             </div>
 
             <article v-else-if="note" class="flex flex-col gap-12">
@@ -23,17 +25,18 @@
                     <h1 class="text-4xl md:text-5xl font-black tracking-tight leading-[1.1] text-foreground">
                         {{ note.title }}
                     </h1>
-                    <time :datetime="note.date"
+                    <time
+:datetime="note.date"
                         class="text-sm font-medium text-muted-foreground flex items-center gap-2">
-                        <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                        <span class="w-1.5 h-1.5 rounded-full bg-blue-500"/>
                         {{ formattedDate }}
                     </time>
                 </header>
 
                 <!-- Content -->
-                <div class="prose prose-invert prose-blue max-w-none prose-headings:font-black prose-headings:tracking-tight prose-p:leading-relaxed prose-p:text-foreground/80"
-                    v-html="parsedContent">
-                </div>
+                <div
+class="prose prose-invert prose-blue max-w-none prose-headings:font-black prose-headings:tracking-tight prose-p:leading-relaxed prose-p:text-foreground/80"
+                    v-html="parsedContent"/>
             </article>
 
             <div v-if="!note && !pending" class="text-center py-20 bg-component rounded-3xl border border-border">

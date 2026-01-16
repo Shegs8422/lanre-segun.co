@@ -1,7 +1,12 @@
 /// <reference types="@tresjs/nuxt" />
-/// <reference types="@nuxt/telemetry" />
 /// <reference types="@nuxtjs/supabase" />
+/// <reference types="@nuxt/eslint" />
+/// <reference types="@nuxt/image" />
+/// <reference types="@nuxtjs/sitemap" />
+/// <reference types="nuxt-schema-org" />
+/// <reference types="@nuxtjs/robots" />
 /// <reference types="@nuxt/devtools" />
+/// <reference types="@nuxt/telemetry" />
 /// <reference path="types/builder-env.d.ts" />
 /// <reference path="types/plugins.d.ts" />
 /// <reference path="types/build.d.ts" />
@@ -11,6 +16,11 @@
 /// <reference types="C:/Users/Lanre Segun/Desktop/lanre-segun.co/node_modules/@nuxt/nitro-server/dist/index.mjs" />
 /// <reference types="@tresjs/core" />
 /// <reference path="types/supabase.d.ts" />
+/// <reference path="image/providers.d.ts" />
+/// <reference path="module/nuxt-site-config.d.ts" />
+/// <reference path="module/nuxt-sitemap.d.ts" />
+/// <reference path="module/nuxt-robots.d.ts" />
+/// <reference path="module/nuxt-schema-org.d.ts" />
 /// <reference types="vue-router" />
 /// <reference path="types/middleware.d.ts" />
 /// <reference path="types/nitro-middleware.d.ts" />
@@ -20,5 +30,6 @@
 /// <reference path="types/imports.d.ts" />
 /// <reference path="schema/nuxt.schema.d.ts" />
 /// <reference path="types/nitro.d.ts" />
+/// <reference path="./eslint-typegen.d.ts" />
 
 export {}

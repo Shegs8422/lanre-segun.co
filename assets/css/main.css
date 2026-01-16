@@ -24,8 +24,64 @@
   --color-input: hsl(var(--input));
   --color-ring: hsl(var(--ring));
 
+  /* Z-Index System */
+  --z-index-negative: -1;
+  --z-index-elevated: 10;
+  --z-index-sticky: 50;
+  --z-index-overlay: 60;
+  --z-index-modal-backdrop: 90;
+  --z-index-modal: 100;
+  --z-index-max: 9999;
+
+  /* Radius */
   --radius-xl: calc(var(--radius) + 4px);
   --radius-2xl: calc(var(--radius) + 8px);
+
+  /* Spacing / Dimensions */
+  --width-profile-card: 568px;
+
+  /* Z-Index System */
+  --z-negative: -1;
+  --z-elevated: 10;
+  --z-sticky: 50;
+  --z-overlay: 60;
+  --z-modal-backdrop: 90;
+  --z-modal: 100;
+  --z-max: 9999;
+
+  /* Typography Extensions */
+  --text-xxs: 10px;
+  --text-poster-lg: 90px;
+  --tracking-mega: 0.2em;
+  --tracking-giga: 0.3em;
+
+  /* Semantic Colors */
+  --color-terminal-bg: #1e1e1e;
+  --color-card-dark: #0A0A0A;
+  --color-card-darker: #111111;
+  --color-glass-border: rgba(255, 255, 255, 0.1);
+
+  /* Component Specific Colors */
+  --color-tooltip-bg: #1A1A1A;
+  --color-paper-light: #ffffff;
+  --color-paper-pattern: #f0f0f0;
+
+  /* Book Cover Brand Colors */
+  --color-book-blue: #2D469B;
+  --color-book-orange: #F97316;
+  --color-book-red: #EF4444;
+  --color-book-crimson: #CA2528;
+  --color-book-vermilion: #F03800;
+  --color-book-black: #0A0A0A;
+  /* Matches card-dark but semantic for book */
+  --color-book-cyan: #1abcfe;
+  --color-book-brown: #8B4513;
+  --color-book-charcoal: #252525;
+  --color-book-yellow: #FEDE05;
+  --color-book-beige: #E1D2BC;
+  --color-book-gray: #F2F2F2;
+  --color-book-bright-red: #E32A24;
+  --color-code-bg: #0d1117;
 }
 
 /* 

@@ -30,10 +30,9 @@
                     </div>
                 </div>
                 <div
-                    class="lg:col-span-8 bg-[#0A0A0A] dark:bg-[#111111] rounded-2xl border border-white/10 p-12 flex items-center justify-center min-h-[450px] relative overflow-hidden">
+                    class="lg:col-span-8 bg-card-dark dark:bg-card-darker rounded-2xl border border-white/10 p-12 flex items-center justify-center min-h-[450px] relative overflow-hidden">
                     <div
-                        class="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] bg-size-[16px_16px]">
-                    </div>
+                        class="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] bg-size-[16px_16px]" />
                     <FloatingDock :demo="true" />
                 </div>
             </div>
@@ -55,10 +54,9 @@
                     </div>
                 </div>
                 <div
-                    class="lg:col-span-8 bg-[#0A0A0A] dark:bg-[#111111] rounded-2xl border border-white/10 p-12 flex items-center justify-center min-h-[450px] relative overflow-hidden">
+                    class="lg:col-span-8 bg-card-dark dark:bg-card-darker rounded-2xl border border-white/10 p-12 flex items-center justify-center min-h-[450px] relative overflow-hidden">
                     <div
-                        class="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] bg-size-[16px_16px]">
-                    </div>
+                        class="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] bg-size-[16px_16px]" />
                     <FlipClock />
                 </div>
             </div>
@@ -81,11 +79,10 @@
                     </div>
                 </div>
                 <div
-                    class="lg:col-span-8 bg-[#0A0A0A] dark:bg-[#111111] rounded-2xl border border-white/10 p-12 flex items-center justify-center min-h-[450px] relative overflow-hidden">
+                    class="lg:col-span-8 bg-card-dark dark:bg-card-darker rounded-2xl border border-white/10 p-12 flex items-center justify-center min-h-[450px] relative overflow-hidden">
                     <div
-                        class="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] bg-size-[16px_16px]">
-                    </div>
-                    <Book3D cover="/images/image_3.png" color="#E32A24" :width="160" :height="220"
+                        class="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] bg-size-[16px_16px]" />
+                    <Book3D cover="/images/image_3.png" color="var(--color-book-bright-red)" :width="160" :height="220"
                         title="Design Systems" author="Alla Kholmatova" />
                 </div>
             </div>
@@ -110,10 +107,9 @@
                     </div>
                 </div>
                 <div
-                    class="lg:col-span-8 bg-[#0A0A0A] dark:bg-[#111111] rounded-2xl border border-white/10 p-12 flex items-center justify-center min-h-[450px] relative overflow-hidden">
+                    class="lg:col-span-8 bg-card-dark dark:bg-card-darker rounded-2xl border border-white/10 p-12 flex items-center justify-center min-h-[450px] relative overflow-hidden">
                     <div
-                        class="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] bg-size-[16px_16px]">
-                    </div>
+                        class="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] bg-size-[16px_16px]" />
                     <!-- Wrapper to reset rotation for demo -->
                     <div class="scale-110">
                         <DrawingCanvas />
@@ -139,12 +135,11 @@
                     </div>
                 </div>
                 <div
-                    class="lg:col-span-8 bg-[#0A0A0A] dark:bg-[#111111] rounded-2xl border border-white/10 p-12 flex items-center justify-center min-h-[450px] relative overflow-hidden">
+                    class="lg:col-span-8 bg-card-dark dark:bg-card-darker rounded-2xl border border-white/10 p-12 flex items-center justify-center min-h-[450px] relative overflow-hidden">
                     <div
-                        class="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] bg-size-[16px_16px]">
-                    </div>
+                        class="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] bg-size-[16px_16px]" />
                     <VinylRecord :key="`demo-record`" cover="/images/Keane Hopes and fears.jpg"
-                        album="Somewhere Only We Know" artist="Keane" musicFile="/audio/somewhere-only-we-know.mp3" />
+                        album="Somewhere Only We Know" artist="Keane" music-file="/audio/somewhere-only-we-know.mp3" />
                 </div>
             </div>
 
@@ -167,10 +162,9 @@
                     </div>
                 </div>
                 <div
-                    class="lg:col-span-8 bg-[#0A0A0A] dark:bg-[#111111] rounded-2xl border border-white/10 p-12 flex items-center justify-center min-h-[450px] relative overflow-hidden">
+                    class="lg:col-span-8 bg-card-dark dark:bg-card-darker rounded-2xl border border-white/10 p-12 flex items-center justify-center min-h-[450px] relative overflow-hidden">
                     <div
-                        class="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] bg-size-[16px_16px]">
-                    </div>
+                        class="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] bg-size-[16px_16px]" />
                     <ChessPoster />
                 </div>
             </div>
@@ -191,10 +185,9 @@
                     </div>
                 </div>
                 <div
-                    class="lg:col-span-8 bg-[#0A0A0A] dark:bg-[#111111] rounded-2xl border border-white/10 p-12 flex items-center justify-center min-h-[450px] relative overflow-hidden">
+                    class="lg:col-span-8 bg-card-dark dark:bg-card-darker rounded-2xl border border-white/10 p-12 flex items-center justify-center min-h-[450px] relative overflow-hidden">
                     <div
-                        class="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] bg-size-[16px_16px]">
-                    </div>
+                        class="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] bg-size-[16px_16px]" />
                     <div class="scale-125">
                         <LocationStamp />
                     </div>
@@ -206,7 +199,7 @@
 </template>
 
 <script setup lang="ts">
-import FloatingDock from '~/components/FloatingDock.vue'
+import FloatingDock from '~/components/layout/FloatingDock.vue'
 import FlipClock from '~/components/widgets/FlipClock.vue'
 import Book3D from '~/components/widgets/Book3D.vue'
 import DrawingCanvas from '~/components/widgets/DrawingCanvas.vue'

@@ -5,25 +5,24 @@
     <div class="relative w-48 h-48">
       <!-- Vinyl Disc (behind cover, rotates when playing) -->
       <div class="relative w-full h-full">
-        <div class="absolute inset-0 rounded-full bg-gradient-to-br from-gray-900 via-gray-800 to-black shadow-2xl"
+        <div class="absolute inset-0 rounded-full bg-linear-to-br from-gray-900 via-gray-800 to-black shadow-2xl"
           :style="{
-            transform: isPlaying ? 'rotate(' + rotation + 'deg)' : 'rotate(0deg)',
+            transform: isPlaying ? 'rotate(' + currentRotation + 'deg)' : 'rotate(0deg)',
             transition: 'none'
           }">
           <!-- Grooves -->
-          <div class="absolute inset-2 rounded-full border border-gray-700/30"></div>
-          <div class="absolute inset-4 rounded-full border border-gray-700/20"></div>
-          <div class="absolute inset-6 rounded-full border border-gray-700/20"></div>
-          <div class="absolute inset-8 rounded-full border border-gray-700/20"></div>
+          <div class="absolute inset-2 rounded-full border border-gray-700/30" />
+          <div class="absolute inset-4 rounded-full border border-gray-700/20" />
+          <div class="absolute inset-6 rounded-full border border-gray-700/20" />
+          <div class="absolute inset-8 rounded-full border border-gray-700/20" />
 
           <!-- Center Label -->
           <div
             class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 rounded-full bg-red-800 overflow-hidden border-2 border-red-900">
             <img :alt="`${artist || album} center`" width="80" height="80" :src="label || cover"
-              class="w-full h-full object-cover" />
+              class="w-full h-full object-cover">
             <div
-              class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-black/50">
-            </div>
+              class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-black/50" />
           </div>
         </div>
 
@@ -31,15 +30,14 @@
         <div class="absolute inset-0 rounded-lg overflow-hidden shadow-lg transition-all duration-600 ease-in-out"
           :style="{
             transform: isPlaying ? 'translateX(45%)' : 'translateX(0)',
-          }" @mouseenter="!isPlaying && (isHovering = true)" @mouseleave="isHovering = false">
-          <img :alt="`${album} by ${artist}`" width="216" height="216" :src="cover"
-            class="w-full h-full object-cover" />
+          }" @mouseenter="handleHover" @mouseleave="isHovering = false">
+          <img :alt="`${album} by ${artist}`" width="216" height="216" :src="cover" class="w-full h-full object-cover">
 
           <!-- Hover Overlay removed, using floating card instead -->
 
           <!-- Playing overlay -->
           <div class="absolute inset-0 bg-black/20 transition-opacity duration-300"
-            :style="{ opacity: isPlaying ? 1 : 0 }"></div>
+            :style="{ opacity: isPlaying ? 1 : 0 }" />
         </div>
       </div>
 
@@ -80,12 +78,11 @@ const {
   stopTrack,
   setCurrentSound,
   volume,
-  isSoundEnabled,
-  toggleSound
+  isSoundEnabled
 } = useAlbumPlayer()
 
 const isHovering = ref(false)
-const rotation = ref(0)
+const currentRotation = ref(0)
 const animationFrameId = ref<number | null>(null)
 
 // Generate unique ID for this album
@@ -97,9 +94,11 @@ const albumId = computed(() =>
 const isPlaying = computed(() => isPlayingGlobal(albumId.value))
 
 // Initialize audio using client-safe composable
+// Performance: preload is false to prevent bandwidth usage on load
 const audioControls = props.musicFile ? useClientSound(props.musicFile, {
   volume: volume.value,
   html5: true,
+  preload: false, // LAZY LOAD AUDIO
 
   onload: () => {
     console.log(`Audio loaded successfully for: ${props.album}`)
@@ -110,9 +109,16 @@ const audioControls = props.musicFile ? useClientSound(props.musicFile, {
       cancelAnimationFrame(animationFrameId.value)
       animationFrameId.value = null
     }
-    rotation.value = 0
+    currentRotation.value = 0
   }
 }) : null
+
+const handleHover = () => {
+  if (!isPlaying.value) {
+    isHovering.value = true
+    // Optional: could hint lazy load here if desired, but click is fine
+  }
+}
 
 // Watch for sound ending
 if (audioControls) {
@@ -123,7 +129,7 @@ if (audioControls) {
         cancelAnimationFrame(animationFrameId.value)
         animationFrameId.value = null
       }
-      rotation.value = 0
+      currentRotation.value = 0
     }
   })
 
@@ -154,7 +160,7 @@ const stop = () => {
 // Rotation animation
 const animate = () => {
   if (isPlaying.value) {
-    rotation.value = (rotation.value + 1) % 360
+    currentRotation.value = (currentRotation.value + 1) % 360
     animationFrameId.value = requestAnimationFrame(animate)
   }
 }
@@ -172,7 +178,7 @@ watch(isPlaying, (playing) => {
       cancelAnimationFrame(animationFrameId.value)
       animationFrameId.value = null
     }
-    rotation.value = 0
+    currentRotation.value = 0
   }
 })
 

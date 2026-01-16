@@ -4,10 +4,13 @@ import 'node:http';
 import 'node:https';
 import 'node:events';
 import 'node:buffer';
+import 'vue';
+import 'consola';
 import 'node:fs';
+import 'node:url';
+import 'ipx';
 import 'node:path';
 import 'node:crypto';
-import 'node:url';
 import '@supabase/ssr';
 
 const resetPassword_post = defineEventHandler(async (event) => {

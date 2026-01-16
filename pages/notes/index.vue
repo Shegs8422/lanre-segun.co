@@ -10,7 +10,8 @@
                 <h2 class="text-xl font-bold text-foreground tracking-tight">{{ year }}</h2>
 
                 <div class="flex flex-col gap-2 -mx-4">
-                    <NuxtLink v-for="note in notesByYear[year]" :key="note.id" :to="`/notes/${note.slug}`"
+                    <NuxtLink
+v-for="note in notesByYear[year]" :key="note.id" :to="`/notes/${note.slug}`"
                         class="group relative flex items-center gap-4 px-4 py-3 rounded-xl transition-all hover:bg-foreground/5">
 
                         <!-- Note Title -->
@@ -20,7 +21,7 @@
                         </span>
 
                         <!-- Connector Line -->
-                        <div class="grow h-px bg-foreground/10 transition-colors mt-1"></div>
+                        <div class="grow h-px bg-foreground/10 transition-colors mt-1"/>
 
                         <!-- Date -->
                         <span

@@ -1,3 +1,4 @@
+export { defineAddress, defineAggregateOffer, defineAggregateRating, defineArticle, defineBook, defineBookEdition, defineBreadcrumb, defineComment, defineCourse, defineDataset, defineEvent, defineFoodEstablishment, defineHowTo, defineHowToStep, defineImage, defineItemList, defineJobPosting, defineListItem, defineLocalBusiness, defineMovie, defineMusicAlbum, defineMusicGroup, defineMusicPlaylist, defineMusicRecording, defineOffer, defineOpeningHours, defineOrganization, definePerson, definePlace, definePodcastEpisode, definePodcastSeason, definePodcastSeries, defineProduct, defineQuestion, defineReadAction, defineRecipe, defineReview, defineSearchAction, defineService, defineSoftwareApp, defineTVEpisode, defineTVSeason, defineTVSeries, defineVideo, defineVirtualLocation, defineWebPage, defineWebSite } from '@unhead/schema-org/vue';
 export { useScriptTriggerConsent, useScriptEventPage, useScriptTriggerElement, useScript, useScriptGoogleAnalytics, useScriptPlausibleAnalytics, useScriptCrisp, useScriptClarity, useScriptCloudflareWebAnalytics, useScriptFathomAnalytics, useScriptMatomoAnalytics, useScriptGoogleTagManager, useScriptGoogleAdsense, useScriptSegment, useScriptMetaPixel, useScriptXPixel, useScriptIntercom, useScriptHotjar, useScriptStripe, useScriptLemonSqueezy, useScriptVimeoPlayer, useScriptYouTubePlayer, useScriptGoogleMaps, useScriptNpm, useScriptUmamiAnalytics, useScriptSnapchatPixel, useScriptRybbitAnalytics, useScriptDatabuddyAnalytics, useScriptRedditPixel, useScriptPayPal } from '#app/composables/script-stubs';
 export { isVue2, isVue3 } from 'vue-demi';
 export { defineNuxtLink } from '#app/components/nuxt-link';
@@ -31,7 +32,7 @@ export { setInterval } from '#app/compat/interval';
 export { definePageMeta } from '../node_modules/nuxt/dist/pages/runtime/composables';
 export { defineLazyHydrationComponent } from '#app/composables/lazy-hydration';
 export { useAlbumPlayer } from '../composables/useAlbumPlayer';
-export { useClientSound } from '../composables/useClientSound';
+export { useClientSound, UseSoundOptions } from '../composables/useClientSound';
 export { useGallery } from '../composables/useGallery';
 export { useLayout } from '../composables/useLayout';
 export { useNotes, Note } from '../composables/useNotes';
@@ -42,5 +43,14 @@ export { useSupabaseClient } from '../node_modules/@nuxtjs/supabase/dist/runtime
 export { useSupabaseCookieRedirect } from '../node_modules/@nuxtjs/supabase/dist/runtime/composables/useSupabaseCookieRedirect';
 export { useSupabaseSession } from '../node_modules/@nuxtjs/supabase/dist/runtime/composables/useSupabaseSession';
 export { useSupabaseUser } from '../node_modules/@nuxtjs/supabase/dist/runtime/composables/useSupabaseUser';
+export { getNitroOrigin } from '../node_modules/nuxt-site-config/dist/runtime/app/composables/getNitroOrigin';
+export { updateSiteConfig } from '../node_modules/nuxt-site-config/dist/runtime/app/composables/updateSiteConfig';
+export { useNitroOrigin } from '../node_modules/nuxt-site-config/dist/runtime/app/composables/useNitroOrigin';
+export { useSiteConfig } from '../node_modules/nuxt-site-config/dist/runtime/app/composables/useSiteConfig';
+export { createSitePathResolver, withSiteTrailingSlash, withSiteUrl } from '../node_modules/nuxt-site-config/dist/runtime/app/composables/utils';
 export { useCameraManager, useGraph, useLoader, useLoop, useRendererManager, useTres, useTresContext, useTresContextProvider, extend as extendTres, TresObject } from '@tresjs/core';
+export { useImage } from '../node_modules/@nuxt/image/dist/runtime/composables';
+export { useRobotsRule } from '../node_modules/@nuxtjs/robots/dist/runtime/app/composables/useRobotsRule';
+export { useBotDetection } from '../node_modules/@nuxtjs/robots/dist/runtime/app/composables/useBotDetection';
+export { useSchemaOrg } from '../node_modules/nuxt-schema-org/dist/runtime/app/composables/useSchemaOrg';
 export { useNuxtDevTools } from '../node_modules/@nuxt/devtools/dist/runtime/use-nuxt-devtools';

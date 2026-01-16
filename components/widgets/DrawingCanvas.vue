@@ -13,21 +13,20 @@
 
       <!-- Color palette -->
       <div class="flex flex-col-reverse gap-2 items-center">
-        <button @click="togglePalette"
-          class="w-10 h-10 rounded-md border-4 border-white shadow-sm hover:scale-110 active:scale-95"
-          :style="{ backgroundColor: activeColor }" />
+        <button class="w-10 h-10 rounded-md border-4 border-white shadow-sm hover:scale-110 active:scale-95"
+          :style="{ backgroundColor: activeColor }" @click="togglePalette" />
 
         <div v-if="isPaletteOpen" class="flex flex-col gap-2 mb-2 animate-in">
-          <button v-for="color in colors" :key="color" @click="selectColor(color)"
+          <button v-for="color in colors" :key="color"
             class="w-10 h-10 rounded-md border-4 border-white shadow-sm hover:scale-110 active:scale-95"
-            :style="{ backgroundColor: color }" />
+            :style="{ backgroundColor: color }" @click="selectColor(color)" />
         </div>
       </div>
 
       <!-- Clear board (Eraser) -->
-      <button @click="clearBoard"
+      <button
         class="w-10 h-10 rounded-md bg-white shadow-sm hover:scale-110 active:scale-95 flex items-center justify-center"
-        title="Clear board">
+        title="Clear board" @click="clearBoard">
         🧽
       </button>
     </div>
@@ -59,9 +58,9 @@ const colors = [
 const activeColor = ref(colors[0])
 const isPaletteOpen = ref(false)
 
-const reduceMotion = window.matchMedia(
-  '(prefers-reduced-motion: reduce)'
-).matches
+// const reduceMotion = window.matchMedia(
+// '(prefers-reduced-motion: reduce)'
+// ).matches
 
 /* ---------------- Drawing ---------------- */
 
@@ -83,7 +82,7 @@ function draw(e: MouseEvent | TouchEvent) {
   const { x, y } = getCoords(e)
   const currentCtx = ctx.value
 
-  currentCtx.strokeStyle = activeColor.value
+  currentCtx.strokeStyle = activeColor.value as string
   currentCtx.lineWidth = 1.8
   currentCtx.lineCap = 'round'
   currentCtx.lineJoin = 'round'

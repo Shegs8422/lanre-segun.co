@@ -39,6 +39,7 @@ export const useNotes = () => {
     const updateNote = async (id: string, content: string) => {
         const { error } = await supabase
             .from('notes')
+            // @ts-ignore
             .update({ content })
             .eq('id', id)
 
@@ -49,7 +50,7 @@ export const useNotes = () => {
 
         // Update local state
         const noteIndex = notes.value.findIndex(n => n.id === id)
-        if (noteIndex !== -1) {
+        if (noteIndex !== -1 && notes.value[noteIndex]) {
             notes.value[noteIndex].content = content
         }
 

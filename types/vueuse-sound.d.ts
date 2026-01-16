@@ -1,5 +1,5 @@
 declare module '@vueuse/sound' {
-    import { Ref } from 'vue'
+    import type { Ref } from 'vue'
     
     export interface UseSoundOptions {
         volume?: number | Ref<number>

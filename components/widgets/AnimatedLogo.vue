@@ -1,9 +1,11 @@
 <template>
-    <div class="select-none relative w-full h-full overflow-hidden bg-black" @mouseenter="startCycling"
+    <div
+class="select-none relative w-full h-full overflow-hidden bg-black" @mouseenter="startCycling"
         @mouseleave="stopCycling">
         <transition name="fade" mode="out-in">
-            <img :key="currentImage" :src="currentImage" alt="Lanre Segun Logo" draggable="false" width="1024"
-                height="1024" class="w-full h-full object-contain" />
+            <img
+:key="currentImage" :src="currentImage" alt="Lanre Segun Logo" draggable="false" width="1024"
+                height="1024" class="w-full h-full object-contain" >
         </transition>
     </div>
 </template>

@@ -1,7 +1,8 @@
-import { ref, onUnmounted, shallowRef } from 'vue'
+import { ref, onUnmounted, shallowRef, computed } from 'vue'
 import { Howl, type HowlOptions } from 'howler'
 
-interface UseSoundOptions extends Omit<HowlOptions, 'src'> {
+// Strict typing for sound hook options
+export interface UseSoundOptions extends Omit<HowlOptions, 'src'> {
   volume?: number
   playbackRate?: number
   interrupt?: boolean
@@ -11,28 +12,40 @@ interface UseSoundOptions extends Omit<HowlOptions, 'src'> {
   onpause?: () => void
   onstop?: () => void
   eager?: boolean
-  [key: string]: any
+  // Remove "any" signature to enforce stricter type safety (TS Pattern)
 }
 
 /**
- * Robust client-side audio composable using Howler.js directly
- * Solves SSR issues by lazy-initializing the Howl instance
+ * Robust client-side audio composable using Howler.js.
+ * Utilizes a Factory-like pattern to manage sound instances safely.
  */
 export const useClientSound = (src: string, options: UseSoundOptions = {}) => {
   const isPlaying = ref(false)
   const duration = ref<number | null>(null)
   const sound = shallowRef<Howl | null>(null)
 
-  // Initialize on first interaction or explicitly
-  const init = () => {
+  // Security check: Validate src is a string and not empty
+  if (typeof src !== 'string' || !src.trim()) {
+    console.warn('[useClientSound] Invalid source provided')
+    return {
+      play: () => { },
+      stop: () => { },
+      pause: () => { },
+      setVolume: () => { },
+      isPlaying: computed(() => false),
+      duration: computed(() => 0),
+      sound: computed(() => null)
+    }
+  }
+
+  // Factory creation method for the Howl instance
+  const createSoundInstance = () => {
     if (sound.value || typeof window === 'undefined') return
 
-    // Create Howl instance
     console.log('[useClientSound] Initializing sound for:', src)
     const howl = new Howl({
       src: [src],
-      // Default to false (Web Audio) for lower latency unless specified
-      html5: options.html5 ?? false,
+      html5: options.html5 ?? false, // Default to false for lower latency
       volume: options.volume ?? 1,
       loop: options.loop ?? false,
       preload: options.preload ?? true,
@@ -57,10 +70,10 @@ export const useClientSound = (src: string, options: UseSoundOptions = {}) => {
         isPlaying.value = false
         if (options.onend) options.onend()
       },
-      onloaderror: (id: any, err: any) => {
+      onloaderror: (_id: unknown, err: unknown) => {
         console.error('[useClientSound] LOAD ERROR:', src, err)
       },
-      onplayerror: (id: any, err: any) => {
+      onplayerror: (_id: unknown, err: unknown) => {
         console.error('[useClientSound] PLAY ERROR:', src, err)
         isPlaying.value = false
       }
@@ -69,21 +82,24 @@ export const useClientSound = (src: string, options: UseSoundOptions = {}) => {
     sound.value = howl
   }
 
-  // Eager initialization if requested
+  // Eager initialization if explicitly requested
   if (options.eager && typeof window !== 'undefined') {
-    // defer slightly to let hydration finish
-    setTimeout(() => init(), 100)
+    setTimeout(() => createSoundInstance(), 100)
   }
 
-  const play = (opts?: any) => {
+  const play = () => {
     const { isSoundEnabled } = useAlbumPlayer()
+
+    // Enforce global sound preference
     if (!isSoundEnabled.value) {
       console.log('[useClientSound] Play blocked: Sound is disabled.')
       return
     }
 
     console.log('[useClientSound] Play requested for:', src)
-    if (!sound.value) init()
+
+    // Lazy initialization (Factory execution)
+    if (!sound.value) createSoundInstance()
 
     if (sound.value) {
       if (options.interrupt) {
@@ -102,12 +118,10 @@ export const useClientSound = (src: string, options: UseSoundOptions = {}) => {
   }
 
   const setVolume = (vol: number) => {
-    if (sound.value) {
-      sound.value.volume(vol)
-    }
+    sound.value?.volume(vol)
   }
 
-  // Cleanup
+  // Proper cleanup on unmount to prevent memory leaks
   onUnmounted(() => {
     if (sound.value) {
       sound.value.unload()

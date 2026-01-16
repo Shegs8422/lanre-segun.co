@@ -7,7 +7,8 @@
       Scrollbars hidden via CSS.
       Added Drag-to-Scroll events.
     -->
-    <div ref="scrollContainerRef" class="scroll-container w-full h-full overflow-auto relative scrollbar-none"
+    <div
+ref="scrollContainerRef" class="scroll-container w-full h-full overflow-auto relative scrollbar-none"
       @mousedown="startDrag" @mousemove="onDrag" @mouseup="stopDrag" @mouseleave="stopDrag">
 
       <!-- 
@@ -15,7 +16,8 @@
         This wrapper has the ACTUAL visual size (3200 * zoom).
         This ensures the scrollbars/scroll-range match the visual content.
       -->
-      <div class="relative flex-shrink-0" :style="{
+      <div
+class="relative flex-shrink-0" :style="{
         width: `${3200 * zoom}px`,
         height: `${2760 * zoom}px`
       }">
@@ -25,27 +27,29 @@
           Large area that holds the grid and elements.
           We use origin-top-left (0 0) to make coordinate math predictable.
         -->
-        <div ref="canvasContentRef"
+        <div
+ref="canvasContentRef"
           class="canvas-content w-[3200px] h-[2760px] absolute top-0 left-0 transition-transform duration-300 ease-out origin-[0_0]"
           :style="{ transform: `scale(${zoom})` }">
 
           <!-- Blue Canvas Mat with Border -->
-          <div id="mat-texture"
+          <div
+id="mat-texture"
             class="absolute overflow-hidden rounded-lg border-[4px] border-[#94BDE6] bg-[#2A6DB0] w-[3200px] h-[2760px] left-0 top-0 shadow-lg bg-linear-grid bg-[size:16px_16px] bg-[position:12px_12px]">
             <!-- Window Texture Overlay -->
-            <div id="window" class="z-10 opacity-[0.6] absolute w-full h-full left-0 top-0 bg-cover bg-center"
-              style="background-image: url('/images/Layer-window.png')">
-            </div>
+            <div
+id="window" class="z-10 opacity-[0.6] absolute w-full h-full left-0 top-0 bg-cover bg-center"
+              style="background-image: url('/images/Layer-window.png')"/>
 
             <!-- Large Grid Lines -->
-            <div id="lines"
-              class="absolute w-full h-full left-0 top-0 bg-linear-big-grid bg-[size:80px_80px] bg-[position:-4px_-4px]">
-            </div>
+            <div
+id="lines"
+              class="absolute w-full h-full left-0 top-0 bg-linear-big-grid bg-[size:80px_80px] bg-[position:-4px_-4px]"/>
 
             <!-- Diagonal Lines -->
-            <div id="diagonal-lines"
-              class="absolute w-full h-full left-0 top-0 bg-diagonal-grid bg-[size:80px_80px] bg-[position:-2.5px_-2.5px]">
-            </div>
+            <div
+id="diagonal-lines"
+              class="absolute w-full h-full left-0 top-0 bg-diagonal-grid bg-[size:80px_80px] bg-[position:-2.5px_-2.5px]"/>
           </div>
 
           <!-- Content Slot -->
@@ -85,7 +89,7 @@ let animationFrameId: number | null = null
 const zoom = ref(1.0)
 
 const updateAdaptiveScale = () => {
-  if (!process.client) return
+  if (!import.meta.client) return
   const width = window.innerWidth
 
   // Calculate zoom based on viewport width
@@ -240,7 +244,7 @@ provide('centerOnCoordinates', centerOnCoordinates)
 
 
 onMounted(async () => {
-  if (!process.client || !scrollContainerRef.value) return
+  if (!import.meta.client || !scrollContainerRef.value) return
 
   // Initial Scale
   updateAdaptiveScale()
@@ -279,7 +283,7 @@ onMounted(async () => {
 })
 
 onUnmounted(() => {
-  if (!process.client) return
+  if (!import.meta.client) return
   window.removeEventListener('resize', updateAdaptiveScale)
   if (animationFrameId) {
     cancelAnimationFrame(animationFrameId)

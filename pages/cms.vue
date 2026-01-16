@@ -5,7 +5,7 @@
         <div v-if="loading" class="fixed inset-0 z-200 flex items-center justify-center bg-background">
             <div class="flex flex-col items-center gap-6">
                 <div class="relative">
-                    <div class="w-16 h-16 rounded-full border-t-2 border-r-2 border-blue-600 animate-spin"></div>
+                    <div class="w-16 h-16 rounded-full border-t-2 border-r-2 border-blue-600 animate-spin" />
                     <div class="absolute inset-0 flex items-center justify-center">
                         <svg class="w-6 h-6 text-blue-600/50 animate-pulse" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" />
@@ -22,23 +22,27 @@
 
         <!-- Toast Notification -->
         <Transition name="toast">
-            <div v-if="toast.show"
+            <div
+v-if="toast.show"
                 class="fixed top-20 lg:top-6 right-6 z-200 flex items-center gap-3 px-6 py-4 rounded-xl shadow-2xl border backdrop-blur-md min-w-[300px] lg:min-w-[320px]"
                 :class="toastClasses">
                 <div class="shrink-0">
-                    <svg v-if="toast.type === 'success'" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                    <svg
+v-if="toast.type === 'success'" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
                         stroke-linejoin="round">
                         <polyline points="20 6 9 17 4 12" />
                     </svg>
-                    <svg v-else-if="toast.type === 'error'" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                    <svg
+v-else-if="toast.type === 'error'" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
                         stroke-linejoin="round">
                         <circle cx="12" cy="12" r="10" />
                         <line x1="15" y1="9" x2="9" y2="15" />
                         <line x1="9" y1="9" x2="15" y2="15" />
                     </svg>
-                    <svg v-else xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                    <svg
+v-else xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
                         stroke-linejoin="round">
                         <circle cx="12" cy="12" r="10" />
@@ -50,8 +54,9 @@
                     <p class="text-sm font-bold tracking-tight">{{ toast.title }}</p>
                     <p class="text-xs opacity-80">{{ toast.message }}</p>
                 </div>
-                <button @click="toast.show = false" class="opacity-50 hover:opacity-100 transition-opacity">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                <button class="opacity-50 hover:opacity-100 transition-opacity" @click="toast.show = false">
+                    <svg
+xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="18" y1="6" x2="6" y2="18" />
                         <line x1="6" y1="6" x2="18" y2="18" />
@@ -65,26 +70,31 @@
             <div
                 class="lg:hidden fixed top-0 left-0 right-0 h-16 bg-background/80 backdrop-blur-md border-b border-border z-160 flex items-center justify-between px-6 transition-colors">
                 <h1 class="text-xl font-display font-medium tracking-tight text-foreground">Local CMS</h1>
-                <button @click="isSidebarOpen = !isSidebarOpen"
-                    class="p-2 -mr-2 text-muted-foreground hover:text-foreground">
+                <button
+class="p-2 -mr-2 text-muted-foreground hover:text-foreground"
+                    @click="isSidebarOpen = !isSidebarOpen">
                     <svg v-if="!isSidebarOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        <path
+stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M4 6h16M4 12h16m-7 6h7" />
                     </svg>
                     <svg v-else class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        <path
+stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
             </div>
 
             <!-- Sidebar Overlay -->
-            <div v-show="isSidebarOpen" @click="isSidebarOpen = false"
-                class="lg:hidden fixed inset-0 bg-black/40 dark:bg-black/60 z-140 backdrop-blur-sm transition-opacity duration-300">
-            </div>
+            <div
+v-show="isSidebarOpen"
+                class="lg:hidden fixed inset-0 bg-black/40 dark:bg-black/60 z-140 backdrop-blur-sm transition-opacity duration-300"
+                @click="isSidebarOpen = false" />
 
             <!-- Sidebar / Nav -->
-            <aside :class="[
+            <aside
+:class="[
                 'fixed left-0 top-0 h-full w-64 border-r border-border bg-component dark:bg-black/90 p-6 flex flex-col gap-8 backdrop-blur-xl z-150 transition-transform duration-300 lg:translate-x-0',
                 isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
             ]">
@@ -92,10 +102,12 @@
                 </h1>
 
                 <nav class="flex flex-col gap-2 pt-20 lg:pt-0">
-                    <button @click="handleTabChange('notes')"
+                    <button
                         class="px-4 py-2.5 rounded-xl text-left transition-all duration-300 flex items-center gap-3 group"
-                        :class="activeTab === 'notes' ? 'bg-blue-600 text-white font-bold shadow-lg shadow-blue-500/20' : 'text-muted-foreground hover:bg-muted hover:text-foreground'">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        :class="activeTab === 'notes' ? 'bg-blue-600 text-white font-bold shadow-lg shadow-blue-500/20' : 'text-muted-foreground hover:bg-muted hover:text-foreground'"
+                        @click="handleTabChange('notes')">
+                        <svg
+xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                             class="opacity-70 group-hover:opacity-100">
                             <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
@@ -103,20 +115,24 @@
                         </svg>
                         <span>Notes</span>
                     </button>
-                    <button @click="handleTabChange('projects')"
+                    <button
                         class="px-4 py-2.5 rounded-xl text-left transition-all duration-300 flex items-center gap-3 group"
-                        :class="activeTab === 'projects' ? 'bg-emerald-600 text-white font-bold shadow-lg shadow-emerald-500/20' : 'text-muted-foreground hover:bg-muted hover:text-foreground'">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        :class="activeTab === 'projects' ? 'bg-emerald-600 text-white font-bold shadow-lg shadow-emerald-500/20' : 'text-muted-foreground hover:bg-muted hover:text-foreground'"
+                        @click="handleTabChange('projects')">
+                        <svg
+xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                             class="opacity-70 group-hover:opacity-100">
                             <path d="M12 2H2v10h10V2zM12 12H2v10h10V12zM22 2h-10v10h10V2zM22 12h-10v10h10V12z" />
                         </svg>
                         <span>Projects</span>
                     </button>
-                    <button @click="handleTabChange('gallery')"
+                    <button
                         class="px-4 py-2.5 rounded-xl text-left transition-all duration-300 flex items-center gap-3 group"
-                        :class="activeTab === 'gallery' ? 'bg-purple-600 text-white font-bold shadow-lg shadow-purple-500/20' : 'text-muted-foreground hover:bg-muted hover:text-foreground'">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        :class="activeTab === 'gallery' ? 'bg-purple-600 text-white font-bold shadow-lg shadow-purple-500/20' : 'text-muted-foreground hover:bg-muted hover:text-foreground'"
+                        @click="handleTabChange('gallery')">
+                        <svg
+xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                             class="opacity-70 group-hover:opacity-100">
                             <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
@@ -128,9 +144,11 @@
                 </nav>
 
                 <div class="mt-auto">
-                    <NuxtLink to="/"
+                    <NuxtLink
+to="/"
                         class="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        <svg
+xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M15 18l-6-6 6-6" />
                         </svg>
@@ -146,13 +164,15 @@
                     <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
                         <div class="flex flex-col gap-1">
                             <h2 class="text-2xl lg:text-3xl font-bold tracking-tight text-foreground">{{ cmsHeaderTitle
-                                }}</h2>
+                            }}</h2>
                             <p class="text-xs text-muted-foreground font-medium">Manage and curate your {{
                                 activeTabLabel.toLowerCase() }} collection</p>
                         </div>
-                        <button @click="createNew"
-                            class="w-full sm:w-auto px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-2xl font-black transition-all shadow-xl shadow-blue-500/20 flex items-center justify-center gap-2.5 active:scale-95 group">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                        <button
+                            class="w-full sm:w-auto px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-2xl font-black transition-all shadow-xl shadow-blue-500/20 flex items-center justify-center gap-2.5 active:scale-95 group"
+                            @click="createNew">
+                            <svg
+xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
                                 stroke-linejoin="round" class="group-hover:rotate-90 transition-transform duration-300">
                                 <line x1="12" y1="5" x2="12" y2="19" />
@@ -164,40 +184,49 @@
 
                     <div class="flex flex-col gap-4">
                         <!-- Gallery View Integration -->
-                        <div v-if="activeTab === 'gallery'"
+                        <div
+v-if="activeTab === 'gallery'"
                             class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
                             <!-- Pending Upload Skeletons -->
-                            <div v-for="n in pendingUploads" :key="'skeleton-' + n"
+                            <div
+v-for="n in pendingUploads" :key="'skeleton-' + n"
                                 class="aspect-3/4 bg-muted rounded-xl animate-pulse flex items-center justify-center border border-border">
-                                <svg class="w-8 h-8 text-muted-foreground/20 animate-spin" fill="none"
+                                <svg
+class="w-8 h-8 text-muted-foreground/20 animate-spin" fill="none"
                                     viewBox="0 0 24 24">
-                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                                        stroke-width="4"></circle>
-                                    <path class="opacity-75" fill="currentColor"
-                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                                    </path>
+                                    <circle
+class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                        stroke-width="4" />
+                                    <path
+class="opacity-75" fill="currentColor"
+                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                                 </svg>
                             </div>
 
-                            <div v-for="item in galleryItems" :key="item.id"
+                            <div
+v-for="item in galleryItems" :key="item.id"
                                 class="group relative aspect-4/3 bg-muted rounded-xl overflow-hidden border border-border">
-                                <img :src="item.url"
-                                    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                                <img
+:src="item.url"
+                                    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                                 <div
                                     class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
-                                    <button @click="deleteItem(item, 'gallery')"
-                                        class="w-full py-2 bg-red-500 text-white text-xs font-bold rounded-lg hover:bg-red-600 transition-colors">
+                                    <button
+                                        class="w-full py-2 bg-red-500 text-white text-xs font-bold rounded-lg hover:bg-red-600 transition-colors"
+                                        @click="deleteItem(item, 'gallery')">
                                         Delete
                                     </button>
                                 </div>
                             </div>
 
                             <!-- Large Upload Trigger for Gallery -->
-                            <button @click="(($refs.massGalleryInput as any).click())"
-                                class="aspect-4/3 border-2 border-dashed border-border rounded-xl flex flex-col items-center justify-center gap-3 hover:bg-muted/50 transition-all group bg-component/10">
+                            <button
+                                class="aspect-4/3 border-2 border-dashed border-border rounded-xl flex flex-col items-center justify-center gap-3 hover:bg-muted/50 transition-all group bg-component/10"
+                                @click="(($refs.massGalleryInput as any).click())">
                                 <div
                                     class="w-12 h-12 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-500 group-hover:bg-blue-500 group-hover:text-white group-hover:scale-110 transition-all duration-300">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    <svg
+xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
                                         stroke-linejoin="round">
                                         <line x1="12" y1="5" x2="12" y2="19" />
@@ -207,14 +236,16 @@
                                 <span
                                     class="text-[10px] font-black text-muted-foreground tracking-[0.2em] uppercase group-hover:text-foreground transition-colors">Add
                                     Photos</span>
-                                <input type="file" ref="massGalleryInput" class="hidden"
-                                    @change="handleImageUpload($event, 'massGallery')" multiple accept="image/*">
+                                <input
+ref="massGalleryInput" type="file" class="hidden" multiple accept="image/*"
+                                    @change="handleImageUpload($event, 'massGallery')">
                             </button>
                         </div>
 
                         <!-- Standard Items List (Notes/Projects) -->
                         <template v-else>
-                            <div v-for="item in activeItems" :key="(item as any).slug || (item as any).id"
+                            <div
+v-for="item in activeItems" :key="(item as any).slug || (item as any).id"
                                 class="p-5 rounded-2xl border border-border bg-component/50 dark:bg-white/2 shadow-sm hover:shadow-md hover:border-blue-500/40 transition-all flex flex-col sm:flex-row justify-between sm:items-center gap-4 group">
                                 <div class="flex flex-col gap-1.5 grow">
                                     <div class="flex items-center gap-2">
@@ -226,7 +257,8 @@
                                             target="_blank"
                                             class="p-1.5 text-muted-foreground hover:text-blue-500 hover:bg-blue-500/10 rounded-lg transition-all"
                                             title="View Live">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                            <svg
+xmlns="http://www.w3.org/2000/svg" width="14" height="14"
                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                                                 stroke-linecap="round" stroke-linejoin="round">
                                                 <path
@@ -236,27 +268,30 @@
                                     </div>
                                     <div class="flex items-center gap-2 text-xs font-medium text-muted-foreground">
                                         <span class="px-2 py-0.5 bg-muted rounded uppercase tracking-wider">{{ item.year
-                                            }}</span>
+                                        }}</span>
                                         <span class="opacity-40">•</span>
                                         <span class="font-mono text-[10px]">{{ item.slug }}</span>
                                     </div>
                                 </div>
                                 <div class="flex items-center gap-3">
-                                    <button @click="editItem(item)"
-                                        class="flex-1 lg:flex-initial text-sm font-bold px-4 py-2 rounded-lg bg-muted text-foreground hover:bg-foreground hover:text-background transition-all">
+                                    <button
+                                        class="flex-1 lg:flex-initial text-sm font-bold px-4 py-2 rounded-lg bg-muted text-foreground hover:bg-foreground hover:text-background transition-all"
+                                        @click="editItem(item)">
                                         Edit
                                     </button>
-                                    <button @click="deleteItem(item, (activeTab === 'notes' ? 'note' : 'project'))"
-                                        class="flex-1 lg:flex-initial text-sm font-bold px-4 py-2 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all">
+                                    <button
+                                        class="flex-1 lg:flex-initial text-sm font-bold px-4 py-2 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all"
+                                        @click="deleteItem(item, (activeTab === 'notes' ? 'note' : 'project'))">
                                         Delete
                                     </button>
                                 </div>
                             </div>
 
-                            <div v-if="activeItems.length === 0"
+                            <div
+v-if="activeItems.length === 0"
                                 class="text-center py-20 bg-muted/30 rounded-3xl border border-dashed border-border">
                                 <p class="text-muted-foreground font-medium">No items found in {{ activeTab }}.</p>
-                                <button @click="createNew" class="mt-4 text-blue-500 font-bold hover:underline">Create
+                                <button class="mt-4 text-blue-500 font-bold hover:underline" @click="createNew">Create
                                     your
                                     first now</button>
                             </div>
@@ -267,9 +302,11 @@
                 <!-- Editor View -->
                 <div v-else class="flex flex-col gap-8">
                     <div class="flex items-center gap-4 mb-4">
-                        <button @click="view = 'list'"
-                            class="p-2 bg-muted hover:bg-accent rounded-full transition-colors text-muted-foreground hover:text-foreground">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                        <button
+                            class="p-2 bg-muted hover:bg-accent rounded-full transition-colors text-muted-foreground hover:text-foreground"
+                            @click="view = 'list'">
+                            <svg
+xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
                                 stroke-linejoin="round">
                                 <path d="M19 12H5" />
@@ -279,17 +316,17 @@
                         <h2 class="text-xl lg:text-2xl font-bold text-foreground">{{ editHeaderTitle }}</h2>
                     </div>
 
-                    <form @submit.prevent="saveItem" class="flex flex-col gap-10 lg:max-w-5xl pb-32">
+                    <form class="flex flex-col gap-10 lg:max-w-5xl pb-32" @submit.prevent="saveItem">
                         <!-- Basic Info Section -->
                         <section
                             class="flex flex-col gap-10 bg-component/10 p-8 lg:p-10 rounded-[2.5rem] border border-border/50 shadow-sm relative overflow-hidden group/section">
                             <div
-                                class="absolute top-0 left-0 w-1 h-full bg-blue-600 opacity-0 group-focus-within/section:opacity-100 transition-opacity">
-                            </div>
+                                class="absolute top-0 left-0 w-1 h-full bg-blue-600 opacity-0 group-focus-within/section:opacity-100 transition-opacity" />
                             <div class="flex items-center gap-4">
                                 <div
                                     class="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-500 shadow-inner">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
+                                    <svg
+xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
                                         stroke-linejoin="round">
                                         <path
@@ -311,28 +348,32 @@
                                     <label
                                         class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Display
                                         Title</label>
-                                    <input v-model="formData.title" type="text" required placeholder="Note Title"
+                                    <input
+v-model="formData.title" type="text" required placeholder="Note Title"
                                         class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground font-medium">
                                 </div>
                                 <div class="flex flex-col gap-2.5">
                                     <label
                                         class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Identifier
                                         (Slug)</label>
-                                    <input v-model="formData.slug" type="text" required placeholder="note-slug"
+                                    <input
+v-model="formData.slug" type="text" required placeholder="note-slug"
                                         class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground font-mono">
                                 </div>
                                 <div class="flex flex-col gap-2.5">
                                     <label
                                         class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Short
                                         Subtitle</label>
-                                    <input v-model="formData.subtitle" type="text" placeholder="Note Subtitle"
+                                    <input
+v-model="formData.subtitle" type="text" placeholder="Note Subtitle"
                                         class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground font-medium">
                                 </div>
                                 <div class="flex flex-col gap-2.5">
                                     <label
                                         class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Publication
                                         Year</label>
-                                    <input v-model="formData.year" type="text" placeholder="2024"
+                                    <input
+v-model="formData.year" type="text" placeholder="2024"
                                         class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground font-medium">
                                 </div>
                                 <div class="flex flex-col gap-3 lg:col-span-2">
@@ -340,19 +381,23 @@
                                         <label
                                             class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Featured
                                             Image / Cover</label>
-                                        <button type="button" @click="(($refs.coverInput as any).click())"
-                                            :disabled="isUploading"
-                                            class="text-[11px] font-bold text-blue-500 uppercase flex items-center gap-1.5 hover:text-blue-400">
+                                        <button
+type="button" :disabled="isUploading"
+                                            class="text-[11px] font-bold text-blue-500 uppercase flex items-center gap-1.5 hover:text-blue-400"
+                                            @click="(($refs.coverInput as any).click())">
                                             <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                <path
+stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
                                                     d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                                             </svg>
                                             {{ isUploading ? 'Uploading...' : 'Upload Image' }}
                                         </button>
-                                        <input type="file" ref="coverInput" class="hidden"
-                                            @change="handleImageUpload($event, 'coverImage')" accept="image/*">
+                                        <input
+ref="coverInput" type="file" class="hidden" accept="image/*"
+                                            @change="handleImageUpload($event, 'coverImage')">
                                     </div>
-                                    <input v-model="formData.coverImage" type="text" placeholder="https://..."
+                                    <input
+v-model="formData.coverImage" type="text" placeholder="https://..."
                                         class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground font-mono text-sm leading-relaxed">
                                     <p class="text-[10px] text-muted-foreground px-1 font-medium italic">Max 5MB. Ideal
                                         ratio 16:9 for optimal accessibility.</p>
@@ -364,12 +409,12 @@
                         <section
                             class="flex flex-col gap-10 bg-component/10 p-8 lg:p-10 rounded-[2.5rem] border border-border/50 shadow-sm relative overflow-hidden group/section">
                             <div
-                                class="absolute top-0 left-0 w-1 h-full bg-emerald-600 opacity-0 group-focus-within/section:opacity-100 transition-opacity">
-                            </div>
+                                class="absolute top-0 left-0 w-1 h-full bg-emerald-600 opacity-0 group-focus-within/section:opacity-100 transition-opacity" />
                             <div class="flex items-center gap-4">
                                 <div
                                     class="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center text-emerald-500 shadow-inner">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
+                                    <svg
+xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
                                         stroke-linejoin="round">
                                         <path d="M11 4H4v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5" />
@@ -390,9 +435,9 @@
                                     <label
                                         class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Excerpt
                                         (Card Preview)</label>
-                                    <button type="button"
-                                        @click="openFieldAiModal('excerpt', 'Draft a short, compelling excerpt for this note')"
-                                        class="btn-gemini">
+                                    <button
+type="button" class="btn-gemini"
+                                        @click="openFieldAiModal('excerpt', 'Draft a short, compelling excerpt for this note')">
                                         <svg class="w-3 h-3 text-[#C084FC]" viewBox="0 0 24 24" fill="currentColor">
                                             <path
                                                 d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" />
@@ -400,38 +445,44 @@
                                         <span class="text-gemini">Gemini</span>
                                     </button>
                                 </div>
-                                <textarea v-model="formData.excerpt" rows="2" placeholder="Brief summary of the note..."
-                                    class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground leading-relaxed"></textarea>
+                                <textarea
+v-model="formData.excerpt" rows="2" placeholder="Brief summary of the note..."
+                                    class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground leading-relaxed" />
                                 <div class="flex flex-col gap-2.5 mt-8">
                                     <div class="flex justify-between items-center px-1">
                                         <label
                                             class="text-xs font-bold uppercase tracking-wider text-muted-foreground">Body
                                             Text (Supports Markdown)</label>
                                         <div class="flex items-center gap-3">
-                                            <button type="button"
-                                                @click="openFieldAiModal('content', 'Draft a professional and detailed note about this topic')"
-                                                class="btn-gemini">
-                                                <svg class="w-2.5 h-2.5 text-[#C084FC]" viewBox="0 0 24 24"
+                                            <button
+type="button" class="btn-gemini"
+                                                @click="openFieldAiModal('content', 'Draft a professional and detailed note about this topic')">
+                                                <svg
+class="w-2.5 h-2.5 text-[#C084FC]" viewBox="0 0 24 24"
                                                     fill="currentColor">
                                                     <path
                                                         d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" />
                                                 </svg>
                                                 <span class="text-gemini">Gemini</span>
                                             </button>
-                                            <button type="button" @click="(($refs.noteImageInput as any).click())"
-                                                :disabled="isUploading"
-                                                class="text-[11px] font-bold text-blue-500 uppercase flex items-center gap-1.5 hover:text-blue-400">
-                                                <svg class="w-3 h-3" fill="none" stroke="currentColor"
+                                            <button
+type="button" :disabled="isUploading"
+                                                class="text-[11px] font-bold text-blue-500 uppercase flex items-center gap-1.5 hover:text-blue-400"
+                                                @click="(($refs.noteImageInput as any).click())">
+                                                <svg
+class="w-3 h-3" fill="none" stroke="currentColor"
                                                     viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                    <path
+stroke-linecap="round" stroke-linejoin="round"
                                                         stroke-width="2.5"
                                                         d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h14a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                                 </svg>
                                                 Insert Image
                                             </button>
                                         </div>
-                                        <input type="file" ref="noteImageInput" class="hidden"
-                                            @change="handleImageUpload($event, 'noteContent')" accept="image/*">
+                                        <input
+ref="noteImageInput" type="file" class="hidden" accept="image/*"
+                                            @change="handleImageUpload($event, 'noteContent')">
                                     </div>
                                     <div class="min-h-[500px]">
                                         <ContentBuilder v-model="formData.content" />
@@ -446,32 +497,37 @@
                                         <label
                                             class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Client
                                             Name</label>
-                                        <input v-model="formData.client" type="text"
+                                        <input
+v-model="formData.client" type="text"
                                             class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground font-medium">
                                     </div>
                                     <div class="flex flex-col gap-2.5">
                                         <label
                                             class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Role</label>
-                                        <input v-model="formData.role" type="text" placeholder="Lead Product Designer"
+                                        <input
+v-model="formData.role" type="text" placeholder="Lead Product Designer"
                                             class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground font-medium">
                                     </div>
                                     <div class="flex flex-col gap-2.5">
                                         <label
                                             class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Industry</label>
-                                        <input v-model="formData.industry" type="text" placeholder="Fintech, SaaS, etc."
+                                        <input
+v-model="formData.industry" type="text" placeholder="Fintech, SaaS, etc."
                                             class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground font-medium">
                                     </div>
                                     <div class="flex flex-col gap-2.5">
                                         <label
                                             class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Duration</label>
-                                        <input v-model="formData.duration" type="text" placeholder="3 Months"
+                                        <input
+v-model="formData.duration" type="text" placeholder="3 Months"
                                             class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground font-medium">
                                     </div>
                                     <div class="flex flex-col gap-2.5">
                                         <label
                                             class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Team
                                             Size</label>
-                                        <input v-model="formData.teamSize" type="text" placeholder="5 Members"
+                                        <input
+v-model="formData.teamSize" type="text" placeholder="5 Members"
                                             class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground font-medium">
                                     </div>
                                     <div class="flex flex-col gap-2.5 md:col-span-2 pt-4">
@@ -482,12 +538,15 @@
                                                     Project Link</label>
                                                 <div class="flex items-center gap-4">
                                                     <label class="flex items-center gap-2 cursor-pointer group">
-                                                        <input type="radio" :value="false" v-model="formData.isFigma"
+                                                        <input
+v-model="formData.isFigma" type="radio" :value="false"
                                                             class="hidden">
-                                                        <div class="w-3.5 h-3.5 rounded-full border-2 border-border flex items-center justify-center transition-all group-hover:border-blue-500"
+                                                        <div
+class="w-3.5 h-3.5 rounded-full border-2 border-border flex items-center justify-center transition-all group-hover:border-blue-500"
                                                             :class="{ 'bg-blue-500 border-blue-500': !formData.isFigma }">
-                                                            <div v-show="!formData.isFigma"
-                                                                class="w-1 h-1 rounded-full bg-white"></div>
+                                                            <div
+v-show="!formData.isFigma"
+                                                                class="w-1 h-1 rounded-full bg-white" />
                                                         </div>
                                                         <span
                                                             class="text-[10px] font-black uppercase tracking-widest transition-colors"
@@ -496,12 +555,15 @@
                                                     </label>
 
                                                     <label class="flex items-center gap-2 cursor-pointer group">
-                                                        <input type="radio" :value="true" v-model="formData.isFigma"
+                                                        <input
+v-model="formData.isFigma" type="radio" :value="true"
                                                             class="hidden">
-                                                        <div class="w-3.5 h-3.5 rounded-full border-2 border-border flex items-center justify-center transition-all group-hover:border-blue-500"
+                                                        <div
+class="w-3.5 h-3.5 rounded-full border-2 border-border flex items-center justify-center transition-all group-hover:border-blue-500"
                                                             :class="{ 'bg-blue-500 border-blue-500': formData.isFigma }">
-                                                            <div v-show="formData.isFigma"
-                                                                class="w-1 h-1 rounded-full bg-white"></div>
+                                                            <div
+v-show="formData.isFigma"
+                                                                class="w-1 h-1 rounded-full bg-white" />
                                                         </div>
                                                         <span
                                                             class="text-[10px] font-black uppercase tracking-widest transition-colors"
@@ -510,7 +572,8 @@
                                                     </label>
                                                 </div>
                                             </div>
-                                            <input v-model="formData.projectLink" type="text" placeholder="https://..."
+                                            <input
+v-model="formData.projectLink" type="text" placeholder="https://..."
                                                 class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground font-mono text-sm leading-relaxed">
                                             <p class="text-[10px] text-muted-foreground px-1 font-medium italic">
                                                 {{ projectLinkHelpText }}
@@ -528,9 +591,9 @@
                                         <label
                                             class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Project
                                             Introduction</label>
-                                        <button type="button"
-                                            @click="openFieldAiModal('content.introduction', 'Write an engaging project introduction')"
-                                            class="btn-gemini">
+                                        <button
+type="button" class="btn-gemini"
+                                            @click="openFieldAiModal('content.introduction', 'Write an engaging project introduction')">
                                             <svg class="w-3 h-3 text-[#C084FC]" viewBox="0 0 24 24" fill="currentColor">
                                                 <path
                                                     d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" />
@@ -538,19 +601,21 @@
                                             <span class="text-gemini">Gemini</span>
                                         </button>
                                     </div>
-                                    <textarea v-model="formData.content.introduction" rows="3"
+                                    <textarea
+v-model="formData.content.introduction" rows="3"
                                         placeholder="A brief hook about the project..."
-                                        class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed"></textarea>
+                                        class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed" />
 
                                     <div class="flex flex-col gap-2.5">
                                         <div class="flex justify-between items-center px-1">
                                             <label
                                                 class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Problem
                                                 Statement</label>
-                                            <button type="button"
-                                                @click="openFieldAiModal('problemStatement', 'Define the core problem being solved')"
-                                                class="btn-gemini">
-                                                <svg class="w-3 h-3 text-[#C084FC]" viewBox="0 0 24 24"
+                                            <button
+type="button" class="btn-gemini"
+                                                @click="openFieldAiModal('problemStatement', 'Define the core problem being solved')">
+                                                <svg
+class="w-3 h-3 text-[#C084FC]" viewBox="0 0 24 24"
                                                     fill="currentColor">
                                                     <path
                                                         d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" />
@@ -558,9 +623,10 @@
                                                 <span class="text-gemini">Gemini</span>
                                             </button>
                                         </div>
-                                        <textarea v-model="formData.problemStatement" rows="3"
+                                        <textarea
+v-model="formData.problemStatement" rows="3"
                                             placeholder="What challenge were we solving?"
-                                            class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed"></textarea>
+                                            class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed" />
                                     </div>
 
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -569,10 +635,11 @@
                                                 <label
                                                     class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Business
                                                     Goal</label>
-                                                <button type="button"
-                                                    @click="openFieldAiModal('businessGoal', 'Draft the business objectives')"
-                                                    class="btn-gemini">
-                                                    <svg class="w-2.5 h-2.5 text-[#C084FC]" viewBox="0 0 24 24"
+                                                <button
+type="button" class="btn-gemini"
+                                                    @click="openFieldAiModal('businessGoal', 'Draft the business objectives')">
+                                                    <svg
+class="w-2.5 h-2.5 text-[#C084FC]" viewBox="0 0 24 24"
                                                         fill="currentColor">
                                                         <path
                                                             d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" />
@@ -580,18 +647,20 @@
                                                     <span class="text-gemini">Gemini</span>
                                                 </button>
                                             </div>
-                                            <textarea v-model="formData.businessGoal" rows="2"
-                                                class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed"></textarea>
+                                            <textarea
+v-model="formData.businessGoal" rows="2"
+                                                class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed" />
                                         </div>
                                         <div class="flex flex-col gap-2.5">
                                             <div class="flex justify-between items-center px-1">
                                                 <label
                                                     class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">User
                                                     Goal</label>
-                                                <button type="button"
-                                                    @click="openFieldAiModal('userGoal', 'Draft the user needs/goals')"
-                                                    class="btn-gemini">
-                                                    <svg class="w-2.5 h-2.5 text-[#C084FC]" viewBox="0 0 24 24"
+                                                <button
+type="button" class="btn-gemini"
+                                                    @click="openFieldAiModal('userGoal', 'Draft the user needs/goals')">
+                                                    <svg
+class="w-2.5 h-2.5 text-[#C084FC]" viewBox="0 0 24 24"
                                                         fill="currentColor">
                                                         <path
                                                             d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" />
@@ -599,8 +668,9 @@
                                                     <span class="text-gemini">Gemini</span>
                                                 </button>
                                             </div>
-                                            <textarea v-model="formData.userGoal" rows="2"
-                                                class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed"></textarea>
+                                            <textarea
+v-model="formData.userGoal" rows="2"
+                                                class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed" />
                                         </div>
                                     </div>
 
@@ -609,10 +679,11 @@
                                             <label
                                                 class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Design
                                                 Approach</label>
-                                            <button type="button"
-                                                @click="openFieldAiModal('designApproach', 'Draft the design methodology and approach')"
-                                                class="btn-gemini">
-                                                <svg class="w-2.5 h-2.5 text-[#C084FC]" viewBox="0 0 24 24"
+                                            <button
+type="button" class="btn-gemini"
+                                                @click="openFieldAiModal('designApproach', 'Draft the design methodology and approach')">
+                                                <svg
+class="w-2.5 h-2.5 text-[#C084FC]" viewBox="0 0 24 24"
                                                     fill="currentColor">
                                                     <path
                                                         d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" />
@@ -620,15 +691,17 @@
                                                 <span class="text-gemini">Gemini</span>
                                             </button>
                                         </div>
-                                        <textarea v-model="formData.designApproach" rows="3"
-                                            class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed"></textarea>
+                                        <textarea
+v-model="formData.designApproach" rows="3"
+                                            class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed" />
                                     </div>
 
                                     <div class="flex flex-col gap-2.5">
                                         <label
                                             class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Target
                                             Users</label>
-                                        <input v-model="formData.targetUsers" type="text"
+                                        <input
+v-model="formData.targetUsers" type="text"
                                             placeholder="Gen Z, Professionals, etc."
                                             class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm">
                                     </div>
@@ -639,10 +712,11 @@
                                                 <label
                                                     class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Research
                                                     Methods</label>
-                                                <button type="button"
-                                                    @click="openFieldAiModal('researchMethods', 'List and explain research methods used')"
-                                                    class="btn-gemini">
-                                                    <svg class="w-2.5 h-2.5 text-[#C084FC]" viewBox="0 0 24 24"
+                                                <button
+type="button" class="btn-gemini"
+                                                    @click="openFieldAiModal('researchMethods', 'List and explain research methods used')">
+                                                    <svg
+class="w-2.5 h-2.5 text-[#C084FC]" viewBox="0 0 24 24"
                                                         fill="currentColor">
                                                         <path
                                                             d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" />
@@ -650,18 +724,20 @@
                                                     <span class="text-gemini">Gemini</span>
                                                 </button>
                                             </div>
-                                            <textarea v-model="formData.researchMethods" rows="2"
-                                                class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed"></textarea>
+                                            <textarea
+v-model="formData.researchMethods" rows="2"
+                                                class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed" />
                                         </div>
                                         <div class="flex flex-col gap-2.5">
                                             <div class="flex justify-between items-center px-1">
                                                 <label
                                                     class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Key
                                                     Insights</label>
-                                                <button type="button"
-                                                    @click="openFieldAiModal('keyInsights', 'Summarize key user research findings')"
-                                                    class="btn-gemini">
-                                                    <svg class="w-2.5 h-2.5 text-[#C084FC]" viewBox="0 0 24 24"
+                                                <button
+type="button" class="btn-gemini"
+                                                    @click="openFieldAiModal('keyInsights', 'Summarize key user research findings')">
+                                                    <svg
+class="w-2.5 h-2.5 text-[#C084FC]" viewBox="0 0 24 24"
                                                         fill="currentColor">
                                                         <path
                                                             d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" />
@@ -669,8 +745,9 @@
                                                     <span class="text-gemini">Gemini</span>
                                                 </button>
                                             </div>
-                                            <textarea v-model="formData.keyInsights" rows="2"
-                                                class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed"></textarea>
+                                            <textarea
+v-model="formData.keyInsights" rows="2"
+                                                class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed" />
                                         </div>
                                     </div>
                                 </div>
@@ -685,7 +762,8 @@
                                             <label
                                                 class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Tags
                                                 (Comma Separated)</label>
-                                            <input v-model="tagsInput" type="text"
+                                            <input
+v-model="tagsInput" type="text"
                                                 placeholder="Design System, SaaS, React"
                                                 class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground">
                                         </div>
@@ -693,7 +771,8 @@
                                             <label
                                                 class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Tools
                                                 (Comma Separated)</label>
-                                            <input v-model="toolsInput" type="text"
+                                            <input
+v-model="toolsInput" type="text"
                                                 placeholder="Figma, Adobe, Midjourney"
                                                 class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground">
                                         </div>
@@ -704,18 +783,20 @@
                                             <label
                                                 class="text-xs font-bold uppercase tracking-wider text-muted-foreground">Gallery
                                                 Assets (Wireframes)</label>
-                                            <button type="button" @click="(($refs.galleryInput as any).click())"
-                                                :disabled="isUploading"
-                                                class="text-[11px] font-bold text-blue-500 uppercase bg-blue-500/10 px-4 py-1.5 rounded-full hover:bg-blue-500/20 transition-colors">
+                                            <button
+type="button" :disabled="isUploading"
+                                                class="text-[11px] font-bold text-blue-500 uppercase bg-blue-500/10 px-4 py-1.5 rounded-full hover:bg-blue-500/20 transition-colors"
+                                                @click="(($refs.galleryInput as any).click())">
                                                 Add to Gallery
                                             </button>
-                                            <input type="file" ref="galleryInput" class="hidden"
-                                                @change="handleImageUpload($event, 'wireframes')" multiple
-                                                accept="image/*">
+                                            <input
+ref="galleryInput" type="file" class="hidden" multiple
+                                                accept="image/*" @change="handleImageUpload($event, 'wireframes')">
                                         </div>
-                                        <textarea v-model="wireframesInput" rows="4"
+                                        <textarea
+v-model="wireframesInput" rows="4"
                                             placeholder="Full URLs to images, one per line"
-                                            class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground font-mono text-sm leading-relaxed"></textarea>
+                                            class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground font-mono text-sm leading-relaxed" />
                                     </div>
 
                                     <div class="flex flex-col gap-2.5">
@@ -723,10 +804,11 @@
                                             <label
                                                 class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Solution
                                                 Summary</label>
-                                            <button type="button"
-                                                @click="openFieldAiModal('solutionSummary', 'Summarize the final solution and why it works')"
-                                                class="btn-gemini">
-                                                <svg class="w-2.5 h-2.5 text-[#C084FC]" viewBox="0 0 24 24"
+                                            <button
+type="button" class="btn-gemini"
+                                                @click="openFieldAiModal('solutionSummary', 'Summarize the final solution and why it works')">
+                                                <svg
+class="w-2.5 h-2.5 text-[#C084FC]" viewBox="0 0 24 24"
                                                     fill="currentColor">
                                                     <path
                                                         d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" />
@@ -734,9 +816,10 @@
                                                 <span class="text-gemini">Gemini</span>
                                             </button>
                                         </div>
-                                        <textarea v-model="formData.solutionSummary" rows="3"
+                                        <textarea
+v-model="formData.solutionSummary" rows="3"
                                             placeholder="Direct response to the problem..."
-                                            class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed"></textarea>
+                                            class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed" />
                                     </div>
 
                                     <div class="flex flex-col gap-2.5">
@@ -744,10 +827,11 @@
                                             <label
                                                 class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Outcome
                                                 / Conclusion</label>
-                                            <button type="button"
-                                                @click="openFieldAiModal('outcome', 'Write the project impact and conclusion')"
-                                                class="btn-gemini">
-                                                <svg class="w-2.5 h-2.5 text-[#C084FC]" viewBox="0 0 24 24"
+                                            <button
+type="button" class="btn-gemini"
+                                                @click="openFieldAiModal('outcome', 'Write the project impact and conclusion')">
+                                                <svg
+class="w-2.5 h-2.5 text-[#C084FC]" viewBox="0 0 24 24"
                                                     fill="currentColor">
                                                     <path
                                                         d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" />
@@ -755,8 +839,9 @@
                                                 <span class="text-gemini">Gemini</span>
                                             </button>
                                         </div>
-                                        <textarea v-model="formData.outcome" rows="3"
-                                            class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed"></textarea>
+                                        <textarea
+v-model="formData.outcome" rows="3"
+                                            class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed" />
                                     </div>
 
                                     <div class="flex flex-col gap-2.5">
@@ -764,10 +849,11 @@
                                             <label
                                                 class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Key
                                                 Learnings</label>
-                                            <button type="button"
-                                                @click="openFieldAiModal('learnings', 'Draft the key takeaways and personal growth items')"
-                                                class="btn-gemini">
-                                                <svg class="w-2.5 h-2.5 text-[#C084FC]" viewBox="0 0 24 24"
+                                            <button
+type="button" class="btn-gemini"
+                                                @click="openFieldAiModal('learnings', 'Draft the key takeaways and personal growth items')">
+                                                <svg
+class="w-2.5 h-2.5 text-[#C084FC]" viewBox="0 0 24 24"
                                                     fill="currentColor">
                                                     <path
                                                         d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" />
@@ -775,8 +861,9 @@
                                                 <span class="text-gemini">Gemini</span>
                                             </button>
                                         </div>
-                                        <textarea v-model="formData.learnings" rows="3"
-                                            class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed"></textarea>
+                                        <textarea
+v-model="formData.learnings" rows="3"
+                                            class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed" />
                                     </div>
                                 </div>
 
@@ -790,7 +877,7 @@
                                                 the step-by-step
                                                 journey of this project (Research, Ideation, etc).</p>
                                         </div>
-                                        <button type="button" @click="openSectionsAiModal" class="btn-gemini">
+                                        <button type="button" class="btn-gemini" @click="openSectionsAiModal">
                                             <svg class="w-3 h-3 text-[#C084FC]" viewBox="0 0 24 24" fill="currentColor">
                                                 <path
                                                     d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" />
@@ -806,11 +893,14 @@
                         <!-- Sticky Actions -->
                         <div
                             class="fixed bottom-0 left-0 right-0 lg:left-64 bg-background/90 dark:bg-black/90 backdrop-blur-xl border-t border-border p-5 lg:p-8 z-100 flex gap-4 lg:justify-end shadow-2xl transition-colors">
-                            <button type="button" @click="view = 'list'"
-                                class="flex-1 lg:flex-none px-8 py-3.5 rounded-2xl border-2 border-border font-bold text-foreground hover:bg-muted active:scale-95 transition-all text-sm uppercase tracking-widest">
+                            <button
+type="button"
+                                class="flex-1 lg:flex-none px-8 py-3.5 rounded-2xl border-2 border-border font-bold text-foreground hover:bg-muted active:scale-95 transition-all text-sm uppercase tracking-widest"
+                                @click="view = 'list'">
                                 Cancel
                             </button>
-                            <button type="submit" :disabled="isUploading"
+                            <button
+type="submit" :disabled="isUploading"
                                 class="flex-2 lg:flex-none px-12 py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-black transition-all shadow-xl shadow-blue-500/20 text-sm uppercase tracking-widest disabled:opacity-50 active:scale-95">
                                 {{ isUploading ? 'Syncing...' : (isEditing ? 'Update Entry' : 'Publish Entry') }}
                             </button>
@@ -823,7 +913,7 @@
         <!-- AI Generator Modal -->
         <Transition name="fade">
             <div v-if="showAiModal" class="fixed inset-0 z-200 flex items-center justify-center p-6">
-                <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" @click="showAiModal = false"></div>
+                <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" @click="showAiModal = false" />
                 <div
                     class="relative w-full max-w-md bg-background border border-border p-8 rounded-[32px] shadow-2xl flex flex-col gap-6 animate-fade-in-up">
                     <div class="flex items-center gap-4">
@@ -844,23 +934,29 @@
                             should I
                             focus on?</label>
                         <div class="flex flex-wrap gap-2 mb-1">
-                            <button v-for="chip in promptChips" :key="chip" type="button" @click="aiPrompt = chip"
-                                class="px-3 py-1.5 rounded-full bg-muted/50 border border-border text-[10px] font-bold uppercase tracking-wider text-muted-foreground hover:bg-blue-500/10 hover:text-blue-500 hover:border-blue-500/50 transition-all">
+                            <button
+v-for="chip in promptChips" :key="chip" type="button"
+                                class="px-3 py-1.5 rounded-full bg-muted/50 border border-border text-[10px] font-bold uppercase tracking-wider text-muted-foreground hover:bg-blue-500/10 hover:text-blue-500 hover:border-blue-500/50 transition-all"
+                                @click="aiPrompt = chip">
                                 {{ chip }}
                             </button>
                         </div>
-                        <textarea v-model="aiPrompt" rows="4"
+                        <textarea
+v-model="aiPrompt" rows="4"
                             placeholder="e.g. Focus on how we built the design system and tested it with 10 user interviews..."
-                            class="cms-input bg-muted/30 border-2 border-border rounded-2xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-sm leading-relaxed"></textarea>
+                            class="cms-input bg-muted/30 border-2 border-border rounded-2xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-sm leading-relaxed" />
                     </div>
 
                     <div class="flex gap-3">
-                        <button @click="showAiModal = false"
-                            class="flex-1 px-6 py-3 rounded-xl border border-border text-sm font-bold hover:bg-muted transition-colors">Cancel</button>
-                        <button @click="generateAiProcess" :disabled="isAiGenerating || !aiPrompt"
-                            class="btn-gemini-primary flex-2">
-                            <span v-if="isAiGenerating"
-                                class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                        <button
+                            class="flex-1 px-6 py-3 rounded-xl border border-border text-sm font-bold hover:bg-muted transition-colors"
+                            @click="showAiModal = false">Cancel</button>
+                        <button
+:disabled="isAiGenerating || !aiPrompt" class="btn-gemini-primary flex-2"
+                            @click="generateAiProcess">
+                            <span
+v-if="isAiGenerating"
+                                class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                             {{ isAiGenerating ? 'Synergizing...' : 'Gemini' }}
                         </button>
                     </div>
@@ -871,13 +967,14 @@
         <!-- Custom Delete Modal -->
         <Transition name="fade">
             <div v-if="showDeleteModal" class="fixed inset-0 z-210 flex items-center justify-center p-6">
-                <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" @click="showDeleteModal = false"></div>
+                <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" @click="showDeleteModal = false" />
                 <div
                     class="relative w-full max-w-sm bg-background border border-border p-8 rounded-[32px] shadow-2xl flex flex-col gap-6 animate-fade-in-up">
                     <div class="flex flex-col items-center text-center gap-4">
                         <div
                             class="w-16 h-16 rounded-full bg-red-500/10 flex items-center justify-center text-red-500 px-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
+                            <svg
+xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
                                 stroke-linejoin="round">
                                 <path
@@ -895,12 +992,15 @@
                     </div>
 
                     <div class="flex flex-col gap-3">
-                        <button @click="confirmDelete" :disabled="isDeleting"
-                            class="w-full py-4 bg-red-500 hover:bg-red-600 text-white rounded-2xl font-black uppercase tracking-widest text-[11px] transition-all shadow-xl shadow-red-500/20 active:scale-95 disabled:opacity-50">
+                        <button
+:disabled="isDeleting"
+                            class="w-full py-4 bg-red-500 hover:bg-red-600 text-white rounded-2xl font-black uppercase tracking-widest text-[11px] transition-all shadow-xl shadow-red-500/20 active:scale-95 disabled:opacity-50"
+                            @click="confirmDelete">
                             {{ isDeleting ? 'Removing...' : 'Permanently Delete' }}
                         </button>
-                        <button @click="showDeleteModal = false"
-                            class="w-full py-4 text-muted-foreground font-bold text-xs hover:text-foreground transition-colors">
+                        <button
+                            class="w-full py-4 text-muted-foreground font-bold text-xs hover:text-foreground transition-colors"
+                            @click="showDeleteModal = false">
                             Cancel
                         </button>
                     </div>
@@ -1024,7 +1124,7 @@ const toastClasses = computed(() => {
     }
 })
 
-const monthOptions = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+// const monthOptions = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
 // Computed
 const activeItems = computed(() => activeTab.value === 'notes' ? notes.value : projects.value)
@@ -1046,7 +1146,7 @@ onMounted(async () => {
         if (!qData) {
             securitySetup.value?.open()
         }
-    } catch (e) {
+    } catch {
         showToast('Sync Error', 'Database connection failed.', 'error')
     } finally {
         loading.value = false
@@ -1159,7 +1259,7 @@ const createNew = () => {
         formData.value.content = { introduction: '', sections: [], results: { metrics: [], description: '' } }
     }
     view.value = 'edit'
-    if (process.client) window.scrollTo({ top: 0, behavior: 'smooth' })
+    if (import.meta.client) window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
 const editItem = (item: any) => {
@@ -1169,7 +1269,7 @@ const editItem = (item: any) => {
     toolsInput.value = item.tools ? item.tools.join(', ') : ''
     wireframesInput.value = item.wireframes ? item.wireframes.join('\n') : ''
     view.value = 'edit'
-    if (process.client) window.scrollTo({ top: 0, behavior: 'smooth' })
+    if (import.meta.client) window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
 const saveItem = async () => {
@@ -1305,7 +1405,7 @@ const handleImageUpload = async (event: Event, field: string) => {
         }
         if (field === 'massGallery') await fetchGallery()
         showToast('Done', 'Images hosted successfully.', 'success')
-    } catch (e) {
+    } catch {
         showToast('Storage Error', 'Upload failed.', 'error')
     } finally {
         isUploading.value = false

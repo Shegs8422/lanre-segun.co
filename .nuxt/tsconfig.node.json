@@ -45,6 +45,9 @@
       ],
       "vite/client": [
         "../node_modules/vite/client"
+      ],
+      "nuxt-site-config": [
+        "../node_modules/nuxt-site-config"
       ]
     },
     "esModuleInterop": true,
@@ -83,6 +86,12 @@
     "../node_modules/nuxt/node_modules",
     "../node_modules/@tresjs/nuxt/node_modules",
     "../node_modules/@nuxtjs/supabase/node_modules",
+    "../node_modules/@nuxt/eslint/node_modules",
+    "../node_modules/@nuxt/image/node_modules",
+    "../node_modules/nuxt-site-config/node_modules",
+    "../node_modules/@nuxtjs/sitemap/node_modules",
+    "../node_modules/@nuxtjs/robots/node_modules",
+    "../node_modules/nuxt-schema-org/node_modules",
     "../node_modules/@nuxt/devtools/node_modules",
     "../node_modules/@nuxt/telemetry/node_modules",
     "../dist",
@@ -96,6 +105,8 @@
     "../layers/*/server/**/*",
     "../layers/*/modules/*/runtime/server/**/*",
     "../node_modules/runtime",
-    "../node_modules/dist/runtime"
+    "../node_modules/dist/runtime",
+    "../node_modules/nuxt-site-config/dist/runtime",
+    "../node_modules/nuxt-site-config/dist/dist/runtime"
   ]
 }

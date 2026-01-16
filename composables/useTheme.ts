@@ -14,7 +14,7 @@ export const useTheme = () => {
     }
 
     const updateDOM = () => {
-        if (process.client) {
+        if (import.meta.client) {
             const html = document.documentElement
             if (isDark.value) {
                 html.classList.add('dark')
@@ -28,7 +28,7 @@ export const useTheme = () => {
 
     // Initialize
     onMounted(() => {
-        if (process.client) {
+        if (import.meta.client) {
             const stored = localStorage.getItem('theme')
             const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
 

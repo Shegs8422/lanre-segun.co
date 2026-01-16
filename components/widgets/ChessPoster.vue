@@ -10,14 +10,14 @@
 
             <!-- Scrolling Text Top -->
             <div class="scrolling-text-top absolute top-4 w-[400%] flex pointer-events-none">
-                <span class="text-[90px] text-white font-bold whitespace-nowrap animate-scroll-left">
+                <span class="text-poster-lg text-white font-bold whitespace-nowrap animate-scroll-left">
                     PLAY PLAY PLAY PLAY PLAY PLAY PLAY PLAY
                 </span>
             </div>
 
             <!-- Scrolling Text Bottom -->
             <div class="scrolling-text-bottom absolute bottom-4 w-[400%] flex pointer-events-none">
-                <span class="text-[90px] text-white font-bold whitespace-nowrap rotate-180 animate-scroll-right">
+                <span class="text-poster-lg text-white font-bold whitespace-nowrap rotate-180 animate-scroll-right">
                     PLAY PLAY PLAY PLAY PLAY PLAY PLAY PLAY
                 </span>
             </div>
@@ -29,14 +29,14 @@
                 class="rounded-lg absolute bottom-0 right-0 pointer-events-none" src="/images/king-chess-poster.svg">
 
             <!-- Content Button Overlay -->
-            <a href="https://chess.com" target="_blank" class="absolute inset-0 z-20"></a>
+            <a href="https://chess.com" target="_blank" class="absolute inset-0 z-20" />
         </div>
 
         <!-- Scratch Card Canvas Overlay -->
         <canvas v-if="!isRevealed" ref="scratchCanvas" width="360" height="360"
             class="absolute top-0 left-0 w-full h-full rounded-lg z-30 scratch-cursor" @mousedown="startScratching"
             @mousemove="scratch" @mouseup="stopScratching" @mouseleave="stopScratching" @touchstart="startScratching"
-            @touchmove="scratch" @touchend="stopScratching"></canvas>
+            @touchmove="scratch" @touchend="stopScratching" />
     </div>
 </template>
 
@@ -47,7 +47,7 @@ const scratchCanvas = ref<HTMLCanvasElement | null>(null)
 const isScratching = ref(false)
 const isRevealed = ref(false)
 const isWriggling = ref(false)
-const scratchedPixels = ref(0)
+// const scratchedPixels = ref(0)
 const totalPixels = ref(0)
 
 // Sound - initialized client-side only using composable
@@ -83,6 +83,32 @@ const stopScratching = () => {
     isScratching.value = false
 }
 
+const checkScratchPercentage = () => {
+    if (!scratchCanvas.value || isRevealed.value) return
+
+    const canvas = scratchCanvas.value
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+
+    const imageData = ctx.getImageData(0, 0, 360, 360)
+    let transparentPixels = 0
+
+    // Count transparent pixels
+    for (let i = 3; i < imageData.data.length; i += 4) {
+        const p = imageData.data[i]
+        if (p !== undefined && p < 128) {
+            transparentPixels++
+        }
+    }
+
+    const scratchedPercentage = (transparentPixels / totalPixels.value) * 100
+
+    // Trigger wriggle and reveal at 70%
+    if (scratchedPercentage >= 70) {
+        revealWidget()
+    }
+}
+
 const scratch = (e: MouseEvent | TouchEvent) => {
     if (!isScratching.value || !scratchCanvas.value) return
 
@@ -98,6 +124,7 @@ const scratch = (e: MouseEvent | TouchEvent) => {
         y = e.clientY - rect.top
     } else {
         const touch = e.touches[0]
+        if (!touch) return
         x = touch.clientX - rect.left
         y = touch.clientY - rect.top
     }
@@ -117,31 +144,6 @@ const scratch = (e: MouseEvent | TouchEvent) => {
 
     // Check scratch percentage
     checkScratchPercentage()
-}
-
-const checkScratchPercentage = () => {
-    if (!scratchCanvas.value || isRevealed.value) return
-
-    const canvas = scratchCanvas.value
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
-
-    const imageData = ctx.getImageData(0, 0, 360, 360)
-    let transparentPixels = 0
-
-    // Count transparent pixels
-    for (let i = 3; i < imageData.data.length; i += 4) {
-        if (imageData.data[i] < 128) {
-            transparentPixels++
-        }
-    }
-
-    const scratchedPercentage = (transparentPixels / totalPixels.value) * 100
-
-    // Trigger wriggle and reveal at 70%
-    if (scratchedPercentage >= 70) {
-        revealWidget()
-    }
 }
 
 const revealWidget = () => {

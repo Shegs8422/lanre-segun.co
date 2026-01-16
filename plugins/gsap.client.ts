@@ -1,6 +1,4 @@
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { Draggable } from 'gsap/Draggable'
+import { gsap, ScrollTrigger, Draggable } from 'gsap/all'
 
 export default defineNuxtPlugin(() => {
     // Register plugins

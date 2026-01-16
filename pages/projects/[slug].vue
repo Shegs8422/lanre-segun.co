@@ -1,51 +1,56 @@
 <template>
-    <div
+    <div ref="containerRef" @scroll="handleScroll"
         class="fixed inset-0 bg-background text-foreground overflow-y-auto scroll-smooth scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent z-50 project-page-container">
+
+        <!-- Reading Progress Bar -->
+        <div v-show="!isPreloading"
+            class="fixed top-0 left-0 h-1 bg-blue-500 z-overlay transition-all duration-100 ease-out"
+            :style="{ width: readingProgress + '%' }" />
 
         <!-- Interactive Preloader -->
         <div v-if="isPreloading"
-            class="fixed inset-0 z-100 bg-black flex flex-col items-center justify-center p-6 text-white font-mono overflow-hidden">
+            class="fixed inset-0 z-modal bg-black flex flex-col items-center justify-center p-6 text-white font-mono overflow-hidden">
             <div
                 class="terminal-box w-full max-w-2xl border border-white/10 rounded-xl p-8 bg-zinc-950/50 backdrop-blur-xl relative">
                 <div class="absolute top-0 left-0 w-full h-1 bg-blue-500/20">
-                    <div class="h-full bg-blue-500 preloader-progress-bar" :style="{ width: preloaderProgress + '%' }">
-                    </div>
+                    <div class="h-full bg-blue-500 preloader-progress-bar"
+                        :style="{ width: preloaderProgress + '%' }" />
                 </div>
 
                 <div class="flex flex-col gap-4">
                     <div class="flex justify-between items-center border-b border-white/5 pb-4 mb-2">
                         <span
-                            class="text-[10px] uppercase tracking-[0.3em] font-black text-blue-500">System.Initialize()</span>
-                        <span class="text-[10px] uppercase tracking-[0.3em] font-black text-white/20">{{
+                            class="text-xxs uppercase tracking-giga font-black text-blue-500">System.Initialize()</span>
+                        <span class="text-xxs uppercase tracking-giga font-black text-white/20">{{
                             Math.floor(preloaderProgress) }}% Complete</span>
                     </div>
 
                     <div class="terminal-lines flex flex-col gap-1 overflow-hidden h-32">
                         <p v-for="(line, i) in terminalLog" :key="i"
-                            class="text-[10px] md:text-xs leading-relaxed opacity-70 animate-terminal-line">
+                            class="text-xxs md:text-xs leading-relaxed opacity-70 animate-terminal-line">
                             <span class="text-blue-500">></span> {{ line }}
                         </p>
                     </div>
 
                     <div class="flex items-center gap-4 mt-8 opacity-40">
-                        <div class="grow h-px bg-white/10"></div>
-                        <div class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
-                        <div class="grow h-px bg-white/10"></div>
+                        <div class="grow h-px bg-white/10" />
+                        <div class="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
+                        <div class="grow h-px bg-white/10" />
                     </div>
                 </div>
             </div>
 
             <!-- Floating Background Elements -->
-            <div class="absolute inset-0 z-[-1] opacity-20">
-                <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/10 blur-[120px] rounded-full animate-float">
-                </div>
+            <div class="absolute inset-0 z-negative opacity-20">
+                <div
+                    class="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/10 blur-[120px] rounded-full animate-float" />
                 <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 blur-[120px] rounded-full animate-float"
-                    style="animation-delay: -2s"></div>
+                    style="animation-delay: -2s" />
             </div>
         </div>
 
         <div v-if="project"
-            class="max-w-5xl mx-auto px-6 pt-24 pb-12 md:py-24 flex flex-col gap-24 project-content-wrapper"
+            class="max-w-5xl mx-auto px-6 pt-32 md:pt-40 pb-12 md:pb-24 flex flex-col gap-24 project-content-wrapper"
             :class="{ 'opacity-0': isPreloading }">
 
             <!-- Header Section -->
@@ -60,8 +65,9 @@
                         Back to Projects
                     </NuxtLink>
 
-                    <button v-if="project.projectLink" @click="handleProjectLink"
-                        class="w-fit flex items-center gap-2 px-6 py-2 rounded-full bg-blue-600 hover:bg-blue-500 transition-colors text-sm font-bold text-white shadow-lg shadow-blue-500/20">
+                    <button v-if="project.projectLink"
+                        class="w-fit flex items-center gap-2 px-6 py-2 rounded-full bg-blue-600 hover:bg-blue-500 transition-colors text-sm font-bold text-white shadow-lg shadow-blue-500/20"
+                        @click="handleProjectLink">
                         {{ project.isFigma ? 'View File Preview' : 'See Live Project' }}
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -95,8 +101,8 @@
                 <div class="grid grid-cols-2 md:grid-cols-5 gap-8 pt-8 border-t border-white/10 mt-4 meta-grid">
                     <div v-for="(val, label) in { Client: project.client, Role: project.role, Industry: project.industry, Duration: project.duration, Team: project.teamSize }"
                         :key="label" class="flex flex-col gap-1 meta-item">
-                        <span class="text-[10px] uppercase tracking-widest text-muted-foreground font-bold">{{ label
-                        }}</span>
+                        <span class="text-xxs uppercase tracking-widest text-muted-foreground font-bold">{{ label
+                            }}</span>
                         <span class="text-sm font-medium truncate">{{ val || 'N/A' }}</span>
                     </div>
                 </div>
@@ -105,10 +111,11 @@
             <!-- Hero Image -->
             <div
                 class="w-full aspect-video rounded-3xl overflow-hidden shadow-2xl bg-white/5 relative group hero-image-container">
-                <img v-if="project.coverImage || project.content?.heroImage"
-                    :src="project.coverImage || project.content?.heroImage" :alt="project.title"
-                    class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 hero-image-parallax">
-                <div class="absolute inset-0 bg-linear-to-t from-black/40 to-transparent"></div>
+                <NuxtImage v-if="project.coverImage || project.content?.heroImage"
+                    :src="project.coverImage || project.content?.heroImage" :alt="project.title" format="webp"
+                    placeholder
+                    class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 hero-image-parallax" />
+                <div class="absolute inset-0 bg-linear-to-t from-black/40 to-transparent" />
             </div>
 
             <!-- Problem & Goals -->
@@ -119,21 +126,18 @@
                 </div>
                 <div class="md:col-span-8 flex flex-col gap-12">
                     <div class="text-xl leading-relaxed text-foreground/90 font-light italic border-l-2 border-blue-500 pl-8 py-2 markdown-container"
-                        v-html="parseMarkdown(project.problemStatement || project.description)">
-                    </div>
+                        v-html="parseMarkdown(project.problemStatement || project.description)" />
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
                         <div class="flex flex-col gap-4">
                             <h4 class="text-sm font-bold uppercase tracking-widest opacity-40">Business Goal</h4>
                             <div class="text-muted-foreground leading-relaxed markdown-container"
-                                v-html="parseMarkdown(project.businessGoal || `Defining objectives for the project revival.`)">
-                            </div>
+                                v-html="parseMarkdown(project.businessGoal || `Defining objectives for the project revival.`)" />
                         </div>
                         <div class="flex flex-col gap-4">
                             <h4 class="text-sm font-bold uppercase tracking-widest opacity-40">User Goal</h4>
                             <div class="text-muted-foreground leading-relaxed markdown-container"
-                                v-html="parseMarkdown(project.userGoal || `Prioritizing user needs and experiences.`)">
-                            </div>
+                                v-html="parseMarkdown(project.userGoal || `Prioritizing user needs and experiences.`)" />
                         </div>
                     </div>
                 </div>
@@ -147,7 +151,7 @@
                 </div>
                 <div class="md:col-span-8 flex flex-col gap-12">
                     <div class="text-lg leading-relaxed text-muted-foreground markdown-container"
-                        v-html="parseMarkdown(project.designApproach || project.content?.introduction)"></div>
+                        v-html="parseMarkdown(project.designApproach || project.content?.introduction)" />
 
                     <div
                         class="grid grid-cols-1 md:grid-cols-2 gap-12 bg-white/5 p-8 rounded-2xl border border-white/10">
@@ -155,13 +159,12 @@
                             :key="label" class="flex flex-col gap-4">
                             <h4 class="text-sm font-bold uppercase tracking-widest opacity-40">{{ label }}</h4>
                             <div class="text-muted-foreground leading-relaxed markdown-container"
-                                v-html="parseMarkdown(val || 'In-depth analysis.')"></div>
+                                v-html="parseMarkdown(val || 'In-depth analysis.')" />
                         </div>
                         <div class="flex flex-col gap-4 md:col-span-2 border-t border-white/5 pt-8">
                             <h4 class="text-sm font-bold uppercase tracking-widest opacity-40">Key Insights</h4>
                             <div class="text-muted-foreground leading-relaxed markdown-container"
-                                v-html="parseMarkdown(project.keyInsights || `Identifying core pain points in workflows.`)">
-                            </div>
+                                v-html="parseMarkdown(project.keyInsights || `Identifying core pain points in workflows.`)" />
                         </div>
                     </div>
                 </div>
@@ -176,7 +179,8 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div v-for="(img, i) in project.wireframes" :key="i"
                         class="rounded-2xl overflow-hidden bg-white/5 aspect-16/10 border border-white/5 group">
-                        <img :src="img" class="w-full h-full object-cover transition-transform group-hover:scale-105">
+                        <NuxtImage :src="img" format="webp" loading="lazy"
+                            class="w-full h-full object-cover transition-transform group-hover:scale-105" />
                     </div>
                 </div>
             </section>
@@ -190,8 +194,8 @@
                 <div class="flex flex-col gap-12">
                     <div v-for="(img, i) in project.finalDesigns" :key="i"
                         class="rounded-3xl overflow-hidden bg-white/5 border border-white/10 group">
-                        <img :src="img"
-                            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.02]">
+                        <NuxtImage :src="img" format="webp" loading="lazy"
+                            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.02]" />
                     </div>
                 </div>
             </section>
@@ -209,7 +213,7 @@
                     <!-- Layout: Text Only -->
                     <div v-if="section.layout === 'text-only' || !section.layout" class="max-w-3xl">
                         <div class="text-lg leading-relaxed text-muted-foreground markdown-container"
-                            v-html="parseMarkdown(section.content)"></div>
+                            v-html="parseMarkdown(section.content)" />
                     </div>
 
                     <!-- Layout: Full Width Image -->
@@ -217,11 +221,11 @@
                         class="w-full flex flex-col gap-8">
                         <div v-if="section.content"
                             class="text-lg leading-relaxed text-muted-foreground max-w-3xl mb-4 markdown-container"
-                            v-html="parseMarkdown(section.content)"></div>
+                            v-html="parseMarkdown(section.content)" />
                         <div
                             class="w-full aspect-video rounded-3xl overflow-hidden bg-white/5 border border-white/10 group">
-                            <img :src="section.image || section.url"
-                                class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105">
+                            <NuxtImage :src="section.image || section.url" format="webp" loading="lazy"
+                                class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
                         </div>
                     </div>
 
@@ -230,12 +234,12 @@
                         class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
                         <div
                             class="md:col-span-7 aspect-video rounded-2xl overflow-hidden bg-white/5 border border-white/10 group">
-                            <img :src="section.image"
-                                class="w-full h-full object-cover transition-transform group-hover:scale-105">
+                            <NuxtImage :src="section.image" format="webp" loading="lazy"
+                                class="w-full h-full object-cover transition-transform group-hover:scale-105" />
                         </div>
                         <div class="md:col-span-5 flex flex-col gap-6">
                             <div class="text-lg leading-relaxed text-muted-foreground markdown-container"
-                                v-html="parseMarkdown(section.content)"></div>
+                                v-html="parseMarkdown(section.content)" />
                         </div>
                     </div>
 
@@ -244,12 +248,12 @@
                         class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
                         <div class="md:col-span-5 flex flex-col gap-6 order-2 md:order-1">
                             <div class="text-lg leading-relaxed text-muted-foreground markdown-container"
-                                v-html="parseMarkdown(section.content)"></div>
+                                v-html="parseMarkdown(section.content)" />
                         </div>
                         <div
                             class="md:col-span-7 aspect-video rounded-2xl overflow-hidden bg-white/5 border border-white/10 order-1 md:order-2 group">
-                            <img :src="section.image"
-                                class="w-full h-full object-cover transition-transform group-hover:scale-105">
+                            <NuxtImage :src="section.image" format="webp" loading="lazy"
+                                class="w-full h-full object-cover transition-transform group-hover:scale-105" />
                         </div>
                     </div>
 
@@ -257,12 +261,12 @@
                     <div v-else-if="section.layout === 'grid' || section.type === 'grid'" class="flex flex-col gap-8">
                         <div v-if="section.content"
                             class="text-lg leading-relaxed text-muted-foreground max-w-3xl markdown-container"
-                            v-html="parseMarkdown(section.content)"></div>
+                            v-html="parseMarkdown(section.content)" />
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <div v-for="(img, i) in (section.images || [])" :key="i"
                                 class="rounded-2xl overflow-hidden bg-white/5 aspect-4/3 border border-white/5 group">
-                                <img :src="img"
-                                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                                <NuxtImage :src="img" format="webp" loading="lazy"
+                                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                             </div>
                         </div>
                     </div>
@@ -277,8 +281,7 @@
                 </div>
                 <div class="p-10 rounded-3xl bg-emerald-500/5 border border-emerald-500/10 backdrop-blur-sm">
                     <div class="text-xl leading-relaxed text-foreground/90 font-light italic pl-4 border-l-2 border-emerald-500 markdown-container"
-                        v-html="parseMarkdown(project.solutionSummary)">
-                    </div>
+                        v-html="parseMarkdown(project.solutionSummary)" />
                 </div>
             </section>
 
@@ -290,14 +293,13 @@
                 </div>
                 <div class="md:col-span-8 flex flex-col gap-12">
                     <div class="text-lg leading-relaxed text-muted-foreground markdown-container"
-                        v-html="parseMarkdown(project.outcome || project.content?.results?.description)"></div>
+                        v-html="parseMarkdown(project.outcome || project.content?.results?.description)" />
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
                         <div class="flex flex-col gap-4">
                             <h4 class="text-sm font-bold uppercase tracking-widest opacity-40">Learnings</h4>
                             <div class="text-muted-foreground leading-relaxed markdown-container"
-                                v-html="parseMarkdown(project.learnings || `Iterative testing is key to solving complex UX problems.`)">
-                            </div>
+                                v-html="parseMarkdown(project.learnings || `Iterative testing is key to solving complex UX problems.`)" />
                         </div>
                         <div class="flex flex-col gap-4">
                             <h4 class="text-sm font-bold uppercase tracking-widest opacity-40">Tools Used</h4>
@@ -321,7 +323,7 @@
                     <span class="text-xl font-bold group-hover:-translate-x-2 transition-transform truncate">{{
                         adjacent.prev.title }}</span>
                 </NuxtLink>
-                <div v-else class="w-1"></div>
+                <div v-else class="w-1" />
                 <NuxtLink v-if="adjacent.next" :to="`/projects/${adjacent.next.slug}`"
                     class="flex flex-col gap-1 group text-right items-end max-w-[40%]">
                     <span
@@ -347,38 +349,39 @@
         <Teleport to="body">
             <Transition name="fade">
                 <div v-if="showPrototype && project?.projectLink"
-                    class="fixed inset-0 z-1000 flex items-center justify-center p-4 md:p-12 bg-black/95 backdrop-blur-2xl">
-                    <div class="absolute inset-0 z-0" @click="showPrototype = false"></div>
+                    class="fixed inset-0 z-max flex items-center justify-center p-4 md:p-12 bg-black/95 backdrop-blur-2xl">
+                    <div class="absolute inset-0 z-0" @click="showPrototype = false" />
                     <div
-                        class="relative w-full h-full max-w-7xl bg-[#1e1e1e] rounded-3xl overflow-hidden border border-white/10 flex flex-col shadow-2xl animate-modal-in z-10">
-                        <div class="flex items-center justify-between p-6 border-b border-white/5 bg-[#1A1A1A]">
+                        class="relative w-full h-full max-w-7xl bg-terminal-bg rounded-3xl overflow-hidden border border-white/10 flex flex-col shadow-2xl animate-modal-in z-10">
+                        <div class="flex items-center justify-between p-6 border-b border-white/5 bg-tooltip-bg">
                             <div class="flex flex-col">
                                 <h3 class="text-lg font-bold text-white uppercase tracking-tighter">{{ project.title }}
                                     {{ project.isFigma ? 'Design Feed' : 'Session' }}</h3>
-                                <p class="text-[10px] text-white/40 uppercase tracking-widest">Interactive Cloud Preview
+                                <p class="text-xxs text-white/40 uppercase tracking-widest">Interactive Cloud Preview
                                 </p>
                             </div>
                             <div class="flex items-center gap-3">
                                 <a :href="formattedLink" target="_blank"
                                     class="p-3 hover:bg-white/5 rounded-full transition-all text-white/30 hover:text-white group flex items-center gap-2">
                                     <span
-                                        class="text-[10px] font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Open
+                                        class="text-xxs font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Open
                                         Original</span>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
                                         stroke-linejoin="round">
-                                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                        <polyline points="15 3 21 3 21 9"></polyline>
-                                        <line x1="10" y1="14" x2="21" y2="3"></line>
+                                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                                        <polyline points="15 3 21 3 21 9" />
+                                        <line x1="10" y1="14" x2="21" y2="3" />
                                     </svg>
                                 </a>
-                                <button @click="showPrototype = false"
-                                    class="p-3 hover:bg-white/5 rounded-full transition-all hover:rotate-90 text-white/50 hover:text-white">
+                                <button
+                                    class="p-3 hover:bg-white/5 rounded-full transition-all hover:rotate-90 text-white/50 hover:text-white"
+                                    @click="showPrototype = false">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
                                         stroke-linejoin="round">
-                                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                        <line x1="18" y1="6" x2="6" y2="18" />
+                                        <line x1="6" y1="6" x2="18" y2="18" />
                                     </svg>
                                 </button>
                             </div>
@@ -386,15 +389,14 @@
                         <div class="flex-1 w-full relative bg-black flex items-center justify-center overflow-hidden">
                             <div class="absolute inset-0 flex flex-col items-center justify-center gap-4 z-0">
                                 <div
-                                    class="w-12 h-12 border-4 border-white/10 border-t-blue-500 rounded-full animate-spin">
-                                </div>
-                                <p class="text-[10px] text-white/30 uppercase tracking-[0.2em] font-black">Initializing
+                                    class="w-12 h-12 border-4 border-white/10 border-t-blue-500 rounded-full animate-spin" />
+                                <p class="text-xxs text-white/30 uppercase tracking-mega font-black">Initializing
                                     Simulation</p>
                             </div>
                             <iframe v-if="formattedLink" :src="formattedLink"
                                 class="absolute inset-0 w-full h-full border-0 z-10 bg-black"
                                 allow="autoplay; clipboard-read; clipboard-write; draw-viewer; encrypted-media; fullscreen; picture-in-picture; xr-spatial-tracking"
-                                referrerpolicy="no-referrer-when-downgrade" allowfullscreen loading="eager"></iframe>
+                                referrerpolicy="no-referrer-when-downgrade" allowfullscreen loading="eager" />
                         </div>
                     </div>
                 </div>
@@ -407,7 +409,7 @@
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-if (process.client) {
+if (import.meta.client) {
     gsap.registerPlugin(ScrollTrigger)
 }
 
@@ -469,7 +471,7 @@ onMounted(() => {
 
     const initProjectAnimations = () => {
         nextTick(() => {
-            const ctx = gsap.context(() => {
+            gsap.context(() => {
                 // Entrance Sequence
                 const entranceTl = gsap.timeline()
 
@@ -581,7 +583,11 @@ const formattedLink = computed(() => {
 
 const handleProjectLink = () => {
     if (!project.value?.projectLink) return
-    project.value.isFigma ? showPrototype.value = true : window.open(formattedLink.value, '_blank')
+    if (project.value.isFigma) {
+        showPrototype.value = true
+    } else {
+        window.open(formattedLink.value, '_blank')
+    }
 }
 
 // SEO
@@ -591,11 +597,22 @@ useSeoMeta({
     ogImage: () => project.value?.coverImage || '/og-image.png'
 })
 
+
 // Scroll behavior
+const readingProgress = ref(0)
+const containerRef = ref<HTMLElement | null>(null)
+
+const handleScroll = () => {
+    if (!containerRef.value) return
+    const el = containerRef.value
+    const scrollTop = el.scrollTop
+    const scrollHeight = el.scrollHeight - el.clientHeight
+    readingProgress.value = (scrollTop / scrollHeight) * 100
+}
+
 watch(() => route.params.slug, () => {
-    if (process.client) {
-        window.scrollTo(0, 0)
-        document.querySelector('.overflow-y-auto')?.scrollTo(0, 0)
+    if (import.meta.client) {
+        if (containerRef.value) containerRef.value.scrollTop = 0
     }
 })
 </script>
@@ -743,7 +760,7 @@ watch(() => route.params.slug, () => {
 }
 
 .markdown-container :deep(pre) {
-    background: #0d1117;
+    background: var(--color-code-bg);
     padding: 1.5rem;
     border-radius: 1rem;
     border: 1px solid rgba(255, 255, 255, 0.1);

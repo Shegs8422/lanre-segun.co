@@ -4,23 +4,26 @@
 
     <Head>
       <Title>Lanre Segun - Design Engineer | Interactive Portfolio</Title>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     </Head>
 
     </Html>
 
     <!-- Global Layout elements -->
-    <LazyFloatingDock v-if="isDockVisible" />
+    <!-- Global Layout elements -->
+    <ClientOnly>
+      <FloatingDock v-if="isDockVisible" />
+    </ClientOnly>
 
     <!-- Page Content -->
     <NuxtPage v-slot="{ Component, route }">
-      <Transition :css="false" mode="out-in" @enter="(el, done) => onEnter(el, done, route.path)"
-        @leave="(el, done) => onLeave(el, done, route.path)">
+      <Transition :css="false" mode="out-in" @enter="(el, done) => onEnter(el, done)"
+        @leave="(el, done) => onLeave(el, done)">
         <component :is="Component" :key="route.path" />
       </Transition>
     </NuxtPage>
 
-    <div id="theme-toggle-script"></div>
+    <div id="theme-toggle-script" />
     <LazyLoginModal ref="loginModal" />
   </div>
 </template>
@@ -31,7 +34,7 @@ import gsap from 'gsap'
 const { isDockVisible } = useLayout()
 
 // GSAP Page Transitions
-const onEnter = (el: Element, done: () => void, path: string) => {
+const onEnter = (el: Element, done: () => void) => {
   gsap.fromTo(el,
     {
       opacity: 0,
@@ -47,7 +50,7 @@ const onEnter = (el: Element, done: () => void, path: string) => {
   )
 }
 
-const onLeave = (el: Element, done: () => void, path: string) => {
+const onLeave = (el: Element, done: () => void) => {
   gsap.to(el, {
     opacity: 0,
     y: -20,

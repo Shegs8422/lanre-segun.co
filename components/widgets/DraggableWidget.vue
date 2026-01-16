@@ -1,11 +1,6 @@
 <template>
-  <div 
-    ref="el"
-    class="absolute z-30 cursor-grab active:cursor-grabbing select-none"
-    :style="style"
-    @mousedown="startDrag"
-    @touchstart.passive="startDrag"
-  >
+  <div ref="el" class="absolute z-30 cursor-grab active:cursor-grabbing select-none" :style="style"
+    @mousedown="startDrag" @touchstart.passive="startDrag">
     <slot />
   </div>
 </template>
@@ -13,7 +8,7 @@
 <script setup lang="ts">
 import { ref, computed, onUnmounted } from 'vue'
 
-const props = defineProps<{
+defineProps<{
   stiffness?: number
   damping?: number
 }>()
@@ -37,8 +32,10 @@ const handleMove = (e: MouseEvent | TouchEvent) => {
 
   let cx, cy
   if ('touches' in e) {
-    cx = e.touches[0].clientX
-    cy = e.touches[0].clientY
+    const touch = e.touches[0]
+    if (!touch) return
+    cx = touch.clientX
+    cy = touch.clientY
   } else {
     cx = (e as MouseEvent).clientX
     cy = (e as MouseEvent).clientY
@@ -55,7 +52,7 @@ const stopDrag = () => {
   isDragging.value = false
   // Reset to 0,0 (relative to initial position) triggers the spring transition
   position.value = { x: 0, y: 0 }
-  
+
   window.removeEventListener('mousemove', handleMove)
   window.removeEventListener('mouseup', stopDrag)
   window.removeEventListener('touchmove', handleMove)
@@ -65,22 +62,24 @@ const stopDrag = () => {
 const startDrag = (e: MouseEvent | TouchEvent) => {
   e.stopPropagation() // Prevent dragging the canvas when dragging this widget
   isDragging.value = true
-  
+
   let cx, cy
   if ('touches' in e) {
-    cx = e.touches[0].clientX
-    cy = e.touches[0].clientY
+    const touch = e.touches[0]
+    if (!touch) return
+    cx = touch.clientX
+    cy = touch.clientY
   } else {
     cx = (e as MouseEvent).clientX
     cy = (e as MouseEvent).clientY
   }
-  
+
   // Initialize offset relative to current mouse position to avoid jump
   // but since we translate from 0,0, we want to track delta.
   // Actually, we want to track displacement from ORIGINAL spot.
   // So startPos should be the mouse position MINUS current translation.
   // Since we snap back to 0,0, current translation is 0 at start usually.
-  
+
   startPos.value = {
     x: cx - position.value.x,
     y: cy - position.value.y
