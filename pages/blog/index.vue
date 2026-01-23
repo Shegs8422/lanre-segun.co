@@ -1,7 +1,8 @@
 <template>
     <div
-        class="min-h-screen bg-background text-foreground flex flex-col pt-32 pb-32 px-6 sm:px-12 md:px-24 transition-colors duration-500">
-        <div class="max-w-xl mx-auto w-full flex flex-col gap-12">
+        class="min-h-screen bg-background text-foreground flex flex-col pt-16 pb-32 px-6 sm:px-12 md:px-24 transition-colors duration-500">
+        <div class="max-w-2xl mx-auto w-full flex flex-col gap-12">
+            <PageHeader title="Archive" subtitle="Thoughts, design experiments, and technical notes from my journey." />
 
             <!-- Title (Optional, following the reference design it usually starts with the first year) -->
 

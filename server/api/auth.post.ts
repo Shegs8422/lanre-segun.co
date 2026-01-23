@@ -16,10 +16,20 @@ export default defineEventHandler(async (event) => {
     const CORRECT_PASSWORD = config?.password_override || process.env.CMS_PASSWORD || 'admin123'
 
     if (password === CORRECT_PASSWORD) {
+        // Secure server-side token
         setCookie(event, 'auth_token', 'logged-in-secret-token', {
-            httpOnly: false,
+            httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             maxAge: 60 * 60 * 24 * 7, // 1 week
+            path: '/',
+            sameSite: 'strict'
+        })
+
+        // Client-side visible cookie for UI logic/middleware
+        setCookie(event, 'cms-auth', 'true', {
+            httpOnly: false,
+            secure: process.env.NODE_ENV === 'production',
+            maxAge: 60 * 60 * 24 * 7,
             path: '/',
             sameSite: 'strict'
         })

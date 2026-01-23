@@ -1,5 +1,11 @@
 <template>
     <ClientOnly>
+        <!-- Skip to Content Link -->
+        <a href="#main-grid"
+            class="sr-only focus:not-sr-only fixed top-4 left-4 z-modal bg-blue-600 text-white px-6 py-3 rounded-xl font-bold border-2 border-white/20 shadow-2xl transition-all">
+            Skip to Content
+        </a>
+
         <!-- Interactive Preloader -->
         <div v-if="isPreloading"
             class="fixed inset-0 z-modal bg-black flex flex-col items-center justify-center p-6 text-white font-mono overflow-hidden">
@@ -64,7 +70,7 @@
         <!-- Desktop View (>768px) -->
         <DraggableCanvas v-else :class="{ 'opacity-0': isPreloading }">
             <!-- Orchestration Grid - 8x7 layout with 360px cells -->
-            <div
+            <div id="main-grid"
                 class="absolute orchestration grid gap-4 grid-cols-[repeat(8,360px)] grid-rows-[repeat(7,360px)] w-[2992px] h-[2620px] left-[104px] top-[70px]">
 
                 <!-- Background fill -->
@@ -250,25 +256,29 @@
                 </svg>
 
                 <!-- Stickers & Logos -->
-                <img style="--stagger:8" draggable="false" alt="Grazac Branding" width="200" height="auto"
+                <NuxtImg style="--stagger:8" draggable="false" alt="Grazac Branding" width="200" height="auto"
+                    loading="lazy" quality="85"
                     class="pointer-events-none select-none relative col-start-4 row-start-6 right-[500px] top-[40px] entrance-stagger object-contain"
-                    src="/images/Grazac.png">
+                    src="/images/Grazac.png" />
 
-                <img style="--stagger:14" draggable="false" alt="Nvidia Logo" width="160" height="auto"
+                <NuxtImg style="--stagger:14" draggable="false" alt="Nvidia Logo" width="160" height="auto"
+                    loading="lazy"
                     class="rotate-10 pointer-events-none select-none relative col-start-7 row-start-5 right-[40px] entrance-stagger object-contain"
-                    src="/images/nvidia.png">
+                    src="/images/nvidia.png" quality="85" />
 
-                <img style="--stagger:16" draggable="false" alt="McKinsey Logo" width="160" height="auto"
+                <NuxtImg style="--stagger:16" draggable="false" alt="McKinsey Logo" width="160" height="auto"
+                    loading="lazy"
                     class="select-none pointer-events-none relative col-start-8 row-start-6 top-[20px] right-[40px] entrance-stagger object-contain"
-                    src="/images/mckinsey.png">
+                    src="/images/mckinsey.png" quality="85" />
 
-                <img style="--stagger:11" draggable="false" alt="Funaab University" width="150" height="auto"
+                <NuxtImg style="--stagger:11" draggable="false" alt="Funaab University" width="150" height="auto"
+                    loading="lazy" quality="85"
                     class="select-none pointer-events-none relative col-start-1 row-start-6 top-[80px] left-[40px] rotate-36 entrance-stagger object-contain"
-                    src="/images/Funaab logo.png">
+                    src="/images/Funaab logo.png" />
 
-                <img style="--stagger:18" draggable="false" alt="Vue Logo" width="120" height="auto"
+                <NuxtImg style="--stagger:18" draggable="false" alt="Vue Logo" width="120" height="auto" loading="lazy"
                     class="select-none pointer-events-none relative col-start-2 row-start-7 -top-[40px] left-[60px] rotate-12 entrance-stagger object-contain"
-                    src="/images/Vue.js_Logo_2.svg">
+                    src="/images/Vue.js_Logo_2.svg" quality="85" />
 
                 <!-- MDX Logo -->
                 <svg style="--stagger:15"
@@ -336,12 +346,15 @@
                     </div>
                 </DraggableWidget>
 
+                <!-- Navigation Controls -->
+
             </div>
         </DraggableCanvas>
     </ClientOnly>
 </template>
 
 <script setup lang="ts">
+
 import { gsap } from 'gsap'
 
 // Widget Imports

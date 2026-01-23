@@ -77,9 +77,14 @@ export default defineNuxtConfig({
         css: {
             devSourcemap: true,
         },
+        build: {
+            modulePreload: {
+                polyfill: false
+            }
+        }
     },
     build: {
-        transpile: ['gsap', 'three', '@vueuse/sound']
+        transpile: ['gsap', 'three', '@vueuse/sound', 'lucide-vue-next']
     },
     runtimeConfig: {
         geminiApiKey: process.env.NUXT_GEMINI_API_KEY || ''

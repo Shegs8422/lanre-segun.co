@@ -2,7 +2,8 @@
     <div class="min-h-screen bg-background text-foreground font-sans selection:bg-neutral-800">
 
         <!-- Full Page Initial Loader (Stops FOUC) -->
-        <div v-if="loading" class="fixed inset-0 z-[200] flex items-center justify-center bg-background">
+        <div v-if="loading" class="fixed inset-0 z-200 flex items-center justify-center"
+            style="background-color: #0A0A0A;">
             <div class="flex flex-col items-center gap-6">
                 <div class="relative">
                     <div class="w-16 h-16 rounded-full border-t-2 border-r-2 border-blue-600 animate-spin" />
@@ -91,7 +92,7 @@
                 <div class="h-20 shrink-0 flex items-center px-8 border-b border-border/40">
                     <div class="flex flex-col gap-0.5">
                         <h1 class="text-xl font-display font-black tracking-tight text-foreground">Local CMS</h1>
-                        <span class="text-[10px] uppercase font-bold tracking-widest text-muted-foreground/60">Control
+                        <span class="text-xxs uppercase font-bold tracking-widest text-muted-foreground/60">Control
                             Center</span>
                     </div>
                 </div>
@@ -167,7 +168,7 @@
                     <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
                         <div class="flex flex-col gap-1">
                             <h2 class="text-2xl lg:text-3xl font-bold tracking-tight text-foreground">{{ cmsHeaderTitle
-                                }}</h2>
+                            }}</h2>
                             <p class="text-xs text-muted-foreground font-medium">Manage and curate your {{
                                 activeTabLabel.toLowerCase() }} collection</p>
                         </div>
@@ -242,7 +243,7 @@
                                     </div>
                                     <div class="flex items-center gap-2 text-xs font-medium text-muted-foreground">
                                         <span class="px-2 py-0.5 bg-muted rounded uppercase tracking-wider">{{ item.year
-                                            }}</span>
+                                        }}</span>
                                         <span class="opacity-40">•</span>
                                         <span class="font-mono text-xxs">{{ item.slug }}</span>
                                     </div>
@@ -458,12 +459,8 @@
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                                 <div class="flex flex-col gap-2.5">
-                                    <div class="flex justify-between items-center px-1">
-                                        <label
-                                            class="text-xs font-bold uppercase tracking-wider text-muted-foreground">Tags</label>
-                                        <GeminiButton
-                                            @click="openFieldAiModal('tags', 'Suggest 3-5 relevant tags based on title/content')" />
-                                    </div>
+                                    <label
+                                        class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Tags</label>
                                     <input v-model="tagsInput" type="text" placeholder="Design, Tech, Life..."
                                         class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground font-medium">
                                 </div>
@@ -519,13 +516,9 @@
                             </div>
 
                             <div v-if="activeTab === 'blog'" class="flex flex-col gap-8">
-                                <div class="flex justify-between items-center px-1">
-                                    <label
-                                        class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Excerpt
-                                        (Card Preview)</label>
-                                    <GeminiButton
-                                        @click="openFieldAiModal('excerpt', 'Draft a short, compelling excerpt for this post')" />
-                                </div>
+                                <label
+                                    class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Excerpt
+                                    (Card Preview)</label>
                                 <textarea v-model="formData.excerpt" rows="2" placeholder="Brief summary of the note..."
                                     class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground leading-relaxed" />
                                 <div class="flex flex-col gap-2.5 mt-8">
@@ -642,25 +635,17 @@
                                     <h4 class="text-sm font-bold uppercase tracking-widest text-blue-500">Project
                                         Narrative</h4>
 
-                                    <div class="flex justify-between items-center px-1">
-                                        <label
-                                            class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Project
-                                            Introduction</label>
-                                        <GeminiButton
-                                            @click="openFieldAiModal('content.introduction', 'Write an engaging project introduction')" />
-                                    </div>
+                                    <label
+                                        class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Project
+                                        Introduction</label>
                                     <textarea v-model="formData.content.introduction" rows="3"
                                         placeholder="A brief hook about the project..."
                                         class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed" />
 
                                     <div class="flex flex-col gap-2.5">
-                                        <div class="flex justify-between items-center px-1">
-                                            <label
-                                                class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Problem
-                                                Statement</label>
-                                            <GeminiButton
-                                                @click="openFieldAiModal('problemStatement', 'Define the core problem being solved')" />
-                                        </div>
+                                        <label
+                                            class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Problem
+                                            Statement</label>
                                         <textarea v-model="formData.problemStatement" rows="3"
                                             placeholder="What challenge were we solving?"
                                             class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed" />
@@ -668,37 +653,25 @@
 
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                                         <div class="flex flex-col gap-2.5">
-                                            <div class="flex justify-between items-center px-1">
-                                                <label
-                                                    class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Business
-                                                    Goal</label>
-                                                <GeminiButton
-                                                    @click="openFieldAiModal('businessGoal', 'Draft the business objectives')" />
-                                            </div>
+                                            <label
+                                                class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Business
+                                                Goal</label>
                                             <textarea v-model="formData.businessGoal" rows="2"
                                                 class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed" />
                                         </div>
                                         <div class="flex flex-col gap-2.5">
-                                            <div class="flex justify-between items-center px-1">
-                                                <label
-                                                    class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">User
-                                                    Goal</label>
-                                                <GeminiButton
-                                                    @click="openFieldAiModal('userGoal', 'Draft the user needs/goals')" />
-                                            </div>
+                                            <label
+                                                class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">User
+                                                Goal</label>
                                             <textarea v-model="formData.userGoal" rows="2"
                                                 class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed" />
                                         </div>
                                     </div>
 
                                     <div class="flex flex-col gap-2.5">
-                                        <div class="flex justify-between items-center px-1">
-                                            <label
-                                                class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Design
-                                                Approach</label>
-                                            <GeminiButton
-                                                @click="openFieldAiModal('designApproach', 'Draft the design methodology and approach')" />
-                                        </div>
+                                        <label
+                                            class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Design
+                                            Approach</label>
                                         <textarea v-model="formData.designApproach" rows="3"
                                             class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed" />
                                     </div>
@@ -714,24 +687,16 @@
 
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                                         <div class="flex flex-col gap-2.5">
-                                            <div class="flex justify-between items-center px-1">
-                                                <label
-                                                    class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Research
-                                                    Methods</label>
-                                                <GeminiButton
-                                                    @click="openFieldAiModal('researchMethods', 'List and explain research methods used')" />
-                                            </div>
+                                            <label
+                                                class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Research
+                                                Methods</label>
                                             <textarea v-model="formData.researchMethods" rows="2"
                                                 class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed" />
                                         </div>
                                         <div class="flex flex-col gap-2.5">
-                                            <div class="flex justify-between items-center px-1">
-                                                <label
-                                                    class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Key
-                                                    Insights</label>
-                                                <GeminiButton
-                                                    @click="openFieldAiModal('keyInsights', 'Summarize key user research findings')" />
-                                            </div>
+                                            <label
+                                                class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Key
+                                                Insights</label>
                                             <textarea v-model="formData.keyInsights" rows="2"
                                                 class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed" />
                                         </div>
@@ -781,59 +746,26 @@
                                     </div>
 
                                     <div class="flex flex-col gap-2.5">
-                                        <div class="flex justify-between items-center px-1">
-                                            <label
-                                                class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Solution
-                                                Summary</label>
-                                            <button type="button" class="btn-gemini"
-                                                @click="openFieldAiModal('solutionSummary', 'Summarize the final solution and why it works')">
-                                                <svg class="w-2.5 h-2.5 text-[#C084FC]" viewBox="0 0 24 24"
-                                                    fill="currentColor">
-                                                    <path
-                                                        d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" />
-                                                </svg>
-                                                <span class="text-gemini">Gemini</span>
-                                            </button>
-                                        </div>
+                                        <label
+                                            class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Solution
+                                            Summary</label>
                                         <textarea v-model="formData.solutionSummary" rows="3"
                                             placeholder="Direct response to the problem..."
                                             class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed" />
                                     </div>
 
                                     <div class="flex flex-col gap-2.5">
-                                        <div class="flex justify-between items-center px-1">
-                                            <label
-                                                class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Outcome
-                                                / Conclusion</label>
-                                            <button type="button" class="btn-gemini"
-                                                @click="openFieldAiModal('outcome', 'Write the project impact and conclusion')">
-                                                <svg class="w-2.5 h-2.5 text-[#C084FC]" viewBox="0 0 24 24"
-                                                    fill="currentColor">
-                                                    <path
-                                                        d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" />
-                                                </svg>
-                                                <span class="text-gemini">Gemini</span>
-                                            </button>
-                                        </div>
+                                        <label
+                                            class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Outcome
+                                            / Conclusion</label>
                                         <textarea v-model="formData.outcome" rows="3"
                                             class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed" />
                                     </div>
 
                                     <div class="flex flex-col gap-2.5">
-                                        <div class="flex justify-between items-center px-1">
-                                            <label
-                                                class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Key
-                                                Learnings</label>
-                                            <button type="button" class="btn-gemini"
-                                                @click="openFieldAiModal('learnings', 'Draft the key takeaways and personal growth items')">
-                                                <svg class="w-2.5 h-2.5 text-[#C084FC]" viewBox="0 0 24 24"
-                                                    fill="currentColor">
-                                                    <path
-                                                        d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" />
-                                                </svg>
-                                                <span class="text-gemini">Gemini</span>
-                                            </button>
-                                        </div>
+                                        <label
+                                            class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Key
+                                            Learnings</label>
                                         <textarea v-model="formData.learnings" rows="3"
                                             class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed" />
                                     </div>
@@ -849,13 +781,7 @@
                                                 the step-by-step
                                                 journey of this project (Research, Ideation, etc).</p>
                                         </div>
-                                        <button type="button" class="btn-gemini" @click="openSectionsAiModal">
-                                            <svg class="w-3 h-3 text-[#C084FC]" viewBox="0 0 24 24" fill="currentColor">
-                                                <path
-                                                    d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" />
-                                            </svg>
-                                            <span class="text-gemini">Gemini</span>
-                                        </button>
+                                        <GeminiButton @click="openSectionsAiModal" />
                                     </div>
                                     <ProjectSectionBuilder v-model="formData.content.sections" />
                                 </div>
@@ -1108,6 +1034,15 @@ const activeItems = computed(() => activeTab.value === 'blog' ? blogPosts.value 
 const securitySetup = ref<any>(null)
 
 onMounted(async () => {
+    // Auth check - redirect if not authenticated via cookie
+    const authCookie = useCookie('cms-auth')
+    const isAuthenticated = authCookie.value === 'true'
+
+    if (!isAuthenticated) {
+        await navigateTo('/')
+        return
+    }
+
     try {
         await Promise.all([fetchPosts(), fetchProjects(), fetchGallery()])
 
@@ -1433,7 +1368,7 @@ useSeoMeta({ title: 'CMS Control Center - Lanre Segun', robots: 'noindex, nofoll
 </script>
 
 <style scoped>
-@reference "tailwindcss";
+/* @reference "tailwindcss"; */
 
 .toast-enter-active,
 .toast-leave-active {
@@ -1451,36 +1386,46 @@ useSeoMeta({ title: 'CMS Control Center - Lanre Segun', robots: 'noindex, nofoll
 }
 
 .cms-input {
-    @apply transition-all duration-300 focus:border-blue-500;
+    transition: all 300ms;
     border: 1.5px solid hsl(var(--border) / 0.4);
     background-color: hsl(var(--background) / 0.5);
+}
+
+.cms-input:focus {
+    border-color: #3b82f6;
+    outline: none;
+    box-shadow: 0 0 0 4px hsl(var(--blue-500, 217 91% 60%) / 0.1);
 }
 
 .cms-input:hover {
     background-color: hsl(var(--background));
 }
 
-.cms-input:focus {
-    outline: none;
-    box-shadow: 0 0 0 4px hsl(var(--blue-500, 217 91% 60%) / 0.1);
-}
-
 .btn-gemini-primary {
-    @apply px-6 py-3 rounded-2xl bg-linear-to-r from-[#FF70B8] via-[#C084FC] to-[#70AFFF] text-white text-sm font-black transition-all flex items-center justify-center gap-2;
-    box-shadow: 0 4px 15px rgba(192, 132, 252, 0.2);
+    padding: 0.75rem 1.5rem;
+    border-radius: 1rem;
+    background: linear-gradient(to right, #FF70B8, #C084FC, #70AFFF);
+    color: white;
+    font-size: 0.875rem;
+    font-weight: 900;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
 }
 
 .btn-gemini-primary:hover:not(:disabled) {
-    @apply scale-[1.02];
-    box-shadow: 0 0 25px rgba(192, 132, 252, 0.5);
+    transform: scale(1.02);
 }
 
 .btn-gemini-primary:active:not(:disabled) {
-    @apply scale-95;
+    transform: scale(0.95);
 }
 
 .btn-gemini-primary:disabled {
-    @apply opacity-50 cursor-not-allowed;
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 /* Custom scrollbars without @apply */

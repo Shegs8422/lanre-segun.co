@@ -1,7 +1,7 @@
 <!-- VinylRecord.vue - Interactive album with music playback -->
 <template>
-  <div :class="['select-none w-fit h-fit relative cursor-pointer', classes]" :style="positionStyle"
-    @click="handleClick">
+  <div :class="['select-none w-fit h-fit relative cursor-pointer', classes]" :style="positionStyle" role="button"
+    :aria-label="`Play or pause album: ${album} by ${artist}`" @click="handleClick">
     <div class="relative w-48 h-48">
       <!-- Vinyl Disc (behind cover, rotates when playing) -->
       <div class="relative w-full h-full">
@@ -46,7 +46,7 @@
         class="absolute -bottom-24 left-1/2 -translate-x-1/2 w-max max-w-[200px] z-20 pointer-events-none transition-all duration-300 transform"
         :class="isHovering && !isPlaying ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'">
         <div
-          class="bg-[#1A1A1A] text-white px-4 py-3 rounded-xl shadow-xl flex flex-col items-center border border-white/10">
+          class="bg-tooltip-bg text-white px-4 py-3 rounded-xl shadow-xl flex flex-col items-center border border-white/10">
           <p class="text-sm font-bold text-center leading-tight">{{ album }}</p>
           <p class="text-xs text-white/60 text-center mt-0.5">{{ artist }}</p>
         </div>

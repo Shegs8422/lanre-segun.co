@@ -102,7 +102,7 @@
                     <div v-for="(val, label) in { Client: project.client, Role: project.role, Industry: project.industry, Duration: project.duration, Team: project.teamSize }"
                         :key="label" class="flex flex-col gap-1 meta-item">
                         <span class="text-xxs uppercase tracking-widest text-muted-foreground font-bold">{{ label
-                            }}</span>
+                        }}</span>
                         <span class="text-sm font-medium truncate">{{ val || 'N/A' }}</span>
                     </div>
                 </div>
@@ -224,7 +224,7 @@
                         <div
                             class="w-full aspect-video rounded-3xl overflow-hidden bg-white/5 border border-white/10 group">
                             <img :src="section.image || section.url" loading="lazy"
-                                class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
+                                class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105">
                         </div>
                     </div>
 
@@ -234,7 +234,7 @@
                         <div
                             class="md:col-span-7 aspect-video rounded-2xl overflow-hidden bg-white/5 border border-white/10 group">
                             <img :src="section.image" loading="lazy"
-                                class="w-full h-full object-cover transition-transform group-hover:scale-105" />
+                                class="w-full h-full object-cover transition-transform group-hover:scale-105">
                         </div>
                         <div class="md:col-span-5 flex flex-col gap-6">
                             <div class="text-lg leading-relaxed text-muted-foreground markdown-container"
@@ -252,7 +252,7 @@
                         <div
                             class="md:col-span-7 aspect-video rounded-2xl overflow-hidden bg-white/5 border border-white/10 order-1 md:order-2 group">
                             <img :src="section.image" loading="lazy"
-                                class="w-full h-full object-cover transition-transform group-hover:scale-105" />
+                                class="w-full h-full object-cover transition-transform group-hover:scale-105">
                         </div>
                     </div>
 
@@ -265,7 +265,7 @@
                             <div v-for="(img, i) in (section.images || [])" :key="i"
                                 class="rounded-2xl overflow-hidden bg-white/5 aspect-4/3 border border-white/5 group">
                                 <img :src="img" loading="lazy"
-                                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                             </div>
                         </div>
                     </div>

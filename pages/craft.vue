@@ -1,13 +1,8 @@
 <template>
-    <div class="min-h-screen bg-background text-foreground py-20 px-4 md:px-8 max-w-7xl mx-auto">
+    <div class="min-h-screen bg-background text-foreground py-16 px-4 md:px-8 max-w-7xl mx-auto">
         <!-- Header -->
-        <div class="mb-16">
-            <h1 class="text-4xl md:text-5xl font-bold mb-4">Craft Lab</h1>
-            <p class="text-muted-foreground text-lg max-w-2xl">
-                A collection of interactive components and experiments crafted with Vue, Tailwind, and GSAP.
-                Explore the building blocks of this portfolio.
-            </p>
-        </div>
+        <PageHeader title="Craft Lab"
+            subtitle="A collection of interactive components and experiments crafted with Vue, Tailwind, and GSAP." />
 
         <div class="flex flex-col gap-24">
 

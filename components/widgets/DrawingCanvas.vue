@@ -5,8 +5,9 @@
     <!-- Drawing Canvas -->
     <canvas ref="canvasRef" :class="[
       'absolute inset-0 w-full h-full touch-none cursor-crosshair'
-    ]" @mousedown="startDrawing" @mousemove="draw" @mouseup="stopDrawing" @mouseleave="stopDrawing"
-      @touchstart.prevent="startDrawing" @touchmove.prevent="draw" @touchend.prevent="stopDrawing" />
+    ]" role="img" aria-label="Interactive drawing board. Click and drag to sketch." @mousedown="startDrawing"
+      @mousemove="draw" @mouseup="stopDrawing" @mouseleave="stopDrawing" @touchstart.prevent="startDrawing"
+      @touchmove.prevent="draw" @touchend.prevent="stopDrawing" />
 
     <!-- Toolbar -->
     <div class="absolute bottom-4 right-4 flex flex-col gap-2 items-end z-10">

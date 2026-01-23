@@ -1,5 +1,6 @@
 <template>
-  <div class="absolute select-none pointer-events-auto" :class="classes"
+  <div class="absolute select-none pointer-events-auto" :class="classes" role="button"
+    :aria-label="`View details for book: ${title || 'Untitled'}`"
     :style="{ '--stagger': stagger, perspective: '1200px' }">
     <!-- Book Container -->
     <div class="group relative transition-all duration-500 ease-out hover:-translate-y-6 hover:shadow-2xl"
@@ -12,9 +13,10 @@
 
       <!-- Front Cover (Rotates on Hover) -->
       <div
-        class="absolute inset-0 bg-card rounded-r-sm shadow-md overflow-hidden transition-transform duration-500 origin-left group-hover:rotate-y-[-45deg] z-20"
+        class="absolute inset-0 bg-card rounded-r-sm shadow-md overflow-hidden transition-transform duration-500 origin-left group-hover:-rotate-y-45 z-20"
         style="backface-visibility: hidden; transform-style: preserve-3d;">
-        <img :src="cover" :width="width" :height="height" class="w-full h-full object-cover" alt="Book Cover">
+        <NuxtImg :src="cover" :width="width" :height="height" class="w-full h-full object-cover" alt="Book Cover"
+          quality="85" />
         <!-- Spine Highlight -->
         <div
           class="absolute left-0 top-0 bottom-0 w-[5px] bg-linear-to-r from-white/40 to-transparent pointer-events-none" />

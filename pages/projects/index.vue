@@ -1,23 +1,24 @@
 <template>
     <div class="h-screen w-full bg-background text-foreground overflow-y-auto scroll-smooth scrollbar-none transition-colors duration-300"
         style="scroll-snap-type: y mandatory;">
-        <main class="flex flex-col max-w-3xl mx-auto items-center pt-16 pb-12 px-8 gap-12">
-            <!-- Header Section -->
-            <header class="w-full flex flex-col gap-6 items-center pb-4 shrink-0 scroll-snap-align-start"
-                style="scroll-snap-align: start;">
-                <h1 class="text-3xl font-medium tracking-tight">Projects</h1>
+        <main class="flex flex-col max-w-5xl mx-auto items-center pt-16 pb-12 px-8 gap-12">
+            <!-- Header Section with Snap -->
+            <div class="w-full flex flex-col items-center gap-8 shrink-0 py-12"
+                style="scroll-snap-align: center; min-height: 40vh; justify-content: center;">
+                <PageHeader title="Case Studies" subtitle="Deep dives into complex problems and premium solutions."
+                    class="items-center text-center sm:items-start sm:text-left" />
 
                 <!-- Filter Tabs -->
-                <div class="flex flex-wrap justify-center gap-2">
+                <div class="flex flex-wrap justify-center gap-3">
                     <button v-for="category in categories" :key="category" @click="setCategory(category)"
-                        class="px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 border"
+                        class="px-5 py-2 rounded-full text-xs font-black uppercase tracking-widest transition-all duration-300 border"
                         :class="activeCategory === category
-                            ? 'bg-foreground text-background border-foreground scale-105'
-                            : 'bg-transparent text-muted-foreground border-transparent hover:border-border hover:bg-accent hover:text-foreground'">
+                            ? 'bg-foreground text-background border-foreground scale-105 shadow-xl'
+                            : 'bg-background/50 backdrop-blur-sm text-muted-foreground border-border hover:border-foreground/40 hover:text-foreground'">
                         {{ category }}
                     </button>
                 </div>
-            </header>
+            </div>
 
             <!-- Project List -->
             <TransitionGroup name="list" tag="div" class="w-full flex flex-col gap-24 items-center">

@@ -69,7 +69,7 @@ export const parseMarkdown = (content: string | null | undefined): string => {
                 // Close code block
                 html += `<div class="code-block-container my-8 rounded-2xl border border-border bg-component overflow-hidden shadow-2xl">
                     <div class="flex items-center justify-between px-4 py-2 border-b border-border bg-white/5">
-                        <span class="text-[10px] uppercase tracking-widest font-black text-muted-foreground">Source Code</span>
+                        <span class="text-xxs uppercase tracking-widest font-black text-muted-foreground">Source Code</span>
                         <div class="flex gap-1.5">
                             <div class="w-2 h-2 rounded-full bg-red-500/20"></div>
                             <div class="w-2 h-2 rounded-full bg-yellow-500/20"></div>
@@ -202,5 +202,16 @@ export const parseMarkdown = (content: string | null | undefined): string => {
     }
 
     closeContainers()
-    return html
+    // Basic Sanitization to prevent XSS
+    // Note: A robust solution would use DOMPurify, 
+    // but for local-first/admin-only CMS, this provides a baseline layer.
+    const sanitize = (html: string) => {
+        return html
+            .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '') // Remove scripts
+            .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '') // Remove iframes
+            .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '')   // Remove styles
+            .replace(/on\w+="[^"]*"/g, '')                                       // Remove event handlers
+    }
+
+    return sanitize(html)
 }

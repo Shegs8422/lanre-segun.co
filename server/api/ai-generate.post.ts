@@ -1,6 +1,28 @@
 import { GoogleGenerativeAI } from '@google/generative-ai'
 
+const ipCache = new Map<string, { count: number, reset: number }>()
+
 export default defineEventHandler(async (event) => {
+    // Rate Limiting
+    const ip = getRequestIP(event, { xForwardedFor: true }) || 'unknown'
+    const now = Date.now()
+    const entry = ipCache.get(ip) || { count: 0, reset: now + 60000 }
+
+    if (now > entry.reset) {
+        entry.count = 0
+        entry.reset = now + 60000
+    }
+
+    if (entry.count >= 5) {
+        throw createError({
+            statusCode: 429,
+            statusMessage: 'Too many requests. Please try again in a minute.'
+        })
+    }
+
+    entry.count++
+    ipCache.set(ip, entry)
+
     const config = useRuntimeConfig()
     const body = await readBody(event)
     const { prompt, context, type = 'sections' } = body
