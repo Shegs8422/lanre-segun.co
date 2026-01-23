@@ -48,7 +48,7 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="flex flex-col gap-2">
                                 <label
-                                    class="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground px-1">Layout
+                                    class="text-xxs font-black uppercase tracking-mega text-muted-foreground px-1">Layout
                                     Strategy</label>
                                 <select v-model="section.layout"
                                     class="cms-input bg-background/50 border-2 border-border rounded-xl px-4 py-3 text-sm focus:border-blue-500 outline-none appearance-none cursor-pointer">
@@ -63,10 +63,10 @@
                             <!-- Upload Button Wrapper -->
                             <div v-if="section.layout !== 'text-only'" class="flex flex-col gap-2">
                                 <label
-                                    class="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground px-1">Actions</label>
+                                    class="text-xxs font-black uppercase tracking-mega text-muted-foreground px-1">Actions</label>
                                 <button v-if="['image-full', 'split-left', 'split-right'].includes(section.layout)"
                                     type="button"
-                                    class="flex items-center justify-center gap-2 py-3 px-4 rounded-xl border-2 border-dashed border-border hover:border-blue-500 hover:bg-blue-500/5 transition-all text-[10px] font-black uppercase tracking-widest text-muted-foreground hover:text-blue-500"
+                                    class="flex items-center justify-center gap-2 py-3 px-4 rounded-xl border-2 border-dashed border-border hover:border-blue-500 hover:bg-blue-500/5 transition-all text-xxs font-black uppercase tracking-widest text-muted-foreground hover:text-blue-500"
                                     @click="triggerUpload(index)">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
@@ -76,7 +76,7 @@
                                     {{ section.image ? 'Change Asset' : 'Upload Asset' }}
                                 </button>
                                 <button v-else-if="section.layout === 'grid'" type="button"
-                                    class="flex items-center justify-center gap-2 py-3 px-4 rounded-xl border-2 border-dashed border-border hover:border-blue-500 hover:bg-blue-500/5 transition-all text-[10px] font-black uppercase tracking-widest text-muted-foreground hover:text-blue-500"
+                                    class="flex items-center justify-center gap-2 py-3 px-4 rounded-xl border-2 border-dashed border-border hover:border-blue-500 hover:bg-blue-500/5 transition-all text-xxs font-black uppercase tracking-widest text-muted-foreground hover:text-blue-500"
                                     @click="triggerGridUpload(index)">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
@@ -96,11 +96,11 @@
                         <div v-if="section.layout !== 'text-only'" class="flex flex-col gap-4">
                             <input v-if="['image-full', 'split-left', 'split-right'].includes(section.layout)"
                                 v-model="section.image" type="text" placeholder="External Asset URL..."
-                                class="cms-input bg-background/50 border-2 border-border rounded-xl px-4 py-2 text-[10px] font-mono focus:border-blue-500 outline-none w-full">
+                                class="cms-input bg-background/50 border-2 border-border rounded-xl px-4 py-2 text-xxs font-mono focus:border-blue-500 outline-none w-full">
 
                             <textarea v-if="section.layout === 'grid'" v-model="section.gridInput" rows="3"
                                 placeholder="Grid Image URLs (one per line)..."
-                                class="cms-input bg-background/50 border-2 border-border rounded-xl px-4 py-3 text-[10px] font-mono focus:border-blue-500 outline-none resize-none shadow-inner w-full"
+                                class="cms-input bg-background/50 border-2 border-border rounded-xl px-4 py-3 text-xxs font-mono focus:border-blue-500 outline-none resize-none shadow-inner w-full"
                                 @input="updateGrid(index)" />
                         </div>
 
@@ -111,8 +111,7 @@
                             <div v-if="['image-full', 'split-left', 'split-right'].includes(section.layout) && section.image"
                                 class="relative w-28 h-28 rounded-xl overflow-hidden border-2 border-border hover:border-blue-500 transition-all cursor-pointer group/thumb shadow-md"
                                 @click="openCarousel([section.image], 0)">
-                                <img :src="section.image"
-                                    class="w-full h-full object-cover transition-transform group-hover/thumb:scale-110">
+                                <img :src="section.image" class="w-full h-full object-cover transition-transform">
                                 <div
                                     class="absolute inset-0 bg-black/40 opacity-0 group-hover/thumb:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[1px]">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -131,8 +130,7 @@
                                 <div v-for="(img, imgIdx) in section.images" :key="imgIdx"
                                     class="relative w-28 h-28 rounded-xl overflow-hidden border-2 border-border hover:border-blue-500 transition-all cursor-pointer group/thumb shadow-md"
                                     @click="openCarousel(section.images, Number(imgIdx))">
-                                    <img :src="img"
-                                        class="w-full h-full object-cover transition-transform group-hover/thumb:scale-110">
+                                    <img :src="img" class="w-full h-full object-cover transition-transform">
                                     <div
                                         class="absolute inset-0 bg-black/40 opacity-0 group-hover/thumb:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[1px]">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -145,7 +143,7 @@
                                         </svg>
                                     </div>
                                     <button
-                                        class="absolute top-2 right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover/thumb:opacity-100 transition-all hover:scale-110 shadow-lg"
+                                        class="absolute top-2 right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover/thumb:opacity-100 transition-all shadow-lg"
                                         @click.stop="removeGridImage(index, Number(imgIdx))">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
@@ -160,7 +158,7 @@
                         <!-- Narrative Content -->
                         <div class="flex flex-col gap-2">
                             <label
-                                class="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground px-1">Narrative
+                                class="text-xxs font-black uppercase tracking-mega text-muted-foreground px-1">Narrative
                                 Content</label>
                             <textarea v-model="section.content" rows="6" placeholder="Type the story for this step..."
                                 class="cms-input bg-background/50 border-2 border-border rounded-2xl px-6 py-5 text-sm focus:border-blue-500 outline-none resize-none leading-relaxed shadow-inner" />
@@ -171,7 +169,7 @@
         </div>
 
         <button type="button"
-            class="w-full py-8 border-2 border-dashed border-border/50 rounded-[2.5rem] text-muted-foreground font-black uppercase tracking-[0.2em] text-[12px] hover:border-blue-500 hover:text-blue-500 hover:bg-blue-500/5 transition-all flex items-center justify-center gap-4 group active:scale-[0.98]"
+            class="w-full py-8 border-2 border-dashed border-border/50 rounded-[2.5rem] text-muted-foreground font-black uppercase tracking-mega text-[12px] hover:border-blue-500 hover:text-blue-500 hover:bg-blue-500/5 transition-all flex items-center justify-center gap-4 group active:scale-[0.98]"
             @click="add">
             <div
                 class="w-12 h-12 rounded-2xl bg-muted/50 flex items-center justify-center group-hover:bg-blue-500 group-hover:text-white transition-all transform group-hover:rotate-90">

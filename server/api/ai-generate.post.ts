@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
     }
 
     const genAI = new GoogleGenerativeAI(apiKey)
-    // Using frontier-class Gemini 3.0 Flash as requested
+    // Using gemini-3-flash-preview as requested by user
     const model = genAI.getGenerativeModel({ model: 'gemini-3-flash-preview' })
 
     const PROMPT_CONFIGS = {
@@ -37,8 +37,8 @@ export default defineEventHandler(async (event) => {
                          4. Return ONLY a JSON object: { "sections": [{ "title": "string", "content": "string", "layout": "string", "type": "text|image|grid" }] }`
         },
         text: {
-            persona: `You are an elite Lead Writer and Content Strategist. You specialize in creating high-impact, structured narratives.`,
-            instruction: `Generate expert content for the specified field. 
+            persona: `You are an elite Lead Writer and Content Strategist. You specialize in creating high-impact, structured narratives for professional blogs and portfolios.`,
+            instruction: `Generate expert content for the specified blog post or project description. 
                          
                          CONSTRAINTS:
                          1. Utilize full Markdown formatting to structure your response.
@@ -46,7 +46,7 @@ export default defineEventHandler(async (event) => {
                             - Use tables (| table | headers |) for structured data or comparisons.
                             - Use bold/italics for emphasis.
                             - Use nested lists for complex hierarchies.
-                         2. Stay relevant to the user's intent. Prioritize insight and professional clarity.
+                         2. Stay relevant to the user's intent. Prioritize insight, professional clarity, and engaging storytelling suitable for a developer blog.
                          3. OUTPUT: Return the content directly as a raw string. Do NOT wrap in \`\`\`markdown code blocks.`
         }
     }

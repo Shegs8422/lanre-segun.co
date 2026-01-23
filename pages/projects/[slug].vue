@@ -1,6 +1,6 @@
 <template>
     <div ref="containerRef" @scroll="handleScroll"
-        class="fixed inset-0 bg-background text-foreground overflow-y-auto scroll-smooth scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent z-50 project-page-container">
+        class="fixed inset-0 bg-background text-foreground overflow-y-auto scroll-smooth scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent z-50 project-page-container overscroll-x-none">
 
         <!-- Reading Progress Bar -->
         <div v-show="!isPreloading"
@@ -68,7 +68,7 @@
                     <button v-if="project.projectLink"
                         class="w-fit flex items-center gap-2 px-6 py-2 rounded-full bg-blue-600 hover:bg-blue-500 transition-colors text-sm font-bold text-white shadow-lg shadow-blue-500/20"
                         @click="handleProjectLink">
-                        {{ project.isFigma ? 'View File Preview' : 'See Live Project' }}
+                        {{ isFigmaLink ? 'View File Preview' : 'See Live Project' }}
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
@@ -111,9 +111,8 @@
             <!-- Hero Image -->
             <div
                 class="w-full aspect-video rounded-3xl overflow-hidden shadow-2xl bg-white/5 relative group hero-image-container">
-                <NuxtImage v-if="project.coverImage || project.content?.heroImage"
-                    :src="project.coverImage || project.content?.heroImage" :alt="project.title" format="webp"
-                    placeholder
+                <img v-if="project.coverImage || project.content?.heroImage"
+                    :src="project.coverImage || project.content?.heroImage" :alt="project.title"
                     class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 hero-image-parallax" />
                 <div class="absolute inset-0 bg-linear-to-t from-black/40 to-transparent" />
             </div>
@@ -179,7 +178,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div v-for="(img, i) in project.wireframes" :key="i"
                         class="rounded-2xl overflow-hidden bg-white/5 aspect-16/10 border border-white/5 group">
-                        <NuxtImage :src="img" format="webp" loading="lazy"
+                        <img :src="img" loading="lazy"
                             class="w-full h-full object-cover transition-transform group-hover:scale-105" />
                     </div>
                 </div>
@@ -194,7 +193,7 @@
                 <div class="flex flex-col gap-12">
                     <div v-for="(img, i) in project.finalDesigns" :key="i"
                         class="rounded-3xl overflow-hidden bg-white/5 border border-white/10 group">
-                        <NuxtImage :src="img" format="webp" loading="lazy"
+                        <img :src="img" loading="lazy"
                             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.02]" />
                     </div>
                 </div>
@@ -224,7 +223,7 @@
                             v-html="parseMarkdown(section.content)" />
                         <div
                             class="w-full aspect-video rounded-3xl overflow-hidden bg-white/5 border border-white/10 group">
-                            <NuxtImage :src="section.image || section.url" format="webp" loading="lazy"
+                            <img :src="section.image || section.url" loading="lazy"
                                 class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
                         </div>
                     </div>
@@ -234,7 +233,7 @@
                         class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
                         <div
                             class="md:col-span-7 aspect-video rounded-2xl overflow-hidden bg-white/5 border border-white/10 group">
-                            <NuxtImage :src="section.image" format="webp" loading="lazy"
+                            <img :src="section.image" loading="lazy"
                                 class="w-full h-full object-cover transition-transform group-hover:scale-105" />
                         </div>
                         <div class="md:col-span-5 flex flex-col gap-6">
@@ -252,7 +251,7 @@
                         </div>
                         <div
                             class="md:col-span-7 aspect-video rounded-2xl overflow-hidden bg-white/5 border border-white/10 order-1 md:order-2 group">
-                            <NuxtImage :src="section.image" format="webp" loading="lazy"
+                            <img :src="section.image" loading="lazy"
                                 class="w-full h-full object-cover transition-transform group-hover:scale-105" />
                         </div>
                     </div>
@@ -265,7 +264,7 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <div v-for="(img, i) in (section.images || [])" :key="i"
                                 class="rounded-2xl overflow-hidden bg-white/5 aspect-4/3 border border-white/5 group">
-                                <NuxtImage :src="img" format="webp" loading="lazy"
+                                <img :src="img" loading="lazy"
                                     class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                             </div>
                         </div>
@@ -356,7 +355,7 @@
                         <div class="flex items-center justify-between p-6 border-b border-white/5 bg-tooltip-bg">
                             <div class="flex flex-col">
                                 <h3 class="text-lg font-bold text-white uppercase tracking-tighter">{{ project.title }}
-                                    {{ project.isFigma ? 'Design Feed' : 'Session' }}</h3>
+                                    {{ isFigmaLink ? 'Design Feed' : 'Session' }}</h3>
                                 <p class="text-xxs text-white/40 uppercase tracking-widest">Interactive Cloud Preview
                                 </p>
                             </div>
@@ -550,6 +549,12 @@ onMounted(() => {
 })
 
 // Link Processing
+const isFigmaLink = computed(() => {
+    if (!project.value) return false
+    if (project.value.isFigma) return true
+    return (project.value.projectLink || '').includes('figma.com')
+})
+
 const formattedLink = computed(() => {
     let raw = project.value?.projectLink || ''
     if (!raw) return ''
@@ -568,9 +573,9 @@ const formattedLink = computed(() => {
     }
 
     // 2. Figma-specific embedding logic
-    if (project.value?.isFigma) {
+    if (isFigmaLink.value) {
         const isFigmaURL = link.includes('figma.com')
-        const isEmbedURL = link.includes('/embed') || link.includes('embed?')
+        const isEmbedURL = link.includes('/embed') || link.includes('embed?') || link.includes('embed.figma.com')
 
         if (isFigmaURL && !isEmbedURL) {
             // Clean common link noise before encoding to be safe
@@ -583,7 +588,7 @@ const formattedLink = computed(() => {
 
 const handleProjectLink = () => {
     if (!project.value?.projectLink) return
-    if (project.value.isFigma) {
+    if (isFigmaLink.value) {
         showPrototype.value = true
     } else {
         window.open(formattedLink.value, '_blank')

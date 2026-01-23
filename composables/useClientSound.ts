@@ -128,13 +128,19 @@ export const useClientSound = (src: string, options: UseSoundOptions = {}) => {
     }
   })
 
+  const load = () => {
+    if (!sound.value) createSoundInstance()
+  }
+
   return {
     play,
     stop,
     pause,
+    load,
     setVolume,
     isPlaying,
     duration,
     sound
   }
 }
+

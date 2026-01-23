@@ -116,7 +116,10 @@ const audioControls = props.musicFile ? useClientSound(props.musicFile, {
 const handleHover = () => {
   if (!isPlaying.value) {
     isHovering.value = true
-    // Optional: could hint lazy load here if desired, but click is fine
+    // Lazy load audio on hover for instant playback click
+    if (audioControls && audioControls.load) {
+      audioControls.load()
+    }
   }
 }
 

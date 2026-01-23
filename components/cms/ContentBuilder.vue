@@ -1,96 +1,118 @@
 <template>
-    <div class="flex flex-col gap-8">
-        <!-- Block List -->
-        <div v-for="(block, index) in blocks" :key="block.id"
-            class="group relative bg-component border border-border rounded-xl p-4 transition-all hover:border-blue-500/30">
-
-            <!-- Block Controls (Top Right) -->
+    <div class="flex flex-col gap-4 max-w-3xl mx-auto py-12">
+        <!-- New Block Inserter (Start) -->
+        <div class="relative group/inserter h-8 -mt-4 mb-4 flex items-center justify-center">
             <div
-                class="absolute right-2 top-2 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity bg-background/80 backdrop-blur rounded-lg p-1 border border-border shadow-sm">
-                <button type="button" :disabled="index === 0"
-                    class="p-1.5 hover:bg-muted rounded text-muted-foreground hover:text-foreground disabled:opacity-30 transition-colors"
-                    @click="moveBlock(index, -1)">
-                    <ArrowUp :size="16" />
-                </button>
-                <button type="button" :disabled="index === blocks.length - 1"
-                    class="p-1.5 hover:bg-muted rounded text-muted-foreground hover:text-foreground disabled:opacity-30 transition-colors"
-                    @click="moveBlock(index, 1)">
-                    <ArrowDown :size="16" />
-                </button>
-                <div class="w-px h-3 bg-border mx-0.5" />
-                <button type="button"
-                    class="p-1.5 hover:bg-red-500/10 rounded text-muted-foreground hover:text-red-500 transition-colors"
-                    title="Remove Section" @click="removeBlock(index)">
-                    <X :size="16" />
-                </button>
-            </div>
+                class="absolute inset-x-0 h-px bg-border/50 opacity-0 group-hover/inserter:opacity-100 transition-opacity" />
+            <button type="button"
+                class="relative w-8 h-8 rounded-full bg-component border border-border shadow-sm flex items-center justify-center text-muted-foreground hover:text-blue-500 hover:border-blue-500 hover:scale-110 transition-all opacity-0 group-hover/inserter:opacity-100"
+                @click="addBlockAt(0)">
+                <Plus :size="16" />
+            </button>
+        </div>
 
-            <!-- Text Block -->
-            <div v-if="block.type === 'text'" class="flex flex-col gap-3">
-                <label
-                    class="text-[10px] font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2">
-                    <Type :size="14" />
-                    Text Section
-                </label>
+        <!-- Block List -->
+        <template v-for="(block, index) in blocks" :key="block.id">
+            <div
+                class="group relative bg-transparent transition-all border-l-2 border-transparent hover:border-blue-500/20 px-6 py-4">
 
-                <input v-model="block.heading" type="text" placeholder="Section Heading (Optional)"
-                    class="w-full bg-transparent text-lg font-bold placeholder:text-muted-foreground/50 border-none outline-none focus:ring-0 p-0 text-foreground"
-                    @input="emitUpdate">
-
-                <textarea v-model="block.body" rows="4" placeholder="Type your content here..."
-                    class="w-full bg-muted/30 rounded-lg p-3 text-sm leading-relaxed border border-transparent focus:border-border outline-none resize-y transition-colors min-h-[100px]"
-                    @input="emitUpdate" />
-            </div>
-
-            <!-- Image Block -->
-            <div v-else-if="block.type === 'image'" class="flex flex-col gap-3">
-                <label
-                    class="text-[10px] font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2">
-                    <ImageIcon :size="14" />
-                    Image Section
-                </label>
-
-                <div v-if="block.url" class="relative rounded-lg overflow-hidden border border-border group/image">
-                    <img :src="block.url" class="w-full max-h-[300px] object-cover bg-muted/50" alt="Section Image">
+                <!-- Block Controls (Far Left) -->
+                <div
+                    class="absolute -left-12 top-1/2 -translate-y-1/2 flex flex-col items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button type="button" :disabled="index === 0"
+                        class="p-1.5 hover:bg-muted rounded text-muted-foreground hover:text-foreground disabled:opacity-30 transition-colors"
+                        @click="moveBlock(index, -1)">
+                        <ArrowUp :size="14" />
+                    </button>
+                    <button type="button" :disabled="index === blocks.length - 1"
+                        class="p-1.5 hover:bg-muted rounded text-muted-foreground hover:text-foreground disabled:opacity-30 transition-colors"
+                        @click="moveBlock(index, 1)">
+                        <ArrowDown :size="14" />
+                    </button>
                     <button type="button"
-                        class="absolute top-2 right-2 p-2 bg-black/50 text-white rounded-lg opacity-0 group-hover/image:opacity-100 transition-opacity hover:bg-black/70"
-                        @click="block.url = ''; emitUpdate()">
-                        <Pencil :size="14" />
+                        class="p-1.5 hover:bg-red-500/10 rounded text-muted-foreground hover:text-red-500 transition-colors"
+                        title="Remove Section" @click="removeBlock(index)">
+                        <X :size="14" />
                     </button>
                 </div>
 
-                <div v-else
-                    class="border-2 border-dashed border-border rounded-lg p-8 flex flex-col items-center justify-center gap-2 text-muted-foreground hover:border-blue-500/50 hover:bg-blue-500/5 transition-all cursor-pointer"
-                    @click="triggerImageUpload(index)">
-                    <ImagePlus :size="32" class="opacity-50" />
-                    <span class="text-xs font-bold uppercase">Upload Image</span>
-                    <input :ref="el => fileInputs[index] = el" type="file" class="hidden" accept="image/*"
-                        @change="e => handleImageUpload(e, index)">
+                <!-- Text Block -->
+                <div v-if="block.type === 'text'" class="flex flex-col gap-4">
+                    <input v-model="block.heading" type="text" placeholder="Section Heading (Optional)"
+                        class="w-full bg-transparent text-2xl font-bold placeholder:text-muted-foreground/30 border-none outline-none focus:ring-0 p-0 text-foreground leading-tight"
+                        @input="emitUpdate">
+
+                    <textarea v-model="block.body" rows="1" placeholder="Type your content here..."
+                        class="w-full bg-transparent text-lg leading-relaxed placeholder:text-muted-foreground/30 border-none outline-none focus:ring-0 p-0 text-foreground/90 resize-none overflow-hidden min-h-[1.5em]"
+                        @input="autoResizeTextarea($event); emitUpdate()" @focus="autoResizeTextarea($event)" />
+                </div>
+
+                <!-- Image Block -->
+                <div v-else-if="block.type === 'image'" class="flex flex-col gap-4">
+                    <div v-if="block.url" class="relative group/image">
+                        <div class="rounded-xl overflow-hidden border border-border/50 bg-muted/30">
+                            <img :src="block.url" class="w-full object-cover" alt="Section Image">
+                        </div>
+                        <button type="button"
+                            class="absolute top-4 right-4 p-2 bg-background/80 backdrop-blur-md text-foreground rounded-full border border-border shadow-lg opacity-0 group-hover/image:opacity-100 transition-opacity hover:bg-blue-500 hover:text-white"
+                            @click="block.url = ''; emitUpdate()">
+                            <Pencil :size="14" />
+                        </button>
+
+                        <!-- Caption Input -->
+                        <input v-model="block.caption" type="text" placeholder="Add a caption..."
+                            class="w-full text-center text-sm text-muted-foreground mt-4 italic bg-transparent border-none outline-none focus:ring-0 p-0"
+                            @input="emitUpdate">
+                    </div>
+
+                    <div v-else
+                        class="border-2 border-dashed border-border/50 rounded-2xl p-12 flex flex-col items-center justify-center gap-4 text-muted-foreground hover:border-blue-500/50 hover:bg-blue-500/5 transition-all cursor-pointer group/upload"
+                        @click="triggerImageUpload(index)">
+                        <div
+                            class="w-16 h-16 rounded-full bg-muted flex items-center justify-center group-hover/upload:scale-110 transition-transform">
+                            <ImagePlus :size="32" class="opacity-50" />
+                        </div>
+                        <div class="flex flex-col items-center gap-1">
+                            <span class="text-sm font-bold text-foreground">Click to upload image</span>
+                            <span class="text-xs">Supports JPG, PNG, WebP. Recommended width 1200px+.</span>
+                        </div>
+                        <input :ref="el => fileInputs[index] = el" type="file" class="hidden" accept="image/*"
+                            @change="e => handleImageUpload(e, index)">
+                    </div>
                 </div>
             </div>
 
-        </div>
+            <!-- Contextual Inserter between blocks -->
+            <div class="relative group/inserter h-8 flex items-center justify-center">
+                <div
+                    class="absolute inset-x-0 h-px bg-border/50 opacity-0 group-hover/inserter:opacity-100 transition-opacity" />
+                <button type="button"
+                    class="relative w-8 h-8 rounded-full bg-component border border-border shadow-sm flex items-center justify-center text-muted-foreground hover:text-blue-500 hover:border-blue-500 hover:scale-110 transition-all opacity-0 group-hover/inserter:opacity-100"
+                    @click="addBlockAt(index + 1)">
+                    <Plus :size="16" />
+                </button>
+            </div>
+        </template>
 
-        <!-- Empty State / Add Buttons -->
-        <div class="flex gap-4">
-            <button type="button"
-                class="flex-1 py-4 border-2 border-dashed border-border rounded-xl text-muted-foreground font-bold hover:border-blue-500 hover:text-blue-500 hover:bg-blue-500/5 transition-all flex items-center justify-center gap-2 group"
-                @click="addBlock('text')">
-                <FileText class="group-active:scale-90 transition-transform" :size="20" />
-                Add Text
+        <!-- Dynamic Insertion Menu (Overlay) -->
+        <div v-if="showInserter" :style="{ top: inserterY + 'px' }"
+            class="fixed left-1/2 -translate-x-1/2 z-200 bg-component border border-border shadow-2xl rounded-2xl p-2 flex gap-2 animate-in fade-in zoom-in duration-200">
+            <button @click="insertBlock('text')"
+                class="flex items-center gap-2 px-4 py-2 hover:bg-muted rounded-xl transition-colors text-sm font-bold">
+                <FileText :size="16" class="text-blue-500" />
+                Text
             </button>
-            <button type="button"
-                class="flex-1 py-4 border-2 border-dashed border-border rounded-xl text-muted-foreground font-bold hover:border-blue-500 hover:text-blue-500 hover:bg-blue-500/5 transition-all flex items-center justify-center gap-2 group"
-                @click="addBlock('image')">
-                <ImagePlus class="group-active:scale-90 transition-transform" :size="20" />
-                Add Image
+            <button @click="insertBlock('image')"
+                class="flex items-center gap-2 px-4 py-2 hover:bg-muted rounded-xl transition-colors text-sm font-bold">
+                <ImageIcon :size="16" class="text-emerald-500" />
+                Image
             </button>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { ArrowUp, ArrowDown, X, Type, ImageIcon, Pencil, ImagePlus, FileText } from 'lucide-vue-next'
+import { ArrowUp, ArrowDown, X, ImageIcon, Pencil, ImagePlus, FileText, Plus } from 'lucide-vue-next'
 
 interface Block {
     id: string
@@ -98,6 +120,7 @@ interface Block {
     heading?: string
     body?: string
     url?: string
+    caption?: string
 }
 
 const props = defineProps<{
@@ -107,68 +130,87 @@ const props = defineProps<{
 const emit = defineEmits(['update:modelValue'])
 const supabase = useSupabaseClient()
 
-// Initialize blocks from HTML string or start empty
-const initializeBlocks = (htmlValue: string): Block[] => {
-    if (!htmlValue) return []
+// Inserter State
+const showInserter = ref(false)
+const inserterY = ref(0)
+const insertIndex = ref(0)
 
-    // Simple parser: try to break down sections
+const addBlockAt = (index: number) => {
+    insertIndex.value = index
+    showInserter.value = true
+    // We could calculate Y position but fixed center is simpler for now
+}
+
+const insertBlock = (type: 'text' | 'image') => {
+    const newBlock: Block = {
+        id: Math.random().toString(36).substr(2, 9),
+        type,
+        heading: '',
+        body: '',
+        url: '',
+        caption: ''
+    }
+    blocks.value.splice(insertIndex.value, 0, newBlock)
+    showInserter.value = false
+    emitUpdate()
+}
+
+// Auto-resize textarea
+const autoResizeTextarea = (event: any) => {
+    const element = event.target || event
+    if (element) {
+        element.style.height = 'auto'
+        element.style.height = element.scrollHeight + 'px'
+    }
+}
+
+// Initialize blocks from HTML string
+const initializeBlocks = (htmlValue: string): Block[] => {
+    if (!htmlValue) return [{ id: 'init', type: 'text', body: '' }]
+
     const blocksArr: Block[] = []
 
-    // Very basic extraction of sections
-    const sectionRegex = /<section[^>]*>([\s\S]*?)<\/section>/g
-    let match
-    // const lastIndex = 0
+    // Improved parser (Basic implementation)
+    // In a real app we'd use a proper HTML parser library
+    const wrapper = document.createElement('div')
+    wrapper.innerHTML = htmlValue
 
-    while ((match = sectionRegex.exec(htmlValue)) !== null) {
-        const content = match[1] || ''
-        const headingMatch = content.match(/<h2[^>]*>(.*?)<\/h2>/)
-        const heading = headingMatch ? (headingMatch[1] || '') : ''
-
-        // Remove heading from content to get body
-        let body = content.replace(/<h2[^>]*>.*?<\/h2>/, '')
-        // Convert <p> tags back to newlines for editing
-        body = body.replace(/<p[^>]*>(.*?)<\/p>/g, '$1\n\n').trim()
-
-        blocksArr.push({
-            id: Math.random().toString(36).substr(2, 9),
-            type: 'text',
-            heading,
-            body
-        })
-        // lastIndex = sectionRegex.lastIndex
+    const sections = wrapper.querySelectorAll('section, figure')
+    if (sections.length === 0 && htmlValue) {
+        // Fallback for raw content
+        blocksArr.push({ id: Math.random().toString(36).substr(2, 9), type: 'text', body: htmlValue })
     }
 
-    // Handle figure/images
-    const figureRegex = /<figure[^>]*>[\s\S]*?src="(.*?)"[\s\S]*?<\/figure>/g
-    while ((match = figureRegex.exec(htmlValue)) !== null) {
-        if (match[1]) {
+    sections.forEach(el => {
+        if (el.tagName === 'SECTION') {
+            const h2 = el.querySelector('h2')
+            const content = el.innerHTML.replace(/<h2[^>]*>.*?<\/h2>/, '').trim()
             blocksArr.push({
                 id: Math.random().toString(36).substr(2, 9),
-                type: 'image',
-                url: match[1]
+                type: 'text',
+                heading: h2?.innerText || '',
+                body: content.replace(/<p[^>]*>(.*?)<\/p>/g, '$1\n\n').replace(/<br\s*\/?>/g, '\n').replace(/<[^>]+>/g, '').trim()
             })
+        } else if (el.tagName === 'FIGURE') {
+            const img = el.querySelector('img')
+            const figcaption = el.querySelector('figcaption')
+            if (img) {
+                blocksArr.push({
+                    id: Math.random().toString(36).substr(2, 9),
+                    type: 'image',
+                    url: img.getAttribute('src') || '',
+                    caption: figcaption?.innerText || ''
+                })
+            }
         }
-    }
+    })
 
-    // If still empty but we have content, it's probably legacy or raw text
-    if (blocksArr.length === 0 && htmlValue) {
-        blocksArr.push({
-            id: Math.random().toString(36).substr(2, 9),
-            type: 'text',
-            heading: 'AI Draft/Imported Content',
-            body: htmlValue.replace(/<[^>]+>/g, '\n\n').trim() // Simple strip tags
-        })
-    }
-
-    return blocksArr
+    return blocksArr.length > 0 ? blocksArr : [{ id: 'init', type: 'text', body: '' }]
 }
 
 const blocks = ref<Block[]>(initializeBlocks(props.modelValue))
 
-// Watch for external updates (like from AI)
 watch(() => props.modelValue, (newVal) => {
-    // Only update if it's different from our current internal state
-    // We do a simple comparison to avoid selection jumping/racing
     if (newVal && newVal !== serializeCurrentBlocks()) {
         blocks.value = initializeBlocks(newVal)
     }
@@ -178,44 +220,45 @@ const serializeCurrentBlocks = () => {
     let html = ''
     blocks.value.forEach(block => {
         if (block.type === 'text') {
+            if (!block.heading && !block.body) return
             html += `<section class="mb-12">`
             if (block.heading) {
-                html += `<h2 class="text-2xl font-bold mb-4 text-foreground">${block.heading}</h2>`
+                html += `<h2 class="text-3xl font-bold mb-6 text-foreground tracking-tight">${block.heading}</h2>`
             }
             if (block.body) {
-                html += parseMarkdown(block.body)
+                // Convert newlines to paragraphs
+                const paragraphs = block.body.split('\n\n').filter(p => p.trim())
+                paragraphs.forEach(p => {
+                    html += `<p class="text-lg leading-relaxed text-foreground/80 mb-6">${p.trim().replace(/\n/g, '<br>')}</p>`
+                })
             }
             html += `</section>`
         } else if (block.type === 'image' && block.url) {
-            html += `<figure class="my-12">
-                <img src="${block.url}" class="w-full rounded-2xl border border-border shadow-2xl" alt="Section Image" loading="lazy">
-            </figure>`
+            html += `<figure class="my-16 flex flex-col items-center">
+                <img src="${block.url}" class="w-full rounded-2xl border border-border shadow-2xl transition-all" alt="Blog Illustration" loading="lazy">`
+            if (block.caption) {
+                html += `<figcaption class="mt-4 text-sm text-muted-foreground italic font-medium">${block.caption}</figcaption>`
+            }
+            html += `</figure>`
         }
     })
     return html
 }
-const fileInputs = ref<any>({})
 
-const addBlock = (type: 'text' | 'image') => {
-    blocks.value.push({
-        id: Math.random().toString(36).substr(2, 9),
-        type,
-        heading: '',
-        body: '',
-        url: ''
-    })
-    emitUpdate()
-}
+const fileInputs = ref<any>({})
 
 const removeBlock = (index: number) => {
     blocks.value.splice(index, 1)
+    if (blocks.value.length === 0) {
+        addBlockAt(0)
+    }
     emitUpdate()
 }
 
 const moveBlock = (index: number, direction: number) => {
     const newIndex = index + direction
     if (newIndex >= 0 && newIndex < blocks.value.length) {
-        const removedItem = blocks.value.splice(index, 1)[0]
+        const [removedItem] = blocks.value.splice(index, 1)
         if (removedItem) {
             blocks.value.splice(newIndex, 0, removedItem)
             emitUpdate()
@@ -249,11 +292,25 @@ const handleImageUpload = async (event: Event, index: number) => {
         }
     } catch (e) {
         console.error('Upload failed', e)
-        alert('Upload failed')
     }
 }
 
 const emitUpdate = () => {
     emit('update:modelValue', serializeCurrentBlocks())
 }
+
+// Close inserter on click outside
+if (import.meta.client) {
+    window.addEventListener('click', (e: any) => {
+        if (showInserter.value && !e.target.closest('.group\\/inserter') && !e.target.closest('.fixed')) {
+            showInserter.value = false
+        }
+    })
+}
 </script>
+
+<style scoped>
+textarea {
+    transition: height 0.1s ease-out;
+}
+</style>

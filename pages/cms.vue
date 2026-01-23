@@ -2,7 +2,7 @@
     <div class="min-h-screen bg-background text-foreground font-sans selection:bg-neutral-800">
 
         <!-- Full Page Initial Loader (Stops FOUC) -->
-        <div v-if="loading" class="fixed inset-0 z-200 flex items-center justify-center bg-background">
+        <div v-if="loading" class="fixed inset-0 z-[200] flex items-center justify-center bg-background">
             <div class="flex flex-col items-center gap-6">
                 <div class="relative">
                     <div class="w-16 h-16 rounded-full border-t-2 border-r-2 border-blue-600 animate-spin" />
@@ -14,7 +14,7 @@
                 </div>
                 <div class="flex flex-col items-center gap-1">
                     <p class="text-[11px] font-black uppercase tracking-[0.4em] text-foreground/80">Synchronizing</p>
-                    <p class="text-[9px] font-bold uppercase tracking-[0.2em] text-muted-foreground/60">CMS Control
+                    <p class="text-[9px] font-bold uppercase tracking-mega text-muted-foreground/60">CMS Control
                         Center</p>
                 </div>
             </div>
@@ -22,27 +22,23 @@
 
         <!-- Toast Notification -->
         <Transition name="toast">
-            <div
-v-if="toast.show"
+            <div v-if="toast.show"
                 class="fixed top-20 lg:top-6 right-6 z-200 flex items-center gap-3 px-6 py-4 rounded-xl shadow-2xl border backdrop-blur-md min-w-[300px] lg:min-w-[320px]"
                 :class="toastClasses">
                 <div class="shrink-0">
-                    <svg
-v-if="toast.type === 'success'" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                    <svg v-if="toast.type === 'success'" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
                         stroke-linejoin="round">
                         <polyline points="20 6 9 17 4 12" />
                     </svg>
-                    <svg
-v-else-if="toast.type === 'error'" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                    <svg v-else-if="toast.type === 'error'" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
                         stroke-linejoin="round">
                         <circle cx="12" cy="12" r="10" />
                         <line x1="15" y1="9" x2="9" y2="15" />
                         <line x1="9" y1="9" x2="15" y2="15" />
                     </svg>
-                    <svg
-v-else xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                    <svg v-else xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
                         stroke-linejoin="round">
                         <circle cx="12" cy="12" r="10" />
@@ -55,8 +51,7 @@ v-else xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24
                     <p class="text-xs opacity-80">{{ toast.message }}</p>
                 </div>
                 <button class="opacity-50 hover:opacity-100 transition-opacity" @click="toast.show = false">
-                    <svg
-xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="18" y1="6" x2="6" y2="18" />
                         <line x1="6" y1="6" x2="18" y2="18" />
@@ -70,86 +65,92 @@ xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fi
             <div
                 class="lg:hidden fixed top-0 left-0 right-0 h-16 bg-background/80 backdrop-blur-md border-b border-border z-160 flex items-center justify-between px-6 transition-colors">
                 <h1 class="text-xl font-display font-medium tracking-tight text-foreground">Local CMS</h1>
-                <button
-class="p-2 -mr-2 text-muted-foreground hover:text-foreground"
+                <button class="p-2 -mr-2 text-muted-foreground hover:text-foreground"
                     @click="isSidebarOpen = !isSidebarOpen">
                     <svg v-if="!isSidebarOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path
-stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M4 6h16M4 12h16m-7 6h7" />
                     </svg>
                     <svg v-else class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path
-stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
             </div>
 
             <!-- Sidebar Overlay -->
-            <div
-v-show="isSidebarOpen"
+            <div v-show="isSidebarOpen"
                 class="lg:hidden fixed inset-0 bg-black/40 dark:bg-black/60 z-140 backdrop-blur-sm transition-opacity duration-300"
                 @click="isSidebarOpen = false" />
 
             <!-- Sidebar / Nav -->
-            <aside
-:class="[
-                'fixed left-0 top-0 h-full w-64 border-r border-border bg-component dark:bg-black/90 p-6 flex flex-col gap-8 backdrop-blur-xl z-150 transition-transform duration-300 lg:translate-x-0',
-                isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-            ]">
-                <h1 class="hidden lg:block text-2xl font-display font-black tracking-tight text-foreground">Local CMS
-                </h1>
+            <aside :class="['fixed left-0 top-0 h-full w-72 bg-background border-r border-border z-50 transition-transform duration-500 lg:translate-x-0 overflow-hidden flex flex-col',
+                isSidebarOpen ? 'translate-x-0' : '-translate-x-full']">
 
-                <nav class="flex flex-col gap-2 pt-20 lg:pt-0">
+                <!-- Sidebar Header -->
+                <div class="h-20 shrink-0 flex items-center px-8 border-b border-border/40">
+                    <div class="flex flex-col gap-0.5">
+                        <h1 class="text-xl font-display font-black tracking-tight text-foreground">Local CMS</h1>
+                        <span class="text-[10px] uppercase font-bold tracking-widest text-muted-foreground/60">Control
+                            Center</span>
+                    </div>
+                </div>
+
+                <!-- Navigation -->
+                <nav class="flex-1 overflow-y-auto px-4 py-8 flex flex-col gap-2">
+                    <p class="px-4 text-[11px] font-bold uppercase tracking-widest text-muted-foreground/40 mb-2">Manage
+                    </p>
+
                     <button
-                        class="px-4 py-2.5 rounded-xl text-left transition-all duration-300 flex items-center gap-3 group"
-                        :class="activeTab === 'notes' ? 'bg-blue-600 text-white font-bold shadow-lg shadow-blue-500/20' : 'text-muted-foreground hover:bg-muted hover:text-foreground'"
-                        @click="handleTabChange('notes')">
-                        <svg
-xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        class="w-full px-4 py-3 rounded-xl text-left transition-all duration-200 flex items-center gap-3.5 group relative overflow-hidden"
+                        :class="activeTab === 'blog' ? 'bg-foreground text-background font-medium shadow-md' : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'"
+                        @click="handleTabChange('blog')">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="opacity-70 group-hover:opacity-100">
+                            class="transition-opacity"
+                            :class="activeTab === 'blog' ? 'opacity-100' : 'opacity-60 group-hover:opacity-100'">
                             <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
                             <polyline points="14 2 14 8 20 8" />
                         </svg>
-                        <span>Notes</span>
+                        <span class="text-sm">Blog Posts</span>
                     </button>
+
                     <button
-                        class="px-4 py-2.5 rounded-xl text-left transition-all duration-300 flex items-center gap-3 group"
-                        :class="activeTab === 'projects' ? 'bg-emerald-600 text-white font-bold shadow-lg shadow-emerald-500/20' : 'text-muted-foreground hover:bg-muted hover:text-foreground'"
+                        class="w-full px-4 py-3 rounded-xl text-left transition-all duration-200 flex items-center gap-3.5 group relative overflow-hidden"
+                        :class="activeTab === 'projects' ? 'bg-foreground text-background font-medium shadow-md' : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'"
                         @click="handleTabChange('projects')">
-                        <svg
-xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="opacity-70 group-hover:opacity-100">
+                            class="transition-opacity"
+                            :class="activeTab === 'projects' ? 'opacity-100' : 'opacity-60 group-hover:opacity-100'">
                             <path d="M12 2H2v10h10V2zM12 12H2v10h10V12zM22 2h-10v10h10V2zM22 12h-10v10h10V12z" />
                         </svg>
-                        <span>Projects</span>
+                        <span class="text-sm">Projects</span>
                     </button>
+
                     <button
-                        class="px-4 py-2.5 rounded-xl text-left transition-all duration-300 flex items-center gap-3 group"
-                        :class="activeTab === 'gallery' ? 'bg-purple-600 text-white font-bold shadow-lg shadow-purple-500/20' : 'text-muted-foreground hover:bg-muted hover:text-foreground'"
+                        class="w-full px-4 py-3 rounded-xl text-left transition-all duration-200 flex items-center gap-3.5 group relative overflow-hidden"
+                        :class="activeTab === 'gallery' ? 'bg-foreground text-background font-medium shadow-md' : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'"
                         @click="handleTabChange('gallery')">
-                        <svg
-xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="opacity-70 group-hover:opacity-100">
+                            class="transition-opacity"
+                            :class="activeTab === 'gallery' ? 'opacity-100' : 'opacity-60 group-hover:opacity-100'">
                             <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
                             <circle cx="8.5" cy="8.5" r="1.5" />
                             <polyline points="21 15 16 10 5 21" />
                         </svg>
-                        <span>Gallery</span>
+                        <span class="text-sm">Gallery</span>
                     </button>
                 </nav>
 
-                <div class="mt-auto">
-                    <NuxtLink
-to="/"
-                        class="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2">
-                        <svg
-xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <!-- Sidebar Footer -->
+                <div class="p-6 border-t border-border/40 bg-muted/5">
+                    <NuxtLink to="/"
+                        class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-background border border-border hover:border-foreground/20 text-xs font-bold uppercase tracking-wider text-muted-foreground hover:text-foreground transition-all group shadow-sm hover:shadow-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                            class="opacity-60 group-hover:opacity-100 transition-transform group-hover:-translate-x-1">
                             <path d="M15 18l-6-6 6-6" />
                         </svg>
                         Back to Website
@@ -158,21 +159,22 @@ xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fi
             </aside>
 
             <!-- Main Content -->
-            <main :class="['lg:ml-64 p-6 lg:p-12 max-w-full lg:max-w-5xl pt-24 lg:pt-12 min-h-screen']">
-                <!-- List View -->
-                <div v-if="view === 'list'" class="flex flex-col gap-8">
+            <!-- Main Content -->
+            <main
+                class="flex-1 lg:ml-72 h-screen overflow-hidden flex flex-col transition-all duration-500 relative bg-background">
+                <!-- Items List View -->
+                <div v-if="view === 'list'" class="flex-1 overflow-y-auto p-6 lg:p-12">
                     <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
                         <div class="flex flex-col gap-1">
                             <h2 class="text-2xl lg:text-3xl font-bold tracking-tight text-foreground">{{ cmsHeaderTitle
-                            }}</h2>
+                                }}</h2>
                             <p class="text-xs text-muted-foreground font-medium">Manage and curate your {{
                                 activeTabLabel.toLowerCase() }} collection</p>
                         </div>
                         <button
                             class="w-full sm:w-auto px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-2xl font-black transition-all shadow-xl shadow-blue-500/20 flex items-center justify-center gap-2.5 active:scale-95 group"
                             @click="createNew">
-                            <svg
-xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
                                 stroke-linejoin="round" class="group-hover:rotate-90 transition-transform duration-300">
                                 <line x1="12" y1="5" x2="12" y2="19" />
@@ -182,51 +184,27 @@ xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                         </button>
                     </div>
 
-                    <div class="flex flex-col gap-4">
-                        <!-- Gallery View Integration -->
-                        <div
-v-if="activeTab === 'gallery'"
+                    <div class="mt-10 flex flex-col gap-4">
+                        <!-- Gallery View -->
+                        <div v-if="activeTab === 'gallery'"
                             class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                            <!-- Pending Upload Skeletons -->
-                            <div
-v-for="n in pendingUploads" :key="'skeleton-' + n"
-                                class="aspect-3/4 bg-muted rounded-xl animate-pulse flex items-center justify-center border border-border">
-                                <svg
-class="w-8 h-8 text-muted-foreground/20 animate-spin" fill="none"
-                                    viewBox="0 0 24 24">
-                                    <circle
-class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                                        stroke-width="4" />
-                                    <path
-class="opacity-75" fill="currentColor"
-                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                                </svg>
-                            </div>
-
-                            <div
-v-for="item in galleryItems" :key="item.id"
+                            <div v-for="item in galleryItems" :key="item.id"
                                 class="group relative aspect-4/3 bg-muted rounded-xl overflow-hidden border border-border">
-                                <img
-:src="item.url"
-                                    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                                <img :src="item.url"
+                                    class="w-full h-full object-cover transition-transform duration-500">
                                 <div
                                     class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
                                     <button
                                         class="w-full py-2 bg-red-500 text-white text-xs font-bold rounded-lg hover:bg-red-600 transition-colors"
-                                        @click="deleteItem(item, 'gallery')">
-                                        Delete
-                                    </button>
+                                        @click="deleteItem(item, 'gallery')">Delete</button>
                                 </div>
                             </div>
-
-                            <!-- Large Upload Trigger for Gallery -->
                             <button
                                 class="aspect-4/3 border-2 border-dashed border-border rounded-xl flex flex-col items-center justify-center gap-3 hover:bg-muted/50 transition-all group bg-component/10"
                                 @click="(($refs.massGalleryInput as any).click())">
                                 <div
-                                    class="w-12 h-12 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-500 group-hover:bg-blue-500 group-hover:text-white group-hover:scale-110 transition-all duration-300">
-                                    <svg
-xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    class="w-12 h-12 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-all duration-300">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
                                         stroke-linejoin="round">
                                         <line x1="12" y1="5" x2="12" y2="19" />
@@ -234,18 +212,16 @@ xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                     </svg>
                                 </div>
                                 <span
-                                    class="text-[10px] font-black text-muted-foreground tracking-[0.2em] uppercase group-hover:text-foreground transition-colors">Add
+                                    class="text-xxs font-black text-muted-foreground tracking-mega uppercase group-hover:text-foreground transition-colors">Add
                                     Photos</span>
-                                <input
-ref="massGalleryInput" type="file" class="hidden" multiple accept="image/*"
+                                <input ref="massGalleryInput" type="file" class="hidden" multiple accept="image/*"
                                     @change="handleImageUpload($event, 'massGallery')">
                             </button>
                         </div>
 
-                        <!-- Standard Items List (Notes/Projects) -->
+                        <!-- Blog/Projects View -->
                         <template v-else>
-                            <div
-v-for="item in activeItems" :key="(item as any).slug || (item as any).id"
+                            <div v-for="item in activeItems" :key="item.slug"
                                 class="p-5 rounded-2xl border border-border bg-component/50 dark:bg-white/2 shadow-sm hover:shadow-md hover:border-blue-500/40 transition-all flex flex-col sm:flex-row justify-between sm:items-center gap-4 group">
                                 <div class="flex flex-col gap-1.5 grow">
                                     <div class="flex items-center gap-2">
@@ -253,12 +229,10 @@ v-for="item in activeItems" :key="(item as any).slug || (item as any).id"
                                             class="font-bold text-base lg:text-lg text-foreground group-hover:text-blue-500 transition-colors leading-tight">
                                             {{ item.title }}</h3>
                                         <NuxtLink
-                                            :to="activeTab === 'notes' ? `/notes/${item.slug}` : `/projects/${item.slug}`"
+                                            :to="activeTab === 'blog' ? `/blog/${item.slug}` : `/projects/${item.slug}`"
                                             target="_blank"
-                                            class="p-1.5 text-muted-foreground hover:text-blue-500 hover:bg-blue-500/10 rounded-lg transition-all"
-                                            title="View Live">
-                                            <svg
-xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                            class="p-1.5 text-muted-foreground hover:text-blue-500 hover:bg-blue-500/10 rounded-lg transition-all">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                                                 stroke-linecap="round" stroke-linejoin="round">
                                                 <path
@@ -268,45 +242,31 @@ xmlns="http://www.w3.org/2000/svg" width="14" height="14"
                                     </div>
                                     <div class="flex items-center gap-2 text-xs font-medium text-muted-foreground">
                                         <span class="px-2 py-0.5 bg-muted rounded uppercase tracking-wider">{{ item.year
-                                        }}</span>
+                                            }}</span>
                                         <span class="opacity-40">•</span>
-                                        <span class="font-mono text-[10px]">{{ item.slug }}</span>
+                                        <span class="font-mono text-xxs">{{ item.slug }}</span>
                                     </div>
                                 </div>
                                 <div class="flex items-center gap-3">
                                     <button
                                         class="flex-1 lg:flex-initial text-sm font-bold px-4 py-2 rounded-lg bg-muted text-foreground hover:bg-foreground hover:text-background transition-all"
-                                        @click="editItem(item)">
-                                        Edit
-                                    </button>
+                                        @click="editItem(item)">Edit</button>
                                     <button
                                         class="flex-1 lg:flex-initial text-sm font-bold px-4 py-2 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all"
-                                        @click="deleteItem(item, (activeTab === 'notes' ? 'note' : 'project'))">
-                                        Delete
-                                    </button>
+                                        @click="deleteItem(item, (activeTab === 'blog' ? 'post' : 'project'))">Delete</button>
                                 </div>
-                            </div>
-
-                            <div
-v-if="activeItems.length === 0"
-                                class="text-center py-20 bg-muted/30 rounded-3xl border border-dashed border-border">
-                                <p class="text-muted-foreground font-medium">No items found in {{ activeTab }}.</p>
-                                <button class="mt-4 text-blue-500 font-bold hover:underline" @click="createNew">Create
-                                    your
-                                    first now</button>
                             </div>
                         </template>
                     </div>
                 </div>
 
                 <!-- Editor View -->
-                <div v-else class="flex flex-col gap-8">
-                    <div class="flex items-center gap-4 mb-4">
+                <div v-else class="flex-1 overflow-y-auto p-6 lg:p-12 relative">
+                    <div class="flex items-center gap-4 mb-8 max-w-5xl mx-auto">
                         <button
                             class="p-2 bg-muted hover:bg-accent rounded-full transition-colors text-muted-foreground hover:text-foreground"
                             @click="view = 'list'">
-                            <svg
-xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
                                 stroke-linejoin="round">
                                 <path d="M19 12H5" />
@@ -316,17 +276,93 @@ xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                         <h2 class="text-xl lg:text-2xl font-bold text-foreground">{{ editHeaderTitle }}</h2>
                     </div>
 
-                    <form class="flex flex-col gap-10 lg:max-w-5xl pb-32" @submit.prevent="saveItem">
-                        <!-- Basic Info Section -->
-                        <section
-                            class="flex flex-col gap-10 bg-component/10 p-8 lg:p-10 rounded-[2.5rem] border border-border/50 shadow-sm relative overflow-hidden group/section">
+                    <form class="flex flex-col gap-10 lg:max-w-5xl pb-32 mx-auto" @submit.prevent="saveItem">
+                        <!-- Immersive Blog Header (Blog only) -->
+                        <section v-if="activeTab === 'blog'"
+                            class="flex flex-col gap-12 bg-transparent p-0 border-none shadow-none relative max-w-3xl mx-auto w-full">
+
+                            <!-- Cover Image Dropzone -->
+                            <div class="relative group/cover w-full aspect-21/9 bg-muted/30 rounded-3xl overflow-hidden border-2 border-dashed border-border/50 hover:border-blue-500/50 transition-all cursor-pointer"
+                                @click="(($refs.coverInput as any).click())">
+                                <img v-if="formData.coverImage" :src="formData.coverImage"
+                                    class="w-full h-full object-cover transition-transform duration-700">
+                                <div v-else
+                                    class="absolute inset-0 flex flex-col items-center justify-center gap-4 text-muted-foreground">
+                                    <div
+                                        class="w-16 h-16 rounded-full bg-muted flex items-center justify-center transition-transform">
+                                        <ImageIcon :size="32" class="opacity-30" />
+                                    </div>
+                                    <span class="text-sm font-bold uppercase tracking-widest">Add a header image</span>
+                                </div>
+                                <div v-if="formData.coverImage"
+                                    class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                    <span
+                                        class="text-white font-bold uppercase tracking-widest text-sm flex items-center gap-2">
+                                        <Pencil :size="16" />
+                                        Change Header
+                                    </span>
+                                </div>
+                                <input ref="coverInput" type="file" class="hidden" accept="image/*"
+                                    @change="handleImageUpload($event, 'coverImage')">
+                            </div>
+
+                            <!-- Title & Subtitle center -->
+                            <div class="flex flex-col gap-6">
+                                <textarea v-model="formData.title" rows="1" placeholder="Blog Post Title"
+                                    class="w-full bg-transparent text-5xl lg:text-6xl font-black placeholder:text-muted-foreground/20 border-none outline-none focus:ring-0 p-0 text-foreground tracking-tight resize-none overflow-hidden"
+                                    @input="autoResizeTextarea($event)" />
+
+                                <textarea v-model="formData.subtitle" rows="1"
+                                    placeholder="An interesting subtitle for your story..."
+                                    class="w-full bg-transparent text-xl lg:text-2xl text-muted-foreground font-medium placeholder:text-muted-foreground/20 border-none outline-none focus:ring-0 p-0 italic resize-none overflow-hidden"
+                                    @input="autoResizeTextarea($event)" />
+                            </div>
+
+                            <!-- Meta Grid (Subtle) -->
+                            <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 pt-6 border-t border-border/50">
+                                <div class="flex flex-col gap-2">
+                                    <label
+                                        class="text-xxs font-black uppercase tracking-widest text-muted-foreground">Identifier</label>
+                                    <input v-model="formData.slug" type="text" placeholder="slug"
+                                        class="bg-transparent border-none p-0 text-sm font-mono text-blue-500 outline-none">
+                                </div>
+                                <div class="flex flex-col gap-2">
+                                    <label
+                                        class="text-xxs font-black uppercase tracking-widest text-muted-foreground">Year</label>
+                                    <input v-model="formData.year" type="text" placeholder="2024"
+                                        class="bg-transparent border-none p-0 text-sm font-bold outline-none">
+                                </div>
+                                <div class="flex flex-col gap-2">
+                                    <label
+                                        class="text-xxs font-black uppercase tracking-widest text-muted-foreground">Reading
+                                        Time</label>
+                                    <input v-model="formData.readingTime" type="text" placeholder="5 min read"
+                                        class="bg-transparent border-none p-0 text-sm font-bold outline-none">
+                                </div>
+                                <div class="flex flex-col gap-2 items-end justify-center">
+                                    <label class="flex items-center gap-2 cursor-pointer group">
+                                        <input v-model="formData.featured" type="checkbox" class="sr-only peer">
+                                        <div
+                                            class="w-8 h-4 bg-border rounded-full relative transition-colors peer-checked:bg-blue-600">
+                                            <div
+                                                class="absolute left-1 top-1 w-2 h-2 bg-white rounded-full transition-transform peer-checked:translate-x-4" />
+                                        </div>
+                                        <span
+                                            class="text-xxs font-black uppercase tracking-widest text-muted-foreground group-hover:text-foreground transition-colors">Featured</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Basic Metadata (Projects only) -->
+                        <section v-if="activeTab === 'projects'"
+                            class="flex flex-col gap-10 bg-component p-8 lg:p-10 rounded-[2.5rem] border border-border/60 shadow-sm relative overflow-hidden group/section">
                             <div
                                 class="absolute top-0 left-0 w-1 h-full bg-blue-600 opacity-0 group-focus-within/section:opacity-100 transition-opacity" />
                             <div class="flex items-center gap-4">
                                 <div
                                     class="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-500 shadow-inner">
-                                    <svg
-xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
                                         stroke-linejoin="round">
                                         <path
@@ -335,9 +371,9 @@ xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
                                     </svg>
                                 </div>
                                 <div class="flex flex-col gap-0.5">
-                                    <h3 class="text-sm font-black uppercase tracking-[0.2em] text-foreground/80">Basic
+                                    <h3 class="text-sm font-black uppercase tracking-mega text-foreground/80">Basic
                                         Metadata</h3>
-                                    <p class="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">
+                                    <p class="text-xxs text-muted-foreground font-bold uppercase tracking-widest">
                                         Core project
                                         identification</p>
                                 </div>
@@ -348,32 +384,28 @@ xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
                                     <label
                                         class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Display
                                         Title</label>
-                                    <input
-v-model="formData.title" type="text" required placeholder="Note Title"
+                                    <input v-model="formData.title" type="text" required placeholder="Project Title"
                                         class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground font-medium">
                                 </div>
                                 <div class="flex flex-col gap-2.5">
                                     <label
                                         class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Identifier
                                         (Slug)</label>
-                                    <input
-v-model="formData.slug" type="text" required placeholder="note-slug"
+                                    <input v-model="formData.slug" type="text" required placeholder="project-slug"
                                         class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground font-mono">
                                 </div>
                                 <div class="flex flex-col gap-2.5">
                                     <label
                                         class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Short
                                         Subtitle</label>
-                                    <input
-v-model="formData.subtitle" type="text" placeholder="Note Subtitle"
+                                    <input v-model="formData.subtitle" type="text" placeholder="Project Subtitle"
                                         class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground font-medium">
                                 </div>
                                 <div class="flex flex-col gap-2.5">
                                     <label
                                         class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Publication
                                         Year</label>
-                                    <input
-v-model="formData.year" type="text" placeholder="2024"
+                                    <input v-model="formData.year" type="text" placeholder="2024"
                                         class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground font-medium">
                                 </div>
                                 <div class="flex flex-col gap-3 lg:col-span-2">
@@ -381,40 +413,96 @@ v-model="formData.year" type="text" placeholder="2024"
                                         <label
                                             class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Featured
                                             Image / Cover</label>
-                                        <button
-type="button" :disabled="isUploading"
+                                        <button type="button" :disabled="isUploading"
                                             class="text-[11px] font-bold text-blue-500 uppercase flex items-center gap-1.5 hover:text-blue-400"
                                             @click="(($refs.coverInput as any).click())">
                                             <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path
-stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
                                                     d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                                             </svg>
                                             {{ isUploading ? 'Uploading...' : 'Upload Image' }}
                                         </button>
-                                        <input
-ref="coverInput" type="file" class="hidden" accept="image/*"
+                                        <input ref="coverInput" type="file" class="hidden" accept="image/*"
                                             @change="handleImageUpload($event, 'coverImage')">
                                     </div>
-                                    <input
-v-model="formData.coverImage" type="text" placeholder="https://..."
+                                    <input v-model="formData.coverImage" type="text" placeholder="https://..."
                                         class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground font-mono text-sm leading-relaxed">
-                                    <p class="text-[10px] text-muted-foreground px-1 font-medium italic">Max 5MB. Ideal
-                                        ratio 16:9 for optimal accessibility.</p>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Content Metadata (Shared) -->
+                        <section v-if="activeTab !== 'gallery'"
+                            class="flex flex-col gap-10 bg-component p-8 lg:p-10 rounded-[2.5rem] border border-border/60 shadow-sm relative overflow-hidden group/section">
+                            <div
+                                class="absolute top-0 left-0 w-1 h-full bg-blue-600 opacity-0 group-focus-within/section:opacity-100 transition-opacity" />
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-500 shadow-inner">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path
+                                            d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z" />
+                                        <path d="M12 10v6" />
+                                        <path d="M9 13h6" />
+                                    </svg>
+                                </div>
+                                <div class="flex flex-col gap-0.5">
+                                    <h3 class="text-sm font-black uppercase tracking-mega text-foreground/80">
+                                        Additional Details</h3>
+                                    <p class="text-xxs text-muted-foreground font-bold uppercase tracking-widest">
+                                        Tags and visibility</p>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div class="flex flex-col gap-2.5">
+                                    <div class="flex justify-between items-center px-1">
+                                        <label
+                                            class="text-xs font-bold uppercase tracking-wider text-muted-foreground">Tags</label>
+                                        <GeminiButton
+                                            @click="openFieldAiModal('tags', 'Suggest 3-5 relevant tags based on title/content')" />
+                                    </div>
+                                    <input v-model="tagsInput" type="text" placeholder="Design, Tech, Life..."
+                                        class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground font-medium">
+                                </div>
+
+                                <div v-if="activeTab === 'projects'" class="flex flex-col gap-2.5">
+                                    <label
+                                        class="text-xs font-bold uppercase tracking-wider text-muted-foreground">Featured
+                                        State</label>
+                                    <label class="relative inline-flex items-center cursor-pointer mt-2">
+                                        <input v-model="formData.featured" type="checkbox" class="sr-only peer">
+                                        <div
+                                            class="w-11 h-6 bg-border rounded-full peer peer-checked:bg-blue-600 appearance-none after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full" />
+                                        <span class="ml-3 text-xs font-bold uppercase text-muted-foreground">Featured
+                                            Project</span>
+                                    </label>
+                                </div>
+
+                                <div class="flex items-center gap-6 mt-2 col-span-2 bg-foreground/5 p-4 rounded-2xl">
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input v-model="formData.hidden" type="checkbox" class="sr-only peer">
+                                        <div
+                                            class="w-11 h-6 bg-border peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-500" />
+                                        <span
+                                            class="ml-3 text-xs font-bold uppercase tracking-wider text-muted-foreground">Hidden
+                                            / Draft</span>
+                                    </label>
                                 </div>
                             </div>
                         </section>
 
                         <!-- Content Section -->
                         <section
-                            class="flex flex-col gap-10 bg-component/10 p-8 lg:p-10 rounded-[2.5rem] border border-border/50 shadow-sm relative overflow-hidden group/section">
+                            class="flex flex-col gap-10 bg-component p-8 lg:p-10 rounded-[2.5rem] border border-border/60 shadow-sm relative overflow-hidden group/section">
                             <div
                                 class="absolute top-0 left-0 w-1 h-full bg-emerald-600 opacity-0 group-focus-within/section:opacity-100 transition-opacity" />
                             <div class="flex items-center gap-4">
                                 <div
                                     class="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center text-emerald-500 shadow-inner">
-                                    <svg
-xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
                                         stroke-linejoin="round">
                                         <path d="M11 4H4v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5" />
@@ -422,31 +510,23 @@ xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
                                     </svg>
                                 </div>
                                 <div class="flex flex-col gap-0.5">
-                                    <h3 class="text-sm font-black uppercase tracking-[0.2em] text-foreground/80">Rich
+                                    <h3 class="text-sm font-black uppercase tracking-mega text-foreground/80">Rich
                                         Content</h3>
-                                    <p class="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">
+                                    <p class="text-xxs text-muted-foreground font-bold uppercase tracking-widest">
                                         Storytelling and
                                         case study details</p>
                                 </div>
                             </div>
 
-                            <div v-if="activeTab === 'notes'" class="flex flex-col gap-8">
+                            <div v-if="activeTab === 'blog'" class="flex flex-col gap-8">
                                 <div class="flex justify-between items-center px-1">
                                     <label
                                         class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Excerpt
                                         (Card Preview)</label>
-                                    <button
-type="button" class="btn-gemini"
-                                        @click="openFieldAiModal('excerpt', 'Draft a short, compelling excerpt for this note')">
-                                        <svg class="w-3 h-3 text-[#C084FC]" viewBox="0 0 24 24" fill="currentColor">
-                                            <path
-                                                d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" />
-                                        </svg>
-                                        <span class="text-gemini">Gemini</span>
-                                    </button>
+                                    <GeminiButton
+                                        @click="openFieldAiModal('excerpt', 'Draft a short, compelling excerpt for this post')" />
                                 </div>
-                                <textarea
-v-model="formData.excerpt" rows="2" placeholder="Brief summary of the note..."
+                                <textarea v-model="formData.excerpt" rows="2" placeholder="Brief summary of the note..."
                                     class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground leading-relaxed" />
                                 <div class="flex flex-col gap-2.5 mt-8">
                                     <div class="flex justify-between items-center px-1">
@@ -454,34 +534,21 @@ v-model="formData.excerpt" rows="2" placeholder="Brief summary of the note..."
                                             class="text-xs font-bold uppercase tracking-wider text-muted-foreground">Body
                                             Text (Supports Markdown)</label>
                                         <div class="flex items-center gap-3">
-                                            <button
-type="button" class="btn-gemini"
-                                                @click="openFieldAiModal('content', 'Draft a professional and detailed note about this topic')">
-                                                <svg
-class="w-2.5 h-2.5 text-[#C084FC]" viewBox="0 0 24 24"
-                                                    fill="currentColor">
-                                                    <path
-                                                        d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" />
-                                                </svg>
-                                                <span class="text-gemini">Gemini</span>
-                                            </button>
-                                            <button
-type="button" :disabled="isUploading"
+                                            <GeminiButton
+                                                @click="openFieldAiModal('content', 'Draft a professional and detailed post about this topic')" />
+                                            <button type="button" :disabled="isUploading"
                                                 class="text-[11px] font-bold text-blue-500 uppercase flex items-center gap-1.5 hover:text-blue-400"
                                                 @click="(($refs.noteImageInput as any).click())">
-                                                <svg
-class="w-3 h-3" fill="none" stroke="currentColor"
+                                                <svg class="w-3 h-3" fill="none" stroke="currentColor"
                                                     viewBox="0 0 24 24">
-                                                    <path
-stroke-linecap="round" stroke-linejoin="round"
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
                                                         stroke-width="2.5"
                                                         d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h14a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                                 </svg>
                                                 Insert Image
                                             </button>
                                         </div>
-                                        <input
-ref="noteImageInput" type="file" class="hidden" accept="image/*"
+                                        <input ref="noteImageInput" type="file" class="hidden" accept="image/*"
                                             @change="handleImageUpload($event, 'noteContent')">
                                     </div>
                                     <div class="min-h-[500px]">
@@ -497,37 +564,32 @@ ref="noteImageInput" type="file" class="hidden" accept="image/*"
                                         <label
                                             class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Client
                                             Name</label>
-                                        <input
-v-model="formData.client" type="text"
+                                        <input v-model="formData.client" type="text"
                                             class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground font-medium">
                                     </div>
                                     <div class="flex flex-col gap-2.5">
                                         <label
                                             class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Role</label>
-                                        <input
-v-model="formData.role" type="text" placeholder="Lead Product Designer"
+                                        <input v-model="formData.role" type="text" placeholder="Lead Product Designer"
                                             class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground font-medium">
                                     </div>
                                     <div class="flex flex-col gap-2.5">
                                         <label
                                             class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Industry</label>
-                                        <input
-v-model="formData.industry" type="text" placeholder="Fintech, SaaS, etc."
+                                        <input v-model="formData.industry" type="text" placeholder="Fintech, SaaS, etc."
                                             class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground font-medium">
                                     </div>
                                     <div class="flex flex-col gap-2.5">
                                         <label
                                             class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Duration</label>
-                                        <input
-v-model="formData.duration" type="text" placeholder="3 Months"
+                                        <input v-model="formData.duration" type="text" placeholder="3 Months"
                                             class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground font-medium">
                                     </div>
                                     <div class="flex flex-col gap-2.5">
                                         <label
                                             class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Team
                                             Size</label>
-                                        <input
-v-model="formData.teamSize" type="text" placeholder="5 Members"
+                                        <input v-model="formData.teamSize" type="text" placeholder="5 Members"
                                             class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground font-medium">
                                     </div>
                                     <div class="flex flex-col gap-2.5 md:col-span-2 pt-4">
@@ -538,44 +600,37 @@ v-model="formData.teamSize" type="text" placeholder="5 Members"
                                                     Project Link</label>
                                                 <div class="flex items-center gap-4">
                                                     <label class="flex items-center gap-2 cursor-pointer group">
-                                                        <input
-v-model="formData.isFigma" type="radio" :value="false"
+                                                        <input v-model="formData.isFigma" type="radio" :value="false"
                                                             class="hidden">
-                                                        <div
-class="w-3.5 h-3.5 rounded-full border-2 border-border flex items-center justify-center transition-all group-hover:border-blue-500"
+                                                        <div class="w-3.5 h-3.5 rounded-full border-2 border-border flex items-center justify-center transition-all group-hover:border-blue-500"
                                                             :class="{ 'bg-blue-500 border-blue-500': !formData.isFigma }">
-                                                            <div
-v-show="!formData.isFigma"
+                                                            <div v-show="!formData.isFigma"
                                                                 class="w-1 h-1 rounded-full bg-white" />
                                                         </div>
                                                         <span
-                                                            class="text-[10px] font-black uppercase tracking-widest transition-colors"
+                                                            class="text-xxs font-black uppercase tracking-widest transition-colors"
                                                             :class="formData.isFigma ? 'text-muted-foreground' : 'text-blue-500'">Live
                                                             Website</span>
                                                     </label>
 
                                                     <label class="flex items-center gap-2 cursor-pointer group">
-                                                        <input
-v-model="formData.isFigma" type="radio" :value="true"
+                                                        <input v-model="formData.isFigma" type="radio" :value="true"
                                                             class="hidden">
-                                                        <div
-class="w-3.5 h-3.5 rounded-full border-2 border-border flex items-center justify-center transition-all group-hover:border-blue-500"
+                                                        <div class="w-3.5 h-3.5 rounded-full border-2 border-border flex items-center justify-center transition-all group-hover:border-blue-500"
                                                             :class="{ 'bg-blue-500 border-blue-500': formData.isFigma }">
-                                                            <div
-v-show="formData.isFigma"
+                                                            <div v-show="formData.isFigma"
                                                                 class="w-1 h-1 rounded-full bg-white" />
                                                         </div>
                                                         <span
-                                                            class="text-[10px] font-black uppercase tracking-widest transition-colors"
+                                                            class="text-xxs font-black uppercase tracking-widest transition-colors"
                                                             :class="!formData.isFigma ? 'text-muted-foreground' : 'text-blue-500'">Figma
                                                             File Preview</span>
                                                     </label>
                                                 </div>
                                             </div>
-                                            <input
-v-model="formData.projectLink" type="text" placeholder="https://..."
+                                            <input v-model="formData.projectLink" type="text" placeholder="https://..."
                                                 class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground font-mono text-sm leading-relaxed">
-                                            <p class="text-[10px] text-muted-foreground px-1 font-medium italic">
+                                            <p class="text-xxs text-muted-foreground px-1 font-medium italic">
                                                 {{ projectLinkHelpText }}
                                             </p>
                                         </div>
@@ -591,18 +646,10 @@ v-model="formData.projectLink" type="text" placeholder="https://..."
                                         <label
                                             class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Project
                                             Introduction</label>
-                                        <button
-type="button" class="btn-gemini"
-                                            @click="openFieldAiModal('content.introduction', 'Write an engaging project introduction')">
-                                            <svg class="w-3 h-3 text-[#C084FC]" viewBox="0 0 24 24" fill="currentColor">
-                                                <path
-                                                    d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" />
-                                            </svg>
-                                            <span class="text-gemini">Gemini</span>
-                                        </button>
+                                        <GeminiButton
+                                            @click="openFieldAiModal('content.introduction', 'Write an engaging project introduction')" />
                                     </div>
-                                    <textarea
-v-model="formData.content.introduction" rows="3"
+                                    <textarea v-model="formData.content.introduction" rows="3"
                                         placeholder="A brief hook about the project..."
                                         class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed" />
 
@@ -611,20 +658,10 @@ v-model="formData.content.introduction" rows="3"
                                             <label
                                                 class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Problem
                                                 Statement</label>
-                                            <button
-type="button" class="btn-gemini"
-                                                @click="openFieldAiModal('problemStatement', 'Define the core problem being solved')">
-                                                <svg
-class="w-3 h-3 text-[#C084FC]" viewBox="0 0 24 24"
-                                                    fill="currentColor">
-                                                    <path
-                                                        d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" />
-                                                </svg>
-                                                <span class="text-gemini">Gemini</span>
-                                            </button>
+                                            <GeminiButton
+                                                @click="openFieldAiModal('problemStatement', 'Define the core problem being solved')" />
                                         </div>
-                                        <textarea
-v-model="formData.problemStatement" rows="3"
+                                        <textarea v-model="formData.problemStatement" rows="3"
                                             placeholder="What challenge were we solving?"
                                             class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed" />
                                     </div>
@@ -635,20 +672,10 @@ v-model="formData.problemStatement" rows="3"
                                                 <label
                                                     class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Business
                                                     Goal</label>
-                                                <button
-type="button" class="btn-gemini"
-                                                    @click="openFieldAiModal('businessGoal', 'Draft the business objectives')">
-                                                    <svg
-class="w-2.5 h-2.5 text-[#C084FC]" viewBox="0 0 24 24"
-                                                        fill="currentColor">
-                                                        <path
-                                                            d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" />
-                                                    </svg>
-                                                    <span class="text-gemini">Gemini</span>
-                                                </button>
+                                                <GeminiButton
+                                                    @click="openFieldAiModal('businessGoal', 'Draft the business objectives')" />
                                             </div>
-                                            <textarea
-v-model="formData.businessGoal" rows="2"
+                                            <textarea v-model="formData.businessGoal" rows="2"
                                                 class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed" />
                                         </div>
                                         <div class="flex flex-col gap-2.5">
@@ -656,20 +683,10 @@ v-model="formData.businessGoal" rows="2"
                                                 <label
                                                     class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">User
                                                     Goal</label>
-                                                <button
-type="button" class="btn-gemini"
-                                                    @click="openFieldAiModal('userGoal', 'Draft the user needs/goals')">
-                                                    <svg
-class="w-2.5 h-2.5 text-[#C084FC]" viewBox="0 0 24 24"
-                                                        fill="currentColor">
-                                                        <path
-                                                            d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" />
-                                                    </svg>
-                                                    <span class="text-gemini">Gemini</span>
-                                                </button>
+                                                <GeminiButton
+                                                    @click="openFieldAiModal('userGoal', 'Draft the user needs/goals')" />
                                             </div>
-                                            <textarea
-v-model="formData.userGoal" rows="2"
+                                            <textarea v-model="formData.userGoal" rows="2"
                                                 class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed" />
                                         </div>
                                     </div>
@@ -679,20 +696,10 @@ v-model="formData.userGoal" rows="2"
                                             <label
                                                 class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Design
                                                 Approach</label>
-                                            <button
-type="button" class="btn-gemini"
-                                                @click="openFieldAiModal('designApproach', 'Draft the design methodology and approach')">
-                                                <svg
-class="w-2.5 h-2.5 text-[#C084FC]" viewBox="0 0 24 24"
-                                                    fill="currentColor">
-                                                    <path
-                                                        d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" />
-                                                </svg>
-                                                <span class="text-gemini">Gemini</span>
-                                            </button>
+                                            <GeminiButton
+                                                @click="openFieldAiModal('designApproach', 'Draft the design methodology and approach')" />
                                         </div>
-                                        <textarea
-v-model="formData.designApproach" rows="3"
+                                        <textarea v-model="formData.designApproach" rows="3"
                                             class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed" />
                                     </div>
 
@@ -700,8 +707,7 @@ v-model="formData.designApproach" rows="3"
                                         <label
                                             class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Target
                                             Users</label>
-                                        <input
-v-model="formData.targetUsers" type="text"
+                                        <input v-model="formData.targetUsers" type="text"
                                             placeholder="Gen Z, Professionals, etc."
                                             class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm">
                                     </div>
@@ -712,20 +718,10 @@ v-model="formData.targetUsers" type="text"
                                                 <label
                                                     class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Research
                                                     Methods</label>
-                                                <button
-type="button" class="btn-gemini"
-                                                    @click="openFieldAiModal('researchMethods', 'List and explain research methods used')">
-                                                    <svg
-class="w-2.5 h-2.5 text-[#C084FC]" viewBox="0 0 24 24"
-                                                        fill="currentColor">
-                                                        <path
-                                                            d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" />
-                                                    </svg>
-                                                    <span class="text-gemini">Gemini</span>
-                                                </button>
+                                                <GeminiButton
+                                                    @click="openFieldAiModal('researchMethods', 'List and explain research methods used')" />
                                             </div>
-                                            <textarea
-v-model="formData.researchMethods" rows="2"
+                                            <textarea v-model="formData.researchMethods" rows="2"
                                                 class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed" />
                                         </div>
                                         <div class="flex flex-col gap-2.5">
@@ -733,20 +729,10 @@ v-model="formData.researchMethods" rows="2"
                                                 <label
                                                     class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Key
                                                     Insights</label>
-                                                <button
-type="button" class="btn-gemini"
-                                                    @click="openFieldAiModal('keyInsights', 'Summarize key user research findings')">
-                                                    <svg
-class="w-2.5 h-2.5 text-[#C084FC]" viewBox="0 0 24 24"
-                                                        fill="currentColor">
-                                                        <path
-                                                            d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" />
-                                                    </svg>
-                                                    <span class="text-gemini">Gemini</span>
-                                                </button>
+                                                <GeminiButton
+                                                    @click="openFieldAiModal('keyInsights', 'Summarize key user research findings')" />
                                             </div>
-                                            <textarea
-v-model="formData.keyInsights" rows="2"
+                                            <textarea v-model="formData.keyInsights" rows="2"
                                                 class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed" />
                                         </div>
                                     </div>
@@ -762,8 +748,7 @@ v-model="formData.keyInsights" rows="2"
                                             <label
                                                 class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Tags
                                                 (Comma Separated)</label>
-                                            <input
-v-model="tagsInput" type="text"
+                                            <input v-model="tagsInput" type="text"
                                                 placeholder="Design System, SaaS, React"
                                                 class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground">
                                         </div>
@@ -771,8 +756,7 @@ v-model="tagsInput" type="text"
                                             <label
                                                 class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Tools
                                                 (Comma Separated)</label>
-                                            <input
-v-model="toolsInput" type="text"
+                                            <input v-model="toolsInput" type="text"
                                                 placeholder="Figma, Adobe, Midjourney"
                                                 class="cms-input bg-background border-2 border-border rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-all text-foreground">
                                         </div>
@@ -783,18 +767,15 @@ v-model="toolsInput" type="text"
                                             <label
                                                 class="text-xs font-bold uppercase tracking-wider text-muted-foreground">Gallery
                                                 Assets (Wireframes)</label>
-                                            <button
-type="button" :disabled="isUploading"
+                                            <button type="button" :disabled="isUploading"
                                                 class="text-[11px] font-bold text-blue-500 uppercase bg-blue-500/10 px-4 py-1.5 rounded-full hover:bg-blue-500/20 transition-colors"
                                                 @click="(($refs.galleryInput as any).click())">
                                                 Add to Gallery
                                             </button>
-                                            <input
-ref="galleryInput" type="file" class="hidden" multiple
+                                            <input ref="galleryInput" type="file" class="hidden" multiple
                                                 accept="image/*" @change="handleImageUpload($event, 'wireframes')">
                                         </div>
-                                        <textarea
-v-model="wireframesInput" rows="4"
+                                        <textarea v-model="wireframesInput" rows="4"
                                             placeholder="Full URLs to images, one per line"
                                             class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground font-mono text-sm leading-relaxed" />
                                     </div>
@@ -804,11 +785,9 @@ v-model="wireframesInput" rows="4"
                                             <label
                                                 class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Solution
                                                 Summary</label>
-                                            <button
-type="button" class="btn-gemini"
+                                            <button type="button" class="btn-gemini"
                                                 @click="openFieldAiModal('solutionSummary', 'Summarize the final solution and why it works')">
-                                                <svg
-class="w-2.5 h-2.5 text-[#C084FC]" viewBox="0 0 24 24"
+                                                <svg class="w-2.5 h-2.5 text-[#C084FC]" viewBox="0 0 24 24"
                                                     fill="currentColor">
                                                     <path
                                                         d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" />
@@ -816,8 +795,7 @@ class="w-2.5 h-2.5 text-[#C084FC]" viewBox="0 0 24 24"
                                                 <span class="text-gemini">Gemini</span>
                                             </button>
                                         </div>
-                                        <textarea
-v-model="formData.solutionSummary" rows="3"
+                                        <textarea v-model="formData.solutionSummary" rows="3"
                                             placeholder="Direct response to the problem..."
                                             class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed" />
                                     </div>
@@ -827,11 +805,9 @@ v-model="formData.solutionSummary" rows="3"
                                             <label
                                                 class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Outcome
                                                 / Conclusion</label>
-                                            <button
-type="button" class="btn-gemini"
+                                            <button type="button" class="btn-gemini"
                                                 @click="openFieldAiModal('outcome', 'Write the project impact and conclusion')">
-                                                <svg
-class="w-2.5 h-2.5 text-[#C084FC]" viewBox="0 0 24 24"
+                                                <svg class="w-2.5 h-2.5 text-[#C084FC]" viewBox="0 0 24 24"
                                                     fill="currentColor">
                                                     <path
                                                         d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" />
@@ -839,8 +815,7 @@ class="w-2.5 h-2.5 text-[#C084FC]" viewBox="0 0 24 24"
                                                 <span class="text-gemini">Gemini</span>
                                             </button>
                                         </div>
-                                        <textarea
-v-model="formData.outcome" rows="3"
+                                        <textarea v-model="formData.outcome" rows="3"
                                             class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed" />
                                     </div>
 
@@ -849,11 +824,9 @@ v-model="formData.outcome" rows="3"
                                             <label
                                                 class="text-xs font-bold uppercase tracking-wider text-muted-foreground px-1">Key
                                                 Learnings</label>
-                                            <button
-type="button" class="btn-gemini"
+                                            <button type="button" class="btn-gemini"
                                                 @click="openFieldAiModal('learnings', 'Draft the key takeaways and personal growth items')">
-                                                <svg
-class="w-2.5 h-2.5 text-[#C084FC]" viewBox="0 0 24 24"
+                                                <svg class="w-2.5 h-2.5 text-[#C084FC]" viewBox="0 0 24 24"
                                                     fill="currentColor">
                                                     <path
                                                         d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" />
@@ -861,8 +834,7 @@ class="w-2.5 h-2.5 text-[#C084FC]" viewBox="0 0 24 24"
                                                 <span class="text-gemini">Gemini</span>
                                             </button>
                                         </div>
-                                        <textarea
-v-model="formData.learnings" rows="3"
+                                        <textarea v-model="formData.learnings" rows="3"
                                             class="cms-input bg-background border-2 border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-foreground text-sm leading-relaxed" />
                                     </div>
                                 </div>
@@ -873,7 +845,7 @@ v-model="formData.learnings" rows="3"
                                         <div class="flex flex-col gap-1">
                                             <h4 class="text-sm font-bold uppercase tracking-widest text-blue-500">
                                                 Execution Process</h4>
-                                            <p class="text-[10px] text-muted-foreground px-1 font-medium italic">Define
+                                            <p class="text-xxs text-muted-foreground px-1 font-medium italic">Define
                                                 the step-by-step
                                                 journey of this project (Research, Ideation, etc).</p>
                                         </div>
@@ -892,15 +864,13 @@ v-model="formData.learnings" rows="3"
 
                         <!-- Sticky Actions -->
                         <div
-                            class="fixed bottom-0 left-0 right-0 lg:left-64 bg-background/90 dark:bg-black/90 backdrop-blur-xl border-t border-border p-5 lg:p-8 z-100 flex gap-4 lg:justify-end shadow-2xl transition-colors">
-                            <button
-type="button"
+                            class="fixed bottom-0 left-0 right-0 lg:left-64 bg-background/90 dark:bg-black/90 backdrop-blur-xl border-t border-border p-5 lg:p-8 z-modal flex gap-4 lg:justify-end shadow-2xl transition-colors">
+                            <button type="button"
                                 class="flex-1 lg:flex-none px-8 py-3.5 rounded-2xl border-2 border-border font-bold text-foreground hover:bg-muted active:scale-95 transition-all text-sm uppercase tracking-widest"
                                 @click="view = 'list'">
                                 Cancel
                             </button>
-                            <button
-type="submit" :disabled="isUploading"
+                            <button type="submit" :disabled="isUploading"
                                 class="flex-2 lg:flex-none px-12 py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-black transition-all shadow-xl shadow-blue-500/20 text-sm uppercase tracking-widest disabled:opacity-50 active:scale-95">
                                 {{ isUploading ? 'Syncing...' : (isEditing ? 'Update Entry' : 'Publish Entry') }}
                             </button>
@@ -930,19 +900,17 @@ type="submit" :disabled="isUploading"
                     </div>
 
                     <div class="flex flex-col gap-4">
-                        <label class="text-[10px] font-bold uppercase tracking-widest text-muted-foreground px-1">What
+                        <label class="text-xxs font-bold uppercase tracking-widest text-muted-foreground px-1">What
                             should I
                             focus on?</label>
                         <div class="flex flex-wrap gap-2 mb-1">
-                            <button
-v-for="chip in promptChips" :key="chip" type="button"
-                                class="px-3 py-1.5 rounded-full bg-muted/50 border border-border text-[10px] font-bold uppercase tracking-wider text-muted-foreground hover:bg-blue-500/10 hover:text-blue-500 hover:border-blue-500/50 transition-all"
+                            <button v-for="chip in promptChips" :key="chip" type="button"
+                                class="px-3 py-1.5 rounded-full bg-muted/50 border border-border text-xxs font-bold uppercase tracking-wider text-muted-foreground hover:bg-blue-500/10 hover:text-blue-500 hover:border-blue-500/50 transition-all"
                                 @click="aiPrompt = chip">
                                 {{ chip }}
                             </button>
                         </div>
-                        <textarea
-v-model="aiPrompt" rows="4"
+                        <textarea v-model="aiPrompt" rows="4"
                             placeholder="e.g. Focus on how we built the design system and tested it with 10 user interviews..."
                             class="cms-input bg-muted/30 border-2 border-border rounded-2xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-sm leading-relaxed" />
                     </div>
@@ -951,11 +919,9 @@ v-model="aiPrompt" rows="4"
                         <button
                             class="flex-1 px-6 py-3 rounded-xl border border-border text-sm font-bold hover:bg-muted transition-colors"
                             @click="showAiModal = false">Cancel</button>
-                        <button
-:disabled="isAiGenerating || !aiPrompt" class="btn-gemini-primary flex-2"
+                        <button :disabled="isAiGenerating || !aiPrompt" class="btn-gemini-primary flex-2"
                             @click="generateAiProcess">
-                            <span
-v-if="isAiGenerating"
+                            <span v-if="isAiGenerating"
                                 class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                             {{ isAiGenerating ? 'Synergizing...' : 'Gemini' }}
                         </button>
@@ -973,8 +939,7 @@ v-if="isAiGenerating"
                     <div class="flex flex-col items-center text-center gap-4">
                         <div
                             class="w-16 h-16 rounded-full bg-red-500/10 flex items-center justify-center text-red-500 px-1">
-                            <svg
-xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
                                 stroke-linejoin="round">
                                 <path
@@ -984,7 +949,7 @@ xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
                         <div class="flex flex-col gap-2">
                             <h3 class="font-black text-xl tracking-tight">Delete {{ deleteIntent.type === 'gallery' ?
                                 'Photo' :
-                                (deleteIntent.type === 'note' ? 'Note' : 'Project') }}?</h3>
+                                (deleteIntent.type === 'post' ? 'Post' : 'Project') }}?</h3>
                             <p class="text-sm text-muted-foreground leading-relaxed">Are you absolutely sure? This
                                 action will
                                 permanently remove this entry from your portfolio. This cannot be undone.</p>
@@ -992,8 +957,7 @@ xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
                     </div>
 
                     <div class="flex flex-col gap-3">
-                        <button
-:disabled="isDeleting"
+                        <button :disabled="isDeleting"
                             class="w-full py-4 bg-red-500 hover:bg-red-600 text-white rounded-2xl font-black uppercase tracking-widest text-[11px] transition-all shadow-xl shadow-red-500/20 active:scale-95 disabled:opacity-50"
                             @click="confirmDelete">
                             {{ isDeleting ? 'Removing...' : 'Permanently Delete' }}
@@ -1014,15 +978,17 @@ xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
 </template>
 
 <script setup lang="ts">
+import GeminiButton from '@/components/cms/GeminiButton.vue'
+
 const supabase = useSupabaseClient()
-const { fetchNotes, notes } = useNotes()
+const { fetchPosts, posts: blogPosts } = useBlog()
 const { fetchProjects, projects } = useProjects()
 const { galleryItems, fetchGallery } = useGallery()
 
 // UX State
 const loading = ref(true)
 const isSidebarOpen = ref(false)
-const activeTab = ref<'notes' | 'projects' | 'gallery'>('notes')
+const activeTab = ref<'blog' | 'projects' | 'gallery'>('blog')
 const view = ref<'list' | 'edit'>('list')
 const isEditing = ref(false)
 const isUploading = ref(false)
@@ -1054,12 +1020,21 @@ const openSectionsAiModal = () => {
     showAiModal.value = true
 }
 
+// Auto-resize textarea
+const autoResizeTextarea = (event: any) => {
+    const element = event.target || event
+    if (element) {
+        element.style.height = 'auto'
+        element.style.height = element.scrollHeight + 'px'
+    }
+}
+
 // Delete State
 const showDeleteModal = ref(false)
 const isDeleting = ref(false)
-const deleteIntent = ref<{ item: any, type: 'note' | 'project' | 'gallery' }>({ item: null, type: 'note' })
+const deleteIntent = ref<{ item: any, type: 'post' | 'project' | 'gallery' }>({ item: null, type: 'post' })
 
-const deleteItem = (item: any, type: 'note' | 'project' | 'gallery') => {
+const deleteItem = (item: any, type: 'post' | 'project' | 'gallery') => {
     deleteIntent.value = { item, type }
     showDeleteModal.value = true
 }
@@ -1127,14 +1102,14 @@ const toastClasses = computed(() => {
 // const monthOptions = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
 // Computed
-const activeItems = computed(() => activeTab.value === 'notes' ? notes.value : projects.value)
+const activeItems = computed(() => activeTab.value === 'blog' ? blogPosts.value : projects.value)
 
 // Logic
 const securitySetup = ref<any>(null)
 
 onMounted(async () => {
     try {
-        await Promise.all([fetchNotes(), fetchProjects(), fetchGallery()])
+        await Promise.all([fetchPosts(), fetchProjects(), fetchGallery()])
 
         // Check if security questions are set up
         const { data: qData } = await supabase
@@ -1204,6 +1179,8 @@ const generateAiProcess = async () => {
                     const k2 = keys[1]!
                         ; (formData.value as any)[k1][k2] = response.text
                 }
+            } else if (fieldPath === 'tags') {
+                tagsInput.value = response.text
             } else {
                 ; (formData.value as any)[fieldPath] = response.text
             }
@@ -1220,7 +1197,7 @@ const generateAiProcess = async () => {
     }
 }
 
-const handleTabChange = (tab: 'notes' | 'projects' | 'gallery') => {
+const handleTabChange = (tab: 'blog' | 'projects' | 'gallery') => {
     activeTab.value = tab
     view.value = 'list'
     isSidebarOpen.value = false
@@ -1228,11 +1205,11 @@ const handleTabChange = (tab: 'notes' | 'projects' | 'gallery') => {
 
 const cmsHeaderTitle = computed(() => {
     if (activeTab.value === 'gallery') return 'Photo Gallery'
-    return activeTab.value === 'notes' ? 'Notes Database' : 'Project Portfolio'
+    return activeTab.value === 'blog' ? 'Blog Database' : 'Project Portfolio'
 })
 const activeTabLabel = computed(() => {
     if (activeTab.value === 'gallery') return 'Photo'
-    return activeTab.value === 'notes' ? 'Note' : 'Project'
+    return activeTab.value === 'blog' ? 'Post' : 'Project'
 })
 const editHeaderTitle = computed(() => `${isEditing.value ? 'Refine' : 'Add'} ${activeTabLabel.value}`)
 
@@ -1250,13 +1227,23 @@ const createNew = () => {
     toolsInput.value = ''
     wireframesInput.value = ''
 
-    if (activeTab.value === 'notes') {
+    if (activeTab.value === 'blog') {
         const d = new Date()
         formData.value.year = d.getFullYear()
         formData.value.month = d.toLocaleString('default', { month: 'short' })
         formData.value.date = d.toISOString().split('T')[0]
+        formData.value.featured = false
+        formData.value.hidden = false
+        formData.value.readingTime = ''
+        formData.value.coverImage = ''
+        formData.value.subtitle = ''
     } else {
         formData.value.content = { introduction: '', sections: [], results: { metrics: [], description: '' } }
+        formData.value.featured = false
+        formData.value.hidden = false
+        formData.value.isFigma = false
+        formData.value.teamSize = ''
+        formData.value.projectLink = ''
     }
     view.value = 'edit'
     if (import.meta.client) window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -1264,9 +1251,27 @@ const createNew = () => {
 
 const editItem = (item: any) => {
     isEditing.value = true
-    formData.value = { ...item }
+    formData.value = {
+        ...item,
+        // Common mappings
+        coverImage: item.cover_image || '',
+        // Blog specific
+        readingTime: item.reading_time || '',
+        // Projects specific
+        teamSize: item.team_size || '',
+        projectLink: item.project_link || '',
+        isFigma: item.is_figma || false,
+        problemStatement: item.problem_statement || '',
+        businessGoal: item.business_goal || '',
+        userGoal: item.user_goal || '',
+        targetUsers: item.target_users || '',
+        designApproach: item.design_approach || '',
+        researchMethods: item.research_methods || '',
+        keyInsights: item.key_insights || '',
+        solutionSummary: item.solution_summary || ''
+    }
     tagsInput.value = item.tags ? item.tags.join(', ') : ''
-    toolsInput.value = item.tools ? item.tools.join(', ') : ''
+    toolsInput.value = (item.tools && Array.isArray(item.tools)) ? item.tools.join(', ') : ''
     wireframesInput.value = item.wireframes ? item.wireframes.join('\n') : ''
     view.value = 'edit'
     if (import.meta.client) window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -1280,18 +1285,28 @@ const saveItem = async () => {
 
     isUploading.value = true
     try {
-        const isNote = activeTab.value === 'notes'
-        const table = isNote ? 'notes' : 'projects'
+        const isBlogPost = activeTab.value === 'blog'
+        const table = isBlogPost ? 'notes' : 'projects'
 
         // Define clean payload to avoid 400 errors from extra fields
         const payload: any = {}
 
-        if (isNote) {
-            // Strict fields for Notes table
-            const noteFields = ['id', 'title', 'date', 'year', 'month', 'slug', 'hidden', 'excerpt', 'content']
-            noteFields.forEach(f => {
-                if (formData.value[f] !== undefined) payload[f] = formData.value[f]
+        if (isBlogPost) {
+            // Strict fields for Blog table
+            const postFields = ['id', 'title', 'subtitle', 'date', 'year', 'month', 'slug', 'hidden', 'excerpt', 'content', 'featured', 'reading_time', 'cover_image']
+            postFields.forEach(f => {
+                const dbField = f
+                let formField = f
+
+                // Map camelCase to snake_case if needed
+                if (f === 'reading_time') formField = 'readingTime'
+                if (f === 'cover_image') formField = 'coverImage'
+
+                if (formData.value[formField] !== undefined) payload[dbField] = formData.value[formField]
             })
+
+            // Array fields
+            if (tagsInput.value) payload.tags = tagsInput.value.split(',').map(s => s.trim()).filter(Boolean)
         } else {
             // Mapping for Projects table
             const projectFields = [
@@ -1299,7 +1314,7 @@ const saveItem = async () => {
                 'role', 'problemStatement', 'businessGoal', 'userGoal',
                 'targetUsers', 'designApproach', 'researchMethods', 'keyInsights',
                 'solutionSummary', 'outcome', 'learnings', 'content', 'featured',
-                'subtitle', 'teamSize', 'projectLink', 'isFigma', 'coverImage'
+                'subtitle', 'teamSize', 'projectLink', 'isFigma', 'coverImage', 'hidden'
             ]
 
             projectFields.forEach(f => {
@@ -1325,7 +1340,7 @@ const saveItem = async () => {
         const { error } = await supabase.from(table).upsert(payload, { onConflict: 'slug' })
         if (error) throw error
 
-        await (isNote ? fetchNotes() : fetchProjects())
+        await (isBlogPost ? fetchPosts() : fetchProjects())
         showToast('Success', 'Content published to live site.', 'success')
         view.value = 'list'
     } catch (e) {
@@ -1351,7 +1366,7 @@ const confirmDelete = async () => {
             column = 'id'
             value = item.id
         } else {
-            table = type === 'note' ? 'notes' : 'projects'
+            table = type === 'post' ? 'notes' : 'projects'
             column = 'slug'
             value = item.slug
         }
@@ -1365,7 +1380,7 @@ const confirmDelete = async () => {
         if (error) throw error
 
         if (type === 'gallery') await fetchGallery()
-        else await (type === 'note' ? fetchNotes() : fetchProjects())
+        else await (type === 'post' ? fetchPosts() : fetchProjects())
 
         showToast('Deleted', `${type.charAt(0).toUpperCase() + type.slice(1)} removed successfully.`, 'success')
         showDeleteModal.value = false
@@ -1395,7 +1410,7 @@ const handleImageUpload = async (event: Event, field: string) => {
             const { data: { publicUrl } } = supabase.storage.from('portfolio').getPublicUrl(filePath)
 
             if (field === 'coverImage') formData.value.coverImage = publicUrl
-            else if (field === 'noteContent') formData.value.content = (formData.value.content || '') + `\n\n![Image](${publicUrl})\n\n`
+            else if (field === 'postContent') formData.value.content = (formData.value.content || '') + `\n\n![Image](${publicUrl})\n\n`
             else if (field === 'wireframes') wireframesInput.value += (wireframesInput.value ? '\n' : '') + publicUrl
             else if (field === 'massGallery') {
                 const { error: insErr } = await (supabase.from('gallery') as any).insert({ url: publicUrl, order_index: galleryItems.value.length })
@@ -1450,18 +1465,6 @@ useSeoMeta({ title: 'CMS Control Center - Lanre Segun', robots: 'noindex, nofoll
     box-shadow: 0 0 0 4px hsl(var(--blue-500, 217 91% 60%) / 0.1);
 }
 
-.btn-gemini {
-    @apply flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest transition-all duration-300;
-    border: 1.5px solid transparent;
-    background: linear-gradient(var(--color-background, #fff), var(--color-background, #fff)) padding-box,
-        linear-gradient(to right, #FF70B8, #C084FC, #70AFFF) border-box;
-}
-
-.btn-gemini:hover {
-    @apply scale-105;
-    box-shadow: 0 0 20px rgba(192, 132, 252, 0.4);
-}
-
 .btn-gemini-primary {
     @apply px-6 py-3 rounded-2xl bg-linear-to-r from-[#FF70B8] via-[#C084FC] to-[#70AFFF] text-white text-sm font-black transition-all flex items-center justify-center gap-2;
     box-shadow: 0 4px 15px rgba(192, 132, 252, 0.2);
@@ -1478,14 +1481,6 @@ useSeoMeta({ title: 'CMS Control Center - Lanre Segun', robots: 'noindex, nofoll
 
 .btn-gemini-primary:disabled {
     @apply opacity-50 cursor-not-allowed;
-}
-
-.text-gemini {
-    background: linear-gradient(to right, #FF70B8, #C084FC, #70AFFF);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    display: inline-block;
 }
 
 /* Custom scrollbars without @apply */
