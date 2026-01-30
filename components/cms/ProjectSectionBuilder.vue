@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col gap-6">
         <div v-for="(section, index) in sections" :key="index"
-            class="group relative bg-component/10 border border-border/50 rounded-3xl p-8 transition-all hover:border-blue-500/30 shadow-sm overflow-hidden">
+            class="group relative bg-component/10 border border-border/40 rounded-2xl p-8 transition-all hover:border-blue-500/20 shadow-sm overflow-hidden">
 
             <!-- Controls -->
             <div
@@ -51,7 +51,7 @@
                                     class="text-xxs font-black uppercase tracking-mega text-muted-foreground px-1">Layout
                                     Strategy</label>
                                 <select v-model="section.layout"
-                                    class="cms-input bg-background/50 border-2 border-border rounded-xl px-4 py-3 text-sm focus:border-blue-500 outline-none appearance-none cursor-pointer">
+                                    class="bg-background border border-border/60 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-blue-500 appearance-none cursor-pointer group-hover:bg-background transition-colors">
                                     <option value="text-only">Text Only</option>
                                     <option value="image-full">Full Width Image</option>
                                     <option value="split-left">Image Left / Text Right</option>
@@ -96,11 +96,11 @@
                         <div v-if="section.layout !== 'text-only'" class="flex flex-col gap-4">
                             <input v-if="['image-full', 'split-left', 'split-right'].includes(section.layout)"
                                 v-model="section.image" type="text" placeholder="External Asset URL..."
-                                class="cms-input bg-background/50 border-2 border-border rounded-xl px-4 py-2 text-xxs font-mono focus:border-blue-500 outline-none w-full">
+                                class="bg-background border border-border/60 rounded-lg px-4 py-2 text-xxs font-mono focus:outline-none focus:border-blue-500 w-full transition-all">
 
                             <textarea v-if="section.layout === 'grid'" v-model="section.gridInput" rows="3"
                                 placeholder="Grid Image URLs (one per line)..."
-                                class="cms-input bg-background/50 border-2 border-border rounded-xl px-4 py-3 text-xxs font-mono focus:border-blue-500 outline-none resize-none shadow-inner w-full"
+                                class="bg-background border border-border/60 rounded-lg px-4 py-3 text-xxs font-mono focus:outline-none focus:border-blue-500 resize-none w-full transition-all"
                                 @input="updateGrid(index)" />
                         </div>
 
@@ -161,7 +161,7 @@
                                 class="text-xxs font-black uppercase tracking-mega text-muted-foreground px-1">Narrative
                                 Content</label>
                             <textarea v-model="section.content" rows="6" placeholder="Type the story for this step..."
-                                class="cms-input bg-background/50 border-2 border-border rounded-2xl px-6 py-5 text-sm focus:border-blue-500 outline-none resize-none leading-relaxed shadow-inner" />
+                                class="bg-background border border-border/60 rounded-xl px-6 py-5 text-sm focus:outline-none focus:border-blue-500 resize-none leading-relaxed transition-all" />
                         </div>
                     </div>
                 </div>
@@ -169,7 +169,7 @@
         </div>
 
         <button type="button"
-            class="w-full py-8 border-2 border-dashed border-border/50 rounded-[2.5rem] text-muted-foreground font-black uppercase tracking-mega text-[12px] hover:border-blue-500 hover:text-blue-500 hover:bg-blue-500/5 transition-all flex items-center justify-center gap-4 group active:scale-[0.98]"
+            class="w-full py-8 border border-dashed border-border/60 rounded-2xl text-muted-foreground font-black uppercase tracking-mega text-xxs hover:border-blue-500/50 hover:text-blue-500 hover:bg-blue-500/5 transition-all flex items-center justify-center gap-4 group active:scale-[0.98]"
             @click="add">
             <div
                 class="w-12 h-12 rounded-2xl bg-muted/50 flex items-center justify-center group-hover:bg-blue-500 group-hover:text-white transition-all transform group-hover:rotate-90">

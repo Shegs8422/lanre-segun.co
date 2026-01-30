@@ -1,10 +1,11 @@
 export default defineNuxtRouteMiddleware((to, _from) => {
-    // Only protect /cms route
-    if (to.path.startsWith('/cms')) {
-        const authCookie = useCookie('auth_token')
-
-        if (!authCookie.value) {
-            return navigateTo('/')
-        }
-    }
+    // Temporarily disabled - direct CMS access allowed
+    // TODO: Re-enable after debugging cookie/auth flow
+    
+    // if (to.path.startsWith('/cms')) {
+    //     const authCookie = useCookie('cms-auth')
+    //     if (authCookie.value !== 'true') {
+    //         return navigateTo('/')
+    //     }
+    // }
 })

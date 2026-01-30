@@ -1,10 +1,9 @@
 <template>
     <Transition name="fade">
-        <div v-if="isOpen" class="fixed inset-0 z-100 flex items-center justify-center bg-black/80 backdrop-blur-sm">
+        <div v-if="isOpen" class="fixed inset-0 z-modal flex items-center justify-center bg-black/80 backdrop-blur-sm">
             <div class="bg-neutral-900 border border-neutral-800 p-8 rounded-2xl w-full max-w-sm shadow-2xl relative">
                 <button class="absolute top-4 right-4 text-neutral-500 hover:text-white" @click="close">
-                    <svg
-xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="18" y1="6" x2="6" y2="18" />
                         <line x1="6" y1="6" x2="18" y2="18" />
@@ -15,19 +14,16 @@ xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fi
 
                 <!-- Normal Login Form -->
                 <form v-if="!isRecoveryMode" class="flex flex-col gap-4" @submit.prevent="handleLogin">
-                    <input
-ref="passwordInput" v-model="password" type="password" placeholder="Enter password..."
+                    <input ref="passwordInput" v-model="password" type="password" placeholder="Enter password..."
                         autocomplete="current-password"
                         class="bg-black/50 border border-neutral-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-blue-500 transition-colors">
-                    <button
-type="submit"
+                    <button type="submit"
                         class="bg-white text-black font-medium py-3 rounded-lg hover:bg-neutral-200 transition-colors"
                         :disabled="loading">
                         {{ loading ? 'Checking...' : 'Enter CMS' }}
                     </button>
 
-                    <button
-type="button" class="text-sm text-neutral-400 hover:text-white transition-colors mt-2"
+                    <button type="button" class="text-sm text-neutral-400 hover:text-white transition-colors mt-2"
                         @click.prevent="isRecoveryMode = true">
                         Forgot Password?
                     </button>
@@ -37,8 +33,7 @@ type="button" class="text-sm text-neutral-400 hover:text-white transition-colors
                 <div v-else>
                     <PasswordRecovery @success="handleRecoverySuccess" @cancel="isRecoveryMode = false" />
 
-                    <button
-type="button"
+                    <button type="button"
                         class="w-full text-sm text-neutral-400 hover:text-white transition-colors mt-4"
                         @click="isRecoveryMode = false">
                         Back to Login
@@ -57,7 +52,6 @@ const password = ref('')
 const error = ref('')
 const loading = ref(false)
 const passwordInput = ref<HTMLInputElement | null>(null)
-// const router = useRouter()
 const isRecoveryMode = ref(false)
 
 const modalTitle = computed(() => isRecoveryMode.value ? 'Password Recovery' : 'Restricted Access')
@@ -87,8 +81,11 @@ const handleLogin = async () => {
             body: { password: password.value }
         })
 
-        // Success
+        // Success - close modal
         close()
+
+        // Wait for cookie to be set and use window.location for reliable redirect
+        await new Promise(resolve => setTimeout(resolve, 200))
         window.location.href = '/cms'
     } catch {
         error.value = 'Incorrect password'

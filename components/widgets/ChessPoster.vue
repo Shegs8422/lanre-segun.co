@@ -35,8 +35,8 @@
         <!-- Scratch Card Canvas Overlay -->
         <canvas v-if="!isRevealed" ref="scratchCanvas" width="360" height="360"
             class="absolute top-0 left-0 w-full h-full rounded-lg z-30 scratch-cursor" @mousedown="startScratching"
-            @mousemove="scratch" @mouseup="stopScratching" @mouseleave="stopScratching" @touchstart="startScratching"
-            @touchmove="scratch" @touchend="stopScratching" />
+            @mousemove="scratch" @mouseup="stopScratching" @mouseleave="stopScratching"
+            @touchstart.passive="startScratching" @touchmove.passive="scratch" @touchend="stopScratching" />
     </div>
 </template>
 

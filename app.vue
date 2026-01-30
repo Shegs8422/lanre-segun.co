@@ -71,9 +71,19 @@ const handleKeydown = (e: KeyboardEvent) => {
   // Ignore if user is typing in an input/textarea
   if (['INPUT', 'TEXTAREA'].includes((e.target as HTMLElement).tagName)) return
 
-  // Check for Ctrl+Shift+L (Windows/Linux) or Cmd+Shift+L (Mac)
-  if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'l') {
-    e.preventDefault() // Prevent any default browser behavior
+  const isK = e.key.toLowerCase() === 'k'
+  const isL = e.key.toLowerCase() === 'l'
+  const modifier = e.ctrlKey || e.metaKey
+
+  // Check for Ctrl/Cmd + K
+  if (modifier && isK) {
+    e.preventDefault()
+    loginModal.value?.open()
+  }
+
+  // Check for Ctrl/Cmd + Shift + L
+  if (modifier && e.shiftKey && isL) {
+    e.preventDefault()
     loginModal.value?.open()
   }
 }

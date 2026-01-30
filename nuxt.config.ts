@@ -26,7 +26,9 @@ export default defineNuxtConfig({
         domains: ['res.cloudinary.com', 'images.unsplash.com', 'source.unsplash.com', 'loremflickr.com', 'lanre-segun.vercel.app']
     },
     supabase: {
-        redirect: false
+        redirect: false,
+        serviceKey: process.env.SUPABASE_SECRET_KEY,
+        types: false
     },
     css: ['~/assets/css/main.css'],
     app: {
@@ -80,19 +82,40 @@ export default defineNuxtConfig({
         build: {
             modulePreload: {
                 polyfill: false
+            },
+            rollupOptions: {
+                external: ['shiki'], // Some libraries cause noise
+                onwarn(warning, warn) {
+                    if (warning.code === 'UNUSED_EXTERNAL_IMPORT') return;
+                    if (warning.message?.includes('never used in')) return;
+                    warn(warning);
+                }
             }
+        },
+        optimizeDeps: {
+            exclude: ['@supabase/functions-js', '@supabase/postgrest-js']
         }
     },
     build: {
         transpile: ['gsap', 'three', '@vueuse/sound', 'lucide-vue-next']
     },
     runtimeConfig: {
-        geminiApiKey: process.env.NUXT_GEMINI_API_KEY || ''
+        geminiApiKey: process.env.NUXT_GEMINI_API_KEY || '',
+        supabaseSecretKey: process.env.SUPABASE_SECRET_KEY || ''
+    },
+    nitro: {
+        rollupConfig: {
+            onwarn(warning, warn) {
+                if (warning.code === 'UNUSED_EXTERNAL_IMPORT' || warning.code === 'CIRCULAR_DEPENDENCY') return;
+                if (warning.message?.includes('never used in')) return;
+                warn(warning);
+            }
+        }
     },
     routeRules: {
         '/**': {
             headers: {
-                'Content-Security-Policy': "default-src 'self' https: data: 'unsafe-inline' 'unsafe-eval'; img-src 'self' https: data: blob:; connect-src 'self' https:; worker-src 'self' blob:; child-src 'self' blob: https://*.figma.com; frame-src 'self' https://*.figma.com; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob:;",
+                'Content-Security-Policy': "default-src 'self' https: data: 'unsafe-inline' 'unsafe-eval'; img-src 'self' https: data: blob:; connect-src 'self' https: https://www.google-analytics.com https://analytics.google.com; worker-src 'self' blob:; child-src 'self' blob: https://*.figma.com; frame-src 'self' https://*.figma.com; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https://www.googletagmanager.com https://www.google-analytics.com;",
                 'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload',
                 'X-Frame-Options': 'DENY',
                 'X-Content-Type-Options': 'nosniff',

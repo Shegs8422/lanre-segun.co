@@ -50,14 +50,14 @@
         </div>
 
         <div v-if="project"
-            class="max-w-5xl mx-auto px-6 pt-32 md:pt-40 pb-12 md:pb-24 flex flex-col gap-24 project-content-wrapper"
+            class="max-w-[90rem] mx-auto px-6 md:px-12 pt-32 md:pt-40 pb-12 md:pb-24 flex flex-col gap-24 project-content-wrapper"
             :class="{ 'opacity-0': isPreloading }">
 
             <!-- Header Section -->
             <header class="flex flex-col gap-10">
                 <div class="flex items-center justify-between entrance-reveal">
                     <NuxtLink to="/projects"
-                        class="w-fit flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 transition-colors text-sm font-medium">
+                        class="w-fit flex items-center gap-2 px-4 py-2 rounded-full border border-zinc-400 dark:border-white/10 bg-zinc-200 dark:bg-white/5 hover:bg-zinc-300 dark:hover:bg-white/10 transition-colors text-sm font-medium">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="m15 18-6-6 6-6" />
@@ -65,17 +65,7 @@
                         Back to Projects
                     </NuxtLink>
 
-                    <button v-if="project.projectLink"
-                        class="w-fit flex items-center gap-2 px-6 py-2 rounded-full bg-blue-600 hover:bg-blue-500 transition-colors text-sm font-bold text-white shadow-lg shadow-blue-500/20"
-                        @click="handleProjectLink">
-                        {{ isFigmaLink ? 'View File Preview' : 'See Live Project' }}
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                            <polyline points="15 3 21 3 21 9" />
-                            <line x1="10" y1="14" x2="21" y2="3" />
-                        </svg>
-                    </button>
+
                 </div>
 
                 <div class="flex flex-col gap-6">
@@ -98,44 +88,118 @@
                 </div>
 
                 <!-- Snapshot Meta Grid -->
-                <div class="grid grid-cols-2 md:grid-cols-5 gap-8 pt-8 border-t border-white/10 mt-4 meta-grid">
+                <div
+                    class="grid grid-cols-2 md:grid-cols-5 gap-6 pt-10 border-t border-black/10 dark:border-white/10 mt-6 meta-grid">
                     <div v-for="(val, label) in { Client: project.client, Role: project.role, Industry: project.industry, Duration: project.duration, Team: project.teamSize }"
-                        :key="label" class="flex flex-col gap-1 meta-item">
-                        <span class="text-xxs uppercase tracking-widest text-muted-foreground font-bold">{{ label
-                        }}</span>
-                        <span class="text-sm font-medium truncate">{{ val || 'N/A' }}</span>
+                        :key="label"
+                        class="flex flex-col gap-2 p-4 rounded-xl bg-zinc-200 dark:bg-white/5 border-zinc-400 dark:border-white/5 hover:bg-zinc-300 dark:hover:bg-white/10 transition-all duration-300 group/meta">
+                        <span
+                            class="text-xxs uppercase tracking-mega text-muted-foreground/60 font-black group-hover/meta:text-blue-400 transition-colors">{{
+                                label }}</span>
+                        <span class="text-xs md:text-sm font-bold text-foreground/90 truncate">{{ val || 'N/A' }}</span>
                     </div>
                 </div>
             </header>
 
-            <!-- Hero Image -->
-            <div
-                class="w-full aspect-video rounded-3xl overflow-hidden shadow-2xl bg-white/5 relative group hero-image-container">
-                <img v-if="project.coverImage || project.content?.heroImage"
-                    :src="project.coverImage || project.content?.heroImage" :alt="project.title"
-                    class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 hero-image-parallax" />
-                <div class="absolute inset-0 bg-linear-to-t from-black/40 to-transparent" />
+            <!-- Hero Section: Image with Interactive Toggle -->
+            <div class="w-full rounded-3xl overflow-hidden shadow-2xl bg-black/40 border border-white/10 relative group hero-container"
+                :class="isFigmaLink ? 'aspect-video' : 'aspect-video'">
+
+                <!-- Interactive Figma Embed (Active State) -->
+                <div v-if="showPrototype && isFigmaLink && formattedLink" class="absolute inset-0 z-20 bg-black">
+                    <iframe :src="formattedLink" class="w-full h-full border-0"
+                        allow="autoplay; clipboard-read; clipboard-write; draw-viewer; encrypted-media; fullscreen; picture-in-picture; xr-spatial-tracking"
+                        referrerpolicy="no-referrer-when-downgrade" allowfullscreen loading="eager" />
+
+                    <button @click="showPrototype = false"
+                        class="absolute top-4 right-4 p-2 bg-black/50 hover:bg-black/80 text-white/50 hover:text-white rounded-full transition-colors backdrop-blur-md border border-white/10 z-30">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18" />
+                            <line x1="6" y1="6" x2="18" y2="18" />
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Default Cover Image & Overlay -->
+                <div class="relative w-full h-full overflow-hidden">
+                    <img v-if="project.coverImage || project.content?.heroImage"
+                        :src="project.coverImage || project.content?.heroImage" :alt="project.title"
+                        class="w-full h-full object-cover transition-transform duration-700 ease-out" />
+
+                    <div
+                        class="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-60 dark:opacity-100 transition-opacity" />
+                    <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500" />
+
+                    <!-- Prototype Trigger Overlay -->
+                    <div v-if="project.projectLink"
+                        class="absolute inset-0 flex items-center justify-center z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <button v-if="isFigmaLink" @click="showPrototype = true"
+                            class="flex items-center gap-3 px-8 py-4 rounded-full bg-black/20 dark:bg-white/10 hover:bg-black/40 dark:hover:bg-white/20 backdrop-blur-xl border border-black/10 dark:border-white/20 text-white font-bold tracking-widest uppercase text-sm transition-all transform translate-y-4 group-hover:translate-y-0 shadow-2xl">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M5 3l14 9-14 9V3z" />
+                            </svg>
+                            Launch Prototype
+                        </button>
+
+                        <a v-else :href="project.projectLink" target="_blank"
+                            class="flex items-center gap-3 px-8 py-4 rounded-full bg-black/20 dark:bg-white/10 hover:bg-black/40 dark:hover:bg-white/20 backdrop-blur-xl border border-black/10 dark:border-white/20 text-white font-bold tracking-widest uppercase text-sm transition-all transform translate-y-4 group-hover:translate-y-0 shadow-2xl">
+                            <span>Visit Live Site</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                                <polyline points="15 3 21 3 21 9" />
+                                <line x1="10" y1="14" x2="21" y2="3" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
             </div>
 
-            <!-- Problem & Goals -->
+            <!-- Problem & Goals: Premium Cards -->
             <section class="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-20 scroll-reveal">
-                <div class="md:col-span-4 flex flex-col gap-4">
-                    <h3 class="text-xs font-display font-bold text-blue-500 uppercase tracking-widest">01. Context</h3>
-                    <h2 class="text-3xl font-display font-bold tracking-tight">The Challenge</h2>
+                <div class="md:col-span-4 flex flex-col gap-6 md:sticky md:top-32 h-fit">
+                    <div class="w-12 h-1 bg-linear-to-r from-blue-500 to-purple-500 rounded-full" />
+                    <div class="flex flex-col gap-2">
+                        <h3 class="text-xs font-black text-muted-foreground/50 uppercase tracking-mega">01. The Context
+                        </h3>
+                        <h2
+                            class="text-4xl md:text-5xl font-display font-bold tracking-tight text-transparent bg-clip-text bg-linear-to-b from-foreground to-muted-foreground scale-reveal">
+                            The Challenge</h2>
+                    </div>
                 </div>
                 <div class="md:col-span-8 flex flex-col gap-12">
-                    <div class="text-xl leading-relaxed text-foreground/90 font-light italic border-l-2 border-blue-500 pl-8 py-2 markdown-container"
-                        v-html="parseMarkdown(project.problemStatement || project.description)" />
+                    <div
+                        class="p-8 md:p-10 rounded-3xl bg-zinc-200 dark:bg-white/10 border-zinc-400 dark:border-white/10 backdrop-blur-sm relative overflow-hidden group">
+                        <div
+                            class="absolute top-0 right-0 w-64 h-64 bg-blue-500/30 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 group-hover:bg-blue-500/40 transition-colors duration-700" />
+                        <div class="relative z-10 text-xl md:text-2xl leading-relaxed text-foreground/90 font-light markdown-container"
+                            v-html="parseMarkdown(project.problemStatement || project.description)" />
+                    </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-                        <div class="flex flex-col gap-4">
-                            <h4 class="text-sm font-bold uppercase tracking-widest opacity-40">Business Goal</h4>
-                            <div class="text-muted-foreground leading-relaxed markdown-container"
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div
+                            class="flex flex-col gap-6 p-8 rounded-3xl bg-zinc-200 dark:bg-white/5 border-zinc-400 dark:border-white/10 hover:bg-white/4 transition-colors">
+                            <h4
+                                class="flex items-center gap-3 text-xs font-black uppercase tracking-mega text-blue-400">
+                                <span class="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)]" />
+                                Business Goal
+                            </h4>
+                            <div class="text-sm md:text-base text-muted-foreground leading-relaxed markdown-container"
                                 v-html="parseMarkdown(project.businessGoal || `Defining objectives for the project revival.`)" />
                         </div>
-                        <div class="flex flex-col gap-4">
-                            <h4 class="text-sm font-bold uppercase tracking-widest opacity-40">User Goal</h4>
-                            <div class="text-muted-foreground leading-relaxed markdown-container"
+                        <div
+                            class="flex flex-col gap-6 p-8 rounded-3xl bg-zinc-200 dark:bg-white/5 border-zinc-400 dark:border-white/10 hover:bg-white/4 transition-colors">
+                            <h4
+                                class="flex items-center gap-3 text-xs font-black uppercase tracking-mega text-purple-400">
+                                <span
+                                    class="w-2 h-2 rounded-full bg-purple-500 shadow-[0_0_10px_rgba(168,85,247,0.5)]" />
+                                User Goal
+                            </h4>
+                            <div class="text-sm md:text-base text-muted-foreground leading-relaxed markdown-container"
                                 v-html="parseMarkdown(project.userGoal || `Prioritizing user needs and experiences.`)" />
                         </div>
                     </div>
@@ -144,25 +208,36 @@
 
             <!-- Process & Approach -->
             <section class="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-20 scroll-reveal">
-                <div class="md:col-span-4 flex flex-col gap-4">
-                    <h3 class="text-xs font-bold text-blue-500 uppercase tracking-widest">02. Execution</h3>
-                    <h2 class="text-3xl font-bold tracking-tight">Design Approach</h2>
+                <div class="md:col-span-4 flex flex-col gap-6 md:sticky md:top-32 h-fit">
+                    <div class="w-12 h-1 bg-linear-to-r from-pink-500 to-rose-500 rounded-full" />
+                    <div class="flex flex-col gap-2">
+                        <h3 class="text-xs font-black text-muted-foreground/50 uppercase tracking-mega">02. Execution
+                        </h3>
+                        <h2
+                            class="text-4xl md:text-5xl font-display font-bold tracking-tight text-transparent bg-clip-text bg-linear-to-b from-foreground to-muted-foreground scale-reveal">
+                            Design Process</h2>
+                    </div>
                 </div>
                 <div class="md:col-span-8 flex flex-col gap-12">
-                    <div class="text-lg leading-relaxed text-muted-foreground markdown-container"
+                    <div class="text-lg md:text-xl leading-relaxed text-muted-foreground markdown-container"
                         v-html="parseMarkdown(project.designApproach || project.content?.introduction)" />
 
                     <div
-                        class="grid grid-cols-1 md:grid-cols-2 gap-12 bg-white/5 p-8 rounded-2xl border border-white/10">
+                        class="grid grid-cols-1 md:grid-cols-2 gap-8 bg-black/5 dark:bg-white/2 p-8 md:p-10 rounded-3xl border border-black/5 dark:border-white/5 backdrop-blur-sm relative overflow-hidden">
+                        <div
+                            class="absolute inset-0 bg-linear-to-br from-black/10 dark:from-white/10 to-transparent pointer-events-none" />
+
                         <div v-for="(val, label) in { Methods: project.researchMethods, 'Target Users': project.targetUsers }"
-                            :key="label" class="flex flex-col gap-4">
-                            <h4 class="text-sm font-bold uppercase tracking-widest opacity-40">{{ label }}</h4>
-                            <div class="text-muted-foreground leading-relaxed markdown-container"
+                            :key="label" class="flex flex-col gap-4 relative z-10">
+                            <h4 class="text-xs font-black uppercase tracking-mega text-muted-foreground/70">{{ label }}
+                            </h4>
+                            <div class="text-sm md:text-base text-muted-foreground leading-relaxed markdown-container"
                                 v-html="parseMarkdown(val || 'In-depth analysis.')" />
                         </div>
-                        <div class="flex flex-col gap-4 md:col-span-2 border-t border-white/5 pt-8">
-                            <h4 class="text-sm font-bold uppercase tracking-widest opacity-40">Key Insights</h4>
-                            <div class="text-muted-foreground leading-relaxed markdown-container"
+                        <div class="flex flex-col gap-4 md:col-span-2 border-t border-white/5 pt-8 relative z-10">
+                            <h4 class="text-xs font-black uppercase tracking-mega text-muted-foreground/70">Key Insights
+                            </h4>
+                            <div class="text-sm md:text-base text-muted-foreground leading-relaxed markdown-container"
                                 v-html="parseMarkdown(project.keyInsights || `Identifying core pain points in workflows.`)" />
                         </div>
                     </div>
@@ -170,31 +245,45 @@
             </section>
 
             <!-- Wireframes Gallery -->
-            <section v-if="project.wireframes?.length" class="flex flex-col gap-10 scroll-reveal">
-                <div class="flex flex-col gap-4">
-                    <h3 class="text-xs font-bold text-blue-500 uppercase tracking-widest">03. Iteration</h3>
-                    <h2 class="text-3xl font-bold tracking-tight">Wireframes & Workflows</h2>
+            <section v-if="project.wireframes?.length" class="flex flex-col gap-10">
+                <div class="flex flex-col gap-6">
+                    <div class="w-12 h-1 bg-linear-to-r from-violet-500 to-indigo-500 rounded-full" />
+                    <div class="flex flex-col gap-2">
+                        <h3 class="text-xs font-black text-muted-foreground/50 uppercase tracking-mega">03. Iteration
+                        </h3>
+                        <h2
+                            class="text-4xl md:text-5xl font-display font-bold tracking-tight text-transparent bg-clip-text bg-linear-to-b from-foreground to-muted-foreground scale-reveal">
+                            Wireframes & Workflows</h2>
+                    </div>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div v-for="(img, i) in project.wireframes" :key="i"
-                        class="rounded-2xl overflow-hidden bg-white/5 aspect-16/10 border border-white/5 group">
-                        <img :src="img" loading="lazy"
-                            class="w-full h-full object-cover transition-transform group-hover:scale-105" />
+                        class="rounded-2xl overflow-hidden bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 group relative">
+                        <img :src="img" loading="lazy" class="w-full h-auto object-cover" />
+                        <div
+                            class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
                     </div>
                 </div>
             </section>
 
             <!-- Final Designs Gallery -->
-            <section v-if="project.finalDesigns?.length" class="flex flex-col gap-10 scroll-reveal">
-                <div class="flex flex-col gap-4">
-                    <h3 class="text-xs font-bold text-blue-500 uppercase tracking-widest">04. Visual System</h3>
-                    <h2 class="text-3xl font-bold tracking-tight">The Final Solution</h2>
+            <section v-if="project.finalDesigns?.length" class="flex flex-col gap-10">
+                <div class="flex flex-col gap-6">
+                    <div class="w-12 h-1 bg-linear-to-r from-emerald-500 to-teal-500 rounded-full" />
+                    <div class="flex flex-col gap-2">
+                        <h3 class="text-xs font-black text-muted-foreground/50 uppercase tracking-mega">04. Visual
+                            System</h3>
+                        <h2
+                            class="text-4xl md:text-5xl font-display font-bold tracking-tight text-transparent bg-clip-text bg-linear-to-b from-foreground to-muted-foreground scale-reveal">
+                            The Final Solution</h2>
+                    </div>
                 </div>
                 <div class="flex flex-col gap-12">
                     <div v-for="(img, i) in project.finalDesigns" :key="i"
-                        class="rounded-3xl overflow-hidden bg-white/5 border border-white/10 group">
-                        <img :src="img" loading="lazy"
-                            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.02]" />
+                        class="rounded-3xl overflow-hidden bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 group relative">
+                        <img :src="img" loading="lazy" class="w-full h-auto object-cover" />
+                        <div
+                            class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
                     </div>
                 </div>
             </section>
@@ -286,25 +375,37 @@
 
             <!-- Outcomes & Tools -->
             <section class="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-20 scroll-reveal">
-                <div class="md:col-span-4 flex flex-col gap-4">
-                    <h3 class="text-xs font-bold text-blue-500 uppercase tracking-widest">05. Conclusion</h3>
-                    <h2 class="text-3xl font-bold tracking-tight">The Impact</h2>
+                <div class="md:col-span-4 flex flex-col gap-6 md:sticky md:top-32 h-fit">
+                    <div class="w-12 h-1 bg-linear-to-r from-orange-500 to-amber-500 rounded-full" />
+                    <div class="flex flex-col gap-2">
+                        <h3 class="text-xs font-black text-white/40 uppercase tracking-mega">05. Conclusion</h3>
+                        <h2
+                            class="text-4xl md:text-5xl font-display font-bold tracking-tight text-transparent bg-clip-text bg-linear-to-b from-foreground to-muted-foreground scale-reveal">
+                            The Impact</h2>
+                    </div>
                 </div>
                 <div class="md:col-span-8 flex flex-col gap-12">
-                    <div class="text-lg leading-relaxed text-muted-foreground markdown-container"
-                        v-html="parseMarkdown(project.outcome || project.content?.results?.description)" />
+                    <div
+                        class="p-8 md:p-10 rounded-3xl bg-zinc-200 dark:bg-white/10 border-zinc-400 dark:border-white/10 backdrop-blur-sm relative overflow-hidden">
+                        <div
+                            class="absolute top-0 right-0 w-64 h-64 bg-orange-500/30 rounded-full blur-[100px] translate-x-1/2 -translate-y-1/2" />
+                        <div class="relative z-10 text-lg md:text-xl leading-relaxed text-foreground/90 font-light markdown-container"
+                            v-html="parseMarkdown(project.outcome || project.content?.results?.description)" />
+                    </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-                        <div class="flex flex-col gap-4">
-                            <h4 class="text-sm font-bold uppercase tracking-widest opacity-40">Learnings</h4>
-                            <div class="text-muted-foreground leading-relaxed markdown-container"
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div
+                            class="flex flex-col gap-6 p-8 rounded-3xl bg-zinc-200 dark:bg-white/5 border-zinc-400 dark:border-white/10">
+                            <h4 class="text-xs font-black uppercase tracking-mega text-orange-400">Learnings</h4>
+                            <div class="text-sm md:text-base text-muted-foreground leading-relaxed markdown-container"
                                 v-html="parseMarkdown(project.learnings || `Iterative testing is key to solving complex UX problems.`)" />
                         </div>
-                        <div class="flex flex-col gap-4">
-                            <h4 class="text-sm font-bold uppercase tracking-widest opacity-40">Tools Used</h4>
+                        <div
+                            class="flex flex-col gap-6 p-8 rounded-3xl bg-black/10 dark:bg-white/5 border-black/10 dark:border-white/10">
+                            <h4 class="text-xs font-black uppercase tracking-mega text-amber-400">Tools Used</h4>
                             <div class="flex flex-wrap gap-2">
                                 <span v-for="tool in project.tools" :key="tool"
-                                    class="px-3 py-1 bg-white/5 rounded-md text-xs font-mono text-muted-foreground border border-white/5">{{
+                                    class="px-3 py-1.5 bg-white/5 rounded-lg text-xs font-mono font-medium text-muted-foreground border border-white/10 hover:bg-white/10 hover:text-white transition-colors cursor-default">{{
                                         tool }}</span>
                             </div>
                         </div>
@@ -339,78 +440,19 @@
             <div class="flex flex-col items-center gap-4">
                 <p class="text-muted-foreground">Project not found</p>
                 <NuxtLink to="/projects"
-                    class="text-primary hover:underline font-bold uppercase tracking-widest text-xs">Back to Projects
+                    class="text-primary hover:underline font-bold uppercase tracking-widest text-xs">Back
+                    to Projects
                 </NuxtLink>
             </div>
         </div>
 
-        <!-- Figma Prototype Modal -->
-        <Teleport to="body">
-            <Transition name="fade">
-                <div v-if="showPrototype && project?.projectLink"
-                    class="fixed inset-0 z-max flex items-center justify-center p-4 md:p-12 bg-black/95 backdrop-blur-2xl">
-                    <div class="absolute inset-0 z-0" @click="showPrototype = false" />
-                    <div
-                        class="relative w-full h-full max-w-7xl bg-terminal-bg rounded-3xl overflow-hidden border border-white/10 flex flex-col shadow-2xl animate-modal-in z-10">
-                        <div class="flex items-center justify-between p-6 border-b border-white/5 bg-tooltip-bg">
-                            <div class="flex flex-col">
-                                <h3 class="text-lg font-bold text-white uppercase tracking-tighter">{{ project.title }}
-                                    {{ isFigmaLink ? 'Design Feed' : 'Session' }}</h3>
-                                <p class="text-xxs text-white/40 uppercase tracking-widest">Interactive Cloud Preview
-                                </p>
-                            </div>
-                            <div class="flex items-center gap-3">
-                                <a :href="formattedLink" target="_blank"
-                                    class="p-3 hover:bg-white/5 rounded-full transition-all text-white/30 hover:text-white group flex items-center gap-2">
-                                    <span
-                                        class="text-xxs font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Open
-                                        Original</span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                                        stroke-linejoin="round">
-                                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                                        <polyline points="15 3 21 3 21 9" />
-                                        <line x1="10" y1="14" x2="21" y2="3" />
-                                    </svg>
-                                </a>
-                                <button
-                                    class="p-3 hover:bg-white/5 rounded-full transition-all hover:rotate-90 text-white/50 hover:text-white"
-                                    @click="showPrototype = false">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                                        stroke-linejoin="round">
-                                        <line x1="18" y1="6" x2="6" y2="18" />
-                                        <line x1="6" y1="6" x2="18" y2="18" />
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="flex-1 w-full relative bg-black flex items-center justify-center overflow-hidden">
-                            <div class="absolute inset-0 flex flex-col items-center justify-center gap-4 z-0">
-                                <div
-                                    class="w-12 h-12 border-4 border-white/10 border-t-blue-500 rounded-full animate-spin" />
-                                <p class="text-xxs text-white/30 uppercase tracking-mega font-black">Initializing
-                                    Simulation</p>
-                            </div>
-                            <iframe v-if="formattedLink" :src="formattedLink"
-                                class="absolute inset-0 w-full h-full border-0 z-10 bg-black"
-                                allow="autoplay; clipboard-read; clipboard-write; draw-viewer; encrypted-media; fullscreen; picture-in-picture; xr-spatial-tracking"
-                                referrerpolicy="no-referrer-when-downgrade" allowfullscreen loading="eager" />
-                        </div>
-                    </div>
-                </div>
-            </Transition>
-        </Teleport>
+
     </div>
 </template>
 
 <script setup lang="ts">
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
-if (import.meta.client) {
-    gsap.registerPlugin(ScrollTrigger)
-}
 
 const route = useRoute()
 const { getProjectBySlug, getAdjacentProjects, fetchProjects } = useProjects()
@@ -586,14 +628,6 @@ const formattedLink = computed(() => {
     return link
 })
 
-const handleProjectLink = () => {
-    if (!project.value?.projectLink) return
-    if (isFigmaLink.value) {
-        showPrototype.value = true
-    } else {
-        window.open(formattedLink.value, '_blank')
-    }
-}
 
 // SEO
 useSeoMeta({
@@ -619,6 +653,29 @@ watch(() => route.params.slug, () => {
     if (import.meta.client) {
         if (containerRef.value) containerRef.value.scrollTop = 0
     }
+})
+
+onMounted(() => {
+    gsap.registerPlugin(ScrollTrigger)
+
+    // Reveal Headings with Scale
+    gsap.utils.toArray('.scale-reveal').forEach((el: any) => {
+        gsap.fromTo(el,
+            { scale: 0.9, opacity: 0, y: 30 },
+            {
+                scale: 1,
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: el,
+                    scroller: containerRef.value,
+                    start: 'top 85%',
+                }
+            }
+        )
+    })
 })
 </script>
 
