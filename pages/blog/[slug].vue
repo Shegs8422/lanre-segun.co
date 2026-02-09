@@ -100,6 +100,12 @@ useSeoMeta({
     ogTitle: () => note.value?.title,
     ogDescription: () => note.value?.excerpt,
 })
+
+useHead({
+    bodyAttrs: {
+        class: 'bg-background overflow-y-auto h-auto'
+    }
+})
 </script>
 
 <style>

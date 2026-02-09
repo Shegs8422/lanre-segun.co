@@ -83,4 +83,10 @@ useSeoMeta({
     twitterImage: '/og-image.png',
     twitterCard: 'summary'
 })
+
+useHead({
+    bodyAttrs: {
+        class: 'bg-background overflow-y-auto h-auto'
+    }
+})
 </script>
