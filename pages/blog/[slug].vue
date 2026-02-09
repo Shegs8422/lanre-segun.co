@@ -1,6 +1,6 @@
 <template>
     <div class="min-h-screen bg-background text-foreground selection:bg-blue-500/20">
-        <div class="max-w-3xl mx-auto px-6 pt-32 pb-40 flex flex-col gap-12">
+        <div class="max-w-5xl mx-auto px-6 pt-32 pb-40 flex flex-col gap-12">
             <!-- Back Button -->
             <NuxtLink to="/blog"
                 class="w-fit flex items-center gap-2 px-4 py-2 bg-component border border-border rounded-xl text-sm font-bold text-muted-foreground hover:text-foreground hover:border-blue-500/40 transition-all active:scale-95 group">
@@ -53,7 +53,7 @@
                 </header>
 
                 <!-- Content -->
-                <div class="prose prose-invert prose-blue max-w-none prose-headings:font-black prose-headings:tracking-tight prose-p:leading-relaxed prose-p:text-foreground/80"
+                <div class="prose dark:prose-invert prose-blue max-w-none prose-headings:font-black prose-headings:tracking-tight prose-p:leading-relaxed prose-p:text-foreground/80"
                     v-html="parsedContent" />
             </article>
 
@@ -125,7 +125,6 @@ useSeoMeta({
     font-size: 1.125rem;
     line-height: 1.75;
     color: var(--foreground);
-    opacity: 0.8;
 }
 
 .prose img {
@@ -168,7 +167,6 @@ useSeoMeta({
 .prose li {
     font-size: 1.125rem;
     color: var(--foreground);
-    opacity: 0.8;
 }
 
 .prose strong {
@@ -181,8 +179,7 @@ useSeoMeta({
     padding-left: 1.5rem;
     font-style: italic;
     margin: 2rem 0;
-    color: var(--foreground);
-    opacity: 0.7;
+    color: var(--muted-foreground);
 }
 
 .prose table {
@@ -210,7 +207,6 @@ useSeoMeta({
     border-bottom: 1px solid var(--border);
     font-size: 0.95rem;
     color: var(--foreground);
-    opacity: 0.8;
 }
 
 .prose pre {

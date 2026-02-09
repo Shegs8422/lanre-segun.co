@@ -6,6 +6,7 @@ export interface Project {
     year: string
     description: string
     coverImage: string
+    coverImageAlt?: string
     // Sophisticated CMS Fields
     client?: string
     industry?: string
@@ -71,6 +72,7 @@ export const useProjects = () => {
             projects.value = data.map((item: any) => ({
                 ...item,
                 coverImage: item.cover_image,
+                coverImageAlt: item.cover_image_alt,
                 teamSize: item.team_size,
                 problemStatement: item.problem_statement,
                 businessGoal: item.business_goal,

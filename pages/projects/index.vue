@@ -10,11 +10,11 @@
 
                 <!-- Filter Tabs -->
                 <div class="flex flex-wrap justify-center gap-3">
-                    <button v-for="category in categories" :key="category" @click="setCategory(category)"
-                        class="px-5 py-2 rounded-full text-xs font-black uppercase tracking-widest transition-all duration-300 border"
+                    <button v-for="category in categories" :key="category" class="px-5 py-2 rounded-full text-xs font-black uppercase tracking-widest transition-all duration-300 border"
                         :class="activeCategory === category
                             ? 'bg-foreground text-background border-foreground scale-105 shadow-xl'
-                            : 'bg-background/50 backdrop-blur-sm text-muted-foreground border-border hover:border-foreground/40 hover:text-foreground'">
+                            : 'bg-background/50 backdrop-blur-sm text-muted-foreground border-border hover:border-foreground/40 hover:text-foreground'"
+                        @click="setCategory(category)">
                         {{ category }}
                     </button>
                 </div>

@@ -1,4 +1,4 @@
-export default defineNuxtRouteMiddleware((to, _from) => {
+export default defineNuxtRouteMiddleware((_to, _from) => {
     // Temporarily disabled - direct CMS access allowed
     // TODO: Re-enable after debugging cookie/auth flow
     

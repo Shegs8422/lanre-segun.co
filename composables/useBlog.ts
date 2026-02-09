@@ -21,7 +21,7 @@ export const useBlog = () => {
 
     const fetchPosts = async () => {
         const { data, error } = await supabase
-            .from('notes')
+            .from('blog')
             .select('*')
             .order('date', { ascending: false })
 
@@ -43,7 +43,7 @@ export const useBlog = () => {
 
     const createPost = async (post: Omit<BlogPost, 'id'>) => {
         const { data, error } = await supabase
-            .from('notes')
+            .from('blog')
             // @ts-expect-error - 'notes' table might not exist in types yet)
             .insert(post)
             .select()
@@ -63,8 +63,8 @@ export const useBlog = () => {
 
     const updatePost = async (id: string, updates: Partial<BlogPost>) => {
         const { error } = await supabase
-            .from('notes')
-            // @ts-ignore
+            .from('blog')
+            // @ts-expect-error - 'notes' table might not exist in types yet
             .update(updates)
             .eq('id', id)
 
@@ -84,7 +84,7 @@ export const useBlog = () => {
 
     const deletePost = async (id: string) => {
         const { error } = await supabase
-            .from('notes')
+            .from('blog')
             .delete()
             .eq('id', id)
 

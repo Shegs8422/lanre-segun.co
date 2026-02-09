@@ -1,45 +1,77 @@
 <template>
     <Transition name="fade">
-        <div v-if="show" class="fixed inset-0 z-200 flex items-center justify-center p-6">
-            <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" @click="close" />
+        <div v-if="show" class="fixed inset-0 z-200 flex items-center justify-center p-6 font-sans">
+            <!-- Backdrop -->
+            <div class="absolute inset-0 bg-white/60 dark:bg-black/80 backdrop-blur-md transition-colors" @click="close" />
+            
+            <!-- Modal Container -->
             <div
-                class="relative w-full max-w-md bg-background border border-border p-8 rounded-2xl shadow-2xl flex flex-col gap-6 animate-fade-in-up">
-                <div class="flex items-center gap-4">
-                    <div
-                        class="w-10 h-10 rounded-xl bg-linear-to-tr from-purple-500 to-blue-500 flex items-center justify-center text-white">
-                        <Bot :size="20" />
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-lg text-foreground">AI Content Assistant</h3>
-                        <p class="text-xs text-muted-foreground">Draft your process using Gemini</p>
-                    </div>
-                </div>
+                class="relative w-full max-w-lg bg-white dark:bg-[#131314] text-gray-900 dark:text-white p-1 rounded-[24px] shadow-2xl animate-fade-in-up overflow-hidden group transition-colors">
+                
+                <!-- Border Gradient Animation -->
+                <div class="absolute inset-0 bg-linear-to-r from-blue-500 via-purple-500 to-red-500 opacity-20 group-hover:opacity-40 transition-opacity duration-500"/>
+                <div class="absolute inset-px bg-white dark:bg-[#131314] rounded-[23px] transition-colors"/>
 
-                <div class="flex flex-col gap-4">
-                    <label class="text-xxs font-bold uppercase tracking-widest text-muted-foreground px-1">What should I
-                        focus on?</label>
-                    <div class="flex flex-wrap gap-2 mb-1">
-                        <button v-for="chip in promptChips" :key="chip" type="button"
-                            class="px-3 py-1.5 rounded-full bg-muted/50 border border-border text-xxs font-black uppercase tracking-wider text-muted-foreground hover:bg-blue-500/10 hover:text-blue-500 hover:border-blue-500/50 transition-all"
-                            @click="localPrompt = chip">
-                            {{ chip }}
+                <!-- Content -->
+                <div class="relative p-6 md:p-8 flex flex-col gap-6">
+                    <!-- Header -->
+                    <div class="flex items-start justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="relative">
+                                <img src="/gemini.svg" alt="Google Gemini Logo" class="w-6 h-6 animate-pulse-slow" >
+                                <div class="absolute inset-0 bg-blue-500 blur-lg opacity-40"/>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-lg bg-linear-to-r from-blue-600 via-purple-600 to-red-500 dark:from-blue-200 dark:via-purple-200 dark:to-white bg-clip-text text-transparent transition-all">
+                                    Google Gemini
+                                </h3>
+                                <p class="text-[11px] text-gray-500 dark:text-gray-400 font-medium tracking-wide">AI SYSTEMS ARCHITECT</p>
+                            </div>
+                        </div>
+                        <button class="p-2 text-gray-400 hover:text-gray-900 dark:text-gray-500 dark:hover:text-white transition-colors" @click="close">
+                            <X :size="18" />
                         </button>
                     </div>
-                    <textarea v-model="localPrompt" rows="4"
-                        placeholder="e.g. Focus on how we built the design system and tested it with 10 user interviews..."
-                        class="bg-muted/30 border border-border rounded-xl px-4 py-4 focus:outline-none focus:border-blue-500 transition-all text-sm leading-relaxed" />
-                </div>
 
-                <div class="flex gap-3">
-                    <button
-                        class="flex-1 px-6 py-3 rounded-xl border border-border text-sm font-bold hover:bg-muted transition-colors"
-                        @click="close">Cancel</button>
-                    <button :disabled="isGenerating || !localPrompt" class="btn-gemini-primary flex-2"
-                        @click="generate">
-                        <span v-if="isGenerating"
-                            class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                        {{ isGenerating ? 'Synergizing...' : 'Gemini' }}
-                    </button>
+                    <!-- Input Area -->
+                    <div class="flex flex-col gap-4">
+                        <div class="bg-gray-50 dark:bg-[#1E1F20] rounded-2xl p-4 border border-gray-200 dark:border-white/5 focus-within:border-blue-500/50 dark:focus-within:border-white/10 transition-colors shadow-inner dark:shadow-none">
+                            <textarea 
+                                v-model="localPrompt" 
+                                rows="3"
+                                placeholder="Ask Gemini to draft your design process, engineering challenges, or architecture docs..."
+                                class="w-full bg-transparent border-none focus:ring-0 text-sm text-gray-800 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 resize-none leading-relaxed" 
+                            />
+                            
+                            <!-- Chips -->
+                            <div class="flex flex-wrap gap-2 mt-4 pt-4 border-t border-gray-200 dark:border-white/5">
+                                <button v-for="chip in promptChips" :key="chip" type="button"
+                                    class="px-3 py-1.5 rounded-lg bg-white border border-gray-200 hover:bg-gray-100 hover:border-gray-300 text-gray-600 dark:bg-[#2D2E30] dark:border-transparent dark:hover:bg-[#3C3D40] text-xxs uppercase font-bold tracking-wider dark:text-gray-300 transition-all"
+                                    @click="localPrompt = chip">
+                                    {{ chip }}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer Actions -->
+                    <div class="flex items-center justify-between mt-2">
+                        <div class="flex items-center gap-2 text-xs text-gray-400 dark:text-gray-500">
+                           <ShieldCheck :size="12" />
+                           <span>Enterprise Grade Security</span>
+                        </div>
+                        <button 
+                            :disabled="isGenerating || !localPrompt" 
+                            class="gemini-button relative group/btn overflow-hidden rounded-full px-6 py-2.5 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg dark:shadow-none"
+                            @click="generate">
+                            <div class="absolute inset-0 bg-linear-to-r from-[#4285F4] via-[#9B72CB] to-[#D96570] opacity-90 group-hover/btn:opacity-100 transition-opacity"/>
+                            <div class="relative flex items-center gap-2 font-medium text-sm text-white">
+                                <span v-if="isGenerating" class="w-3 h-3 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+                                <Sparkles v-else :size="14" class="text-white fill-white" />
+                                <span>{{ isGenerating ? 'Generating...' : 'Generate' }}</span>
+                            </div>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -48,7 +80,7 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import { Bot } from 'lucide-vue-next'
+import { Sparkles, X, ShieldCheck } from 'lucide-vue-next'
 
 const props = defineProps<{
     show: boolean
@@ -85,46 +117,33 @@ const generate = () => {
 </script>
 
 <style scoped>
-.btn-gemini-primary {
-    padding: 0.75rem 1.5rem;
-    border-radius: 1rem;
-    background: linear-gradient(to right, #FF70B8, #C084FC, #70AFFF);
+/* Gemini Specific Animation */
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+.gemini-button {
     color: white;
-    font-size: 0.875rem;
-    font-weight: 900;
-    transition: all 0.3s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 
-.btn-gemini-primary:hover:not(:disabled) {
-    transform: scale(1.02);
-}
-
-.btn-gemini-primary:active:not(:disabled) {
-    transform: scale(0.95);
-}
-
-.btn-gemini-primary:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+.animate-pulse-slow {
+    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 .animate-fade-in-up {
-    animation: fadeInUp 0.3s ease-out;
+    animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes fadeInUp {
     from {
         opacity: 0;
-        transform: translateY(10px);
+        transform: scale(0.95) translateY(10px);
     }
-
     to {
         opacity: 1;
-        transform: translateY(0);
+        transform: scale(1) translateY(0);
     }
 }
 </style>

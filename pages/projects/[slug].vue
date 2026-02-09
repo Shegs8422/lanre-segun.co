@@ -1,6 +1,7 @@
 <template>
-    <div ref="containerRef" @scroll="handleScroll"
-        class="fixed inset-0 bg-background text-foreground overflow-y-auto scroll-smooth scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent z-50 project-page-container overscroll-x-none">
+    <div ref="containerRef"
+        class="fixed inset-0 bg-background text-foreground overflow-y-auto scroll-smooth scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent z-50 project-page-container overscroll-x-none"
+        @scroll="handleScroll">
 
         <!-- Reading Progress Bar -->
         <div v-show="!isPreloading"
@@ -50,7 +51,7 @@
         </div>
 
         <div v-if="project"
-            class="max-w-[90rem] mx-auto px-6 md:px-12 pt-32 md:pt-40 pb-12 md:pb-24 flex flex-col gap-24 project-content-wrapper"
+            class="max-w-360 mx-auto px-6 md:px-12 pt-32 md:pt-40 pb-12 md:pb-24 flex flex-col gap-24 project-content-wrapper"
             :class="{ 'opacity-0': isPreloading }">
 
             <!-- Header Section -->
@@ -111,8 +112,9 @@
                         allow="autoplay; clipboard-read; clipboard-write; draw-viewer; encrypted-media; fullscreen; picture-in-picture; xr-spatial-tracking"
                         referrerpolicy="no-referrer-when-downgrade" allowfullscreen loading="eager" />
 
-                    <button @click="showPrototype = false"
-                        class="absolute top-4 right-4 p-2 bg-black/50 hover:bg-black/80 text-white/50 hover:text-white rounded-full transition-colors backdrop-blur-md border border-white/10 z-30">
+                    <button
+                        class="absolute top-4 right-4 p-2 bg-black/50 hover:bg-black/80 text-white/50 hover:text-white rounded-full transition-colors backdrop-blur-md border border-white/10 z-30"
+                        @click="showPrototype = false">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="18" y1="6" x2="6" y2="18" />
@@ -125,7 +127,7 @@
                 <div class="relative w-full h-full overflow-hidden">
                     <img v-if="project.coverImage || project.content?.heroImage"
                         :src="project.coverImage || project.content?.heroImage" :alt="project.title"
-                        class="w-full h-full object-cover transition-transform duration-700 ease-out" />
+                        class="w-full h-full object-cover transition-transform duration-700 ease-out">
 
                     <div
                         class="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-60 dark:opacity-100 transition-opacity" />
@@ -134,8 +136,9 @@
                     <!-- Prototype Trigger Overlay -->
                     <div v-if="project.projectLink"
                         class="absolute inset-0 flex items-center justify-center z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <button v-if="isFigmaLink" @click="showPrototype = true"
-                            class="flex items-center gap-3 px-8 py-4 rounded-full bg-black/20 dark:bg-white/10 hover:bg-black/40 dark:hover:bg-white/20 backdrop-blur-xl border border-black/10 dark:border-white/20 text-white font-bold tracking-widest uppercase text-sm transition-all transform translate-y-4 group-hover:translate-y-0 shadow-2xl">
+                        <button v-if="isFigmaLink"
+                            class="flex items-center gap-3 px-8 py-4 rounded-full bg-black/20 dark:bg-white/10 hover:bg-black/40 dark:hover:bg-white/20 backdrop-blur-xl border border-black/10 dark:border-white/20 text-white font-bold tracking-widest uppercase text-sm transition-all transform translate-y-4 group-hover:translate-y-0 shadow-2xl"
+                            @click="showPrototype = true">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round">
@@ -259,7 +262,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div v-for="(img, i) in project.wireframes" :key="i"
                         class="rounded-2xl overflow-hidden bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 group relative">
-                        <img :src="img" loading="lazy" class="w-full h-auto object-cover" />
+                        <img :src="img" loading="lazy" class="w-full h-auto object-cover">
                         <div
                             class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
                     </div>
@@ -281,7 +284,7 @@
                 <div class="flex flex-col gap-12">
                     <div v-for="(img, i) in project.finalDesigns" :key="i"
                         class="rounded-3xl overflow-hidden bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 group relative">
-                        <img :src="img" loading="lazy" class="w-full h-auto object-cover" />
+                        <img :src="img" loading="lazy" class="w-full h-auto object-cover">
                         <div
                             class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
                     </div>
@@ -761,7 +764,6 @@ onMounted(() => {
 
 .markdown-container :deep(strong) {
     font-weight: 700;
-    color: white;
 }
 
 .markdown-container :deep(em) {

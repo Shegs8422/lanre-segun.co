@@ -8,7 +8,7 @@
                     <div class="flex items-center gap-4">
                         <div
                             class="w-10 h-10 rounded-xl bg-foreground text-background flex items-center justify-center">
-                            <ImageIcon :size="20" />
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-background"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M15 4.5H9V8.5H15V4.5Z" ></path> <path d="M4 10.5H9V14.5H15V10.5H20V19.5H4V10.5Z" ></path> </g></svg>
                         </div>
                         <div>
                             <h3 class="text-lg font-black uppercase tracking-mega text-foreground">Unsplash Search
@@ -37,12 +37,12 @@
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
                                 stroke-linejoin="round">
-                                <circle cx="11" cy="11" r="8"></circle>
-                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                <circle cx="11" cy="11" r="8"/>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
                             </svg>
                         </div>
-                        <button @click="searchUnsplash"
-                            class="absolute right-3 top-1/2 -translate-y-1/2 px-4 py-2 bg-foreground text-background text-xxs font-black uppercase tracking-mega rounded-lg hover:bg-blue-600 hover:text-white transition-all active:scale-95 shadow-lg shadow-black/5">
+                        <button class="absolute right-3 top-1/2 -translate-y-1/2 px-4 py-2 bg-foreground text-background text-xxs font-black uppercase tracking-mega rounded-lg hover:bg-blue-600 hover:text-white transition-all active:scale-95 shadow-lg shadow-black/5"
+                            @click="searchUnsplash">
                             Search
                         </button>
                     </div>
@@ -52,7 +52,7 @@
                 <div class="p-8 overflow-y-auto grow min-h-[400px]">
                     <div v-if="isSearchingUnsplash"
                         class="h-full flex flex-col items-center justify-center gap-4 opacity-50">
-                        <div class="w-8 h-8 rounded-full border-t-2 border-blue-600 animate-spin"></div>
+                        <div class="w-8 h-8 rounded-full border-t-2 border-blue-600 animate-spin"/>
                         <p class="text-xxs font-black uppercase tracking-mega">Searching Unsplash...</p>
                     </div>
                     <div v-else-if="unsplashResults.length > 0" class="columns-2 md:columns-3 gap-4">
@@ -65,8 +65,7 @@
                                 <p class="text-xxs text-white/70 font-medium line-clamp-1 italic">{{
                                     img.alt_description
                                     || 'View image' }}</p>
-                                <div class="h-0.5 w-0 group-hover:w-full bg-blue-500 transition-all duration-500 mt-2">
-                                </div>
+                                <div class="h-0.5 w-0 group-hover:w-full bg-blue-500 transition-all duration-500 mt-2"/>
                                 <div class="flex items-center justify-between mt-2">
                                     <p class="text-white text-[9px] font-black uppercase tracking-mega">by {{
                                         img.user.name }}</p>
@@ -85,7 +84,7 @@
                     <div v-else
                         class="h-full flex flex-col items-center justify-center gap-2 text-muted-foreground opacity-30">
                         <svg viewBox="0 0 32 32" class="w-16 h-16 fill-current mb-4">
-                            <path d="M10 9V0h12v9H10zm12 5h10v18H0V14h10v9h12v-9z"></path>
+                            <path d="M10 9V0h12v9H10zm12 5h10v18H0V14h10v9h12v-9z"/>
                         </svg>
                         <p class="text-sm font-black uppercase tracking-widest">Ready to search</p>
                     </div>

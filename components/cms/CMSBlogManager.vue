@@ -137,7 +137,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 
 const { posts: blogPosts, fetchPosts, createPost, updatePost, deletePost } = useBlog()
 const selectedPost = ref<any>(null)

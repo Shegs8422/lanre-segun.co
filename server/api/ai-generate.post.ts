@@ -42,34 +42,37 @@ export default defineEventHandler(async (event) => {
 
     const PROMPT_CONFIGS = {
         sections: {
-            persona: `You are a Senior Principal Product Designer & Design Systems Architect at a top-tier global agency. 
+            persona: `You are an expert Senior Principal Product Designer, Full Stack Engineer, and AI Systems Architect. 
+                     You have deep expertise in Web Development, Software Engineering, and Artificial Intelligence.
                      You are versatile, analytical, and highly articulate. You write with precision and depth.`,
             instruction: `Generate high-quality, structured content sections. 
                          Structure the narrative across 3 to 5 logical blocks.
                          
                          STRICT RULES:
-                         1. Markdown is MANDATORY for all content. Use it to create a rich document structure.
-                            - Use multiple heading levels (H2, H3, H4) where appropriate.
-                            - Use bold for emphasis and italics for subtle highlighting.
-                            - Use bulleted and numbered lists extensively.
-                            - USE TABLES (using | pipes |) to compare data or list features for maximum visual impact.
-                            - Include [descriptive links](https://example.com) to external resources if relevant.
-                         2. Each section must have a title, a layout strategy ("text-only", "split-left", "split-right", "grid"), and content.
+                         1. HTML is MANDATORY for all content. Do NOT use Markdown.
+                            - Use <h2>, <h3> for headings.
+                            - Use <strong> for emphasis and <em> for subtle highlighting.
+                            - Use <ul>, <ol>, <li> for lists.
+                            - Use <blockquote> for quotes.
+                            - Use <a href="..."> for links.
+                            - Use <p> for paragraphs.
+                         2. Each section must have a title, a layout strategy ("text-only", "split-left", "split-right", "grid"), and content (HTML string).
                          3. Maintain a sophisticated, premium tonality.
-                         4. Return ONLY a JSON object: { "sections": [{ "title": "string", "content": "string", "layout": "string", "type": "text|image|grid" }] }`
+                         4. Return ONLY a JSON object: { "sections": [{ "title": "string", "content": "html_string", "layout": "string", "type": "text|image|grid" }] }`
         },
         text: {
-            persona: `You are an elite Lead Writer and Content Strategist. You specialize in creating high-impact, structured narratives for professional blogs and portfolios.`,
+            persona: `You are an elite Lead Writer, Full Stack Developer, and AI Strategist. You specialize in creating high-impact, structured narratives for professional blogs and portfolios, covering Design, Engineering, and AI.`,
             instruction: `Generate expert content for the specified blog post or project description. 
                          
                          CONSTRAINTS:
-                         1. Utilize full Markdown formatting to structure your response.
-                            - Use headings (##, ###) for organization.
-                            - Use tables (| table | headers |) for structured data or comparisons.
-                            - Use bold/italics for emphasis.
-                            - Use nested lists for complex hierarchies.
+                         1. Return semantic HTML directly. Do NOT use Markdown.
+                            - Use <h3>, <h4> for hierarchy (avoid h1/h2 as they are page titles).
+                            - Use <ul>, <ol>, <li> for lists.
+                            - Use <strong>, <em> for styling.
+                            - Use <blockquote> for callouts.
+                            - Use <p> for paragraphs.
                          2. Stay relevant to the user's intent. Prioritize insight, professional clarity, and engaging storytelling suitable for a developer blog.
-                         3. OUTPUT: Return the content directly as a raw string. Do NOT wrap in \`\`\`markdown code blocks.`
+                         3. OUTPUT: Return the HTML string directly. Do NOT wrap in \`\`\`html code blocks.`
         }
     }
 
