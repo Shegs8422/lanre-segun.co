@@ -19,8 +19,8 @@
           <!-- Center Label -->
           <div
             class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 rounded-full bg-red-800 overflow-hidden border-2 border-red-900">
-            <img :alt="`${artist || album} center`" width="80" height="80" :src="label || cover"
-              class="w-full h-full object-cover">
+            <NuxtImg :alt="`${artist || album} center`" width="80" height="80" :src="label || cover" format="webp"
+              class="w-full h-full object-cover" />
             <div
               class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-black/50" />
           </div>
@@ -31,7 +31,8 @@
           :style="{
             transform: isPlaying ? 'translateX(45%)' : 'translateX(0)',
           }" @mouseenter="handleHover" @mouseleave="isHovering = false">
-          <img :alt="`${album} by ${artist}`" width="216" height="216" :src="cover" class="w-full h-full object-cover">
+          <NuxtImg :alt="`${album} by ${artist}`" width="216" height="216" :src="cover" format="webp"
+            class="w-full h-full object-cover" />
 
           <!-- Hover Overlay removed, using floating card instead -->
 

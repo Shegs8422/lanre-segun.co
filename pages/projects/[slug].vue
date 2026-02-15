@@ -125,9 +125,9 @@
 
                 <!-- Default Cover Image & Overlay -->
                 <div class="relative w-full h-full overflow-hidden">
-                    <img v-if="project.coverImage || project.content?.heroImage"
-                        :src="project.coverImage || project.content?.heroImage" :alt="project.title"
-                        class="w-full h-full object-cover transition-transform duration-700 ease-out">
+                    <NuxtImg v-if="project.coverImage || project.content?.heroImage"
+                        :src="project.coverImage || project.content?.heroImage" :alt="project.title" format="webp"
+                        class="w-full h-full object-cover transition-transform duration-700 ease-out" />
 
                     <div
                         class="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-60 dark:opacity-100 transition-opacity" />
@@ -262,7 +262,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div v-for="(img, i) in project.wireframes" :key="i"
                         class="rounded-2xl overflow-hidden bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 group relative">
-                        <img :src="img" loading="lazy" class="w-full h-auto object-cover">
+                        <NuxtImg :src="img" loading="lazy" format="webp" class="w-full h-auto object-cover" />
                         <div
                             class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
                     </div>
@@ -284,7 +284,7 @@
                 <div class="flex flex-col gap-12">
                     <div v-for="(img, i) in project.finalDesigns" :key="i"
                         class="rounded-3xl overflow-hidden bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 group relative">
-                        <img :src="img" loading="lazy" class="w-full h-auto object-cover">
+                        <NuxtImg :src="img" loading="lazy" format="webp" class="w-full h-auto object-cover" />
                         <div
                             class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
                     </div>
@@ -315,8 +315,8 @@
                             v-html="parseMarkdown(section.content)" />
                         <div
                             class="w-full aspect-video rounded-3xl overflow-hidden bg-white/5 border border-white/10 group">
-                            <img :src="section.image || section.url" loading="lazy"
-                                class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105">
+                            <NuxtImg :src="section.image || section.url" loading="lazy" format="webp"
+                                class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
                         </div>
                     </div>
 
@@ -325,8 +325,8 @@
                         class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
                         <div
                             class="md:col-span-7 aspect-video rounded-2xl overflow-hidden bg-white/5 border border-white/10 group">
-                            <img :src="section.image" loading="lazy"
-                                class="w-full h-full object-cover transition-transform group-hover:scale-105">
+                            <NuxtImg :src="section.image" loading="lazy" format="webp"
+                                class="w-full h-full object-cover transition-transform group-hover:scale-105" />
                         </div>
                         <div class="md:col-span-5 flex flex-col gap-6">
                             <div class="text-lg leading-relaxed text-muted-foreground markdown-container"
@@ -343,8 +343,8 @@
                         </div>
                         <div
                             class="md:col-span-7 aspect-video rounded-2xl overflow-hidden bg-white/5 border border-white/10 order-1 md:order-2 group">
-                            <img :src="section.image" loading="lazy"
-                                class="w-full h-full object-cover transition-transform group-hover:scale-105">
+                            <NuxtImg :src="section.image" loading="lazy" format="webp"
+                                class="w-full h-full object-cover transition-transform group-hover:scale-105" />
                         </div>
                     </div>
 
@@ -356,8 +356,8 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <div v-for="(img, i) in (section.images || [])" :key="i"
                                 class="rounded-2xl overflow-hidden bg-white/5 aspect-4/3 border border-white/5 group">
-                                <img :src="img" loading="lazy"
-                                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                                <NuxtImg :src="img" loading="lazy" format="webp"
+                                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                             </div>
                         </div>
                     </div>

@@ -22,7 +22,8 @@
           class="absolute right-full mr-2 top-1/2 -translate-y-1/2 flex items-center gap-3 px-3 py-2 rounded-2xl bg-component text-foreground shadow-2xl transition-colors duration-300 border border-border">
           <!-- Album Cover Thumbnail -->
           <div class="shrink-0 w-10 h-10 rounded-lg overflow-hidden border border-border/50 shadow-sm relative group">
-            <img :src="currentTrack.albumCover" :alt="currentTrack.albumTitle" class="w-full h-full object-cover">
+            <NuxtImg :src="currentTrack.albumCover" :alt="currentTrack.albumTitle" class="w-full h-full object-cover"
+              format="webp" />
           </div>
 
           <!-- Track Info -->

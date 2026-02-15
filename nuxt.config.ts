@@ -25,7 +25,18 @@ export default defineNuxtConfig({
         name: 'Lanre Segun - Senior Product Designer'
     },
     image: {
-        domains: ['res.cloudinary.com', 'images.unsplash.com', 'source.unsplash.com', 'loremflickr.com', 'lanre-segun.vercel.app', '*.public.blob.vercel-storage.com']
+        provider: 'vercel',
+        domains: ['res.cloudinary.com', 'images.unsplash.com', 'source.unsplash.com', 'loremflickr.com', 'lanre-segun.vercel.app', '*.public.blob.vercel-storage.com'],
+        format: ['webp', 'avif'],
+        screens: {
+            xs: 320,
+            sm: 640,
+            md: 768,
+            lg: 1024,
+            xl: 1280,
+            xxl: 1536,
+            '2xl': 1536
+        }
     },
     supabase: {
         redirect: false,

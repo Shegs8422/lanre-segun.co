@@ -19,7 +19,8 @@
           <!-- Logo Image -->
           <div
             class="hidden sm:flex h-10 w-10 flex-none items-center justify-center rounded-sm overflow-hidden bg-white/10 shrink-0">
-            <img v-if="item.logo" :src="item.logo" class="w-full h-full object-contain" alt="Logo">
+            <NuxtImg v-if="item.logo" :src="item.logo" class="w-full h-full object-contain" alt="Logo" width="40"
+              height="40" format="webp" />
             <div v-else class="w-full h-full" :style="{ backgroundColor: item.color }" />
           </div>
 

@@ -8,8 +8,8 @@
     <!-- Photo area -->
     <div class="bg-canvas border border-border-subtle overflow-hidden relative group"
       :style="{ width: `${width}px`, height: `${height}px` }">
-      <img v-if="src" :src="src" :alt="caption"
-        class="w-full h-full object-cover filter sepia-[0.2] contrast-[1.05] group-hover:sepia-0 transition-all duration-500">
+      <NuxtImg v-if="src" :src="src" :alt="caption" :width="width" :height="height" format="webp" loading="lazy"
+        class="w-full h-full object-cover filter sepia-[0.2] contrast-[1.05] group-hover:sepia-0 transition-all duration-500" />
       <!-- Placeholder if no image -->
       <div v-else class="w-full h-full flex items-center justify-center bg-gray-100 dark:bg-zinc-800"
         :class="placeholderGradient">
@@ -18,7 +18,7 @@
 
       <!-- Shine effect -->
       <div
-        class="absolute inset-0 bg-linear-to-tr from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-10"/>
+        class="absolute inset-0 bg-linear-to-tr from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-10" />
     </div>
     <!-- Caption -->
     <p v-if="caption"

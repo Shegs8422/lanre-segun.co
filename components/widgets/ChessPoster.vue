@@ -4,9 +4,10 @@
             :class="{ 'animate-wriggle': isWriggling }">
 
             <!-- Background SVG Pattern -->
-            <img draggable="false" alt="Chess Pattern"
+            <NuxtImg draggable="false" alt="Chess Pattern"
                 class="rounded-lg absolute bottom-0 left-0 w-full h-full object-cover opacity-40"
-                src="https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/background.svg">
+                src="https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/background.svg"
+                format="webp" />
 
             <!-- Scrolling Text Top -->
             <div class="scrolling-text-top absolute top-4 w-[400%] flex pointer-events-none">
@@ -23,12 +24,14 @@
             </div>
 
             <!-- Chess Piece SVGs -->
-            <img draggable="false" alt="Chess Knight" width="177" height="172"
+            <NuxtImg draggable="false" alt="Chess Knight" width="177" height="172"
                 class="rounded-lg absolute top-0 left-0 pointer-events-none"
-                src="https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/chess-poster.svg">
-            <img draggable="false" alt="Chess King" width="224" height="233"
+                src="https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/chess-poster.svg"
+                format="webp" />
+            <NuxtImg draggable="false" alt="Chess King" width="224" height="233"
                 class="rounded-lg absolute bottom-0 right-0 pointer-events-none"
-                src="https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/king-chess-poster.svg">
+                src="https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/king-chess-poster.svg"
+                format="webp" />
 
             <!-- Content Button Overlay -->
             <a href="https://chess.com" target="_blank" class="absolute inset-0 z-20" />
