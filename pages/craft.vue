@@ -204,6 +204,12 @@ import VinylRecord from '~/components/widgets/VinylRecord.vue'
 import ChessPoster from '~/components/widgets/ChessPoster.vue'
 import LocationStamp from '~/components/widgets/LocationStamp.vue'
 
+useHead({
+    bodyAttrs: {
+        class: 'bg-background overflow-y-auto h-auto'
+    }
+})
+
 useSeoMeta({
     title: 'Craft | Lanre Segun',
     description: 'A collection of interactive components and experiments crafted with Vue, Tailwind, and GSAP. Explore the building blocks of this portfolio.',
