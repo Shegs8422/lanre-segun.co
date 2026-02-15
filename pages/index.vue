@@ -56,7 +56,7 @@
                 <div
                     class="fixed inset-0 bg-linear-grid bg-size-[16px_16px] bg-position-[12px_12px] pointer-events-none" />
                 <div class="fixed inset-0 opacity-60 bg-cover bg-center z-10 pointer-events-none"
-                    style="background-image: url('/images/Layer-window.png')" />
+                    style="background-image: url('https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/Layer-window.png')" />
                 <div
                     class="fixed inset-0 bg-linear-big-grid bg-size-[80px_80px] bg-position-[-4px_-4px] z-20 pointer-events-none" />
                 <div
@@ -103,115 +103,139 @@
                     </div>
 
                     <!-- 3D Books -->
-                    <Book3D cover="/images/The Path to Senior Designer - ARTIOM DASHINSKY.jpg"
+                    <Book3D
+                        cover="https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/The%20Path%20to%20Senior%20Designer%20-%20ARTIOM%20DASHINSKY.jpg"
                         title="The Path to Senior Designer" author="ARTIOM DASHINSKY" color="var(--color-book-blue)"
                         :width="165" :height="201"
                         classes="col-start-3 row-start-1 rotate-[-12deg] top-[40px] left-[120px] entrance-stagger"
                         style="--stagger: 20" :stagger="20" />
 
-                    <Book3D cover="/images/The Effective Product Designer - ARTIOM DASHINSKY.jpg"
+                    <Book3D
+                        cover="https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/The%20Effective%20Product%20Designer%20-%20ARTIOM%20DASHINSKY.jpg"
                         title="The Effective Product Designer" author="ARTIOM DASHINSKY"
                         color="var(--color-book-orange)" :width="133" :height="201"
                         classes="col-start-5 row-start-2 top-[40px] left-[40px] rotate-[15deg] entrance-stagger"
                         style="--stagger: 21" :stagger="21" />
 
-                    <Book3D cover="/images/The Subtle Art of Not Giving a Fuck - Mark Manson.jpg"
+                    <Book3D
+                        cover="https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/The%20Subtle%20Art%20of%20Not%20Giving%20a%20Fuck%20-%20Mark%20Manson.jpg"
                         title="The Subtle Art of Not Giving a Fuck" author="Mark Manson"
                         color="var(--color-book-orange)" :width="135" :height="198"
                         classes="col-start-2 row-start-4 rotate-[6deg] entrance-stagger" style="--stagger: 22"
                         :stagger="22" />
 
-                    <Book3D cover="/images/Designing Brand Identity - Alina Wheeler.jpg"
+                    <Book3D
+                        cover="https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/Designing%20Brand%20Identity%20-%20Alina%20Wheeler.jpg"
                         title="Designing Brand Identity" author="Alina Wheeler" color="var(--color-book-red)"
                         :width="135" :height="200"
                         classes="col-start-3 row-start-2 rotate-[-5deg] left-[10px] bottom-[20px] entrance-stagger"
                         style="--stagger: 23" :stagger="23" />
 
-                    <Book3D cover="/images/image_1.jpg" color="var(--color-book-crimson)" :width="130" :height="198"
+                    <Book3D cover="https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/image_1.jpg"
+                        color="var(--color-book-crimson)" :width="130" :height="198"
                         classes="col-start-1 row-start-5 rotate-[12deg] left-[20px] top-[80px] entrance-stagger"
                         style="--stagger: 24" :stagger="24" />
 
-                    <Book3D cover="/images/Prompt Engineering for UX - MEDAVI.jpg" title="Prompt Engineering for UX"
-                        author="MEDAVI" color="var(--color-book-vermilion)" :width="145" :height="198"
+                    <Book3D
+                        cover="https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/Prompt%20Engineering%20for%20UX%20-%20MEDAVI.jpg"
+                        title="Prompt Engineering for UX" author="MEDAVI" color="var(--color-book-vermilion)"
+                        :width="145" :height="198"
                         classes="col-start-6 row-start-6 rotate-[-10deg] right-[40px] top-[40px] entrance-stagger"
                         style="--stagger: 25" :stagger="25" />
 
-                    <Book3D cover="/images/Grid System in Graphic Design - Josef Muller Brockmann.jpg"
+                    <Book3D
+                        cover="https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/Grid%20System%20in%20Graphic%20Design%20-%20Josef%20Muller%20Brockmann.jpg"
                         title="Grid System in Graphic Design" author="Josef Muller Brockmann"
                         color="var(--color-book-black)" :width="136" :height="199"
                         classes="col-start-7 row-start-4 rotate-[12deg] left-[140px] bottom-[40px] entrance-stagger"
                         style="--stagger: 26" :stagger="26" />
 
-                    <Book3D cover="/images/Design Beyond Limits with Figma - Simon Jun.jpg"
+                    <Book3D
+                        cover="https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/Design%20Beyond%20Limits%20with%20Figma%20-%20Simon%20Jun.jpg"
                         title="Design Beyond Limits with Figma" author="Simon Jun" color="var(--color-book-cyan)"
                         :width="128" :height="197"
                         classes="col-start-3 row-start-6 rotate-[4deg] left-[80px] top-[120px] entrance-stagger"
                         style="--stagger: 27" :stagger="27" />
 
-                    <Book3D cover="/images/Living Purposefully - Pastor Juwon Owolabi.jpg" title="Living Purposefully"
-                        author="Pastor Juwon Owolabi" color="var(--color-book-brown)" :width="137" :height="194"
+                    <Book3D
+                        cover="https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/Living%20Purposefully%20-%20Pastor%20Juwon%20Owolabi.jpg"
+                        title="Living Purposefully" author="Pastor Juwon Owolabi" color="var(--color-book-brown)"
+                        :width="137" :height="194"
                         classes="col-start-1 row-start-4 rotate-[-12deg] left-[20px] top-[40px] entrance-stagger"
                         style="--stagger: 28" :stagger="28" />
 
-                    <Book3D cover="/images/Inclusive Design for Accessibility - Dale Cruse & D.Bourdreau.jpg"
+                    <Book3D
+                        cover="https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/Inclusive%20Design%20for%20Accessibility%20-%20Dale%20Cruse%20%26%20D.Bourdreau.jpg"
                         title="Inclusive Design for Accessibility" author="Dale Cruse & D.Bourdreau"
                         color="var(--color-book-charcoal)" :width="143" :height="198"
                         classes="col-start-7 row-start-1 h-fit w-fit left-[360px] relative top-[400px] entrance-stagger"
                         style="--stagger: 29" :stagger="29" />
 
-                    <Book3D cover="/images/Fall in Love with the Problem, Not the Solution - Uri Levine.jpg"
+                    <Book3D
+                        cover="https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/Fall%20in%20Love%20with%20the%20Problem%2C%20Not%20the%20Solution%20-%20Uri%20Levine.jpg"
                         title="Fall in Love with the Problem, Not the Solution" author="Uri Levine"
                         color="var(--color-book-yellow)" :width="143" :height="201"
                         classes="col-start-1 row-start-1 rotate-[-10deg] left-[60px] top-[20px] entrance-stagger"
                         style="--stagger: 30" :stagger="30" />
 
-                    <Book3D cover="/images/image_5.png" color="var(--color-book-beige)" :width="143" :height="202"
+                    <Book3D cover="https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/image_5.png"
+                        color="var(--color-book-beige)" :width="143" :height="202"
                         classes="col-start-3 row-start-7 rotate-[12deg] right-[80px] top-[40px] entrance-stagger"
                         style="--stagger: 31" :stagger="31" />
 
-                    <Book3D cover="/images/image_13.jpg" color="var(--color-book-gray)" :width="160" :height="208"
+                    <Book3D cover="https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/image_13.jpg"
+                        color="var(--color-book-gray)" :width="160" :height="208"
                         classes="col-start-4 row-start-6 rotate-[-15deg] left-[80px] bottom-[20px] entrance-stagger"
                         style="--stagger: 32" :stagger="32" />
 
                     <!-- Vinyl Records -->
-                    <VinylRecord :key="`tuyo-narcos`" cover="/images/tuyo-narcos-theme.jpg" album="Tuyo (Narcos Theme)"
-                        artist="Rodrigo Amarante" music-file="/audio/tuyo-narcos-theme.mp3"
+                    <VinylRecord :key="`tuyo-narcos`"
+                        cover="https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/tuyo-narcos-theme.jpg"
+                        album="Tuyo (Narcos Theme)" artist="Rodrigo Amarante" music-file="/audio/tuyo-narcos-theme.mp3"
                         classes="col-start-5 row-start-1 rotate-[-15deg] top-[40px] left-[60px] entrance-stagger"
                         style="--stagger: 31" :stagger="31" />
 
-                    <VinylRecord :key="`kendrick-heart`" cover="/images/The Heart 5 - Kendrick Lamar.jpg"
-                        label="/images/The Heart 5 - Kendrick Lamar -1.jpg" album="The Heart Part 5"
-                        artist="Kendrick Lamar" music-file="/audio/the-heart-part-5.mp3"
+                    <VinylRecord :key="`kendrick-heart`"
+                        cover="https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/The%20Heart%205%20-%20Kendrick%20Lamar.jpg"
+                        label="https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/The%20Heart%205%20-%20Kendrick%20Lamar%20-1.jpg"
+                        album="The Heart Part 5" artist="Kendrick Lamar" music-file="/audio/the-heart-part-5.mp3"
                         classes="col-start-2 row-start-1 rotate-[12deg] top-[40px] left-[40px] entrance-stagger"
                         style="--stagger: 33" :stagger="33" />
 
-                    <VinylRecord :key="`iba-folouwa`" cover="/images/iba%20foluwa.jpg"
-                        label="/images/iba%20foluwa%20-%201.jpg" album="Iba Folouwa"
-                        artist="Chief Commander Ebenezer Obey"
+                    <VinylRecord :key="`iba-folouwa`"
+                        cover="https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/iba%20foluwa.jpg"
+                        label="https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/iba%20foluwa%20-%201.jpg"
+                        album="Iba Folouwa" artist="Chief Commander Ebenezer Obey"
                         music-file="/audio/chief-commander-ebenezer-obey-iba-folouwa.mp3"
                         classes="col-start-8 row-start-4 rotate-[8deg] left-[100px] bottom-[120px] entrance-stagger"
                         style="--stagger: 34" :stagger="34" />
 
-                    <VinylRecord :key="`silk-sonic`" cover="/images/image_10.png" album="An Evening with Silk Sonic"
-                        artist="Silk Sonic" music-file="/audio/leave-the-door-open.mp3"
+                    <VinylRecord :key="`silk-sonic`"
+                        cover="https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/image_10.png"
+                        album="An Evening with Silk Sonic" artist="Silk Sonic"
+                        music-file="/audio/leave-the-door-open.mp3"
                         classes="col-start-6 row-start-6 rotate-[8deg] left-[180px] bottom-[100px] entrance-stagger"
                         style="--stagger: 35" :stagger="35" />
 
-                    <VinylRecord :key="`keane`" cover="/images/Keane%20Hopes%20and%20fears.jpg"
-                        label="/images/Keane%20Hopes%20and%20fears%20-%201.jpg" album="Somewhere Only We Know"
-                        artist="Keane" music-file="/audio/somewhere-only-we-know.mp3"
+                    <VinylRecord :key="`keane`"
+                        cover="https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/Keane%20Hopes%20and%20fears.jpg"
+                        label="https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/Keane%20Hopes%20and%20fears%20-%201.jpg"
+                        album="Somewhere Only We Know" artist="Keane" music-file="/audio/somewhere-only-we-know.mp3"
                         classes="col-start-1 row-start-7 rotate-[-8deg] left-[100px] bottom-[120px] entrance-stagger"
                         style="--stagger: 36" :stagger="36" />
 
-                    <VinylRecord :key="`mozart`" cover="/images/Wolfgang-amadeus-mozart.jpg"
-                        label="/images/Wolfgang-amadeus-mozart-1.jpg" album="Symphony #40 in G Minor, K 550"
-                        artist="Wolfgang Amadeus Mozart"
+                    <VinylRecord :key="`mozart`"
+                        cover="https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/Wolfgang-amadeus-mozart.jpg"
+                        label="https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/Wolfgang-amadeus-mozart-1.jpg"
+                        album="Symphony #40 in G Minor, K 550" artist="Wolfgang Amadeus Mozart"
                         music-file="/audio/mozart-symphony-40-in-g-minor-k-550-1-molto-allegro-128-ytshorts.savetube.me.mp3"
                         classes="col-start-3 row-start-5 rotate-[8deg] right-[140px] top-[140px] entrance-stagger"
                         style="--stagger: 37" :stagger="37" />
 
-                    <VinylRecord :key="`sunny`" cover="/images/Sunny.jpg" label="/images/Sunny - 2.jpg" album="Sunny"
-                        artist="Boney M" music-file="/audio/boney-m-sunny.mp3"
+                    <VinylRecord :key="`sunny`"
+                        cover="https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/Sunny.jpg"
+                        label="https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/Sunny%20-%202.jpg"
+                        album="Sunny" artist="Boney M" music-file="/audio/boney-m-sunny.mp3"
                         classes="col-start-7 row-start-1 rotate-[8deg] right-[40px] top-[20px] entrance-stagger"
                         style="--stagger: 38" :stagger="38" />
 
@@ -265,27 +289,30 @@
                     <NuxtImg style="--stagger:8" draggable="false" alt="Grazac Branding" width="200" height="auto"
                         loading="lazy" quality="85"
                         class="pointer-events-none select-none relative col-start-4 row-start-6 right-[500px] top-[40px] entrance-stagger object-contain"
-                        src="/images/Grazac.png" />
+                        src="https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/Grazac.png" />
 
                     <NuxtImg style="--stagger:14" draggable="false" alt="Nvidia Logo" width="160" height="auto"
                         loading="lazy"
                         class="rotate-10 pointer-events-none select-none relative col-start-7 row-start-5 right-[40px] entrance-stagger object-contain"
-                        src="/images/nvidia.png" quality="85" />
+                        src="https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/nvidia.png"
+                        quality="85" />
 
                     <NuxtImg style="--stagger:16" draggable="false" alt="McKinsey Logo" width="160" height="auto"
                         loading="lazy"
                         class="select-none pointer-events-none relative col-start-8 row-start-6 top-[20px] right-[40px] entrance-stagger object-contain"
-                        src="/images/mckinsey.png" quality="85" />
+                        src="https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/mckinsey.png"
+                        quality="85" />
 
                     <NuxtImg style="--stagger:11" draggable="false" alt="Funaab University" width="150" height="auto"
                         loading="lazy" quality="85"
                         class="select-none pointer-events-none relative col-start-1 row-start-6 top-[80px] left-[40px] rotate-36 entrance-stagger object-contain"
-                        src="/images/Funaab logo.png" />
+                        src="https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/Funaab%20logo.png" />
 
                     <NuxtImg style="--stagger:18" draggable="false" alt="Vue Logo" width="120" height="auto"
                         loading="lazy"
                         class="select-none pointer-events-none relative col-start-2 row-start-7 -top-[40px] left-[60px] rotate-12 entrance-stagger object-contain"
-                        src="/images/Vue.js_Logo_2.svg" quality="85" />
+                        src="https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/Vue.js_Logo_2.svg"
+                        quality="85" />
 
                     <!-- MDX Logo -->
                     <svg style="--stagger:15"
@@ -322,7 +349,9 @@
                         style="--stagger: 3">
                         <div
                             class="rotate-14 transition-transform hover:scale-105 duration-300 border border-black/10 dark:border-white/10 shadow-xl p-3 pb-8">
-                            <PolaroidPhoto src="/images/image_21.jpg" alt="Polaroid 1" />
+                            <PolaroidPhoto
+                                src="https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/image_21.jpg"
+                                alt="Polaroid 1" />
                         </div>
                     </DraggableWidget>
 
@@ -331,7 +360,9 @@
                         style="--stagger: 4">
                         <div
                             class="-rotate-12 transition-transform hover:scale-105 duration-300 border border-black/10 dark:border-white/10 shadow-xl p-3 pb-8">
-                            <PolaroidPhoto src="/images/image_2.jpg" alt="Polaroid 2" />
+                            <PolaroidPhoto
+                                src="https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/image_2.jpg"
+                                alt="Polaroid 2" />
                         </div>
                     </DraggableWidget>
 
@@ -340,7 +371,9 @@
                         style="--stagger: 5">
                         <div
                             class="rotate-2 transition-transform hover:scale-105 duration-300 border border-black/10 dark:border-white/10 shadow-xl p-3 pb-8">
-                            <PolaroidPhoto src="/images/image_14.png" alt="Polaroid 3" />
+                            <PolaroidPhoto
+                                src="https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/image_14.png"
+                                alt="Polaroid 3" />
                         </div>
                     </DraggableWidget>
 
@@ -349,7 +382,9 @@
                         style="--stagger: 6">
                         <div
                             class="rotate-[8deg] transition-transform hover:scale-105 duration-300 border border-black/10 dark:border-white/10 shadow-xl p-3 pb-8">
-                            <PolaroidPhoto src="/images/segun.jpg" alt="Polaroid 4" />
+                            <PolaroidPhoto
+                                src="https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/segun.jpg"
+                                alt="Polaroid 4" />
                         </div>
                     </DraggableWidget>
 
@@ -371,8 +406,8 @@ import VinylRecord from '~/components/widgets/VinylRecord.vue'
 import FlipClock from '~/components/widgets/FlipClock.vue'
 import DraggableCanvas from '~/components/widgets/DraggableCanvas.vue'
 import DraggableWidget from '~/components/widgets/DraggableWidget.vue'
-import ProfileCard from '~/components/cards/ProfileCard.vue'
-import EducationCard from '~/components/cards/EducationCard.vue'
+import ProfileCard from '~/components/portfolio/ProfileCard.vue'
+import EducationCard from '~/components/portfolio/EducationCard.vue'
 import PolaroidPhoto from '~/components/ui/PolaroidPhoto.vue'
 import DrawingCanvas from '~/components/widgets/DrawingCanvas.vue'
 import BrazilStamp from '~/components/widgets/LocationStamp.vue'
@@ -453,7 +488,7 @@ const bodyClass = computed(() => isMobile.value ? 'bg-background' : 'overflow-hi
 useSchemaOrg([
     definePerson({
         name: 'Lanre Segun',
-        image: '/og-image.png',
+        image: 'https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/og-image.png',
         jobTitle: 'Senior Product Designer',
         sameAs: [
             'https://twitter.com/Olusegun51',
@@ -470,7 +505,7 @@ useSeoMeta({
     description: 'C-Suite Senior Product Designer & Design Engineer. Specializing in Web3, Fintech, and SaaS with a focus on HCD and premium UI.',
     ogTitle: 'Lanre Segun - Senior Product Designer | Interactive Portfolio',
     ogDescription: 'C-Suite Senior Product Designer & Design Engineer. Specializing in Web3, Fintech, and SaaS with a focus on HCD and premium UI.',
-    ogImage: '/og-image.png',
+    ogImage: 'https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/og-image.png',
     ogUrl: 'https://lanre-segun.vercel.app'
 })
 

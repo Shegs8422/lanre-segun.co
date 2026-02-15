@@ -240,7 +240,7 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits(['update:modelValue'])
-const supabase = useSupabaseClient()
+
 
 const sections = ref(props.modelValue.map((s: any) => ({
     ...s,
@@ -320,15 +320,19 @@ const handleUpload = async (event: Event, index: number) => {
     const file = input.files[0]
     if (!file) return
 
-    const fileExt = file.name.split('.').pop()
-    const filePath = `projects/sections/${Date.now()}.${fileExt}`
-
     try {
-        const { error } = await supabase.storage.from('portfolio').upload(filePath, file)
-        if (error) throw error
-        const { data: { publicUrl } } = supabase.storage.from('portfolio').getPublicUrl(filePath)
-        sections.value[index].image = publicUrl
-    } catch {
+        const formDataBody = new FormData()
+        formDataBody.append('file', file)
+
+        const response = await $fetch<{ success: boolean; url: string }>('/api/cms/upload', {
+            method: 'POST',
+            body: formDataBody
+        })
+
+        if (!response.success) throw new Error('Upload failed')
+        sections.value[index].image = response.url
+    } catch (e) {
+        console.error('Upload failed', e)
         alert('Upload failed')
     }
 }
@@ -339,14 +343,17 @@ const handleGridUpload = async (event: Event, index: number) => {
 
     const files = Array.from(input.files)
     const uploadPromises = files.map(async (file) => {
-        const fileExt = file.name.split('.').pop()
-        const filePath = `projects/sections/${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`
-
         try {
-            const { error } = await supabase.storage.from('portfolio').upload(filePath, file)
-            if (error) throw error
-            const { data: { publicUrl } } = supabase.storage.from('portfolio').getPublicUrl(filePath)
-            return publicUrl
+            const formDataBody = new FormData()
+            formDataBody.append('file', file)
+
+            const response = await $fetch<{ success: boolean; url: string }>('/api/cms/upload', {
+                method: 'POST',
+                body: formDataBody
+            })
+
+            if (!response.success) throw new Error('Upload failed')
+            return response.url
         } catch (e) {
             console.error('Upload failed for one of the files', e)
             return null

@@ -18,7 +18,7 @@
                     <div class="flex items-start justify-between">
                         <div class="flex items-center gap-3">
                             <div class="relative">
-                                <img src="/gemini.svg" alt="Google Gemini Logo" class="w-6 h-6 animate-pulse-slow" >
+                                <img src="https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/gemini.svg" alt="Google Gemini Logo" class="w-6 h-6 animate-pulse-slow" >
                                 <div class="absolute inset-0 bg-blue-500 blur-lg opacity-40"/>
                             </div>
                             <div>

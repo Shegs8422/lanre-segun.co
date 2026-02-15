@@ -196,7 +196,7 @@
                             <div class="flex flex-col gap-1">
                                 <h2 class="text-2xl lg:text-3xl font-bold tracking-tight text-foreground">{{
                                     cmsHeaderTitle
-                                    }}</h2>
+                                }}</h2>
                                 <p class="text-xs text-muted-foreground font-medium">Manage and curate your {{
                                     activeTabLabel.toLowerCase() }} collection</p>
                             </div>
@@ -844,13 +844,16 @@ const handleImageUpload = async (event: Event, field: string) => {
 
     try {
         for (const file of Array.from(input.files)) {
-            const fileExt = file.name.split('.').pop()
-            const filePath = `uploads/${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`
+            const formDataBody = new FormData()
+            formDataBody.append('file', file)
 
-            const { error: uploadError } = await supabase.storage.from('portfolio').upload(filePath, file)
-            if (uploadError) throw uploadError
+            const response = await $fetch<{ success: boolean; url: string }>('/api/cms/upload', {
+                method: 'POST',
+                body: formDataBody
+            })
 
-            const { data: { publicUrl } } = supabase.storage.from('portfolio').getPublicUrl(filePath)
+            if (!response.success) throw new Error('Upload failed')
+            const publicUrl = response.url
 
             if (field === 'coverImage') formData.value.coverImage = publicUrl
             else if (field === 'postContent') formData.value.content = (formData.value.content || '') + `\n\n![Image](${publicUrl})\n\n`
@@ -870,7 +873,8 @@ const handleImageUpload = async (event: Event, field: string) => {
         }
         if (field === 'massGallery') await fetchGallery()
         showToast('Done', 'Images hosted successfully.', 'success')
-    } catch {
+    } catch (e: any) {
+        console.error('Upload error:', e)
         showToast('Storage Error', 'Upload failed.', 'error')
     } finally {
         isUploading.value = false

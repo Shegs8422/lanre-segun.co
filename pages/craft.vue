@@ -77,8 +77,9 @@
                     class="lg:col-span-8 bg-card-dark dark:bg-card-darker rounded-2xl border border-white/10 p-12 flex items-center justify-center min-h-[450px] relative overflow-hidden">
                     <div
                         class="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] bg-size-[16px_16px]" />
-                    <Book3D cover="/images/image_3.png" color="var(--color-book-bright-red)" :width="160" :height="220"
-                        title="Design Systems" author="Alla Kholmatova" />
+                    <Book3D cover="https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/image_3.png"
+                        color="var(--color-book-bright-red)" :width="160" :height="220" title="Design Systems"
+                        author="Alla Kholmatova" />
                 </div>
             </div>
 
@@ -133,7 +134,8 @@
                     class="lg:col-span-8 bg-card-dark dark:bg-card-darker rounded-2xl border border-white/10 p-12 flex items-center justify-center min-h-[450px] relative overflow-hidden">
                     <div
                         class="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] bg-size-[16px_16px]" />
-                    <VinylRecord :key="`demo-record`" cover="/images/Keane Hopes and fears.jpg"
+                    <VinylRecord :key="`demo-record`"
+                        cover="https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/Keane%20Hopes%20and%20fears.jpg"
                         album="Somewhere Only We Know" artist="Keane" music-file="/audio/somewhere-only-we-know.mp3" />
                 </div>
             </div>
@@ -207,11 +209,11 @@ useSeoMeta({
     description: 'A collection of interactive components and experiments crafted with Vue, Tailwind, and GSAP. Explore the building blocks of this portfolio.',
     ogTitle: 'Craft | Lanre Segun',
     ogDescription: 'A collection of interactive components and experiments crafted with Vue, Tailwind, and GSAP. Explore the building blocks of this portfolio.',
-    ogImage: '/og-image.png',
+    ogImage: 'https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/og-image.png',
     ogUrl: 'https://lanre-segun.vercel.app/craft',
     twitterTitle: 'Craft | Lanre Segun',
     twitterDescription: 'A collection of interactive components and experiments crafted with Vue, Tailwind, and GSAP. Explore the building blocks of this portfolio.',
-    twitterImage: '/og-image.png',
+    twitterImage: 'https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/og-image.png',
     twitterCard: 'summary'
 })
 </script>

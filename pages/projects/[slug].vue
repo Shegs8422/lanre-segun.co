@@ -636,7 +636,7 @@ const formattedLink = computed(() => {
 useSeoMeta({
     title: () => project.value ? `${project.value.title} - Lanre Segun` : 'Project',
     description: () => project.value?.description || 'Case study.',
-    ogImage: () => project.value?.coverImage || '/og-image.png'
+    ogImage: () => project.value?.coverImage || 'https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/og-image.png'
 })
 
 

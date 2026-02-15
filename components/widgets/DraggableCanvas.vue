@@ -39,7 +39,7 @@ id="mat-texture"
             <!-- Window Texture Overlay -->
             <div
 id="window" class="z-10 opacity-[0.6] absolute w-full h-full left-0 top-0 bg-cover bg-center"
-              style="background-image: url('/images/Layer-window.png')"/>
+              style="background-image: url('https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/Layer-window.png')"/>
 
             <!-- Large Grid Lines -->
             <div

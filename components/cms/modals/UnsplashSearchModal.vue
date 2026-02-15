@@ -90,6 +90,14 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- Uploading Overlay -->
+            <div v-if="isUploadingToBlob"
+                class="absolute inset-0 bg-black/60 backdrop-blur-sm z-10 flex flex-col items-center justify-center gap-4">
+                <div class="w-12 h-12 rounded-full border-t-2 border-blue-500 animate-spin"/>
+                <p class="text-white text-sm font-black uppercase tracking-mega">Optimizing image...</p>
+                <p class="text-white/60 text-xs">Uploading to CDN for faster load times</p>
+            </div>
         </div>
     </Transition>
 </template>
@@ -111,6 +119,7 @@ const emit = defineEmits<{
 const unsplashQuery = ref('')
 const unsplashResults = ref<any[]>([])
 const isSearchingUnsplash = ref(false)
+const isUploadingToBlob = ref(false)
 
 watch(() => props.show, (newVal) => {
     if (newVal) {
@@ -134,19 +143,46 @@ const searchUnsplash = async () => {
         })
         unsplashResults.value = response.results || []
     } catch (error) {
-        // Simple error handling, parent can listen to generic error if needed?
-        // Or we use a composable for toast if available.
-        // For now, fail silently or console error as we don't have global toast access here easily 
-        // without providing it or using a store. 
         console.error('Unsplash search failed', error)
     } finally {
         isSearchingUnsplash.value = false
     }
 }
 
-const selectImage = (image: any) => {
-    emit('select', image)
-    emit('update:show', false)
+const selectImage = async (image: any) => {
+    try {
+        isUploadingToBlob.value = true
+        
+        // Upload the Unsplash image to Vercel Blob for CDN optimization
+        const uploadResponse: any = await $fetch('/api/blob/upload', {
+            method: 'POST',
+            body: {
+                url: image.urls.regular,
+                filename: `unsplash-${image.id}.jpg`
+            }
+        })
+        
+        // Emit the optimized Blob URL instead of direct Unsplash URL
+        const optimizedImage = {
+            ...image,
+            urls: {
+                ...image.urls,
+                regular: uploadResponse.url,
+                small: uploadResponse.url,
+                full: uploadResponse.url
+            }
+        }
+        
+        emit('select', optimizedImage)
+        emit('update:show', false)
+    } catch (error) {
+        console.error('Failed to upload image to Blob:', error)
+        // Fallback to original Unsplash URL if Blob upload fails
+        emit('select', image)
+        emit('update:show', false)
+    } finally {
+        isUploadingToBlob.value = false
+    }
 }
 </script>
 

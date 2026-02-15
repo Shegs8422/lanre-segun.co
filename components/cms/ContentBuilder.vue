@@ -187,7 +187,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits(["update:modelValue"]);
-const supabase = useSupabaseClient();
+
 
 // Inserter State
 const showInserter = ref(false);
@@ -399,25 +399,26 @@ const handleImageUpload = async (event: Event, index: number) => {
   const input = event.target as HTMLInputElement;
   const file = input.files?.[0];
   if (!file) return;
-  const fileExt = file.name.split(".").pop();
-  const filePath = `uploads/${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
 
   try {
-    const { error: uploadError } = await supabase.storage
-      .from("portfolio")
-      .upload(filePath, file);
-    if (uploadError) throw uploadError;
+    const formDataBody = new FormData()
+    formDataBody.append('file', file)
 
-    const { data } = supabase.storage.from("portfolio").getPublicUrl(filePath);
-    if (data?.publicUrl) {
-      const block = blocks.value[index];
-      if (block) {
-        block.url = data.publicUrl;
-        emitUpdate();
-      }
+    const response = await $fetch<{ success: boolean; url: string }>('/api/cms/upload', {
+      method: 'POST',
+      body: formDataBody
+    })
+
+    if (!response.success) throw new Error('Upload failed')
+
+    const block = blocks.value[index];
+    if (block) {
+      block.url = response.url;
+      emitUpdate();
     }
   } catch (e) {
     console.error("Upload failed", e);
+    alert('Upload failed');
   }
 };
 

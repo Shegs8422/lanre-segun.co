@@ -4,7 +4,8 @@
       class="select-none flex flex-col gap-2 sm:gap-4 bg-component relative rounded-lg w-full max-w-[100vw] col-span-2 row-span-2 sm:w-profile-card shadow-lg p-6 h-fit ">
       <div class="flex gap-3 items-center ">
         <span class="relative flex shrink-0 overflow-hidden rounded-full size-12 sm:size-14">
-          <img class="aspect-square h-full w-full" alt="Profile Picture" src="/images/profile-avatar.jpg">
+          <img class="aspect-square h-full w-full" alt="Profile Picture"
+            src="https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/profile-avatar.jpg">
         </span>
         <div class="flex flex-1 justify-between items-center">
           <div class="flex flex-col">
@@ -100,6 +101,6 @@
 
 <script setup lang="ts">
 import StatusBadge from '~/components/ui/StatusBadge.vue'
-import ExperienceTimeline from '~/components/sections/ExperienceTimeline.vue'
+import ExperienceTimeline from '~/components/portfolio/ExperienceTimeline.vue'
 const { isDark } = useTheme()
 </script>

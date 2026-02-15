@@ -1,35 +1,33 @@
 <!-- EducationCard.vue - Education history card -->
 <template>
   <div
-    class="select-none flex flex-col gap-4 bg-component relative rounded-lg w-full max-w-[100vw] col-span-2 row-span-2 sm:w-[568px] shadow-lg p-6 h-fit overflow-hidden"
+    class="select-none flex flex-col gap-4 bg-component relative rounded-lg w-full max-w-[100vw] col-span-2 row-span-2 sm:w-profile-card shadow-lg p-6 h-fit overflow-hidden"
     :class="{ 'text-white': activeColor }" :style="{ '--stagger': stagger }">
 
     <!-- Lively Background Bubble -->
-    <div ref="bubbleRef" class="absolute inset-0 z-0 pointer-events-none" style="clip-path: circle(0% at 0 0);"/>
+    <div ref="bubbleRef" class="absolute inset-0 z-0 pointer-events-none" style="clip-path: circle(0% at 0 0);" />
 
     <!-- Content (z-10 to stay above bubble) -->
     <div class="relative z-10 flex flex-col gap-4">
       <p class="font-display font-medium" :class="{ 'text-white': activeColor }">Education & Certification</p>
 
       <ul class="flex flex-col gap-4" @mouseleave="onLeave">
-        <li
-v-for="(item, index) in education" :key="index"
+        <li v-for="(item, index) in education" :key="index"
           class="flex flex-row gap-4 items-center transition-all duration-200 relative p-2 rounded-md"
           @mouseenter="onHover(item.color)">
 
           <!-- Logo Image -->
           <div
             class="hidden sm:flex h-10 w-10 flex-none items-center justify-center rounded-sm overflow-hidden bg-white/10 shrink-0">
-            <img v-if="item.logo" :src="item.logo" class="w-full h-full object-contain" alt="Logo" >
-            <div v-else class="w-full h-full" :style="{ backgroundColor: item.color }"/>
+            <img v-if="item.logo" :src="item.logo" class="w-full h-full object-contain" alt="Logo">
+            <div v-else class="w-full h-full" :style="{ backgroundColor: item.color }" />
           </div>
 
           <div class="w-full flex flex-col gap-4">
             <div class="flex flex-row w-full justify-between gap-8 items-center">
               <div class="flex flex-col">
                 <span class="font-medium" :class="{ 'text-white': activeColor }">{{ item.institution }}</span>
-                <span
-class="text-sm transition-colors duration-200"
+                <span class="text-sm transition-colors duration-200"
                   :class="activeColor ? 'text-white/80' : 'text-muted-foreground'">{{ item.program }}</span>
               </div>
 
@@ -107,28 +105,28 @@ const education: EducationItem[] = [
     program: 'B.Sc. Computer Science',
     period: '2026',
     color: '#00A868',
-    logo: '/images/Funaab logo.png'
+    logo: 'https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/Funaab%20logo.png'
   },
   {
     institution: 'Google',
     program: 'UX Design Professional',
     period: '2024',
     color: '#4285F4',
-    logo: '/images/google.png'
+    logo: 'https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/google.png'
   },
   {
     institution: 'NVIDIA',
     program: 'Fundamentals of Deep Learning',
     period: '2024',
     color: '#76B900',
-    logo: '/images/nvidia.png'
+    logo: 'https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/nvidia.png'
   },
   {
     institution: 'McKinsey & Company',
     program: 'Forward Leadership',
     period: '2025',
     color: '#051C2C',
-    logo: '/images/mckinsey.png'
+    logo: 'https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/mckinsey.png'
   }
 ]
 </script>

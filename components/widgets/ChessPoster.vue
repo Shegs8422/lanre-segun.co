@@ -6,7 +6,7 @@
             <!-- Background SVG Pattern -->
             <img draggable="false" alt="Chess Pattern"
                 class="rounded-lg absolute bottom-0 left-0 w-full h-full object-cover opacity-40"
-                src="/images/background.svg">
+                src="https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/background.svg">
 
             <!-- Scrolling Text Top -->
             <div class="scrolling-text-top absolute top-4 w-[400%] flex pointer-events-none">
@@ -24,9 +24,11 @@
 
             <!-- Chess Piece SVGs -->
             <img draggable="false" alt="Chess Knight" width="177" height="172"
-                class="rounded-lg absolute top-0 left-0 pointer-events-none" src="/images/chess-poster.svg">
+                class="rounded-lg absolute top-0 left-0 pointer-events-none"
+                src="https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/chess-poster.svg">
             <img draggable="false" alt="Chess King" width="224" height="233"
-                class="rounded-lg absolute bottom-0 right-0 pointer-events-none" src="/images/king-chess-poster.svg">
+                class="rounded-lg absolute bottom-0 right-0 pointer-events-none"
+                src="https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/images/king-chess-poster.svg">
 
             <!-- Content Button Overlay -->
             <a href="https://chess.com" target="_blank" class="absolute inset-0 z-20" />
@@ -71,7 +73,7 @@ const loadCoverImage = () => {
     coverImage.onerror = () => {
         console.error('Failed to load chess-cover.png')
     }
-    coverImage.src = '/about-me/chess-cover.png'
+    coverImage.src = 'https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/about-me/chess-cover.png'
 }
 
 const startScratching = (e: MouseEvent | TouchEvent) => {
@@ -220,6 +222,6 @@ onMounted(() => {
 }
 
 .scratch-cursor {
-    cursor: url('/about-me/promo cursor.svg'), auto;
+    cursor: url('https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/about-me/promo%20cursor.svg'), auto;
 }
 </style>

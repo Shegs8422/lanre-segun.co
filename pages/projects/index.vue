@@ -158,11 +158,11 @@ useSeoMeta({
     description: 'Explore my latest design and development projects. Senior Product Designer bridging complex engineering and premium UI.',
     ogTitle: 'Projects - Lanre Segun',
     ogDescription: 'Explore my latest design and development projects. Senior Product Designer bridging complex engineering and premium UI.',
-    ogImage: '/og-image.png',
+    ogImage: 'https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/og-image.png',
     ogUrl: 'https://lanre-segun.vercel.app/projects',
     twitterTitle: 'Projects - Lanre Segun',
     twitterDescription: 'Explore my latest design and development projects. Senior Product Designer bridging complex engineering and premium UI.',
-    twitterImage: '/og-image.png',
+    twitterImage: 'https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/og-image.png',
     twitterCard: 'summary'
 })
 </script>

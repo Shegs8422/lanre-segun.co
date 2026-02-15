@@ -114,7 +114,7 @@ useHead({
     }
   ],
   link: [
-    { rel: 'icon', type: 'image/png', href: computed(() => isDark.value ? '/black.png' : '/white.png') }
+    { rel: 'icon', type: 'image/png', href: computed(() => isDark.value ? 'https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/black.png' : 'https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/white.png') }
   ],
   script: [
     // Google Tag (gtag.js)

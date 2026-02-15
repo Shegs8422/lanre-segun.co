@@ -76,11 +76,11 @@ useSeoMeta({
     description: 'Thoughts, ideas, and ramblings. A collection of posts on design, engineering, and personal growth.',
     ogTitle: 'Blog - Lanre Segun',
     ogDescription: 'Thoughts, ideas, and ramblings. A collection of posts on design, engineering, and personal growth.',
-    ogImage: '/og-image.png',
+    ogImage: 'https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/og-image.png',
     ogUrl: 'https://lanre-segun.co/blog',
     twitterTitle: 'Blog - Lanre Segun',
     twitterDescription: 'Thoughts, ideas, and ramblings. A collection of posts on design, engineering, and personal growth.',
-    twitterImage: '/og-image.png',
+    twitterImage: 'https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/og-image.png',
     twitterCard: 'summary'
 })
 
