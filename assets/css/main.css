@@ -1,7 +1,6 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 @variant dark (&:where(.dark, .dark *));
-@import "./fonts.css";
 
 @theme {
   --font-sans: var(--font-sans);
@@ -43,18 +42,21 @@
   /* Spacing / Dimensions */
   --width-profile-card: 568px;
 
-  /* Z-Index System */
-  --z-negative: -1;
-  --z-elevated: 10;
-  --z-sticky: 50;
-  --z-overlay: 60;
-  --z-modal-backdrop: 90;
-  --z-modal: 100;
-  --z-max: 9999;
+  /* Typography Scale */
+  --text-xxs: 0.625rem; /* 10px */
+  --text-xs: 0.75rem; /* 12px */
+  --text-sm: 0.875rem; /* 14px */
+  --text-base: 1rem; /* 16px */
+  --text-lg: 1.125rem; /* 18px */
+  --text-xl: 1.25rem; /* 20px */
+  --text-2xl: 1.5rem; /* 24px */
+  --text-3xl: 1.875rem; /* 30px */
+  --text-4xl: 2.25rem; /* 36px */
+  --text-5xl: 3rem; /* 48px */
+  --text-6xl: 3.75rem; /* 60px */
+  --text-7xl: 4.5rem; /* 72px */
+  --text-poster-lg: 5.625rem; /* 90px */
 
-  /* Typography Extensions */
-  --text-xxs: 10px;
-  --text-poster-lg: 90px;
   --tracking-mega: 0.2em;
   --tracking-giga: 0.3em;
 
@@ -116,10 +118,8 @@
   --radius: 0.5rem;
 
   /* FONTS */
-  --font-sans:
-    "Google Sans Text", "Inter", system-ui, -apple-system, sans-serif;
-  --font-display:
-    "Google Sans Display", "Outfit", system-ui, -apple-system, sans-serif;
+  --font-sans: "Google Sans", "Inter", system-ui, -apple-system, sans-serif;
+  --font-display: "Google Sans Display", "Outfit", system-ui, -apple-system, sans-serif;
   --font-mono: "DM Mono", monospace;
   --font-handwritten: "Kalam", cursive;
 }

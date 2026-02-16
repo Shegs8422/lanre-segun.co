@@ -97,6 +97,9 @@ onUnmounted(() => {
 })
 
 useHead({
+  htmlAttrs: {
+    class: computed(() => isDark.value ? 'dark' : 'light')
+  },
   bodyAttrs: {
     class: 'bg-background'
   },
@@ -131,8 +134,9 @@ useHead({
       `,
       type: 'text/javascript'
     },
+    // FOUC preventer: apply theme class as early as possible
     {
-      innerHTML: `!function(){try{var d=document.documentElement,c=d.classList;c.remove('light','dark');var e=localStorage.getItem('theme');if('system'===e||(!e&&true)){var t='(prefers-color-scheme: dark)',m=window.matchMedia(t);if(m.media!==t||m.matches){d.style.colorScheme='dark';c.add('dark')}else{d.style.colorScheme='light';c.add('light')}}else if(e){c.add(e||'')}if(e==='light'||e==='dark')d.style.colorScheme=e}catch(e){}}()`
+      innerHTML: `!function(){try{var d=document.documentElement,c=d.classList;var e=localStorage.getItem('theme');if(!e){var cookie=document.cookie.match(/theme=([^;]+)/);if(cookie)e=cookie[1]}if(!e||e==='system'){var m=window.matchMedia('(prefers-color-scheme: dark)');e=m.matches?'dark':'light'}c.remove('light','dark');c.add(e);d.style.colorScheme=e}catch(e){}}()`
     }
   ]
 })

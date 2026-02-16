@@ -18,8 +18,24 @@ export default defineNuxtConfig({
         '@nuxt/image',
         '@nuxtjs/sitemap',
         '@nuxtjs/robots',
-        'nuxt-schema-org'
+        'nuxt-schema-org',
+        '@nuxtjs/google-fonts'
     ],
+    googleFonts: {
+        families: {
+            'Google+Sans': [400, 500, 700],
+            'Google+Sans+Display': [400, 500, 700],
+            Inter: [400, 500, 600, 700, 900],
+            Outfit: [400, 500, 600, 700, 800, 900],
+            'DM+Mono': [400, 500],
+            Kalam: [400, 700]
+        },
+        display: 'swap',
+        prefetch: true,
+        preconnect: true,
+        preload: true,
+        download: false, // Set to true if you want to host fonts locally via the module
+    },
     site: {
         url: 'https://lanre-segun-co.vercel.app',
         name: 'Lanre Segun - Senior Product Designer'
@@ -68,20 +84,7 @@ export default defineNuxtConfig({
                 { name: 'twitter:creator', content: '@Olusegun51' },
             ],
             link: [
-                { rel: 'canonical', href: 'https://lanre-segun.vercel.app' },
-                {
-                    rel: 'preconnect',
-                    href: 'https://fonts.googleapis.com'
-                },
-                {
-                    rel: 'preconnect',
-                    href: 'https://fonts.gstatic.com',
-                    crossorigin: ''
-                },
-                {
-                    rel: 'stylesheet',
-                    href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Outfit:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&family=Kalam:wght@400;700&display=swap'
-                }
+                { rel: 'canonical', href: 'https://lanre-segun.vercel.app' }
             ]
         }
     },

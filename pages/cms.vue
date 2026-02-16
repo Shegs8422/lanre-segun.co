@@ -18,7 +18,7 @@
                         <div class="flex flex-col items-center gap-1">
                             <p class="text-xxs font-black uppercase tracking-[0.4em] text-foreground/80">Synchronizing
                             </p>
-                            <p class="text-[9px] font-bold uppercase tracking-mega text-muted-foreground/60">CMS Control
+                            <p class="text-xxs font-bold uppercase tracking-mega text-muted-foreground/60">CMS Control
                                 Center</p>
                         </div>
                     </div>

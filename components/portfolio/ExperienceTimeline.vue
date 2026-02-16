@@ -20,7 +20,7 @@
                 <div class="flex justify-between items-center text-xs text-muted-foreground">
                     <span>{{ item.company }}</span>
                     <span v-if="item.type"
-                        class="px-1.5 py-0.5 rounded bg-muted/50 text-[10px] uppercase tracking-wider">{{ item.type
+                        class="px-1.5 py-0.5 rounded bg-muted/50 text-xxs uppercase tracking-wider">{{ item.type
                         }}</span>
                 </div>
             </div>

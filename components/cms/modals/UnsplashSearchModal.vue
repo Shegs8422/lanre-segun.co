@@ -67,7 +67,7 @@
                                     || 'View image' }}</p>
                                 <div class="h-0.5 w-0 group-hover:w-full bg-blue-500 transition-all duration-500 mt-2"/>
                                 <div class="flex items-center justify-between mt-2">
-                                    <p class="text-white text-[9px] font-black uppercase tracking-mega">by {{
+                                    <p class="text-white text-xxs font-black uppercase tracking-mega">by {{
                                         img.user.name }}</p>
                                     <div
                                         class="w-6 h-6 rounded-lg bg-blue-600 flex items-center justify-center text-white">

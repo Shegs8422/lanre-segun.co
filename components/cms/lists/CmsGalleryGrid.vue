@@ -41,7 +41,7 @@
                     <span
                         class="text-xxs font-black text-muted-foreground tracking-mega uppercase group-hover/btn:text-foreground transition-colors">Import
                         Assets</span>
-                    <span class="text-[8px] font-bold text-muted-foreground/50 uppercase tracking-widest">Multiple
+                    <span class="text-xxs font-bold text-muted-foreground/50 uppercase tracking-widest">Multiple
                         Selection</span>
                 </div>
                 <input ref="fileInput" type="file" class="hidden" multiple accept="image/*"

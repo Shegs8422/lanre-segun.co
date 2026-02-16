@@ -25,7 +25,7 @@
                                 <h3 class="font-medium text-lg bg-linear-to-r from-blue-600 via-purple-600 to-red-500 dark:from-blue-200 dark:via-purple-200 dark:to-white bg-clip-text text-transparent transition-all">
                                     Google Gemini
                                 </h3>
-                                <p class="text-[11px] text-gray-500 dark:text-gray-400 font-medium tracking-wide">AI SYSTEMS ARCHITECT</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400 font-medium tracking-wide">AI SYSTEMS ARCHITECT</p>
                             </div>
                         </div>
                         <button class="p-2 text-gray-400 hover:text-gray-900 dark:text-gray-500 dark:hover:text-white transition-colors" @click="close">

@@ -16,7 +16,7 @@
 
                         <!-- Note Title -->
                         <span
-                            class="text-[15px] font-medium text-foreground/90 group-hover:text-foreground transition-colors shrink-0">
+                            class="text-base font-medium text-foreground/90 group-hover:text-foreground transition-colors shrink-0">
                             {{ note.title }}
                         </span>
 
@@ -31,7 +31,7 @@
 
                         <!-- Date -->
                         <span
-                            class="text-[13px] font-medium text-foreground/40 group-hover:text-foreground/60 transition-colors whitespace-nowrap">
+                            class="text-xs font-medium text-foreground/40 group-hover:text-foreground/60 transition-colors whitespace-nowrap">
                             {{ note.month }} {{ note.year }}
                         </span>
 

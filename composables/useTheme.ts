@@ -1,7 +1,12 @@
 // composables/useTheme.ts
 
 export const useTheme = () => {
-    const isDark = useState<boolean>('theme', () => true)
+    // Default to dark theme if no cookie is set
+    const isDark = useCookie<boolean>('theme', {
+        default: () => true,
+        watch: true,
+        maxAge: 60 * 60 * 24 * 365 // 1 year
+    })
 
     const toggleTheme = () => {
         isDark.value = !isDark.value
@@ -18,26 +23,18 @@ export const useTheme = () => {
             const html = document.documentElement
             if (isDark.value) {
                 html.classList.add('dark')
-                localStorage.setItem('theme', 'dark')
+                html.classList.remove('light')
             } else {
+                html.classList.add('light')
                 html.classList.remove('dark')
-                localStorage.setItem('theme', 'light')
             }
         }
     }
 
-    // Initialize
+    // This ensures the class is applied on the client after hydration 
+    // to match what the server might have guessed if the cookie was missing
     onMounted(() => {
-        if (import.meta.client) {
-            const stored = localStorage.getItem('theme')
-            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-
-            if (stored === 'dark' || (!stored && prefersDark)) {
-                setTheme(true)
-            } else {
-                setTheme(false)
-            }
-        }
+        updateDOM()
     })
 
     return {

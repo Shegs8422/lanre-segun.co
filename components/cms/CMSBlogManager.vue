@@ -22,7 +22,7 @@
                     <div class="flex items-center justify-between mb-1">
                         <span class="text-xxs font-mono text-muted-foreground">{{ post.date }}</span>
                         <div v-if="post.hidden"
-                            class="px-1.5 py-0.5 rounded-full bg-yellow-500/10 text-yellow-500 text-[9px] font-bold uppercase border border-yellow-500/20">
+                            class="px-1.5 py-0.5 rounded-full bg-yellow-500/10 text-yellow-500 text-xxs font-bold uppercase border border-yellow-500/20">
                             Hidden
                         </div>
                     </div>
