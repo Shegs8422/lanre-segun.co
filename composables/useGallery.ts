@@ -6,7 +6,7 @@ export const useGallery = () => {
         try {
             const { data, error } = await supabase
                 .from('gallery')
-                .select('*')
+                .select('id:id组件, *')
                 .order('order_index', { ascending: true })
 
             if (error) throw error

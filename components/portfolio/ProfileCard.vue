@@ -11,7 +11,7 @@
         <div class="flex flex-1 justify-between items-center">
           <div class="flex flex-col">
             <h1 class="text-base sm:text-xl font-display font-medium"> Lanre Segun </h1>
-            <h2 class="text-base font-medium text-muted-foreground"> Senior Product Designer </h2>
+            <h2 class="text-base font-medium text-muted-foreground"> Design Engineer </h2>
             <StatusBadge class="mt-2" />
           </div>
           <div class="sm:size-10 size-8">
@@ -34,12 +34,11 @@
         </div>
       </div>
       <div class="flex flex-col gap-4">
-        <span class="text-sm sm:text-base leading-relaxed">Strategic Senior Product Designer with 5+ years of experience
+        <span class="text-sm sm:text-base leading-relaxed">Strategic Design Engineer with 5+ years of experience
           across Web3, Fintech, and SaaS. I bridge the gap between complex engineering requirements and premium
-          UI.</span>
-        <p class="hidden sm:inline text-sm sm:text-base">Specializing in Human-Centered Design (HCD) and
-          accessibility-first systems, focusing on Android Material Design 3 and tokenized design systems that reduce
-          friction.</p>
+          UI, crafting both design systems and production-ready code.</span>
+        <p class="hidden sm:inline text-sm sm:text-base">Specializing in Human-Centered Design (HCD), accessibility-first systems, and full-stack development, focusing on Android Material Design 3, tokenized design systems, and modern web technologies that reduce
+          friction and deliver exceptional user experiences.</p>
         <p class="text-sm sm:text-base leading-relaxed">Have fun exploring my portfolio, and feel free to connect below.
         </p>
         <div class="flex flex-row gap-4">

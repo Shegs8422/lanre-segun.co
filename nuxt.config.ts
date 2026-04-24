@@ -38,7 +38,7 @@ export default defineNuxtConfig({
     },
     site: {
         url: 'https://lanre-segun-co.vercel.app',
-        name: 'Lanre Segun - Senior Product Designer'
+        name: 'Lanre Segun - Design Engineer'
     },
     image: {
         provider: 'vercel',
@@ -69,28 +69,41 @@ export default defineNuxtConfig({
                 { charset: 'utf-8' },
                 { name: 'viewport', content: 'width=device-width, initial-scale=1' },
                 { name: 'author', content: 'Lanre Segun' },
-                { name: 'description', content: 'C-Suite Senior Product Designer & Design Engineer. Specializing in Web3, Fintech, and SaaS with a focus on HCD and premium UI.' },
+                { name: 'description', content: 'Design Engineer specializing in Web3, Fintech, and SaaS. Bridging design and engineering with HCD, accessibility, and premium UI.' },
                 // Open Graph
                 { property: 'og:type', content: 'website' },
-                { property: 'og:title', content: 'Lanre Segun - Senior Product Designer Portfolio' },
+                { property: 'og:title', content: 'Lanre Segun - Design Engineer Portfolio' },
                 { property: 'og:description', content: 'Interactive portfolio of Lanre Segun, exploring the intersection of design and engineering.' },
                 { property: 'og:image', content: '/og-image.png' },
                 { property: 'og:url', content: 'https://lanre-segun.vercel.app' },
                 // Twitter Card
                 { name: 'twitter:card', content: 'summary_large_image' },
-                { name: 'twitter:title', content: 'Lanre Segun - Senior Product Designer' },
-                { name: 'twitter:description', content: 'Strategic Product Designer bridging complex engineering and premium UI.' },
+                { name: 'twitter:title', content: 'Lanre Segun - Design Engineer' },
+                { name: 'twitter:description', content: 'Design Engineer bridging complex engineering and premium UI with full-stack development skills.' },
                 { name: 'twitter:image', content: '/og-image.png' },
                 { name: 'twitter:creator', content: '@Olusegun51' },
             ],
             link: [
-                { rel: 'canonical', href: 'https://lanre-segun.vercel.app' }
+                { rel: 'canonical', href: 'https://lanre-segun.vercel.app' },
+                {
+                    rel: 'preconnect',
+                    href: 'https://fonts.googleapis.com'
+                },
+                {
+                    rel: 'preconnect',
+                    href: 'https://fonts.gstatic.com',
+                    crossorigin: ''
+                },
+                {
+                    rel: 'stylesheet',
+                    href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Outfit:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&family=Kalam:wght@400;700&display=swap'
+                }
             ]
         }
     },
     vite: {
         plugins: [
-            tailwindcss(),
+            tailwindcss() as any,
         ],
         css: {
             devSourcemap: true,

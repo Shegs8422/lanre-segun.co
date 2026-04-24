@@ -52,206 +52,290 @@
         <!-- Home -->
         <!-- Home -->
         <template v-if="!demo">
-          <NuxtLink to="/"
-            class="shrink-0 overflow-hidden flex h-10 rounded-xl items-center justify-center transition-all duration-300"
-            :class="isActive('/') ? 'w-auto px-4 sm:px-5 bg-primary text-primary-foreground font-bold shadow-md shadow-black/10 dark:shadow-white/10' : 'w-10 px-2 sm:px-[10px] text-muted-foreground'"
-            @click="playInteraction">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
-              class="h-5 w-5 shrink-0 relative z-10">
-              <path stroke="currentColor" stroke-linejoin="round" stroke-width="2"
-                d="M9.5 16.5V20H6a2 2 0 0 1-2-2v-7.948a2 2 0 0 1 .867-1.648l6-4.125a2 2 0 0 1 2.266 0l6 4.125A2 2 0 0 1 20 10.052V18a2 2 0 0 1-2 2h-3.5v-3.5a2.5 2.5 0 0 0-5 0Z" />
-            </svg>
-            <span v-if="isActive('/')"
-              class="ml-1.5 sm:ml-2 font-medium text-xs sm:text-sm whitespace-nowrap">Home</span>
-          </NuxtLink>
+          <div class="relative group">
+            <NuxtLink to="/"
+              class="shrink-0 overflow-hidden flex h-10 rounded-xl items-center justify-center transition-all duration-300"
+              :class="isActive('/') ? 'w-auto px-4 sm:px-5 bg-primary text-primary-foreground font-bold shadow-md shadow-black/10 dark:shadow-white/10' : 'w-10 px-2 sm:px-[10px] text-muted-foreground'"
+              @click="playInteraction">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
+                class="h-5 w-5 shrink-0 relative z-10">
+                <path stroke="currentColor" stroke-linejoin="round" stroke-width="2"
+                  d="M9.5 16.5V20H6a2 2 0 0 1-2-2v-7.948a2 2 0 0 1 .867-1.648l6-4.125a2 2 0 0 1 2.266 0l6 4.125A2 2 0 0 1 20 10.052V18a2 2 0 0 1-2 2h-3.5v-3.5a2.5 2.5 0 0 0-5 0Z" />
+              </svg>
+              <span v-if="isActive('/')"
+                class="ml-1.5 sm:ml-2 font-medium text-xs sm:text-sm whitespace-nowrap">Home</span>
+            </NuxtLink>
+            <!-- Tooltip for inactive state -->
+            <div v-if="!isActive('/')"
+              class="absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-tooltip-bg text-white rounded-lg text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap border border-white/10 shadow-lg">
+              Home
+            </div>
+          </div>
         </template>
         <template v-else>
-          <div
-            class="shrink-0 overflow-hidden flex h-10 rounded-xl items-center justify-center transition-all duration-300 relative cursor-pointer"
-            :class="isActive('/') ? 'w-auto px-4 sm:px-5 bg-primary text-primary-foreground font-bold shadow-md shadow-black/10 dark:shadow-white/10' : 'w-10 px-2 sm:px-[10px] text-muted-foreground'"
-            @click="handleDemoClick('/')">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
-              class="h-5 w-5 shrink-0 relative z-10">
-              <path stroke="currentColor" stroke-linejoin="round" stroke-width="2"
-                d="M9.5 16.5V20H6a2 2 0 0 1-2-2v-7.948a2 2 0 0 1 .867-1.648l6-4.125a2 2 0 0 1 2.266 0l6 4.125A2 2 0 0 1 20 10.052V18a2 2 0 0 1-2 2h-3.5v-3.5a2.5 2.5 0 0 0-5 0Z" />
-            </svg>
-            <span v-if="isActive('/')"
-              class="ml-1.5 sm:ml-2 font-medium text-xs sm:text-sm whitespace-nowrap">Home</span>
+          <div class="relative group">
+            <div
+              class="shrink-0 overflow-hidden flex h-10 rounded-xl items-center justify-center transition-all duration-300 relative cursor-pointer"
+              :class="isActive('/') ? 'w-auto px-4 sm:px-5 bg-primary text-primary-foreground font-bold shadow-md shadow-black/10 dark:shadow-white/10' : 'w-10 px-2 sm:px-[10px] text-muted-foreground'"
+              @click="handleDemoClick('/')">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
+                class="h-5 w-5 shrink-0 relative z-10">
+                <path stroke="currentColor" stroke-linejoin="round" stroke-width="2"
+                  d="M9.5 16.5V20H6a2 2 0 0 1-2-2v-7.948a2 2 0 0 1 .867-1.648l6-4.125a2 2 0 0 1 2.266 0l6 4.125A2 2 0 0 1 20 10.052V18a2 2 0 0 1-2 2h-3.5v-3.5a2.5 2.5 0 0 0-5 0Z" />
+              </svg>
+              <span v-if="isActive('/')"
+                class="ml-1.5 sm:ml-2 font-medium text-xs sm:text-sm whitespace-nowrap">Home</span>
+            </div>
+            <!-- Tooltip for inactive state -->
+            <div v-if="!isActive('/')"
+              class="absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-tooltip-bg text-white rounded-lg text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap border border-white/10 shadow-lg">
+              Home
+            </div>
           </div>
         </template>
 
         <!-- Projects -->
         <template v-if="!demo">
-          <NuxtLink to="/projects"
-            class="shrink-0 overflow-hidden flex h-10 rounded-xl items-center justify-center transition-all duration-300 relative"
-            :class="isActive('/projects') ? 'w-auto px-4 sm:px-5 bg-primary text-primary-foreground font-bold shadow-md shadow-black/10 dark:shadow-white/10' : 'w-10 px-2 sm:px-[10px] text-muted-foreground'"
-            @click="playInteraction">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
-              class="h-5 w-5 shrink-0 relative z-10">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M12 12 4.5 7.781m7.5 4.22v8.5m0-8.5 7.5-4.22m.5.889v6.66a2 2 0 0 1-1.02 1.744l-6 3.375a2 2 0 0 1-1.96 0l-6-3.375A2 2 0 0 1 4 15.33V8.67a2 2 0 0 1 1.02-1.743l6-3.375a2 2 0 0 1 1.96 0l6 3.375A2 2 0 0 1 20 8.67" />
-            </svg>
-            <span v-if="isActive('/projects')"
-              class="ml-1.5 sm:ml-2 font-medium text-xs sm:text-sm whitespace-nowrap">Projects</span>
-          </NuxtLink>
+          <div class="relative group">
+            <NuxtLink to="/projects"
+              class="shrink-0 overflow-hidden flex h-10 rounded-xl items-center justify-center transition-all duration-300 relative"
+              :class="isActive('/projects') ? 'w-auto px-4 sm:px-5 bg-primary text-primary-foreground font-bold shadow-md shadow-black/10 dark:shadow-white/10' : 'w-10 px-2 sm:px-[10px] text-muted-foreground'"
+              @click="playInteraction">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
+                class="h-5 w-5 shrink-0 relative z-10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 12 4.5 7.781m7.5 4.22v8.5m0-8.5 7.5-4.22m.5.889v6.66a2 2 0 0 1-1.02 1.744l-6 3.375a2 2 0 0 1-1.96 0l-6-3.375A2 2 0 0 1 4 15.33V8.67a2 2 0 0 1 1.02-1.743l6-3.375a2 2 0 0 1 1.96 0l6 3.375A2 2 0 0 1 20 8.67" />
+              </svg>
+              <span v-if="isActive('/projects')"
+                class="ml-1.5 sm:ml-2 font-medium text-xs sm:text-sm whitespace-nowrap">Projects</span>
+            </NuxtLink>
+            <!-- Tooltip for inactive state -->
+            <div v-if="!isActive('/projects')"
+              class="absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-tooltip-bg text-white rounded-lg text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap border border-white/10 shadow-lg">
+              Projects
+            </div>
+          </div>
         </template>
         <template v-else>
-          <div
-            class="shrink-0 overflow-hidden flex h-10 rounded-xl items-center justify-center transition-all duration-300 relative cursor-pointer"
-            :class="isActive('/projects') ? 'w-auto px-4 sm:px-5 bg-primary text-primary-foreground font-bold shadow-md shadow-black/10 dark:shadow-white/10' : 'w-10 px-2 sm:px-[10px] text-muted-foreground'"
-            @click="handleDemoClick('/projects')">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
-              class="h-5 w-5 shrink-0 relative z-10">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M12 12 4.5 7.781m7.5 4.22v8.5m0-8.5 7.5-4.22m.5.889v6.66a2 2 0 0 1-1.02 1.744l-6 3.375a2 2 0 0 1-1.96 0l-6-3.375A2 2 0 0 1 4 15.33V8.67a2 2 0 0 1 1.02-1.743l6-3.375a2 2 0 0 1 1.96 0l6 3.375A2 2 0 0 1 20 8.67" />
-            </svg>
-            <span v-if="isActive('/projects')"
-              class="ml-1.5 sm:ml-2 font-medium text-xs sm:text-sm whitespace-nowrap">Projects</span>
+          <div class="relative group">
+            <div
+              class="shrink-0 overflow-hidden flex h-10 rounded-xl items-center justify-center transition-all duration-300 relative cursor-pointer"
+              :class="isActive('/projects') ? 'w-auto px-4 sm:px-5 bg-primary text-primary-foreground font-bold shadow-md shadow-black/10 dark:shadow-white/10' : 'w-10 px-2 sm:px-[10px] text-muted-foreground'"
+              @click="handleDemoClick('/projects')">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
+                class="h-5 w-5 shrink-0 relative z-10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 12 4.5 7.781m7.5 4.22v8.5m0-8.5 7.5-4.22m.5.889v6.66a2 2 0 0 1-1.02 1.744l-6 3.375a2 2 0 0 1-1.96 0l-6-3.375A2 2 0 0 1 4 15.33V8.67a2 2 0 0 1 1.02-1.743l6-3.375a2 2 0 0 1 1.96 0l6 3.375A2 2 0 0 1 20 8.67" />
+              </svg>
+              <span v-if="isActive('/projects')"
+                class="ml-1.5 sm:ml-2 font-medium text-xs sm:text-sm whitespace-nowrap">Projects</span>
+            </div>
+            <!-- Tooltip for inactive state -->
+            <div v-if="!isActive('/projects')"
+              class="absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-tooltip-bg text-white rounded-lg text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap border border-white/10 shadow-lg">
+              Projects
+            </div>
           </div>
         </template>
 
         <!-- Craft -->
         <template v-if="!demo">
-          <NuxtLink to="/craft"
-            class="shrink-0 overflow-hidden flex h-10 rounded-xl items-center justify-center transition-all duration-300 relative"
-            :class="isActive('/craft') ? 'w-auto px-4 sm:px-5 bg-primary text-primary-foreground font-bold shadow-md shadow-black/10 dark:shadow-white/10' : 'w-10 px-2 sm:px-[10px] text-muted-foreground'"
-            @click="playInteraction">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-              class="h-5 w-5 shrink-0 relative z-10">
-              <path
-                d="M6.70694 14.7929C6.31641 15.1834 5.68325 15.1834 5.29272 14.7929L2.45696 11.9571C2.06643 11.5666 2.06643 10.9334 2.45696 10.5429L9.70694 3.29289C9.89447 3.10536 10.1488 3 10.414 3L14.0857 3C14.3509 3 14.6052 3.10536 14.7928 3.29289L15.7927 4.29286C16.1832 4.68338 16.1832 5.31655 15.7927 5.70707L6.70694 14.7929Z"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-              <path
-                d="M9.5 12.5L16.3358 19.3358C17.1168 20.1168 18.3832 20.1168 19.1642 19.3358L19.3358 19.1642C20.1168 18.3832 20.1168 17.1168 19.3358 16.3358L12.5 9.5"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-            <span v-if="isActive('/craft')"
-              class="ml-1.5 sm:ml-2 font-medium text-xs sm:text-sm whitespace-nowrap">Craft</span>
-          </NuxtLink>
+          <div class="relative group">
+            <NuxtLink to="/craft"
+              class="shrink-0 overflow-hidden flex h-10 rounded-xl items-center justify-center transition-all duration-300 relative"
+              :class="isActive('/craft') ? 'w-auto px-4 sm:px-5 bg-primary text-primary-foreground font-bold shadow-md shadow-black/10 dark:shadow-white/10' : 'w-10 px-2 sm:px-[10px] text-muted-foreground'"
+              @click="playInteraction">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                class="h-5 w-5 shrink-0 relative z-10">
+                <path
+                  d="M6.70694 14.7929C6.31641 15.1834 5.68325 15.1834 5.29272 14.7929L2.45696 11.9571C2.06643 11.5666 2.06643 10.9334 2.45696 10.5429L9.70694 3.29289C9.89447 3.10536 10.1488 3 10.414 3L14.0857 3C14.3509 3 14.6052 3.10536 14.7928 3.29289L15.7927 4.29286C16.1832 4.68338 16.1832 5.31655 15.7927 5.70707L6.70694 14.7929Z"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                <path
+                  d="M9.5 12.5L16.3358 19.3358C17.1168 20.1168 18.3832 20.1168 19.1642 19.3358L19.3358 19.1642C20.1168 18.3832 20.1168 17.1168 19.3358 16.3358L12.5 9.5"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <span v-if="isActive('/craft')"
+                class="ml-1.5 sm:ml-2 font-medium text-xs sm:text-sm whitespace-nowrap">Craft</span>
+            </NuxtLink>
+            <!-- Tooltip for inactive state -->
+            <div v-if="!isActive('/craft')"
+              class="absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-tooltip-bg text-white rounded-lg text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap border border-white/10 shadow-lg">
+              Craft
+            </div>
+          </div>
         </template>
         <template v-else>
-          <div
-            class="shrink-0 overflow-hidden flex h-10 rounded-xl items-center justify-center transition-all duration-300 relative cursor-pointer"
-            :class="isActive('/craft') ? 'w-auto px-4 sm:px-5 bg-primary text-primary-foreground font-bold shadow-md shadow-black/10 dark:shadow-white/10' : 'w-10 px-2 sm:px-[10px] text-muted-foreground'"
-            @click="handleDemoClick('/craft')">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-              class="h-5 w-5 shrink-0 relative z-10">
-              <path
-                d="M6.70694 14.7929C6.31641 15.1834 5.68325 15.1834 5.29272 14.7929L2.45696 11.9571C2.06643 11.5666 2.06643 10.9334 2.45696 10.5429L9.70694 3.29289C9.89447 3.10536 10.1488 3 10.414 3L14.0857 3C14.3509 3 14.6052 3.10536 14.7928 3.29289L15.7927 4.29286C16.1832 4.68338 16.1832 5.31655 15.7927 5.70707L6.70694 14.7929Z"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-              <path
-                d="M9.5 12.5L16.3358 19.3358C17.1168 20.1168 18.3832 20.1168 19.1642 19.3358L19.3358 19.1642C20.1168 18.3832 20.1168 17.1168 19.3358 16.3358L12.5 9.5"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-            <span v-if="isActive('/craft')"
-              class="ml-1.5 sm:ml-2 font-medium text-xs sm:text-sm whitespace-nowrap">Craft</span>
+          <div class="relative group">
+            <div
+              class="shrink-0 overflow-hidden flex h-10 rounded-xl items-center justify-center transition-all duration-300 relative cursor-pointer"
+              :class="isActive('/craft') ? 'w-auto px-4 sm:px-5 bg-primary text-primary-foreground font-bold shadow-md shadow-black/10 dark:shadow-white/10' : 'w-10 px-2 sm:px-[10px] text-muted-foreground'"
+              @click="handleDemoClick('/craft')">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                class="h-5 w-5 shrink-0 relative z-10">
+                <path
+                  d="M6.70694 14.7929C6.31641 15.1834 5.68325 15.1834 5.29272 14.7929L2.45696 11.9571C2.06643 11.5666 2.06643 10.9334 2.45696 10.5429L9.70694 3.29289C9.89447 3.10536 10.1488 3 10.414 3L14.0857 3C14.3509 3 14.6052 3.10536 14.7928 3.29289L15.7927 4.29286C16.1832 4.68338 16.1832 5.31655 15.7927 5.70707L6.70694 14.7929Z"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                <path
+                  d="M9.5 12.5L16.3358 19.3358C17.1168 20.1168 18.3832 20.1168 19.1642 19.3358L19.3358 19.1642C20.1168 18.3832 20.1168 17.1168 19.3358 16.3358L12.5 9.5"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <span v-if="isActive('/craft')"
+                class="ml-1.5 sm:ml-2 font-medium text-xs sm:text-sm whitespace-nowrap">Craft</span>
+            </div>
+            <!-- Tooltip for inactive state -->
+            <div v-if="!isActive('/craft')"
+              class="absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-tooltip-bg text-white rounded-lg text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap border border-white/10 shadow-lg">
+              Craft
+            </div>
           </div>
         </template>
 
         <!-- Notes -->
         <template v-if="!demo">
-          <NuxtLink to="/blog"
-            class="shrink-0 overflow-hidden flex h-10 rounded-xl items-center justify-center transition-all duration-300 relative"
-            :class="isActive('/blog') ? 'w-auto px-4 sm:px-5 bg-primary text-primary-foreground font-bold shadow-md shadow-black/10 dark:shadow-white/10' : 'w-10 px-2 sm:px-[10px] text-muted-foreground'"
-            @click="playInteraction">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
-              class="h-5 w-5 shrink-0 relative z-10">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M9 3.5H6.5a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2H9m0-17h8.5a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H9m0-17v17M13 8h2.5M13 12h2.5" />
-            </svg>
-            <span v-if="isActive('/blog')"
-              class="ml-1.5 sm:ml-2 font-medium text-xs sm:text-sm whitespace-nowrap">Blog</span>
-          </NuxtLink>
+          <div class="relative group">
+            <NuxtLink to="/blog"
+              class="shrink-0 overflow-hidden flex h-10 rounded-xl items-center justify-center transition-all duration-300 relative"
+              :class="isActive('/blog') ? 'w-auto px-4 sm:px-5 bg-primary text-primary-foreground font-bold shadow-md shadow-black/10 dark:shadow-white/10' : 'w-10 px-2 sm:px-[10px] text-muted-foreground'"
+              @click="playInteraction">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
+                class="h-5 w-5 shrink-0 relative z-10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M9 3.5H6.5a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2H9m0-17h8.5a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H9m0-17v17M13 8h2.5M13 12h2.5" />
+              </svg>
+              <span v-if="isActive('/blog')"
+                class="ml-1.5 sm:ml-2 font-medium text-xs sm:text-sm whitespace-nowrap">Blog</span>
+            </NuxtLink>
+            <!-- Tooltip for inactive state -->
+            <div v-if="!isActive('/blog')"
+              class="absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-tooltip-bg text-white rounded-lg text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap border border-white/10 shadow-lg">
+              Blog
+            </div>
+          </div>
         </template>
         <template v-else>
-          <div
-            class="shrink-0 overflow-hidden flex h-10 rounded-xl items-center justify-center transition-all duration-300 relative cursor-pointer"
-            :class="isActive('/blog') ? 'w-auto px-4 sm:px-5 bg-primary text-primary-foreground font-bold shadow-md shadow-black/10 dark:shadow-white/10' : 'w-10 px-2 sm:px-[10px] text-muted-foreground'"
-            @click="handleDemoClick('/blog')">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
-              class="h-5 w-5 shrink-0 relative z-10">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M9 3.5H6.5a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2H9m0-17h8.5a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H9m0-17v17M13 8h2.5M13 12h2.5" />
-            </svg>
-            <span v-if="isActive('/blog')"
-              class="ml-1.5 sm:ml-2 font-medium text-xs sm:text-sm whitespace-nowrap">Blog</span>
+          <div class="relative group">
+            <div
+              class="shrink-0 overflow-hidden flex h-10 rounded-xl items-center justify-center transition-all duration-300 relative cursor-pointer"
+              :class="isActive('/blog') ? 'w-auto px-4 sm:px-5 bg-primary text-primary-foreground font-bold shadow-md shadow-black/10 dark:shadow-white/10' : 'w-10 px-2 sm:px-[10px] text-muted-foreground'"
+              @click="handleDemoClick('/blog')">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
+                class="h-5 w-5 shrink-0 relative z-10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M9 3.5H6.5a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2H9m0-17h8.5a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H9m0-17v17M13 8h2.5M13 12h2.5" />
+              </svg>
+              <span v-if="isActive('/blog')"
+                class="ml-1.5 sm:ml-2 font-medium text-xs sm:text-sm whitespace-nowrap">Blog</span>
+            </div>
+            <!-- Tooltip for inactive state -->
+            <div v-if="!isActive('/blog')"
+              class="absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-tooltip-bg text-white rounded-lg text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap border border-white/10 shadow-lg">
+              Blog
+            </div>
           </div>
         </template>
 
         <!-- Photos -->
         <template v-if="!demo">
-          <NuxtLink to="/photos"
-            class="shrink-0 overflow-hidden flex h-10 rounded-xl items-center justify-center transition-all duration-300 relative"
-            :class="isActive('/photos') ? 'w-auto px-4 sm:px-5 bg-primary text-primary-foreground font-bold shadow-md shadow-black/10 dark:shadow-white/10' : 'w-10 px-2 sm:px-[10px] text-muted-foreground'"
-            @click="playInteraction">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
-              class="h-5 w-5 shrink-0 relative z-10">
-              <path stroke="currentColor" stroke-linecap="square" stroke-linejoin="round" stroke-width="2"
-                d="M5 7h1.43a2 2 0 0 0 1.664-.89l.812-1.22A2 2 0 0 1 10.57 4h2.86a2 2 0 0 1 1.664.89l.812 1.22A2 2 0 0 0 17.57 7H19a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2Z" />
-              <path stroke="currentColor" stroke-linecap="square" stroke-linejoin="round" stroke-width="2"
-                d="M15 13a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-            </svg>
-            <span v-if="isActive('/photos')"
-              class="ml-1.5 sm:ml-2 font-medium text-xs sm:text-sm whitespace-nowrap">Gallery</span>
-          </NuxtLink>
+          <div class="relative group">
+            <NuxtLink to="/photos"
+              class="shrink-0 overflow-hidden flex h-10 rounded-xl items-center justify-center transition-all duration-300 relative"
+              :class="isActive('/photos') ? 'w-auto px-4 sm:px-5 bg-primary text-primary-foreground font-bold shadow-md shadow-black/10 dark:shadow-white/10' : 'w-10 px-2 sm:px-[10px] text-muted-foreground'"
+              @click="playInteraction">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
+                class="h-5 w-5 shrink-0 relative z-10">
+                <path stroke="currentColor" stroke-linecap="square" stroke-linejoin="round" stroke-width="2"
+                  d="M5 7h1.43a2 2 0 0 0 1.664-.89l.812-1.22A2 2 0 0 1 10.57 4h2.86a2 2 0 0 1 1.664.89l.812 1.22A2 2 0 0 0 17.57 7H19a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2Z" />
+                <path stroke="currentColor" stroke-linecap="square" stroke-linejoin="round" stroke-width="2"
+                  d="M15 13a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+              </svg>
+              <span v-if="isActive('/photos')"
+                class="ml-1.5 sm:ml-2 font-medium text-xs sm:text-sm whitespace-nowrap">Gallery</span>
+            </NuxtLink>
+            <!-- Tooltip for inactive state -->
+            <div v-if="!isActive('/photos')"
+              class="absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-tooltip-bg text-white rounded-lg text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap border border-white/10 shadow-lg">
+              Gallery
+            </div>
+          </div>
         </template>
         <template v-else>
-          <div
-            class="shrink-0 overflow-hidden flex h-10 rounded-xl items-center justify-center transition-all duration-300 relative cursor-pointer"
-            :class="isActive('/photos') ? 'w-auto px-4 sm:px-5 bg-primary text-primary-foreground font-bold shadow-md shadow-black/10 dark:shadow-white/10' : 'w-10 px-2 sm:px-[10px] text-muted-foreground'"
-            @click="handleDemoClick('/photos')">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
-              class="h-5 w-5 shrink-0 relative z-10">
-              <path stroke="currentColor" stroke-linecap="square" stroke-linejoin="round" stroke-width="2"
-                d="M5 7h1.43a2 2 0 0 0 1.664-.89l.812-1.22A2 2 0 0 1 10.57 4h2.86a2 2 0 0 1 1.664.89l.812 1.22A2 2 0 0 0 17.57 7H19a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2Z" />
-              <path stroke="currentColor" stroke-linecap="square" stroke-linejoin="round" stroke-width="2"
-                d="M15 13a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-            </svg>
-            <span v-if="isActive('/photos')"
-              class="ml-1.5 sm:ml-2 font-medium text-xs sm:text-sm whitespace-nowrap">Gallery</span>
+          <div class="relative group">
+            <div
+              class="shrink-0 overflow-hidden flex h-10 rounded-xl items-center justify-center transition-all duration-300 relative cursor-pointer"
+              :class="isActive('/photos') ? 'w-auto px-4 sm:px-5 bg-primary text-primary-foreground font-bold shadow-md shadow-black/10 dark:shadow-white/10' : 'w-10 px-2 sm:px-[10px] text-muted-foreground'"
+              @click="handleDemoClick('/photos')">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
+                class="h-5 w-5 shrink-0 relative z-10">
+                <path stroke="currentColor" stroke-linecap="square" stroke-linejoin="round" stroke-width="2"
+                  d="M5 7h1.43a2 2 0 0 0 1.664-.89l.812-1.22A2 2 0 0 1 10.57 4h2.86a2 2 0 0 1 1.664.89l.812 1.22A2 2 0 0 0 17.57 7H19a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2Z" />
+                <path stroke="currentColor" stroke-linecap="square" stroke-linejoin="round" stroke-width="2"
+                  d="M15 13a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+              </svg>
+              <span v-if="isActive('/photos')"
+                class="ml-1.5 sm:ml-2 font-medium text-xs sm:text-sm whitespace-nowrap">Gallery</span>
+            </div>
+            <!-- Tooltip for inactive state -->
+            <div v-if="!isActive('/photos')"
+              class="absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-tooltip-bg text-white rounded-lg text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap border border-white/10 shadow-lg">
+              Gallery
+            </div>
           </div>
         </template>
 
         <div data-orientation="vertical" role="none" class="shrink-0 bg-border h-full w-px mx-1.5" />
 
         <!-- Theme Toggle -->
-        <button
-          class="whitespace-nowrap text-base font-medium ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 shrink-0 aspect-square w-10 h-10 bg-component rounded-xl relative flex items-center justify-center undefined"
-          aria-label="Toggle Theme" data-state="closed" @click="toggleTheme">
-          <!-- Sun Icon (Show in Dark Mode) -->
-          <svg v-if="isDark" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
-            class="h-5 w-5">
-            <path
-              d="M12 3V2M12 22V21M18.3598 5.64005L19.0698 4.93005M4.93016 19.07L5.64016 18.36M21 12H22M2 12H3M18.3598 18.36L19.0698 19.07M4.93016 4.93005L5.64016 5.64005M15.5355 8.46447C17.4882 10.4171 17.4882 13.5829 15.5355 15.5355C13.5829 17.4882 10.4171 17.4882 8.46447 15.5355C6.51185 13.5829 6.51185 10.4171 8.46447 8.46447C10.4171 6.51185 13.5829 6.51185 15.5355 8.46447Z"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-          <!-- Moon Icon (Show in Light Mode) -->
-          <svg v-else xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
-            class="h-5 w-5">
-            <path
-              d="M20.9638 12.7674C19.8361 13.5447 18.4693 13.9998 16.9961 13.9998C13.1301 13.9998 9.99609 10.8657 9.99609 6.99975C9.99609 5.52667 10.4511 4.15987 11.2283 3.03223C6.61911 3.42277 3 7.28768 3 11.9979C3 16.9674 7.0286 20.996 11.9981 20.996C16.7084 20.996 20.5734 17.3767 20.9638 12.7674Z"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-        </button>
+        <div class="relative group">
+          <button
+            class="whitespace-nowrap text-base font-medium ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 shrink-0 aspect-square w-10 h-10 bg-component rounded-xl relative flex items-center justify-center undefined"
+            aria-label="Toggle Theme" data-state="closed" @click="toggleTheme">
+            <!-- Sun Icon (Show in Dark Mode) -->
+            <svg v-if="isDark" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
+              class="h-5 w-5">
+              <path
+                d="M12 3V2M12 22V21M18.3598 5.64005L19.0698 4.93005M4.93016 19.07L5.64016 18.36M21 12H22M2 12H3M18.3598 18.36L19.0698 19.07M4.93016 4.93005L5.64016 5.64005M15.5355 8.46447C17.4882 10.4171 17.4882 13.5829 15.5355 15.5355C13.5829 17.4882 10.4171 17.4882 8.46447 15.5355C6.51185 13.5829 6.51185 10.4171 8.46447 8.46447C10.4171 6.51185 13.5829 6.51185 15.5355 8.46447Z"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <!-- Moon Icon (Show in Light Mode) -->
+            <svg v-else xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
+              class="h-5 w-5">
+              <path
+                d="M20.9638 12.7674C19.8361 13.5447 18.4693 13.9998 16.9961 13.9998C13.1301 13.9998 9.99609 10.8657 9.99609 6.99975C9.99609 5.52667 10.4511 4.15987 11.2283 3.03223C6.61911 3.42277 3 7.28768 3 11.9979C3 16.9674 7.0286 20.996 11.9981 20.996C16.7084 20.996 20.5734 17.3767 20.9638 12.7674Z"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+          <!-- Tooltip -->
+          <div
+            class="absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-tooltip-bg text-white rounded-lg text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap border border-white/10 shadow-lg">
+            {{ isDark ? 'Light Mode' : 'Dark Mode' }}
+          </div>
+        </div>
 
         <!-- Audio Toggle -->
-        <button
-          class="whitespace-nowrap text-base font-medium ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 shrink-0 aspect-square w-10 h-10 bg-component rounded-xl relative flex items-center justify-center audio-toggle-button"
-          aria-label="Toggle Audio" data-state="closed" @click="handleToggleSound">
-          <!-- Volume On -->
-          <svg v-if="isSoundEnabled" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-            viewBox="0 0 24 24" class="h-5 w-5">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M19.071 4.92968C20.8807 6.73932 22 9.23932 22 12.0007C22 14.7622 20.8807 17.2622 19.071 19.0718M15.8891 8.11132C16.8844 9.10662 17.5 10.4816 17.5 12.0004C17.5 13.5192 16.8844 14.8942 15.8891 15.8895M4 7.99999H5.33333C5.76607 7.99999 6.18714 7.85964 6.53333 7.59999L11.2 4.09999C11.5296 3.85278 12 4.08797 12 4.49999V19.5C12 19.912 11.5296 20.1472 11.2 19.9L6.53333 16.4C6.18714 16.1403 5.76607 16 5.33333 16H4C2.89543 16 2 15.1046 2 14V9.99999C2 8.89542 2.89543 7.99999 4 7.99999Z" />
-          </svg>
+        <div class="relative group">
+          <button
+            class="whitespace-nowrap text-base font-medium ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 shrink-0 aspect-square w-10 h-10 bg-component rounded-xl relative flex items-center justify-center audio-toggle-button"
+            aria-label="Toggle Audio" data-state="closed" @click="handleToggleSound">
+            <!-- Volume On -->
+            <svg v-if="isSoundEnabled" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+              viewBox="0 0 24 24" class="h-5 w-5">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M19.071 4.92968C20.8807 6.73932 22 9.23932 22 12.0007C22 14.7622 20.8807 17.2622 19.071 19.0718M15.8891 8.11132C16.8844 9.10662 17.5 10.4816 17.5 12.0004C17.5 13.5192 16.8844 14.8942 15.8891 15.8895M4 7.99999H5.33333C5.76607 7.99999 6.18714 7.85964 6.53333 7.59999L11.2 4.09999C11.5296 3.85278 12 4.08797 12 4.49999V19.5C12 19.912 11.5296 20.1472 11.2 19.9L6.53333 16.4C6.18714 16.1403 5.76607 16 5.33333 16H4C2.89543 16 2 15.1046 2 14V9.99999C2 8.89542 2.89543 7.99999 4 7.99999Z" />
+            </svg>
 
-          <!-- Volume Off (Muted) -->
-          <svg v-else xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
-            class="h-5 w-5">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="m21.5 10-2.121 2.121m0 0-2.122 2.121m2.122-2.12L17.257 10m2.122 2.121 2.121 2.121M4 8h1.333a2 2 0 0 0 1.2-.4L11.2 4.1a.5.5 0 0 1 .8.4v15a.5.5 0 0 1-.8.4l-4.667-3.5a2 2 0 0 0-1.2-.4H4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2Z" />
-          </svg>
-        </button>
+            <!-- Volume Off (Muted) -->
+            <svg v-else xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
+              class="h-5 w-5">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="m21.5 10-2.121 2.121m0 0-2.122 2.121m2.122-2.12L17.257 10m2.122 2.121 2.121 2.121M4 8h1.333a2 2 0 0 0 1.2-.4L11.2 4.1a.5.5 0 0 1 .8.4v15a.5.5 0 0 1-.8.4l-4.667-3.5a2 2 0 0 0-1.2-.4H4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2Z" />
+            </svg>
+          </button>
+          <!-- Tooltip -->
+          <div
+            class="absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-tooltip-bg text-white rounded-lg text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap border border-white/10 shadow-lg">
+            {{ isSoundEnabled ? 'Mute Sound' : 'Enable Sound' }}
+          </div>
+        </div>
 
       </div>
     </div>

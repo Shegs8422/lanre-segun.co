@@ -1,11 +1,11 @@
-# Lanre Segun  
-**Senior Product Designer**
+# Lanre Segun
+**Design Engineer**
 
 ---
 
 ## Summary
 
-Strategic Senior Product Designer with **5+ years of experience** across **Web3, Fintech, and SaaS**. Specializing in **Human-Centered Design (HCD)** and **accessibility-first systems**. I bridge the gap between complex engineering requirements and premium UI, with a strong focus on **Android Material Design 3** and **tokenized design systems** that reduce technical friction and maximize user retention.
+Strategic Design Engineer with **5+ years of experience** across **Web3, Fintech, and SaaS**. Specializing in **Human-Centered Design (HCD)**, **accessibility-first systems**, and **full-stack development**. I bridge the gap between complex engineering requirements and premium UI, with expertise in both design and code—creating tokenized design systems, production-ready websites, and exceptional user experiences.
 
 ---
 

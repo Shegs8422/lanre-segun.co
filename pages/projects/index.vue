@@ -155,13 +155,13 @@ onUnmounted(() => {
 
 useSeoMeta({
     title: 'Projects - Lanre Segun',
-    description: 'Explore my latest design and development projects. Senior Product Designer bridging complex engineering and premium UI.',
+    description: 'Explore my latest design and development projects. Design Engineer bridging complex engineering and premium UI.',
     ogTitle: 'Projects - Lanre Segun',
-    ogDescription: 'Explore my latest design and development projects. Senior Product Designer bridging complex engineering and premium UI.',
+    ogDescription: 'Explore my latest design and development projects. Design Engineer bridging complex engineering and premium UI.',
     ogImage: 'https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/og-image.png',
     ogUrl: 'https://lanre-segun.vercel.app/projects',
     twitterTitle: 'Projects - Lanre Segun',
-    twitterDescription: 'Explore my latest design and development projects. Senior Product Designer bridging complex engineering and premium UI.',
+    twitterDescription: 'Explore my latest design and development projects. Design Engineer bridging complex engineering and premium UI.',
     twitterImage: 'https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/og-image.png',
     twitterCard: 'summary'
 })

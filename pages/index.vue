@@ -489,22 +489,22 @@ useSchemaOrg([
     definePerson({
         name: 'Lanre Segun',
         image: 'https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/og-image.png',
-        jobTitle: 'Senior Product Designer',
+        jobTitle: 'Design Engineer',
         sameAs: [
             'https://twitter.com/Olusegun51',
             'https://linkedin.com/in/lanresegun'
         ]
     }),
     defineWebSite({
-        name: 'Lanre Segun - Senior Product Designer'
+        name: 'Lanre Segun - Design Engineer'
     })
 ])
 
 useSeoMeta({
-    title: 'Lanre Segun - Senior Product Designer | Interactive Portfolio',
-    description: 'C-Suite Senior Product Designer & Design Engineer. Specializing in Web3, Fintech, and SaaS with a focus on HCD and premium UI.',
-    ogTitle: 'Lanre Segun - Senior Product Designer | Interactive Portfolio',
-    ogDescription: 'C-Suite Senior Product Designer & Design Engineer. Specializing in Web3, Fintech, and SaaS with a focus on HCD and premium UI.',
+    title: 'Lanre Segun - Design Engineer | Interactive Portfolio',
+    description: 'Design Engineer specializing in Web3, Fintech, and SaaS. Bridging design and engineering with HCD, accessibility, and full-stack development.',
+    ogTitle: 'Lanre Segun - Design Engineer | Interactive Portfolio',
+    ogDescription: 'Design Engineer bridging complex engineering and premium UI with expertise in both design and code.',
     ogImage: 'https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/og-image.png',
     ogUrl: 'https://lanre-segun.vercel.app'
 })

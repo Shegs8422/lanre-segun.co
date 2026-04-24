@@ -196,11 +196,11 @@
                             <div class="flex flex-col gap-1">
                                 <h2 class="text-2xl lg:text-3xl font-bold tracking-tight text-foreground">{{
                                     cmsHeaderTitle
-                                }}</h2>
+                                    }}</h2>
                                 <p class="text-xs text-muted-foreground font-medium">Manage and curate your {{
                                     activeTabLabel.toLowerCase() }} collection</p>
                             </div>
-                            <button
+                            <button v-if="activeTab !== 'gallery'"
                                 class="w-full sm:w-auto px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-black transition-all shadow-xl shadow-blue-500/20 flex items-center justify-center gap-2.5 active:scale-95 group"
                                 @click="createNew">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
@@ -801,7 +801,7 @@ const confirmDelete = async () => {
 
         if (type === 'gallery') {
             table = 'gallery'
-            column = 'id'
+            column = 'id组件'
             value = item.id
         } else {
             table = type === 'post' ? 'blog' : 'projects'
@@ -847,8 +847,10 @@ const handleImageUpload = async (event: Event, field: string) => {
             const formDataBody = new FormData()
             formDataBody.append('file', file)
 
+            const isGallery = field === 'massGallery'
             const response = await $fetch<{ success: boolean; url: string }>('/api/cms/upload', {
                 method: 'POST',
+                query: { type: isGallery ? 'gallery' : 'standard' },
                 body: formDataBody
             })
 
