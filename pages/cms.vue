@@ -196,7 +196,7 @@
                             <div class="flex flex-col gap-1">
                                 <h2 class="text-2xl lg:text-3xl font-bold tracking-tight text-foreground">{{
                                     cmsHeaderTitle
-                                    }}</h2>
+                                }}</h2>
                                 <p class="text-xs text-muted-foreground font-medium">Manage and curate your {{
                                     activeTabLabel.toLowerCase() }} collection</p>
                             </div>
@@ -688,6 +688,19 @@ function editItem(item: any) {
 
 async function saveItem() {
     if (isUploading.value) return
+
+    // Form Validation
+    if (!formData.value.title?.trim()) {
+        showToast('Validation Error', 'Entry Title is required.', 'warning')
+        return
+    }
+
+    // Check if slug is required but missing (should be auto-generated, but just in case)
+    if (!formData.value.slug?.trim() && !isEditing.value) {
+        showToast('Validation Error', 'Slug could not be generated. Please provide a valid title.', 'warning')
+        return
+    }
+
     isUploading.value = true
 
     try {
@@ -776,9 +789,11 @@ async function saveItem() {
         }
 
         closeEditor()
-    } catch (e) {
+    } catch (e: any) {
         console.error('CMS Save Error:', e)
-        showToast('Publish Failed', 'Supabase payload error.', 'error')
+        // Extract the specific error message if available
+        const errorMsg = e.response?._data?.message || e.message || 'Supabase payload error.'
+        showToast('Publish Failed', errorMsg, 'error')
     } finally {
         isUploading.value = false
     }

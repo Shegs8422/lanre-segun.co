@@ -80,10 +80,20 @@ export default defineEventHandler(async (event) => {
         return { success: true, data }
     } catch (error: any) {
         console.error('CMS Save Error:', error)
+        
+        // Map Supabase Postgres error codes to HTTP status codes
+        let statusCode = 500
+        if (error.code) {
+            if (error.code === '23505') statusCode = 409 // Unique violation (e.g., duplicate slug)
+            else if (error.code === '23502') statusCode = 400 // Not null violation
+            else if (error.code.startsWith('22')) statusCode = 400 // Data exception
+            else statusCode = 400 // Default to 400 for other Supabase DB errors
+        }
+
         throw createError({
-            statusCode: 500,
+            statusCode: error.statusCode || statusCode,
             message: error.message || 'Database operation failed',
-            data: error
+            data: error.details || error.hint || error
         })
     }
 })
