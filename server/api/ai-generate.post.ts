@@ -37,8 +37,14 @@ export default defineEventHandler(async (event) => {
     }
 
     const genAI = new GoogleGenerativeAI(apiKey)
-    // Using gemini-3-flash-preview as requested by user
-    const model = genAI.getGenerativeModel({ model: 'gemini-3-flash-preview' })
+    
+    // Ordered list of models to try, with fallbacks including latest Gemma
+    const fallbackModels = [
+        'gemini-3.1-pro', 
+        'gemini-3.1-flash',
+        'gemini-3.1-flash-lite',
+        'gemma-4-31b-it'
+    ]
 
     const PROMPT_CONFIGS = {
         sections: {
@@ -91,23 +97,40 @@ export default defineEventHandler(async (event) => {
         ${currentConfig.instruction}
     `
 
-    try {
-        const result = await model.generateContent(finalPrompt)
-        const response = await result.response
-        const text = response.text()
+    let generatedText = ''
+    let lastError: any = null
 
-        if (type === 'sections') {
-            const jsonStr = text.replace(/```json/g, '').replace(/```/g, '').trim()
-            return JSON.parse(jsonStr)
-        } else {
-            // Stronger cleanup to ensure raw text
-            return { text: text.trim().replace(/^"|"$/g, '').replace(/```[\s\S]*?```/g, '').trim() }
+    for (const modelName of fallbackModels) {
+        try {
+            console.log(`Attempting generation with model: ${modelName}`)
+            const model = genAI.getGenerativeModel({ model: modelName })
+            const result = await model.generateContent(finalPrompt)
+            const response = await result.response
+            generatedText = response.text()
+            
+            if (generatedText) {
+                console.log(`Successfully generated content using ${modelName}`)
+                break // Break loop on success
+            }
+        } catch (e: any) {
+            console.warn(`Model ${modelName} failed:`, e.message)
+            lastError = e
         }
-    } catch (e: any) {
-        console.error('Gemini Error:', e)
+    }
+
+    if (!generatedText) {
+        console.error('All fallback AI models failed.')
         throw createError({
             statusCode: 500,
-            statusMessage: 'AI Generation failed: ' + e.message,
+            statusMessage: 'AI Generation failed: ' + (lastError?.message || 'All models exhausted'),
         })
+    }
+
+    if (type === 'sections') {
+        const jsonStr = generatedText.replace(/```json/g, '').replace(/```/g, '').trim()
+        return JSON.parse(jsonStr)
+    } else {
+        // Stronger cleanup to ensure raw text
+        return { text: generatedText.trim().replace(/^"|"$/g, '').replace(/```[\s\S]*?```/g, '').trim() }
     }
 })
