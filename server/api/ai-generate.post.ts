@@ -37,12 +37,14 @@ export default defineEventHandler(async (event) => {
     }
 
     const genAI = new GoogleGenerativeAI(apiKey)
-    
+
     // Ordered list of models to try, with fallbacks including latest Gemma
     const fallbackModels = [
-        'gemini-3.1-pro', 
-        'gemini-3.1-flash',
-        'gemini-3.1-flash-lite',
+        'gemini-3.1-pro-preview',
+        'gemini-3-flash-preview',
+        'gemini-3.1-flash-lite-preview',
+        'gemini-2.5-pro',
+        'gemini-2.5-flash',
         'gemma-4-31b-it'
     ]
 
@@ -107,7 +109,7 @@ export default defineEventHandler(async (event) => {
             const result = await model.generateContent(finalPrompt)
             const response = await result.response
             generatedText = response.text()
-            
+
             if (generatedText) {
                 console.log(`Successfully generated content using ${modelName}`)
                 break // Break loop on success

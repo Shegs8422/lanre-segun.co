@@ -129,6 +129,9 @@ export default defineNuxtConfig({
         transpile: ['gsap', 'three', '@vueuse/sound', 'lucide-vue-next']
     },
     runtimeConfig: {
+        supabase: {
+            serviceKey: process.env.SUPABASE_SECRET_KEY || ''
+        },
         geminiApiKey: process.env.NUXT_GEMINI_API_KEY || '',
         supabaseSecretKey: process.env.SUPABASE_SECRET_KEY || ''
     },
