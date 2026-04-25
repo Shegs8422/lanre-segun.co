@@ -115,6 +115,9 @@ export default defineNuxtConfig({
             rollupOptions: {
                 external: ['shiki'], // Some libraries cause noise
                 onwarn(warning, warn) {
+                    // Suppress known noisy warnings
+                    if (warning.plugin === '@tailwindcss/vite:generate:build') return;
+                    if (warning.message?.includes('Sourcemap is likely to be incorrect')) return;
                     if (warning.code === 'UNUSED_EXTERNAL_IMPORT') return;
                     if (warning.message?.includes('never used in')) return;
                     warn(warning);

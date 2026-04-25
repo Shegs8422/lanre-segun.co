@@ -68,7 +68,7 @@ export default defineEventHandler(async (event) => {
         
         const { data, error } = await supabaseAdmin
             .from(table)
-            .upsert(payload, { onConflict: 'slug' })
+            .upsert(payload, { onConflict: 'id' })
             .select()
 
         if (error) {
