@@ -6,6 +6,7 @@ node_modules
 dist
 .vercel
 *.log
+opencode.json
 
 Agentic Rules/
 .agent/
