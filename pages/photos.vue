@@ -24,7 +24,7 @@
                 class="fixed inset-0 z-modal bg-black/98 backdrop-blur-2xl overflow-hidden select-none">
 
                 <!-- Cinematic Vignette Overlay -->
-                <div class="absolute inset-0 pointer-events-none bg-radial-vignette opacity-80 z-20"></div>
+                <div class="absolute inset-0 pointer-events-none bg-radial-vignette opacity-80 z-20"/>
 
                 <!-- Close Button -->
                 <button
@@ -50,22 +50,20 @@
                             next: {
                                 translate: ['100%', 0, 0],
                             },
-                        }" class="w-full h-full" @swiper="onSwiper" @slideChange="onSlideChange">
+                        }" class="w-full h-full" @swiper="onSwiper" @slide-change="onSlideChange">
                         <SwiperSlide v-for="item in galleryItems" :key="item.id"
                             class="flex items-center justify-center">
                             <div class="relative w-full h-full flex items-center justify-center p-4 md:p-12 lg:p-24">
                                 <!-- Lighting Aura -->
                                 <div
-                                    class="absolute inset-0 bg-white/5 blur-[120px] rounded-full opacity-20 -z-10 animate-pulse-slow">
-                                </div>
+                                    class="absolute inset-0 bg-white/5 blur-[120px] rounded-full opacity-20 -z-10 animate-pulse-slow"/>
 
                                 <img :src="item.url"
                                     class="max-w-full max-h-[85vh] md:max-h-[90vh] object-contain rounded-2xl md:rounded-3xl shadow-[0_0_100px_rgba(0,0,0,0.8)] border border-white/10 select-none pointer-events-none"
                                     data-swiper-parallax="-300">
 
                                 <div
-                                    class="absolute inset-0 bg-linear-to-b from-white/5 to-transparent rounded-3xl pointer-events-none opacity-50">
-                                </div>
+                                    class="absolute inset-0 bg-linear-to-b from-white/5 to-transparent rounded-3xl pointer-events-none opacity-50"/>
                             </div>
                         </SwiperSlide>
 
@@ -101,7 +99,7 @@
                         class="flex gap-2 p-1.5 bg-white/5 backdrop-blur-xl rounded-full border border-white/10 shadow-2xl">
                         <div v-for="(_, i) in galleryItems" :key="i"
                             class="h-1 rounded-full transition-all duration-500 cursor-pointer"
-                            :class="i === currentIndex ? 'bg-white w-6' : 'bg-white/20 w-1'"></div>
+                            :class="i === currentIndex ? 'bg-white w-6' : 'bg-white/20 w-1'"/>
                     </div>
                 </div>
             </div>

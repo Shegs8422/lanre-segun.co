@@ -8,7 +8,7 @@
                     <div class="flex items-center gap-4">
                         <div
                             class="w-10 h-10 rounded-xl bg-foreground text-background flex items-center justify-center">
-                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-background"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M15 4.5H9V8.5H15V4.5Z" ></path> <path d="M4 10.5H9V14.5H15V10.5H20V19.5H4V10.5Z" ></path> </g></svg>
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-background"><g id="SVGRepo_bgCarrier" stroke-width="0"/><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/><g id="SVGRepo_iconCarrier"> <path d="M15 4.5H9V8.5H15V4.5Z" /> <path d="M4 10.5H9V14.5H15V10.5H20V19.5H4V10.5Z" /> </g></svg>
                         </div>
                         <div>
                             <h3 class="text-lg font-black uppercase tracking-mega text-foreground">Unsplash Search
@@ -104,7 +104,7 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import { ImageIcon, X, Check } from 'lucide-vue-next'
+import { X, Check } from 'lucide-vue-next'
 
 const props = defineProps<{
     show: boolean

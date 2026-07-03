@@ -29,7 +29,7 @@ export default defineEventHandler(async (event) => {
         if (type === 'gallery') {
             // Upload to Supabase Storage
             const supabase = await serverSupabaseServiceRole(event)
-            const { data, error } = await supabase.storage
+            const { error } = await supabase.storage
                 .from('portfolio')
                 .upload(`gallery/${filename}`, file.data, {
                     contentType: file.type,

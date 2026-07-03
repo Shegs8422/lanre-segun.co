@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
     }
 
     // Valid tables for CMS
-    const validTables = ['projects', 'notes', 'gallery', 'blog']
+    const validTables = ['projects', 'gallery', 'blog']
     if (!validTables.includes(table)) {
         throw createError({
             statusCode: 400,

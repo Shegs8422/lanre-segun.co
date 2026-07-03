@@ -116,9 +116,9 @@
     <div v-if="showLinkInput"
       class="absolute top-12 left-0 right-0 z-10 px-2 animate-in fade-in zoom-in-95 duration-200">
       <div class="flex items-center gap-2 p-2 bg-background border border-border shadow-xl rounded-xl">
-        <input v-model="linkUrl" type="text" placeholder="https://example.com"
-          class="flex-1 bg-muted/50 border border-border/50 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-blue-500 transition-all font-medium"
-          @keyup.enter="applyLink" @keyup.esc="cancelLink" ref="linkInputRef">
+        <input ref="linkInputRef" v-model="linkUrl" type="text"
+          placeholder="https://example.com"
+          class="flex-1 bg-muted/50 border border-border/50 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-blue-500 transition-all font-medium" @keyup.enter="applyLink" @keyup.esc="cancelLink">
         <button v-if="linkUrl"
           class="p-1.5 rounded-lg text-muted-foreground hover:text-red-500 hover:bg-red-500/10 transition-colors"
           title="Remove Link" @click="unsetLink">
@@ -148,9 +148,9 @@
     <div v-if="showImageInput"
       class="absolute top-12 left-0 right-0 z-10 px-2 animate-in fade-in zoom-in-95 duration-200">
       <div class="flex items-center gap-2 p-2 bg-background border border-border shadow-xl rounded-xl">
-        <input v-model="imageUrl" type="text" placeholder="https://example.com/image.jpg"
-          class="flex-1 bg-muted/50 border border-border/50 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-blue-500 transition-all font-medium"
-          @keyup.enter="applyImage" @keyup.esc="cancelImage" ref="imageInputRef">
+        <input ref="imageInputRef" v-model="imageUrl" type="text"
+          placeholder="https://example.com/image.jpg"
+          class="flex-1 bg-muted/50 border border-border/50 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-blue-500 transition-all font-medium" @keyup.enter="applyImage" @keyup.esc="cancelImage">
         <button
           class="px-3 py-1.5 rounded-lg bg-foreground text-background text-xs font-bold uppercase tracking-wider hover:bg-blue-600 hover:text-white transition-colors"
           @click="applyImage">

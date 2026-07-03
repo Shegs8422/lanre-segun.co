@@ -60,11 +60,11 @@
                         <div v-else class="w-full h-full flex flex-col items-center justify-center gap-3 opacity-40">
                             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
                                 class="w-8 h-8 fill-foreground/50">
-                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"/>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
                                 <g id="SVGRepo_iconCarrier">
-                                    <path d="M15 4.5H9V8.5H15V4.5Z"></path>
-                                    <path d="M4 10.5H9V14.5H15V10.5H20V19.5H4V10.5Z"></path>
+                                    <path d="M15 4.5H9V8.5H15V4.5Z"/>
+                                    <path d="M4 10.5H9V14.5H15V10.5H20V19.5H4V10.5Z"/>
                                 </g>
                             </svg>
                             <span class="text-xxs font-bold uppercase tracking-widest">Select
@@ -123,11 +123,11 @@
                                 @click="$emit('open-unsplash', 'noteContent')">
                                 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
                                     class="w-3 h-3 fill-current">
-                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                    <g id="SVGRepo_bgCarrier" stroke-width="0"/>
+                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
                                     <g id="SVGRepo_iconCarrier">
-                                        <path d="M15 4.5H9V8.5H15V4.5Z"></path>
-                                        <path d="M4 10.5H9V14.5H15V10.5H20V19.5H4V10.5Z"></path>
+                                        <path d="M15 4.5H9V8.5H15V4.5Z"/>
+                                        <path d="M4 10.5H9V14.5H15V10.5H20V19.5H4V10.5Z"/>
                                     </g>
                                 </svg>
                                 Unsplash
@@ -206,8 +206,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { ImageIcon, Pencil, X } from 'lucide-vue-next'
+import { ref } from 'vue'
+import { Pencil, X } from 'lucide-vue-next'
 import GeminiButton from '@/components/cms/GeminiButton.vue'
 
 const props = defineProps<{

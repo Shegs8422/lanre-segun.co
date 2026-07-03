@@ -1,86 +1,125 @@
 <template>
     <Transition name="fade">
-        <div v-if="show" class="fixed inset-0 z-200 flex items-center justify-center p-6 font-sans">
+        <div v-if="show" class="fixed inset-0 z-200 flex items-center justify-center font-sans"
+            @keydown.escape="close">
             <!-- Backdrop -->
-            <div class="absolute inset-0 bg-white/60 dark:bg-black/80 backdrop-blur-md transition-colors" @click="close" />
-            
-            <!-- Modal Container -->
-            <div
-                class="relative w-full max-w-lg bg-white dark:bg-[#131314] text-gray-900 dark:text-white p-1 rounded-[24px] shadow-2xl animate-fade-in-up overflow-hidden group transition-colors">
-                
-                <!-- Border Gradient Animation -->
-                <div class="absolute inset-0 bg-linear-to-r from-blue-500 via-purple-500 to-red-500 opacity-20 group-hover:opacity-40 transition-opacity duration-500"/>
-                <div class="absolute inset-px bg-white dark:bg-[#131314] rounded-[23px] transition-colors"/>
+            <div class="absolute inset-0 bg-white dark:bg-[#131314] transition-colors" @click="close" />
 
-                <!-- Content -->
-                <div class="relative p-6 md:p-8 flex flex-col gap-6">
-                    <!-- Header -->
-                    <div class="flex items-start justify-between">
-                        <div class="flex items-center gap-3">
-                            <div class="relative">
-                                <img src="https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/gemini.svg" alt="Google Gemini Logo" class="w-6 h-6 animate-pulse-slow" >
-                                <div class="absolute inset-0 bg-blue-500 blur-lg opacity-40"/>
-                            </div>
-                            <div>
-                                <h3 class="font-medium text-lg bg-linear-to-r from-blue-600 via-purple-600 to-red-500 dark:from-blue-200 dark:via-purple-200 dark:to-white bg-clip-text text-transparent transition-all">
-                                    Google Gemini
-                                </h3>
-                                <p class="text-xs text-gray-500 dark:text-gray-400 font-medium tracking-wide">AI SYSTEMS ARCHITECT</p>
-                            </div>
+            <!-- Gemini-style soft glow background -->
+            <div class="absolute inset-0 pointer-events-none">
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-[radial-gradient(ellipse_at_center,#4285F4_0%,#4796E3_20%,#C4DCFB_50%,transparent_70%)] opacity-15 dark:opacity-10 blur-3xl" />
+            </div>
+
+            <!-- Content Container -->
+            <div class="relative z-10 flex flex-col items-center justify-center w-full max-w-2xl px-6 animate-fade-in">
+                <!-- Greeting -->
+                <h1 class="text-3xl md:text-4xl font-light text-gray-800 dark:text-gray-100 mb-10 text-center tracking-tight">
+                    {{ greeting }}
+                </h1>
+
+                <!-- Input Bar -->
+                <div class="w-full max-w-xl">
+                    <div
+                        class="flex items-center gap-2 bg-white dark:bg-[#1E1F20] border border-gray-200 dark:border-white/10 rounded-full px-4 py-3 shadow-lg shadow-black/5 dark:shadow-none transition-all focus-within:shadow-xl focus-within:shadow-blue-500/10 dark:focus-within:shadow-blue-500/5 focus-within:border-blue-300 dark:focus-within:border-blue-500/30">
+                        <!-- Plus icon / Attachments -->
+                        <button type="button"
+                            class="flex items-center justify-center w-8 h-8 rounded-full hover:bg-gray-100 dark:hover:bg-white/5 text-gray-500 dark:text-gray-400 transition-colors shrink-0"
+                            title="Add context">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M5 12h14" />
+                                <path d="M12 5v14" />
+                            </svg>
+                        </button>
+
+                        <!-- Text Input -->
+                        <textarea ref="inputRef" v-model="localPrompt" :rows="1"
+                            placeholder="Ask Gemini..."
+                            class="flex-1 bg-transparent border-none outline-none ring-0 focus:ring-0 focus:border-none focus:outline-none text-sm text-gray-800 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 resize-none leading-relaxed min-h-[24px] max-h-[120px] py-0.5"
+                            @input="autoResize" @keydown.enter.exact.prevent="handleEnter" />
+
+                        <!-- Model Selector -->
+                        <div class="relative shrink-0">
+                            <button type="button"
+                                class="flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5 border border-gray-200 dark:border-white/10 transition-colors"
+                                @click="showModelDropdown = !showModelDropdown">
+                                <span>{{ selectedModelLabel }}</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" :class="{ 'rotate-180': showModelDropdown }"
+                                    class="transition-transform">
+                                    <path d="m6 9 6 6 6-6" />
+                                </svg>
+                            </button>
+
+                            <!-- Dropdown -->
+                            <Transition name="dropdown">
+                                <div v-if="showModelDropdown"
+                                    class="absolute bottom-full mb-2 right-0 w-56 bg-white dark:bg-[#2D2E30] border border-gray-200 dark:border-white/10 rounded-2xl shadow-xl shadow-black/10 dark:shadow-black/30 overflow-hidden py-1.5 z-50">
+                                    <button v-for="model in models" :key="model.id" type="button"
+                                        class="w-full flex items-center gap-3 px-4 py-2.5 text-left hover:bg-gray-50 dark:hover:bg-white/5 transition-colors"
+                                        :class="{ 'bg-blue-50 dark:bg-blue-500/10': model.id === selectedModel }"
+                                        @click="selectModel(model)">
+                                        <div class="flex-1 min-w-0">
+                                            <div class="text-sm font-medium text-gray-800 dark:text-gray-200 truncate">
+                                                {{ model.label }}
+                                            </div>
+                                            <div class="text-[11px] text-gray-500 dark:text-gray-400 truncate">
+                                                {{ model.description }}
+                                            </div>
+                                        </div>
+                                        <div v-if="model.id === selectedModel"
+                                            class="w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0" />
+                                    </button>
+                                </div>
+                            </Transition>
                         </div>
-                        <button class="p-2 text-gray-400 hover:text-gray-900 dark:text-gray-500 dark:hover:text-white transition-colors" @click="close">
-                            <X :size="18" />
+
+                        <!-- Send Button -->
+                        <button type="button"
+                            class="flex items-center justify-center w-8 h-8 rounded-full transition-all shrink-0"
+                            :class="localPrompt.trim()
+                                ? 'bg-blue-500 hover:bg-blue-600 text-white shadow-md shadow-blue-500/30'
+                                : 'bg-gray-100 dark:bg-white/5 text-gray-400 dark:text-gray-500'"
+                            :disabled="!localPrompt.trim() || isGenerating" @click="generate">
+                            <span v-if="isGenerating"
+                                class="w-3.5 h-3.5 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+                            <svg v-else xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                fill="currentColor">
+                                <path
+                                    d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+                            </svg>
                         </button>
                     </div>
 
-                    <!-- Input Area -->
-                    <div class="flex flex-col gap-4">
-                        <div class="bg-gray-50 dark:bg-[#1E1F20] rounded-2xl p-4 border border-gray-200 dark:border-white/5 focus-within:border-blue-500/50 dark:focus-within:border-white/10 transition-colors shadow-inner dark:shadow-none">
-                            <textarea 
-                                v-model="localPrompt" 
-                                rows="3"
-                                placeholder="Ask Gemini to draft your design process, engineering challenges, or architecture docs..."
-                                class="w-full bg-transparent border-none focus:ring-0 text-sm text-gray-800 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 resize-none leading-relaxed" 
-                            />
-                            
-                            <!-- Chips -->
-                            <div class="flex flex-wrap gap-2 mt-4 pt-4 border-t border-gray-200 dark:border-white/5">
-                                <button v-for="chip in promptChips" :key="chip" type="button"
-                                    class="px-3 py-1.5 rounded-lg bg-white border border-gray-200 hover:bg-gray-100 hover:border-gray-300 text-gray-600 dark:bg-[#2D2E30] dark:border-transparent dark:hover:bg-[#3C3D40] text-xxs uppercase font-bold tracking-wider dark:text-gray-300 transition-all"
-                                    @click="localPrompt = chip">
-                                    {{ chip }}
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Footer Actions -->
-                    <div class="flex items-center justify-between mt-2">
-                        <div class="flex items-center gap-2 text-xs text-gray-400 dark:text-gray-500">
-                           <ShieldCheck :size="12" />
-                           <span>Enterprise Grade Security</span>
-                        </div>
-                        <button 
-                            :disabled="isGenerating || !localPrompt" 
-                            class="gemini-button relative group/btn overflow-hidden rounded-full px-6 py-2.5 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg dark:shadow-none"
-                            @click="generate">
-                            <div class="absolute inset-0 bg-linear-to-r from-[#4285F4] via-[#9B72CB] to-[#D96570] opacity-90 group-hover/btn:opacity-100 transition-opacity"/>
-                            <div class="relative flex items-center gap-2 font-medium text-sm text-white">
-                                <span v-if="isGenerating" class="w-3 h-3 rounded-full border-2 border-white/30 border-t-white animate-spin" />
-                                <Sparkles v-else :size="14" class="text-white fill-white" />
-                                <span>{{ isGenerating ? 'Generating...' : 'Generate' }}</span>
-                            </div>
+                    <!-- Suggestion Chips -->
+                    <div class="flex flex-wrap gap-2 mt-3 justify-center">
+                        <button v-for="chip in promptChips" :key="chip" type="button"
+                            class="px-3.5 py-1.5 rounded-full bg-white dark:bg-[#1E1F20] border border-gray-200 dark:border-white/10 hover:border-blue-300 dark:hover:border-blue-500/30 hover:bg-blue-50 dark:hover:bg-blue-500/5 text-xs text-gray-600 dark:text-gray-400 transition-all"
+                            @click="insertChip(chip)">
+                            {{ chip }}
                         </button>
                     </div>
                 </div>
             </div>
+
+            <!-- Close button -->
+            <button type="button"
+                class="absolute top-6 right-6 z-20 p-2 rounded-full text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors"
+                @click="close">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 6 6 18" />
+                    <path d="m6 6 12 12" />
+                </svg>
+            </button>
         </div>
     </Transition>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
-import { Sparkles, X, ShieldCheck } from 'lucide-vue-next'
+import { ref, watch, computed, onMounted, nextTick } from 'vue'
 
 const props = defineProps<{
     show: boolean
@@ -91,20 +130,103 @@ const props = defineProps<{
 
 const emit = defineEmits<{
     (e: 'update:show', value: boolean): void
-    (e: 'generate', prompt: string): void
+    (e: 'generate', prompt: string, model: string): void
 }>()
 
 const localPrompt = ref('')
+const selectedModel = ref('gemini-2.5-flash')
+const showModelDropdown = ref(false)
+const inputRef = ref<HTMLTextAreaElement | null>(null)
+
+const models = [
+    { id: 'gemini-2.5-flash', label: 'Flash', description: 'Fast & efficient' },
+    { id: 'gemini-2.5-pro', label: 'Pro', description: 'Advanced reasoning' },
+    { id: 'gemini-3-flash-preview', label: '3 Flash', description: 'Latest preview' },
+    { id: 'gemini-3.1-pro-preview', label: '3.1 Pro', description: 'Most capable' },
+]
+
+const selectedModelLabel = computed(() => {
+    return models.find(m => m.id === selectedModel.value)?.label || 'Flash'
+})
+
+const selectModel = (model: { id: string }) => {
+    selectedModel.value = model.id
+    showModelDropdown.value = false
+}
+
+// Dynamic fun greeting
+const greeting = computed(() => {
+    const hour = new Date().getHours()
+    const name = 'Oluwasegun'
+
+    const greetings = [
+        `What's the vibe, ${name}?`,
+        `What's good, ${name}?`,
+        `${name}, what are we cooking today?`,
+        `What should we focus on, ${name}?`,
+        `Let's build something fire, ${name}`,
+        `What's the move, ${name}?`,
+        `Ready to cook, ${name}?`,
+        `${name}, what's on the agenda?`,
+        `What are we creating, ${name}?`,
+        `${name}, let's make magic`,
+        `What's the plan, ${name}?`,
+        `What's poppin', ${name}?`,
+    ]
+
+    const timeBased = hour < 6
+        ? `Burning the midnight oil, ${name}?`
+        : hour < 12
+            ? `Good morning, ${name} — what's the vision?`
+            : hour < 17
+                ? `Good afternoon, ${name} — what are we building?`
+                : hour < 21
+                    ? `Good evening, ${name} — what's the mission?`
+                    : `Late night grind, ${name}?`
+
+    return Math.random() > 0.3 ? greetings[Math.floor(Math.random() * greetings.length)] : timeBased
+})
+
+// Auto-resize textarea
+const autoResize = () => {
+    const el = inputRef.value
+    if (!el) return
+    el.style.height = 'auto'
+    el.style.height = Math.min(el.scrollHeight, 120) + 'px'
+}
+
+const handleEnter = () => {
+    if (localPrompt.value.trim() && !props.isGenerating) {
+        generate()
+    }
+}
+
+const insertChip = (chip: string) => {
+    localPrompt.value = chip
+    nextTick(() => inputRef.value?.focus())
+}
 
 watch(() => props.initialPrompt, (newVal) => {
     if (newVal) localPrompt.value = newVal
 }, { immediate: true })
 
-// Reset prompt when opening
 watch(() => props.show, (newVal) => {
-    if (newVal && !localPrompt.value) {
-        localPrompt.value = props.initialPrompt || ''
+    if (newVal) {
+        showModelDropdown.value = false
+        nextTick(() => inputRef.value?.focus())
     }
+})
+
+// Close dropdown on outside click
+const handleClickOutside = (e: MouseEvent) => {
+    const target = e.target as HTMLElement
+    if (!target.closest('.relative')) {
+        showModelDropdown.value = false
+    }
+}
+
+onMounted(() => {
+    document.addEventListener('click', handleClickOutside)
 })
 
 const close = () => {
@@ -112,38 +234,52 @@ const close = () => {
 }
 
 const generate = () => {
-    emit('generate', localPrompt.value)
+    if (localPrompt.value.trim()) {
+        emit('generate', localPrompt.value, selectedModel.value)
+    }
 }
 </script>
 
 <style scoped>
-/* Gemini Specific Animation */
-@keyframes shimmer {
-    0% { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
+textarea {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
 }
 
-.gemini-button {
-    color: white;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
-}
-
-.animate-pulse-slow {
-    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-.animate-fade-in-up {
-    animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-@keyframes fadeInUp {
+@keyframes fadeIn {
     from {
         opacity: 0;
-        transform: scale(0.95) translateY(10px);
+        transform: translateY(8px);
     }
     to {
         opacity: 1;
-        transform: scale(1) translateY(0);
+        transform: translateY(0);
     }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.25s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+}
+
+.dropdown-enter-active,
+.dropdown-leave-active {
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dropdown-enter-from,
+.dropdown-leave-to {
+    opacity: 0;
+    transform: translateY(8px) scale(0.96);
 }
 </style>

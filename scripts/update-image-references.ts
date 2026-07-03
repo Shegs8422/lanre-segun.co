@@ -41,9 +41,6 @@ function updateFileReferences(filePath: string, mappings: Mapping[]) {
     const sortedMappings = [...mappings].sort((a, b) => b.originalPath.length - a.originalPath.length);
 
     for (const mapping of sortedMappings) {
-        // Escape special characters in originalPath for regex
-        const escapedPath = mapping.originalPath.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-
         // Check for both direct path and encoded path (if different)
         const encodedPath = encodeURI(mapping.originalPath);
 

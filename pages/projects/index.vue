@@ -29,8 +29,8 @@
                     style="scroll-snap-align: center; min-height: 80vh; justify-content: center;">
                     <NuxtLink :to="`/projects/${project.slug}`"
                         class="group relative overflow-hidden rounded-2xl shadow-2xl border border-white/10 aspect-video block">
-                        <img :src="project.coverImage" :alt="project.title"
-                            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <img :src="project.coverImage" :alt="project.coverImageAlt || project.title"
+                            class="w-full h-full object-cover">
                         <div
                             class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
                     </NuxtLink>

@@ -126,7 +126,7 @@
                 <!-- Default Cover Image & Overlay -->
                 <div class="relative w-full h-full overflow-hidden">
                     <NuxtImg v-if="project.coverImage || project.content?.heroImage"
-                        :src="project.coverImage || project.content?.heroImage" :alt="project.title" format="webp"
+                        :src="project.coverImage || project.content?.heroImage" :alt="project.coverImageAlt || project.title" format="webp"
                         class="w-full h-full object-cover transition-transform duration-700 ease-out" />
 
                     <div

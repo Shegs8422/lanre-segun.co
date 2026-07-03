@@ -242,7 +242,7 @@
                             <h2 class="text-xl lg:text-2xl font-bold text-foreground">{{ editHeaderTitle }}</h2>
                         </div>
 
-                        <div class="lg:max-w-5xl mx-auto pb-32">
+                        <div class="lg:max-w-7xl mx-auto pb-32">
                             <!-- Blog Editor -->
                             <CmsBlogEditor v-if="activeTab === 'blog'" v-model="formData" :is-uploading="isUploading"
                                 @save="saveItem" @cancel="closeEditor" @open-unsplash="openUnsplashModal"
@@ -259,7 +259,7 @@
 
                 <!-- AI Generator Modal -->
                 <AiGeneratorModal v-model:show="showAiModal" :is-generating="isAiGenerating" :prompt-chips="promptChips"
-                    :initial-prompt="aiPrompt" @generate="(p) => { aiPrompt = p; generateAiProcess() }" />
+                    :initial-prompt="aiPrompt" @generate="(p, m) => { aiPrompt = p; aiModel = m; generateAiProcess() }" />
 
                 <!-- Custom Delete Modal -->
                 <DeleteConfirmationModal v-model:show="showDeleteModal" :is-deleting="isDeleting"
@@ -355,6 +355,7 @@ watch(formData, (newVal) => {
 // AI State
 const isAiGenerating = ref(false)
 const aiPrompt = ref('')
+const aiModel = ref('gemini-2.5-flash')
 const showAiModal = ref(false)
 const aiMode = ref<'sections' | 'text'>('sections')
 const aiTargetField = ref('')
@@ -527,6 +528,7 @@ const generateAiProcess = async () => {
             body: {
                 prompt: aiPrompt.value,
                 type: aiMode.value,
+                model: aiModel.value,
                 context,
                 currentField: aiTargetField.value
             }
@@ -566,6 +568,7 @@ const generateAiProcess = async () => {
 
         showAiModal.value = false
         aiPrompt.value = ''
+        aiModel.value = 'gemini-2.5-flash'
     } catch (e: any) {
         console.error('AI Generation Error:', e)
         showToast('AI Failure', e.message || 'Gemini processing failed', 'error')
@@ -669,12 +672,28 @@ function editItem(item: any) {
         projectLink: item.project_link || '',
         isFigma: item.is_figma || false,
 
+        // Strategy & Process
+        problemStatement: item.problem_statement || '',
+        businessGoal: item.business_goal || '',
+        userGoal: item.user_goal || '',
+        targetUsers: item.target_users || '',
+        designApproach: item.design_approach || '',
+        researchMethods: item.research_methods || '',
+        keyInsights: item.key_insights || '',
+        solutionSummary: item.solution_summary || '',
+        outcome: item.outcome || '',
+        learnings: item.learnings || '',
+        teamSize: item.team_size || '',
+
         // Content structure
         content: item.content || { introduction: '', sections: [], results: { metrics: [], description: '' } },
 
         // Metadata
         hidden: item.hidden,
-        featured: item.featured
+        featured: item.featured,
+        date: item.date || '',
+        subtitle: item.subtitle || '',
+        month: item.month || ''
     }
 
     view.value = 'edit'
@@ -764,8 +783,11 @@ async function saveItem() {
             if (formData.value.teamSize) dbPayload.team_size = formData.value.teamSize
         }
 
-        // Remove undefined keys
-        Object.keys(dbPayload).forEach(key => dbPayload[key] === undefined && delete dbPayload[key])
+        // Clean undefined keys
+        const cleanPayload = Object.fromEntries(
+            Object.entries(dbPayload).filter(([_, v]) => v !== undefined)
+        )
+        Object.assign(dbPayload, cleanPayload)
 
         // Remove ID if empty to let Supabase generate one (for new items)
         if (!isEditing.value || !dbPayload.id) {
@@ -816,7 +838,7 @@ const confirmDelete = async () => {
 
         if (type === 'gallery') {
             table = 'gallery'
-            column = 'id组件'
+            column = 'id'
             value = item.id
         } else {
             table = type === 'post' ? 'blog' : 'projects'

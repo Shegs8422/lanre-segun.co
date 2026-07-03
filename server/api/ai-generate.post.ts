@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
 
     const config = useRuntimeConfig()
     const body = await readBody(event)
-    const { prompt, context, type = 'sections' } = body
+    const { prompt, context, type = 'sections', model: requestedModel } = body
 
     const apiKey = config.geminiApiKey as string
 
@@ -39,7 +39,7 @@ export default defineEventHandler(async (event) => {
     const genAI = new GoogleGenerativeAI(apiKey)
 
     // Ordered list of models to try, with fallbacks including latest Gemma
-    const fallbackModels = [
+    const allModels = [
         'gemini-3.1-pro-preview',
         'gemini-3-flash-preview',
         'gemini-3.1-flash-lite-preview',
@@ -47,6 +47,11 @@ export default defineEventHandler(async (event) => {
         'gemini-2.5-flash',
         'gemma-4-31b-it'
     ]
+
+    // Put requested model first, then fallback to the rest
+    const fallbackModels = requestedModel
+        ? [requestedModel, ...allModels.filter(m => m !== requestedModel)]
+        : allModels
 
     const PROMPT_CONFIGS = {
         sections: {

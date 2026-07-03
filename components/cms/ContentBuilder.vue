@@ -89,7 +89,7 @@
                 :src="`https://www.youtube.com/embed/${extractYoutubeId(block.url)}`" title="YouTube video player"
                 frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowfullscreen></iframe>
+                allowfullscreen/>
             </div>
 
             <!-- Edit Button -->
