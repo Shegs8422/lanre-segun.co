@@ -17,7 +17,8 @@
                 <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500" />
             </div>
 
-            <article v-else-if="note" class="flex flex-col gap-12">
+            <main v-else-if="note" class="flex flex-col gap-12">
+                <script v-if="note" type="application/ld+json" v-text="jsonLd" />
                 <!-- Header -->
                 <header class="flex flex-col gap-6">
                     <img v-if="note.cover_image" :src="note.cover_image" :alt="note.title"
@@ -55,7 +56,7 @@
                 <!-- Content -->
                 <div class="prose dark:prose-invert prose-blue max-w-none prose-headings:font-black prose-headings:tracking-tight prose-p:leading-relaxed prose-p:text-foreground/80"
                     v-html="parsedContent" />
-            </article>
+            </main>
 
             <div v-if="!note && !pending" class="text-center py-20 bg-component rounded-3xl border border-border">
                 <p class="text-muted-foreground font-medium">Post not found.</p>
@@ -97,6 +98,23 @@ const parsedContent = computed(() => {
 const siteUrl = 'https://lanre-segun.co'
 const ogImage = computed(() => note.value?.cover_image || 'https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/og-image.png')
 
+const jsonLd = computed(() => {
+    if (!note.value) return ''
+    return JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'BlogPosting',
+        headline: note.value.title,
+        description: note.value.excerpt,
+        image: note.value.cover_image,
+        datePublished: note.value.date,
+        dateModified: note.value.date,
+        author: { '@type': 'Person', name: 'Lanre Segun', url: siteUrl },
+        publisher: { '@type': 'Person', name: 'Lanre Segun' },
+        mainEntityOfPage: { '@type': 'WebPage', '@id': `${siteUrl}/blog/${note.value.slug}` },
+        articleBody: note.value.content.replace(/<[^>]+>/g, '').slice(0, 5000)
+    })
+})
+
 useSeoMeta({
     title: () => note.value ? `${note.value.title} - Lanre Segun` : 'Post Not Found',
     description: () => note.value?.excerpt || 'Detailed view of the blog post.',
@@ -117,32 +135,7 @@ useHead({
         { property: 'article:published_time', content: note.value.date },
         ...(note.value.tags || []).map(tag => ({ property: 'article:tag', content: tag }))
     ] : [],
-    script: () => note.value ? [{
-        type: 'application/ld+json',
-        children: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'BlogPosting',
-            headline: note.value.title,
-            description: note.value.excerpt,
-            image: note.value.cover_image,
-            datePublished: note.value.date,
-            dateModified: note.value.date,
-            author: {
-                '@type': 'Person',
-                name: 'Lanre Segun',
-                url: siteUrl
-            },
-            publisher: {
-                '@type': 'Person',
-                name: 'Lanre Segun'
-            },
-            mainEntityOfPage: {
-                '@type': 'WebPage',
-                '@id': `${siteUrl}/blog/${note.value.slug}`
-            },
-            articleBody: note.value.content.replace(/<[^>]+>/g, '').slice(0, 5000)
-        })
-    }] : [],
+
     bodyAttrs: {
         class: 'bg-background overflow-y-auto h-auto'
     }
