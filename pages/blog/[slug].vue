@@ -94,14 +94,55 @@ const parsedContent = computed(() => {
     return parseMarkdown(content)
 })
 
+const siteUrl = 'https://lanre-segun.co'
+const ogImage = computed(() => note.value?.cover_image || 'https://pqmcl2p95v0ptrae.public.blob.vercel-storage.com/public/og-image.png')
+
 useSeoMeta({
     title: () => note.value ? `${note.value.title} - Lanre Segun` : 'Post Not Found',
     description: () => note.value?.excerpt || 'Detailed view of the blog post.',
     ogTitle: () => note.value?.title,
     ogDescription: () => note.value?.excerpt,
+    ogImage: () => ogImage.value,
+    ogUrl: () => note.value ? `${siteUrl}/blog/${note.value.slug}` : siteUrl,
+    ogType: () => 'article',
+    twitterTitle: () => note.value?.title,
+    twitterDescription: () => note.value?.excerpt,
+    twitterImage: () => ogImage.value,
+    twitterCard: 'summary_large_image',
 })
 
 useHead({
+    link: () => note.value ? [{ rel: 'canonical', href: `${siteUrl}/blog/${note.value.slug}` }] : [],
+    meta: () => note.value ? [
+        { property: 'article:published_time', content: note.value.date },
+        ...(note.value.tags || []).map(tag => ({ property: 'article:tag', content: tag }))
+    ] : [],
+    script: () => note.value ? [{
+        type: 'application/ld+json',
+        children: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BlogPosting',
+            headline: note.value.title,
+            description: note.value.excerpt,
+            image: note.value.cover_image,
+            datePublished: note.value.date,
+            dateModified: note.value.date,
+            author: {
+                '@type': 'Person',
+                name: 'Lanre Segun',
+                url: siteUrl
+            },
+            publisher: {
+                '@type': 'Person',
+                name: 'Lanre Segun'
+            },
+            mainEntityOfPage: {
+                '@type': 'WebPage',
+                '@id': `${siteUrl}/blog/${note.value.slug}`
+            },
+            articleBody: note.value.content.replace(/<[^>]+>/g, '').slice(0, 5000)
+        })
+    }] : [],
     bodyAttrs: {
         class: 'bg-background overflow-y-auto h-auto'
     }
