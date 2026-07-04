@@ -10,7 +10,6 @@ export const parseMarkdown = (content: string | null | undefined): string => {
   const sanitize = (html: string) => {
     return html
       .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "") // Remove scripts
-      .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, "") // Remove iframes
       .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, "") // Remove styles
       .replace(/on\w+="[^"]*"/g, ""); // Remove event handlers
   };
