@@ -31,7 +31,7 @@
                     </div>
 
                     <h1
-                        class="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] text-foreground">
+                        class="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] text-foreground break-words">
                         {{ note.title }}
                     </h1>
 

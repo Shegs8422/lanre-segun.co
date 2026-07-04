@@ -16,7 +16,7 @@
 
                         <!-- Note Title -->
                         <span
-                            class="text-base font-medium text-foreground/90 group-hover:text-foreground transition-colors shrink-0">
+                            class="text-base font-medium text-foreground/90 group-hover:text-foreground transition-colors truncate min-w-0">
                             {{ note.title }}
                         </span>
 
