@@ -6,40 +6,53 @@ export default defineEventHandler(async (event) => {
         const query = getQuery(event)
         const type = query.type as string
 
-        const formData = await readMultipartFormData(event)
-        if (!formData || formData.length === 0) {
-            throw createError({
-                statusCode: 400,
-                statusMessage: 'No file uploaded'
-            })
-        }
+        let buffer: Buffer
+        let filename: string
+        let contentType: string
 
-        const file = formData.find(item => item.name === 'file')
-        if (!file || !file.data) {
-            throw createError({
-                statusCode: 400,
-                statusMessage: 'File data is missing'
-            })
+        // Try Web API FormData first, fall back to h3 multipart
+        try {
+            const formData = await readFormData(event)
+            const fileField = formData.get('file')
+            if (fileField && typeof fileField !== 'string') {
+                buffer = Buffer.from(await fileField.arrayBuffer())
+                filename = `${Date.now()}-${fileField.name}`
+                contentType = fileField.type || 'application/octet-stream'
+            } else {
+                throw new Error('fallback')
+            }
+        } catch {
+            const parts = await readMultipartFormData(event)
+            if (!parts || parts.length === 0) {
+                throw createError({
+                    statusCode: 400,
+                    statusMessage: 'No file uploaded'
+                })
+            }
+            const file = parts.find(item => item.name === 'file')
+            if (!file || !file.data) {
+                throw createError({
+                    statusCode: 400,
+                    statusMessage: 'File data is missing'
+                })
+            }
+            buffer = file.data
+            filename = `${Date.now()}-${file.filename || 'image.jpg'}`
+            contentType = file.type || 'application/octet-stream'
         }
-
-        // Get the filename from the form data or generate one
-        const originalFilename = file.filename || `image-${Date.now()}.jpg`
-        const filename = `${Date.now()}-${originalFilename}`
 
         if (type === 'gallery') {
-            // Upload to Supabase Storage
             const supabase = await serverSupabaseServiceRole(event)
             const { error } = await supabase.storage
                 .from('portfolio')
-                .upload(`gallery/${filename}`, file.data, {
-                    contentType: file.type,
+                .upload(`gallery/${filename}`, buffer, {
+                    contentType,
                     cacheControl: '3600',
                     upsert: false
                 })
 
             if (error) throw error
 
-            // Get public URL
             const { data: { publicUrl } } = supabase.storage
                 .from('portfolio')
                 .getPublicUrl(`gallery/${filename}`)
@@ -50,8 +63,7 @@ export default defineEventHandler(async (event) => {
                 pathname: `gallery/${filename}`
             }
         } else {
-            // Upload to Vercel Blob (Standard)
-            const blob = await put(`cms/${filename}`, file.data, {
+            const blob = await put(`cms/${filename}`, buffer, {
                 access: 'public',
                 token: process.env.BLOB_READ_WRITE_TOKEN
             })
