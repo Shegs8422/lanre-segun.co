@@ -6,39 +6,59 @@ export default defineEventHandler(async (event) => {
         const query = getQuery(event)
         const type = query.type as string
 
+        // Accept both JSON (base64) and multipart form data
+        const contentType = getRequestHeader(event, 'content-type') || ''
+
         let buffer: Buffer
         let filename: string
-        let contentType: string
+        let fileMime: string
 
-        // Try Web API FormData first, fall back to h3 multipart
-        try {
-            const formData = await readFormData(event)
-            const fileField = formData.get('file')
-            if (fileField && typeof fileField !== 'string') {
-                buffer = Buffer.from(await fileField.arrayBuffer())
-                filename = `${Date.now()}-${fileField.name}`
-                contentType = fileField.type || 'application/octet-stream'
-            } else {
-                throw new Error('fallback')
+        if (contentType.includes('application/json') || contentType.includes('text/plain')) {
+            // JSON/plain-text fallback: accept base64-encoded file
+            const body = await readBody(event) as any
+            const raw = body?.file || body?.data || body
+            if (!raw) {
+                throw createError({ statusCode: 400, statusMessage: 'No file data' })
             }
-        } catch {
-            const parts = await readMultipartFormData(event)
-            if (!parts || parts.length === 0) {
-                throw createError({
-                    statusCode: 400,
-                    statusMessage: 'No file uploaded'
-                })
+            const base64Data = typeof raw === 'string' && raw.includes('base64,') ? raw.split('base64,')[1] : raw
+            buffer = Buffer.from(base64Data, 'base64')
+            filename = `${Date.now()}-${body?.name || 'image.jpg'}`
+            fileMime = body?.mime || 'image/jpeg'
+        } else if (contentType.includes('multipart/form-data')) {
+            // Try Web API formData()
+            try {
+                const req = event.web?.request || event.request
+                const formData = await req.formData()
+                const fileField = formData.get('file')
+                if (fileField && typeof fileField !== 'string') {
+                    buffer = Buffer.from(await fileField.arrayBuffer())
+                    filename = `${Date.now()}-${fileField.name}`
+                    fileMime = fileField.type || 'application/octet-stream'
+                } else {
+                    throw new Error('fallback')
+                }
+            } catch {
+                const parts = await readMultipartFormData(event)
+                if (!parts || parts.length === 0) {
+                    throw createError({ statusCode: 400, statusMessage: 'No file uploaded' })
+                }
+                const file = parts.find(item => item.name === 'file')
+                if (!file || !file.data) {
+                    throw createError({ statusCode: 400, statusMessage: 'File data is missing' })
+                }
+                buffer = file.data
+                filename = `${Date.now()}-${file.filename || 'image.jpg'}`
+                fileMime = file.type || 'application/octet-stream'
             }
-            const file = parts.find(item => item.name === 'file')
-            if (!file || !file.data) {
-                throw createError({
-                    statusCode: 400,
-                    statusMessage: 'File data is missing'
-                })
+        } else {
+            // Raw binary body (most reliable for serverless)
+            const raw = await readRawBody(event, false)
+            if (!raw || raw.byteLength === 0) {
+                throw createError({ statusCode: 400, statusMessage: 'No file data' })
             }
-            buffer = file.data
-            filename = `${Date.now()}-${file.filename || 'image.jpg'}`
-            contentType = file.type || 'application/octet-stream'
+            buffer = Buffer.from(raw)
+            filename = `${Date.now()}-image.jpg`
+            fileMime = contentType || 'image/jpeg'
         }
 
         if (type === 'gallery') {
@@ -46,7 +66,7 @@ export default defineEventHandler(async (event) => {
             const { error } = await supabase.storage
                 .from('portfolio')
                 .upload(`gallery/${filename}`, buffer, {
-                    contentType,
+                    contentType: fileMime,
                     cacheControl: '3600',
                     upsert: false
                 })

@@ -321,12 +321,10 @@ const handleUpload = async (event: Event, index: number) => {
     if (!file) return
 
     try {
-        const formDataBody = new FormData()
-        formDataBody.append('file', file)
-
         const response = await $fetch<{ success: boolean; url: string }>('/api/cms/upload', {
             method: 'POST',
-            body: formDataBody
+            headers: { 'Content-Type': file.type },
+            body: file
         })
 
         if (!response.success) throw new Error('Upload failed')
@@ -344,12 +342,10 @@ const handleGridUpload = async (event: Event, index: number) => {
     const files = Array.from(input.files)
     const uploadPromises = files.map(async (file) => {
         try {
-            const formDataBody = new FormData()
-            formDataBody.append('file', file)
-
             const response = await $fetch<{ success: boolean; url: string }>('/api/cms/upload', {
                 method: 'POST',
-                body: formDataBody
+                headers: { 'Content-Type': file.type },
+                body: file
             })
 
             if (!response.success) throw new Error('Upload failed')

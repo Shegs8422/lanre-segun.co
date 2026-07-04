@@ -881,14 +881,12 @@ const handleImageUpload = async (event: Event, field: string) => {
 
     try {
         for (const file of Array.from(input.files)) {
-            const formDataBody = new FormData()
-            formDataBody.append('file', file)
-
             const isGallery = field === 'massGallery'
             const response = await $fetch<{ success: boolean; url: string }>('/api/cms/upload', {
                 method: 'POST',
                 query: { type: isGallery ? 'gallery' : 'standard' },
-                body: formDataBody
+                headers: { 'Content-Type': file.type },
+                body: file
             })
 
             if (!response.success) throw new Error('Upload failed')
