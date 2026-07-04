@@ -23,7 +23,7 @@ export const useBlog = () => {
         const { data, error } = await supabase
             .from('blog')
             .select('*')
-            .order('date', { ascending: false })
+            .order('date', { ascending: false, nullsFirst: false })
 
         if (error) {
             console.error('Error fetching blog posts:', error)
