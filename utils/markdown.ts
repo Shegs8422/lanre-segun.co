@@ -179,12 +179,12 @@ export const parseMarkdown = (content: string | null | undefined): string => {
       const text = processInline(hMatch[2]);
       const classes = [
         "",
-        "text-4xl md:text-5xl font-black tracking-tight my-10 text-foreground leading-tight",
-        "text-3xl md:text-4xl font-black tracking-tight my-8 text-foreground leading-tight",
-        "text-2xl md:text-3xl font-black tracking-tight my-6 text-foreground leading-tight",
-        "text-xl md:text-2xl font-black tracking-tight my-5 text-foreground leading-tight",
-        "text-lg md:text-xl font-black tracking-tight my-4 text-foreground/90 uppercase tracking-widest",
-        "text-base md:text-lg font-black tracking-tight my-4 text-muted-foreground uppercase tracking-widest",
+        "text-3xl md:text-5xl font-black tracking-tight my-6 md:my-10 text-foreground leading-tight",
+        "text-2xl md:text-4xl font-black tracking-tight my-5 md:my-8 text-foreground leading-tight",
+        "text-xl md:text-3xl font-black tracking-tight my-4 md:my-6 text-foreground leading-tight",
+        "text-lg md:text-2xl font-black tracking-tight my-3 md:my-5 text-foreground leading-tight",
+        "text-base md:text-xl font-black tracking-tight my-3 md:my-4 text-foreground/90 uppercase tracking-widest",
+        "text-sm md:text-lg font-black tracking-tight my-3 md:my-4 text-muted-foreground uppercase tracking-widest",
       ];
       html += `<h${level} class="${classes[level]}">${text}</h${level}>\n`;
       continue;
@@ -236,7 +236,7 @@ export const parseMarkdown = (content: string | null | undefined): string => {
       } else if (ulActive || olActive) {
         html += `<p class="mt-2 text-foreground/70 text-base ml-2">${processInline(trimmed)}</p>`;
       } else {
-        html += `<p class="mb-6 text-lg md:text-xl leading-relaxed text-foreground/80 font-normal">${processInline(trimmed)}</p>\n`;
+        html += `<p class="mb-4 md:mb-6 text-base md:text-xl leading-relaxed text-foreground/80 font-normal">${processInline(trimmed)}</p>\n`;
       }
     }
   }

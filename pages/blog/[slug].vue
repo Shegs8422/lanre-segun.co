@@ -1,6 +1,6 @@
 <template>
     <div class="min-h-screen bg-background text-foreground selection:bg-blue-500/20">
-        <div class="max-w-5xl mx-auto px-6 pt-32 pb-40 flex flex-col gap-12">
+        <div class="max-w-5xl mx-auto px-4 md:px-6 pt-24 md:pt-32 pb-24 md:pb-40 flex flex-col gap-8 md:gap-12">
             <!-- Back Button -->
             <NuxtLink to="/blog"
                 class="w-fit flex items-center gap-2 px-4 py-2 bg-component border border-border rounded-xl text-sm font-bold text-muted-foreground hover:text-foreground hover:border-blue-500/40 transition-all active:scale-95 group">
@@ -17,10 +17,10 @@
                 <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500" />
             </div>
 
-            <main v-else-if="note" class="flex flex-col gap-12">
+            <main v-else-if="note" class="flex flex-col gap-8 md:gap-12">
                 <script v-if="note" type="application/ld+json" v-text="jsonLd" />
                 <!-- Header -->
-                <header class="flex flex-col gap-6">
+                <header class="flex flex-col gap-4 md:gap-6">
                     <img v-if="note.cover_image" :src="note.cover_image" :alt="note.title"
                         class="w-full aspect-video object-cover rounded-4xl border border-border shadow-2xl mb-4">
 
@@ -68,16 +68,17 @@
 </template>
 
 <script setup lang="ts">
+import type { BlogPost } from '~/composables/useBlog'
+
 const route = useRoute()
-const { getPostBySlug, posts: blogPosts, fetchPosts } = useBlog()
+const { fetchPostBySlug } = useBlog()
 
-// Fetch if posts are not already in state
-if (blogPosts.value.length === 0) {
-    await fetchPosts()
-}
+const note = ref<BlogPost | null>(null)
+const pending = ref(true)
 
-const note = computed(() => getPostBySlug(route.params.slug as string))
-const pending = ref(false)
+const noteData = await fetchPostBySlug(route.params.slug as string)
+note.value = noteData
+pending.value = false
 
 const formattedDate = computed(() => {
     if (!note.value?.date) return ''
@@ -270,5 +271,55 @@ useHead({
     padding: 0.2rem 0.4rem;
     border-radius: 0.4rem;
     font-size: 0.9em;
+}
+
+@media (max-width: 767px) {
+    .prose h2 {
+        font-size: 1.25rem;
+        margin-top: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .prose h3 {
+        font-size: 1.125rem;
+        margin-top: 1.25rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .prose p {
+        margin-bottom: 1rem;
+        font-size: 1rem;
+        line-height: 1.65;
+    }
+
+    .prose figure {
+        margin: 2rem 0;
+    }
+
+    .prose section {
+        margin-bottom: 2rem;
+    }
+
+    .prose blockquote {
+        margin: 1.5rem 0;
+        padding-left: 1rem;
+    }
+
+    .prose table {
+        margin: 1.5rem 0;
+    }
+
+    .prose pre {
+        margin: 1.5rem 0;
+        padding: 1rem;
+    }
+
+    .prose li {
+        font-size: 1rem;
+    }
+
+    .prose ul {
+        margin-bottom: 1rem;
+    }
 }
 </style>

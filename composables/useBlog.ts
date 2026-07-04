@@ -41,6 +41,17 @@ export const useBlog = () => {
         return posts.value.find(p => p.slug === slug)
     }
 
+    const fetchPostBySlug = async (slug: string) => {
+        const { data, error } = await supabase
+            .from('blog')
+            .select('*')
+            .eq('slug', slug)
+            .single()
+
+        if (error || !data) return null
+        return data as BlogPost
+    }
+
     const createPost = async (post: Omit<BlogPost, 'id'>) => {
         const { data, error } = await supabase
             .from('blog')
@@ -102,6 +113,7 @@ export const useBlog = () => {
         fetchPosts,
         getAllPosts,
         getPostBySlug,
+        fetchPostBySlug,
         createPost,
         updatePost,
         deletePost
