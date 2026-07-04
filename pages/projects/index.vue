@@ -28,11 +28,9 @@
                     :class="activeProject === index ? 'opacity-100 scale-100' : 'opacity-40 scale-90 grayscale-[0.5]'"
                     style="scroll-snap-align: center; min-height: 80vh; justify-content: center;">
                     <NuxtLink :to="`/projects/${project.slug}`"
-                        class="group relative overflow-hidden rounded-2xl shadow-2xl border border-white/10 aspect-video block">
+                        class="group relative overflow-hidden rounded-2xl border border-white/10 aspect-video block">
                         <img :src="project.coverImage" :alt="project.coverImageAlt || project.title"
                             class="w-full h-full object-cover">
-                        <div
-                            class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
                     </NuxtLink>
 
                     <div class="flex flex-col gap-3 px-2">

@@ -167,7 +167,7 @@ useHead({
     padding-left: 1.5rem;
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.25rem;
 }
 
 .prose li {
