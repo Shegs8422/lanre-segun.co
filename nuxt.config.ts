@@ -24,7 +24,7 @@ export default defineNuxtConfig({
     googleFonts: {
         families: {
             'Google+Sans': [400, 500, 700],
-            'Google+Sans+Display': [400, 500, 700],
+            'Google+Sans+Flex': [400, 500, 600, 700, 800, 900],
             Inter: [400, 500, 600, 700, 900],
             Outfit: [400, 500, 600, 700, 800, 900],
             'DM+Mono': [400, 500],
@@ -34,7 +34,7 @@ export default defineNuxtConfig({
         prefetch: true,
         preconnect: true,
         preload: true,
-        download: false, // Set to true if you want to host fonts locally via the module
+        download: true,
     },
     site: {
         url: 'https://lanre-segun-co.vercel.app',

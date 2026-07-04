@@ -119,7 +119,7 @@
 
   /* FONTS */
   --font-sans: "Google Sans", "Inter", system-ui, -apple-system, sans-serif;
-  --font-display: "Google Sans Display", "Outfit", system-ui, -apple-system, sans-serif;
+  --font-display: "Google Sans Flex", "Outfit", system-ui, -apple-system, sans-serif;
   --font-mono: "DM Mono", monospace;
   --font-handwritten: "Kalam", cursive;
 }
