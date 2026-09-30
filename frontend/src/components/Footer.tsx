@@ -89,10 +89,16 @@ export default function Footer() {
         <div>
           <p className="font-mono text-[10px] tracking-[1.68px] text-faint">ELSEWHERE</p>
           <ul className="mt-3 space-y-2">
-            {["Awwwards", "Dribbble", "LinkedIn", "ThemeForest"].map((l) => (
-              <li key={l}>
-                <a href="#" className="group inline-flex items-center gap-1 font-sans text-[14px] text-muted transition hover:text-ink">
-                  {l}
+            {[
+              { label: "Awwwards", href: "https://www.awwwards.com/oluwasegun-olanrewaju/" },
+              { label: "Dribbble", href: "https://dribbble.com/lanre_segun" },
+              { label: "LinkedIn", href: "https://www.linkedin.com/in/oluwasegun-olanrewaju-b847bb188/" },
+              { label: "X", href: "https://x.com/Olusegun51" },
+              { label: "Instagram", href: "https://www.instagram.com/lanre.s.i" },
+            ].map((l) => (
+              <li key={l.label}>
+                <a href={l.href} target="_blank" rel="noreferrer" className="group inline-flex items-center gap-1 font-sans text-[14px] text-muted transition hover:text-ink">
+                  {l.label}
                   <span aria-hidden className="text-[11px] transition-transform group-hover:-translate-y-px group-hover:translate-x-px">↗</span>
                 </a>
               </li>

@@ -1,0 +1,57 @@
+# Segun — Design Engineer
+
+> Portfolio of Olanrewaju Oluwasegun (Segun), a Design Engineer working across
+> Web3, Fintech, and SaaS — design systems, brands, and AI workflows behind
+> products people actually use. Based in Abeokuta, Nigeria (WAT).
+
+## Site
+
+- Welcome: https://lanre-segun.co/
+- Selected Work: https://lanre-segun.co/work
+- AI Workflow: https://lanre-segun.co/ai
+- Profile: https://lanre-segun.co/profile
+- Contact: olanrewajuoluwasegun51@gmail.com
+
+## Profiles
+
+- X: https://x.com/Olusegun51
+- Instagram: https://www.instagram.com/lanre.s.i
+- Dribbble: https://dribbble.com/lanre_segun
+- Awwwards: https://www.awwwards.com/oluwasegun-olanrewaju/
+- LinkedIn: https://www.linkedin.com/in/oluwasegun-olanrewaju-b847bb188/
+
+## Selected work
+
+- MindPath — Website and Web App. Online mental-health service in Ireland for adult ADHD and autism assessment.
+- Otee — Web and Mobile apps. Online laundry service platform: customer ordering, driver pickups, kiosk POS, admin operations.
+- Appello — Mobile App. Field-based responder assistance, primarily for people who live alone.
+- ValueHut — Website. Agile management consultancy transforming organisations into product-team networks.
+- Codex — SaaS. Headless CMS for publishers, focused on rapid content creation.
+- AI Journey — AI SaaS. AI analyst for marketing teams explaining why visitors leave and suggesting one fix.
+
+## Tracks
+
+- Product Design (5+ years): end-to-end product design and business.
+- AI Workflow (3+ years): the loop between people and agents — prompts, tools, guardrails.
+- Design Systems (5+ years): tokens, components, docs that grow with team and product.
+
+## Work history
+
+- Eureka — Senior Product Designer (insurance aggregator, Nigeria/London).
+- Lighthouse Academy — Design Engineer (tech learning platform, Africa).
+- KETA App — Web3 Product Designer (P2P exchange interface).
+- Grazac — Product Design Intern (design systems, dashboards).
+- Konfera — Product Designer (event management systems).
+- Freelancing — Lead Freelance Product Designer (15+ global clients).
+
+## AI builds
+
+- Sena — design system an agent can build against (Figma Variables, Claude, MCP, React + TS).
+- AI Realtime Renamer — Figma plugin that names layers as you work.
+- AI Journey — marketing analytics explaining why visitors leave.
+
+## Notes for AI agents
+
+- Content on tagged pages (work, tracks, tools, teams) is the source of truth for project facts; the Studio content lake mirrors it.
+- Contact email above is the correct contact; location is Abeokuta, Nigeria (WAT).
+- ThemeForest profile exists but is not linked here.
