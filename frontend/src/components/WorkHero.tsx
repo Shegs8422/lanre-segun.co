@@ -20,6 +20,8 @@ export default function WorkHero() {
   const projects = useSanityCollection(QUERIES.projects, PROJECTS);
   const [shots, setShots] = useState(false);
   const [activeProject, setActiveProject] = useState<number | null>(null);
+  // Mobile/tablet accordion — independent from the desktop cursor card.
+  const [openIdx, setOpenIdx] = useState<number | null>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -142,11 +144,100 @@ export default function WorkHero() {
         </div>
       </div>
 
-      {/* Project columns — flex on lg for weighted expansion, grid below */}
+      {/* Mobile / tablet accordion list (pleurat reference) — title,
+          category, plus toggles the description. Desktop keeps columns. */}
+      <div className="mt-14 border-y border-ink/[0.14] md:mt-[32px] lg:hidden">
+        {projects.map((p, i) => {
+          const open = openIdx === i;
+          return (
+            <div key={p.slug} className="border-b border-ink/[0.14] last:border-b-0">
+              <div
+                className={`grid motion-safe:transition-all motion-safe:duration-300 motion-safe:ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                  open ? "grid-rows-[0fr] opacity-0" : "grid-rows-[1fr] opacity-100"
+                }`}
+                inert={open}
+              >
+                <div className="min-h-0 overflow-hidden">
+                  <button
+                    type="button"
+                    id={`work-tab-${p.slug}`}
+                    onClick={() => setOpenIdx(i)}
+                    aria-expanded={false}
+                    className="flex w-full items-start justify-between gap-4 py-5 pl-[20px] pr-[18px] text-left focus-visible:outline-2 focus-visible:outline-accent-deep md:py-[17px]"
+                  >
+                    <span>
+                      <span className="block font-sans text-[20px] font-medium tracking-[-0.2px] text-ink md:text-[24px] md:leading-[37.2px] md:tracking-[-0.432px]">
+                        {p.title}
+                      </span>
+                      <span className="mt-1 block font-sans text-[13px] text-faint md:text-[14.5px] md:leading-[19.575px]">
+                        {p.category}
+                      </span>
+                    </span>
+                    <Plus
+                      size={22}
+                      strokeWidth={1.5}
+                      aria-hidden
+                      className="mt-1 shrink-0 text-faint"
+                    />
+                  </button>
+                </div>
+              </div>
+              <div
+                className={`grid motion-safe:transition-all motion-safe:duration-300 motion-safe:ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                  open ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                }`}
+                inert={!open}
+              >
+                <div className="min-h-0 overflow-hidden">
+                  <div className="relative mb-5 aspect-[21/9] w-full overflow-hidden border border-dashed border-ink/25 bg-bg-soft">
+                    <span
+                      aria-hidden
+                      className="absolute inset-0 flex items-center justify-center font-mono text-[10px] tracking-[1.68px] text-faint"
+                    >
+                      {shots ? p.title.toUpperCase() : "SCREENSHOT"}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setOpenIdx(null);
+                        requestAnimationFrame(() => {
+                          document.getElementById(`work-tab-${p.slug}`)?.focus();
+                        });
+                      }}
+                      aria-label={`Close ${p.title}`}
+                      className="absolute right-4 top-4 flex size-[32px] items-center justify-center focus-visible:outline-2 focus-visible:outline-accent-deep"
+                    >
+                      <Plus
+                        size={20}
+                        strokeWidth={1.5}
+                        aria-hidden
+                        className="rotate-45 text-accent-deep"
+                      />
+                    </button>
+                    <div className="absolute inset-x-0 bottom-0 p-5">
+                      <p className="font-sans text-[20px] font-medium tracking-[-0.2px] text-ink">
+                        {p.title}
+                      </p>
+                      <Link
+                        to={`/work/${p.slug}`}
+                        className="mt-1 inline-flex items-center gap-1 font-sans text-[13.5px] font-medium text-ink"
+                      >
+                        Open project <span aria-hidden>↗</span>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Project columns — desktop only (flex via .sv-wx); the list above covers < lg */}
       <div
         ref={sectionRef}
         onMouseLeave={() => setActiveProject(null)}
-        className="sv-wx relative mt-14 grid grid-cols-2 border-y border-ink/[0.14] bg-ink/[0.14] md:mt-[32px] md:grid-cols-3 md:gap-px lg:gap-px"
+        className="sv-wx relative mt-14 hidden gap-px border-y border-ink/[0.14] bg-ink/[0.14] lg:flex"
       >
         {projects.map((p, i) => (
           <Link

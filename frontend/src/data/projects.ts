@@ -7,11 +7,18 @@ export type Project = {
 
 export const PROJECTS: Project[] = [
   {
-    slug: "mindpath",
-    title: "MindPath",
-    category: "Website and Web App",
+    slug: "sorplos",
+    title: "Sorplos",
+    category: "Insurance Aggregator",
     description:
-      "MindPath is an online mental-health service in Ireland for adult ADHD & autism assessment — built from a name and a mission.",
+      "Sorplos is Nigeria's compare-and-buy insurance aggregator — taken from spec documents to a working three-portal prototype.",
+  },
+  {
+    slug: "lighthouse-academy",
+    title: "Lighthouse Academy",
+    category: "Learning Platform",
+    description:
+      "Lighthouse Academy is a full-stack learning platform for the interactive age — student portal, facilitator dashboard and admin back office.",
   },
   {
     slug: "otee",

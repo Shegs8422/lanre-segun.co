@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { sanity, sanityConfigured } from "../lib/sanity";
+import { sanity, sanityConfigured, caseStudyQuery } from "../lib/sanity";
+import { CASE_STUDIES, type CaseStudy } from "../data/caseStudies";
 
 /**
  * Collection hook with static fallback — Sanity is the source of truth
@@ -47,6 +48,36 @@ export function useSanityDoc<T extends object>(groq: string, fallback: T): T {
       live = false;
     };
   }, [groq]);
+
+  return data;
+}
+
+/**
+ * Case study for one slug. The bundled study for that slug is the fallback, so
+ * a slug with no CMS entry still renders its own content rather than
+ * blanking. A CMS miss (null) is treated as not-found, not as a reason to
+ * show the fallback, so an unpublished study stays hidden.
+ */
+export function useCaseStudy(slug: string | undefined): CaseStudy | null {
+  const fallback = slug ? (CASE_STUDIES[slug] ?? null) : null;
+  const [data, setData] = useState<CaseStudy | null>(fallback);
+  const groq = slug ? caseStudyQuery(slug) : "";
+
+  useEffect(() => {
+    if (!sanityConfigured || !slug) return;
+    let live = true;
+    sanity
+      .fetch<CaseStudy | null>(groq, { slug })
+      .then((doc) => {
+        if (live) setData(doc ?? null);
+      })
+      .catch(() => {
+        /* keep static fallback */
+      });
+    return () => {
+      live = false;
+    };
+  }, [groq, slug]);
 
   return data;
 }

@@ -18,6 +18,7 @@ import AIWorks from "./components/AIWorks";
 import WorkAI from "./components/WorkAI";
 import WorkNda from "./components/WorkNda";
 import WorkShots from "./components/WorkShots";
+import WorkDetail from "./components/WorkDetail";
 import ProfileHero from "./components/ProfileHero";
 import ProfileStory from "./components/ProfileStory";
 import ProfileCredo from "./components/ProfileCredo";
@@ -39,6 +40,8 @@ export default function App() {
   // Enable JS-gated animations (progressive enhancement)
   useEffect(() => {
     document.documentElement.classList.add("js-anim");
+    // Belt-and-suspenders with the head script: fresh loads start at top.
+    window.scrollTo(0, 0);
   }, []);
 
   // Lenis smooth scroll — off under reduced motion.
@@ -98,7 +101,7 @@ export default function App() {
                 </main>
               }
             />
-            <Route path="/work/:slug" element={<Placeholder title="Case study" body="Case studies are being rebuilt here — meanwhile the workspace board on Welcome is live." />} />
+            <Route path="/work/:slug" element={<WorkDetail />} />
             <Route
               path="/ai"
               element={

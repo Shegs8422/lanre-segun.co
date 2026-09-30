@@ -35,7 +35,9 @@ export function sanityImage(src: SanityImageSource | undefined, width = 240) {
 }
 
 export const QUERIES = {
-  projects: `*[_type == "project"] | order(order asc) { "slug": slug.current, title, category, description }`,
+  projects: `*[_type == "project"] | order(order asc) {
+    "slug": slug.current, title, category, description, "cover": cover.image.asset->url
+  }`,
   jobs: `*[_type == "job"] | order(order asc) { team, role, body }`,
   tracks: `*[_type == "track"] | order(order asc) { "id": trackId, title, years, body }`,
   tools: `*[_type == "tool"] | order(order asc) { name, "src": logo.asset->url }`,
@@ -48,5 +50,45 @@ export const QUERIES = {
     "id": buildId, buildId, name, meta, crumb, canvasTitle, canvasMeta, purpose, stack,
     steps, stats, tags, terminal, tryCmd, aliases, tagGroups
   }`,
+  photos: `*[_type == "profilePhoto"] | order(order asc) { label, alt, "src": image.asset->url }`,
   siteCopy: `*[_type == "siteCopy"] | order(_createdAt asc)[0]{ contactEmail, location }`,
 };
+
+/**
+ * Full case study for one project. Figure variants are normalised onto a
+ * single `images[]` array with a `layout` discriminator, so the renderer can
+ * treat full / pair / triptych uniformly instead of branching on _type.
+ */
+export function caseStudyQuery(_slug: string) {
+  const figure = `{
+    caption,
+    images[]{ "src": image.asset->url, alt, caption }
+  }`;
+  return `*[_type == "project" && slug.current == $slug][0]{
+    "slug": slug.current,
+    title,
+    category,
+    description,
+    cover{ "src": image.asset->url, alt, caption },
+    meta[]{ label, value, href },
+    sections[]{
+      kicker,
+      heading,
+      body,
+      chips,
+      figures[]{
+        _type == "caseStudyFigureFull" => { "layout": "full", ${figure} },
+        _type == "caseStudyFigurePair" => { "layout": "pair", ${figure} },
+        _type == "caseStudyFigureTriptych" => { "layout": "triptych", ${figure} }
+      },
+      stats[]{ value, label },
+      quote{ text, cite }
+    },
+    shipped{ heading, items },
+    "tone": outcomeTone.tone,
+    "next": nextProject->{
+      "slug": slug.current, title, category, description,
+      "cover": cover.image.asset->url
+    }
+  }`;
+}

@@ -1,5 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useReveal } from "../hooks/useReveal";
+import { useSanityCollection } from "../hooks/useSanity";
+import { QUERIES } from "../lib/sanity";
 
 const LINES = [
   "Started back in 2015 as a developer,",
@@ -7,28 +9,31 @@ const LINES = [
   "worked on apps used by millions,",
 ];
 
-type StripPhoto = { width: number; label: string; src?: string; alt: string };
+type StripPhoto = { label: string; src?: string; alt: string };
 
 const PHOTOS: StripPhoto[] = [
-  { width: 294, label: "PHOTO 01", alt: "Portrait" },
-  { width: 199, label: "PHOTO 02", alt: "Desk setup" },
-  { width: 423, label: "PHOTO 03", alt: "Laptop work" },
-  { width: 199, label: "PHOTO 04", alt: "With family" },
-  { width: 182, label: "PHOTO 05", alt: "Book" },
-  { width: 243, label: "PHOTO 06", alt: "Portrait outdoors" },
+  { label: "PHOTO 01", alt: "Portrait" },
+  { label: "PHOTO 02", alt: "Desk setup" },
+  { label: "PHOTO 03", alt: "Laptop work" },
+  { label: "PHOTO 04", alt: "With family" },
+  { label: "PHOTO 05", alt: "Book" },
+  { label: "PHOTO 06", alt: "Portrait outdoors" },
 ];
 
 /**
  * Profile story — Figma 253:4436 + strip 253:4470 (About, one section).
  * 42px/52.92 statement in masked lines (last line accent) beside a
  * bottom-aligned 436px paragraph, then the scrub-driven photo rail
- * (294/199/423/199/182/243 × 265, 10px gaps, right-to-left on scroll).
+ * (uniform 260px frames × 265, 10px gaps, right-to-left on scroll).
  * Frames without a `src` render labeled placeholders until photos land.
+ * Photo entries are editable in Sanity (profilePhoto); the bundled
+ * placeholders below render until entries exist.
  */
 export default function ProfileStory() {
   const { ref, inView } = useReveal<HTMLElement>(0.25);
   const railRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
+  const photos = useSanityCollection(QUERIES.photos, PHOTOS);
 
   useEffect(() => {
     const section = ref.current;
@@ -111,11 +116,10 @@ export default function ProfileStory() {
 
       <div ref={railRef} className="mt-12 overflow-hidden pb-[64px] md:mt-[72px] md:pb-[96px]">
         <div ref={trackRef} className="flex w-max gap-[10px] px-[24px] will-change-transform md:px-[68px]">
-          {PHOTOS.map((photo) => (
+          {photos.map((photo) => (
             <figure
               key={photo.label}
-              style={{ width: photo.width }}
-              className="relative h-[200px] shrink-0 overflow-hidden border border-line bg-bg-sunk md:h-[265px]"
+              className="relative h-[200px] w-[260px] shrink-0 overflow-hidden border border-line bg-bg-sunk md:h-[265px]"
             >
               {photo.src ? (
                 <img
