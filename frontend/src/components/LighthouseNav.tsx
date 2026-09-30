@@ -48,7 +48,7 @@ export default function LighthouseNav({ theme = "light", onToggleTheme }: Props)
   }, [open ]);
 
   return (
-    <header className="w-full bg-bg text-ink">
+    <header className="sticky top-0 z-40 w-full bg-bg text-ink">
       {/* Desktop — no border-x: the shell frame is the only vertical.
           Bottom divider is a contained line-strong rule, like all sections. */}
       <div className="hidden md:block">
@@ -186,13 +186,13 @@ export default function LighthouseNav({ theme = "light", onToggleTheme }: Props)
               style={{ animationDelay: "320ms" }}
             >
               <a
-                href="mailto:hello@pleurat.com"
+                href="mailto:olanrewajuoluwasegun51@gmail.com"
                 className="font-mono text-[10.5px] leading-[16.275px] tracking-[1px] text-ink transition hover:text-accent-deep"
               >
-                hello@pleurat.com
+                olanrewajuoluwasegun51@gmail.com
               </a>
               <p className="font-mono text-[10.5px] leading-[16.275px] tracking-[1px] text-faint">
-                Pristina · CET
+                Abeokuta — WAT, Nigeria
               </p>
             </div>
           </nav>

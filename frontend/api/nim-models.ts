@@ -1,3 +1,4 @@
+/// <reference types="node" />
 /**
  * Live NVIDIA NIM catalog — backing for the console `model` list.
  * Cached 5 minutes; falls back to the pinned roster on any failure.

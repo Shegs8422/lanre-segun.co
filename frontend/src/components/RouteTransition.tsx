@@ -6,6 +6,23 @@ import type Lenis from "lenis";
 
 const COLS = 6;
 
+/** Document title per route — crawlers and tabs see the right page name. */
+function titleFor(pathname: string): string {
+  const seg = pathname.split("/").filter(Boolean)[0] ?? "";
+  switch (seg) {
+    case "work":
+      return "Selected Work — Segun";
+    case "ai":
+      return "AI Workflow — Segun";
+    case "profile":
+      return "Profile — Segun";
+    case "contact":
+      return "Contact — Segun";
+    default:
+      return "Segun — Design Engineer";
+  }
+}
+
 /** Splash wordmark per route: Welcome. / Work. / AI Workflow. / Profile. / Contact. */
 function wordmarkFor(pathname: string): string {
   const seg = pathname.split("/").filter(Boolean)[0] ?? "";
@@ -51,6 +68,11 @@ export default function RouteTransition({ lenisRef, children }: Props) {
   const queuedRef = useRef<string | null>(null);
   const phaseRef = useRef<"idle" | "covering" | "revealing">("idle");
   pathRef.current = pathname;
+
+  // Keep the document title in sync with the route (SPA has one index.html).
+  useEffect(() => {
+    document.title = titleFor(pathname);
+  }, [pathname]);
 
   // Boot splash: wordmark holds briefly, then the veil slides away.
   useEffect(() => {

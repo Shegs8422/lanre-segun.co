@@ -1,3 +1,4 @@
+/// <reference types="node" />
 /**
  * NVIDIA NIM chat proxy (Vercel serverless) — keeps the API key server-side.
  *
