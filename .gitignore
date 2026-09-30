@@ -1,11 +1,19 @@
 node_modules
+.vite
 .env
 .env.*
 .nuxt
 .output
 dist
-.vercel
+dist-ssr
+*.local
 *.log
+.vercel
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 opencode.json
 
 Agentic Rules/

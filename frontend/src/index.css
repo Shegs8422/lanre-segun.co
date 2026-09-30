@@ -1,0 +1,1902 @@
+@import url("https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500&display=swap");
+@import "tailwindcss";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+@theme {
+  --font-sans: "General Sans", ui-sans-serif, system-ui, sans-serif;
+  --color-cream: #fffdf3;
+  --color-ink: #16140e;
+  --color-accent: #f3b44a;
+  --color-line: rgba(22, 20, 14, 0.16);
+}
+
+/* Semantic theme tokens — new code should use bg-bg / text-ink /
+   text-muted / text-faint / border-line / bg-soft etc. so it
+   follows data-theme automatically. `inline` keeps var() live so
+   utilities re-resolve when data-theme flips (no rebuild). */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-deep: var(--bg-deep);
+  --color-bg-soft: var(--bg-soft);
+  --color-bg-sunk: var(--bg-sunk);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-deep: var(--accent-deep);
+  --color-success: var(--success);
+  --color-success-bg: var(--success-bg);
+  --color-tone-purple-bg: var(--tone-purple-bg);
+  --color-tone-purple-ink: var(--tone-purple-ink);
+  --color-tone-blue-bg: var(--tone-blue-bg);
+  --color-tone-blue-ink: var(--tone-blue-ink);
+  --color-tone-green-bg: var(--tone-green-bg);
+  --color-tone-green-ink: var(--tone-green-ink);
+}
+
+/* Light = current cream system */
+:root {
+  color-scheme: light;
+  --bg: #fffdf3;
+  --bg-deep: #f3edd8;
+  --bg-soft: #fbf7e6;
+  --bg-sunk: #f3edd8;
+  --ink: #16140e;
+  --muted: #57534a;
+  --faint: #8b8577;
+  --line: rgba(22, 20, 14, 0.16);
+  --line-strong: rgba(22, 20, 14, 0.35);
+  --accent: #f3b44a;
+  --accent-ink: #16140e;
+  --accent-deep: #c77e0a;
+  --success: #3f6b3a;
+  --success-bg: rgba(127, 176, 105, 0.18);
+  --tone-purple-bg: #e4d9f5;
+  --tone-purple-ink: #4a3f66;
+  --tone-blue-bg: #d4e6f7;
+  --tone-blue-ink: #2f4a66;
+  --tone-green-bg: #d9eed3;
+  --tone-green-ink: #33502f;
+}
+
+/* Dark — Figma 260:8162 (Selected Work, dark).
+   Page #13120d, hero band #0d0c09, card/button #17160e,
+   primary #f1eee6, secondary #a4a097, tertiary #928c7e,
+   hairlines rgba(241,238,230,0.12), frame rgba(241,238,230,0.24),
+   accent #f3b44a unchanged. */
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #13120d;
+  --bg-deep: #0d0c09;
+  --bg-soft: #17160e;
+  --bg-sunk: #201e15;
+  --ink: #f1eee6;
+  --muted: #a4a097;
+  --faint: #928c7e;
+  --line: rgba(241, 238, 230, 0.12);
+  --line-strong: rgba(241, 238, 230, 0.24);
+  --accent: #f3b44a;
+  --accent-ink: #16140e;
+  --accent-deep: #f3b44a;
+  --success: #9dc39a;
+  --success-bg: rgba(157, 195, 154, 0.14);
+  --tone-purple-bg: #2b2444;
+  --tone-purple-ink: #ded5f7;
+  --tone-blue-bg: #1e3247;
+  --tone-blue-ink: #cbddf3;
+  --tone-green-bg: #213d28;
+  --tone-green-ink: #c9e4c6;
+}
+
+/* Fluid layout tokens (reference grid system: flex + gap, clamp scaling) */
+:root {
+  --sec-pad: clamp(48px, 6vw, 96px);
+  --fs-h1: clamp(40px, 5.2vw, 64px);
+  --fs-h2: clamp(28px, 3.2vw, 40px);
+  --fs-md: clamp(15px, 1.4vw, 19px);
+  --ctl-h: 46px;
+  --radius-card: 3px;
+  --lift: -2px;
+  --dur-2: 0.25s;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Standard lift-on-hover for controls and cards */
+.lift {
+  transition:
+    transform var(--dur-2) var(--ease),
+    background-color 0.2s,
+    filter 0.2s;
+}
+.lift:hover {
+  transform: translateY(var(--lift));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lift {
+    transition: none;
+  }
+  .lift:hover {
+    transform: none;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: clip;
+}
+
+/* Lenis smooth scroll base */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--ink);
+  overflow-x: clip;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  @apply antialiased;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Theme flip must be instant when motion is off (2.3.3). */
+  body {
+    transition: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  /* Boost text + hairlines for high-contrast users (1.4.3/1.4.6). */
+  :root,
+  [data-theme="light"] {
+    --muted: #3f3b33;
+    --faint: #57534a;
+    --line: rgba(22, 20, 14, 0.4);
+    --line-strong: rgba(22, 20, 14, 0.65);
+  }
+  [data-theme="dark"] {
+    --muted: #d8d2c2;
+    --faint: #c9c4b4;
+    --line: rgba(241, 238, 230, 0.35);
+    --line-strong: rgba(241, 238, 230, 0.6);
+  }
+}
+
+/* Walker "hi" bubble — single cheap transform/opacity pop */
+@keyframes bubble-pop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 6px) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+}
+
+.bubble-pop {
+  animation: bubble-pop 0.28s cubic-bezier(0.2, 1.4, 0.4, 1);
+}
+
+/* Walker idle bob — transform only, paused with the treadmill via CSS */
+@keyframes walker-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-2.5px);
+  }
+}
+
+.walker-bob {
+  animation: walker-bob 0.9s ease-in-out infinite;
+}
+
+/* Travelling highlight on the team passing centre */
+@keyframes glow-pulse {
+  0%,
+  100% {
+    opacity: 0.75;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.glow-pulse {
+  animation: glow-pulse 2.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bubble-pop,
+  .walker-bob,
+  .glow-pulse {
+    animation: none;
+  }
+}
+
+/* Terminal stream-in + input caret */
+@keyframes term-in {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.term-in {
+  animation: term-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes caret-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.caret-blink {
+  animation: caret-blink 1s steps(1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .term-in,
+  .caret-blink {
+    animation: none;
+  }
+}
+
+/* Board staged entrance: shell glides in from the left, text fades after */
+@keyframes board-in {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.board-in {
+  animation: board-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes board-in-text {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.board-in-text {
+  animation: board-in-text 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Straight connector draw-in */
+.edge-draw {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  opacity: 0;
+  animation: edge-draw 0.9s cubic-bezier(0.33, 1, 0.68, 1) both;
+}
+
+@keyframes edge-draw {
+  0% {
+    stroke-dashoffset: 100;
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .board-in,
+  .board-in-text,
+  .edge-draw {
+    animation: none;
+  }
+}
+
+/* Parked cursor — barely-there idle sway */
+@keyframes cursor-idle {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(9px, 6px);
+  }
+}
+
+.cursor-idle {
+  animation: cursor-idle 6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor-idle {
+    animation: none;
+  }
+}
+
+/* Dot grid breathe — barely-there ambient pulse */
+@keyframes grid-breathe {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+.grid-breathe {
+  animation: grid-breathe 8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grid-breathe {
+    animation: none;
+  }
+}
+
+/* Reference artboard system (sv-art) — ported timeline */
+.sv-art{width:100%;height:auto;display:block;overflow:visible}
+.sv-art .scene{animation:sv-art-in .66s cubic-bezier(.2,.8,.2,1) both}
+@keyframes sv-art-in{0%{opacity:0;transform:translateY(16px) scale(.965)}to{opacity:1;transform:none}}
+.sv-art .iso polygon{stroke:#8a8272;stroke-width:1.1;stroke-linejoin:round}
+.sv-art .f-top{fill:#e5dfcd}
+.sv-art .f-right{fill:#d6cfb9}
+.sv-art .f-left{fill:#c2baa1}
+.sv-art .plate .f-top{fill:#efe9da}
+.sv-art .plate .f-right{fill:#ded7c3}
+.sv-art .plate .f-left{fill:#c9c1a8}
+.sv-art .hot .f-top{fill:#f3b44a}
+.sv-art .hot .f-right{fill:#e0a032}
+.sv-art .hot .f-left{fill:#c98a1e}
+.sv-art .pad{fill:none;stroke:#c7b48a;stroke-width:1}
+.sv-art .cast{fill:#16140e;opacity:.07}
+.sv-art .drop{animation:sv-drop 3.6s cubic-bezier(.2,.8,.2,1) infinite}
+.sv-art .d1{animation-delay:0s}
+.sv-art .d2{animation-delay:.28s}
+.sv-art .d3{animation-delay:.56s}
+@keyframes sv-drop{0%{transform:translateY(-52px);opacity:0}14%,74%{transform:translateY(0);opacity:1}88%,to{transform:translateY(-52px);opacity:0}}
+.sv-art .tap{animation:sv-tap 3.6s cubic-bezier(.2,.8,.2,1) infinite .9s}
+@keyframes sv-tap{0%,to{transform:translateY(-14px);opacity:0}18%,62%{transform:translateY(0);opacity:1}}
+.sv-art .led{fill:#f3b44a;stroke:#8a8272;stroke-width:.9}
+.sv-art .led-halo{fill:#f3b44a;opacity:.16}
+.sv-art .ledg{opacity:.28}
+.sv-art .die{fill:#d6cfb9;stroke:#8a8272;stroke-width:.7}
+.sv-art .wire{stroke:#b99a5e;stroke-width:1.8;fill:none}
+.sv-art .pulse{fill:#f3b44a;animation:sv-ring 4s linear infinite}
+@keyframes sv-ring{0%{transform:translate(0,0)}25%{transform:translate(121.2px,70px)}50%{transform:translate(0,140px)}75%{transform:translate(-121.2px,70px)}to{transform:translate(0,0)}}
+.sv-art .rail{stroke:#c7b48a;stroke-width:2.4;stroke-linecap:round;fill:none}
+.sv-art .build{animation:sv-build 4.4s cubic-bezier(.2,.8,.2,1) infinite}
+.sv-art .b1{animation-delay:0s}
+.sv-art .b2{animation-delay:.18s}
+.sv-art .b3{animation-delay:.36s}
+.sv-art .b4{animation-delay:.54s}
+.sv-art .b5{animation-delay:.86s}
+@keyframes sv-build{0%{transform:translateY(-60px);opacity:0}12%,78%{transform:translateY(0);opacity:1}92%,to{transform:translateY(-60px);opacity:0}}
+.sv-art .tok{animation:sv-tok 4.4s cubic-bezier(.2,.8,.2,1) infinite}
+.sv-art .t1{animation-delay:1.2s}
+.sv-art .t2{animation-delay:1.4s}
+.sv-art .t3{animation-delay:1.6s}
+@keyframes sv-tok{0%,10%{transform:translate(-30px,-34px);opacity:0}26%,70%{transform:translate(0);opacity:1}86%,to{transform:translate(26px,-30px);opacity:0}}
+.sv-art .stn{animation:sv-lift 4s cubic-bezier(.2,.8,.2,1) infinite}
+.sv-art .s1{animation-delay:0s}
+.sv-art .s2{animation-delay:-3s}
+.sv-art .s3{animation-delay:-2s}
+.sv-art .s4{animation-delay:-1s}
+@keyframes sv-lift{0%,22%,to{transform:translateY(0)}8%{transform:translateY(-14px)}}
+.sv-art .silk{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;letter-spacing:.08em;fill:#a79e88}
+.sv-art .rule{stroke:#b4ac98;stroke-width:1.4;stroke-linecap:round;fill:none}
+.sv-art .dim{stroke:#b4ac98;stroke-width:1;fill:none}
+@media(prefers-reduced-motion:reduce){.sv-art *{animation:none!important;opacity:1!important;transform:none!important}}
+
+/* ============================================================
+   Unified Animation System — Progressive Enhancement
+   Elements visible by default; animations only when .js-anim
+   ============================================================ */
+
+/* Line reveal — visible by default, animated only with .js-anim */
+.sv-lines .sv-ln{display:block;overflow:hidden;padding-bottom:.22em;margin-bottom:-.22em}
+.sv-lines .sv-ln>span{display:block;transform:none;transition:transform .9s cubic-bezier(.22,1,.36,1)}
+.js-anim .sv-lines .sv-ln>span{transform:translateY(140%)}
+.js-anim .sv-lines.is-in .sv-ln>span{transform:none}
+.sv-lines .sv-ln:nth-child(2)>span{transition-delay:.08s}
+
+/* Reveal — visible by default, animated only with .js-anim */
+.sv-rv{opacity:1;transform:none;transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1)}
+.js-anim .sv-rv{opacity:0;transform:translateY(18px)}
+.js-anim .sv-rv.is-in{opacity:1;transform:none}
+
+/* Board entrance — visible by default */
+.board-in{opacity:1;transform:none;transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.board-in-text{opacity:1;transform:none;transition:opacity .55s cubic-bezier(.22,1,.36,1),transform .55s cubic-bezier(.22,1,.36,1)}
+.js-anim .board-in{opacity:0;transform:translateX(-10px)}
+.js-anim .board-in-text{opacity:0;transform:translateY(3px)}
+
+/* Tool cards cascade */
+.sv-tool{opacity:1;transform:none;transition:opacity .6s ease,transform .6s cubic-bezier(.22,1,.36,1)}
+.js-anim .sv-tool{opacity:0;transform:translateY(18px) scale(0.88)}
+.js-anim .sv-tool.is-in{opacity:1;transform:none}
+
+/* Curtain entrance */
+.sv-curtain{display:none}
+.js-anim .sv-curtain{display:flex}
+@keyframes curtain-out{to{transform:scaleY(0)}}
+.sv-curtain-col{flex:1;background:#0b0d0c;transform-origin:bottom;animation:curtain-out .8s cubic-bezier(.76,0,.24,1) forwards;animation-delay:calc(var(--i)*60ms)}
+
+/* Reduced motion — everything visible, no animation */
+@media (prefers-reduced-motion:reduce){
+  .js-anim .sv-lines .sv-ln>span,
+  .js-anim .sv-rv,
+  .js-anim .board-in,
+  .js-anim .board-in-text,
+  .js-anim .sv-tool{
+    opacity:1!important;
+    transform:none!important;
+    transition:none!important;
+    animation:none!important;
+  }
+  .js-anim .sv-curtain{display:none!important}
+}
+.sv-tlink{display:inline-flex;align-items:center;gap:9px;font-size:15px;font-weight:500;padding-bottom:4px;border-bottom:1px solid var(--line-strong);color:var(--ink);transition:color .25s,border-color .25s}
+.sv-tlink:hover{color:var(--accent-deep);border-color:var(--accent)}
+.sv-tlink .sv-ar{width:16px;height:16px;transition:transform .32s cubic-bezier(.22,1,.36,1)}
+.sv-tlink:hover .sv-ar{transform:translate(3px,-3px)}
+.sv-bar{position:relative;display:flex;flex-direction:column;justify-content:flex-end}
+.sv-bar .fill{position:relative;border:1px solid var(--ink);height:0;overflow:hidden;transition:height 1.1s cubic-bezier(.22,.9,.24,1)}
+.sv-bar .fill .lit{position:absolute;left:0;right:0;bottom:0;display:block;background:var(--accent)}
+.sv-bar .big{font-size:clamp(27px,2.3vw,40px);font-weight:500;letter-spacing:-.03em;line-height:1;margin-bottom:10px;font-variant-numeric:tabular-nums;color:var(--ink)}
+.sv-bar .lbl{font-size:15px;color:var(--muted);margin-top:14px;line-height:1.5}
+/* Robot rail marquee + bob (footer) */
+@keyframes rail-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.rail-scroll {
+  animation: rail-scroll 48s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rail-scroll {
+    animation: none;
+  }
+}
+
+/* Work cards — description reveals on hover-capable pointers, always on touch */
+.work-desc {
+  display: none;
+}
+@media (hover: hover) {
+  .work-card:hover .work-desc,
+  .work-card:focus-visible .work-desc {
+    display: block;
+  }
+}
+@media (hover: none) {
+  .work-desc {
+    display: block;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .work-desc {
+    display: block;
+  }
+}
+.sv-chart-sec{position:relative}
+.sv-chart-track{position:relative}
+.sv-chart-pin{position:sticky;top:0;display:grid;align-items:center;justify-items:center;min-height:100svh;padding:clamp(104px,13vh,140px) 0 clamp(92px,11.5vh,124px);background-color:var(--bg);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.sv-pin-mark{position:absolute;top:0;left:0;right:0;height:20px;pointer-events:none;z-index:4}
+.sv-pin-mark[data-badge]:before{content:attr(data-badge);position:absolute;top:0;left:0;z-index:4;background:var(--accent);color:var(--accent-ink);font-family:"General Sans",ui-sans-serif,system-ui,sans-serif;font-style:normal;font-size:10px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;line-height:1;padding:9px 13px 8px;pointer-events:none}
+.sv-pin-mark[data-badge]:after{content:"";position:absolute;top:0;right:24px;width:20px;height:20px;background:linear-gradient(var(--accent-deep),var(--accent-deep)) 100% 0/20px 2px no-repeat,linear-gradient(var(--accent-deep),var(--accent-deep)) 100% 0/2px 20px no-repeat;pointer-events:none}
+.sv-chart-head{display:grid;justify-items:center;text-align:center;gap:clamp(18px,2.4vw,30px)}
+.sv-chart-head h2{max-width:20ch;margin-inline:auto}
+.sv-chart-head .aside{display:flex;flex-direction:column;align-items:center;gap:18px;width:100%;max-width:52ch;margin-inline:auto}
+@media(prefers-reduced-motion:reduce){
+  .sv-lines .sv-ln>span{transform:none;transition:none}
+  .sv-rv{opacity:1;transform:none;transition:none}
+  .sv-bar .fill{transition:none}
+}
+
+/* Reference reading column (sv-reading) + track nav */
+.sv-reading .sv-fade{transition:opacity .5s cubic-bezier(.2,.8,.2,1),transform .6s cubic-bezier(.2,.8,.2,1)}
+.sv-reading .sv-fade:nth-child(2){transition-delay:.04s}
+.sv-reading .sv-fade:nth-child(3){transition-delay:.08s}
+.sv-reading .sv-fade:nth-child(4){transition-delay:.12s}
+.sv-reading.is-out .sv-fade{opacity:0;transform:translateY(-10px);transition:opacity .2s ease,transform .2s ease;transition-delay:0s}
+.sv-reading.is-in .sv-fade{opacity:0;transform:translateY(14px);transition:none}
+.sv-rnav{display:flex;gap:10px;margin-top:34px}
+.sv-rnav button{width:46px;height:46px;border:1px solid color-mix(in srgb, var(--ink) 25%, transparent);background:transparent;cursor:pointer;display:grid;place-items:center;color:var(--ink);transition:background .2s,border-color .2s,transform var(--dur-2) var(--ease)}
+.sv-rnav button svg{width:18px;height:18px}
+.sv-rnav button:hover:not([disabled]){background:var(--accent);border-color:var(--accent-deep);transform:translateY(var(--lift))}
+.sv-rnav button[disabled]{opacity:.32;cursor:not-allowed}
+.sv-rnav button:focus-visible{outline:2px solid var(--accent-deep)}
+@media(prefers-reduced-motion:reduce){.sv-reading .sv-fade{transition:none}}
+
+/* Workflow diagram — flowing dashes on connectors */
+@keyframes flow-dash {
+  to {
+    stroke-dashoffset: -16;
+  }
+}
+
+.flow-line {
+  animation: flow-dash 0.8s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flow-line {
+    animation: none;
+  }
+}
+
+/* ============================================================
+   PCB / Circuit Board Design System (rg-*)
+   Workflow diagram — circuit board metaphor
+   ============================================================ */
+
+/* Ground plane & board edge */
+.rg-ground {
+  stroke: rgba(22, 20, 14, 0.12);
+  stroke-width: 1;
+}
+.rg-skirt {
+  stroke: rgba(22, 20, 14, 0.08);
+  stroke-width: 1;
+}
+
+/* Board traces & components */
+.rg-brd-bus {
+  stroke: rgba(22, 20, 14, 0.15);
+  stroke-width: 1;
+}
+.rg-brd-pkg {
+  /* chip package container */
+}
+.rg-brd-via {
+  fill: rgba(22, 20, 14, 0.2);
+}
+.rg-brd-chip {
+  fill: rgba(22, 20, 14, 0.12);
+}
+.rg-brd-pin {
+  stroke: rgba(22, 20, 14, 0.2);
+  stroke-width: 1;
+}
+.rg-brd-res {
+  fill: rgba(22, 20, 14, 0.15);
+}
+.rg-brd-cap {
+  fill: rgba(22, 20, 14, 0.18);
+}
+.rg-brd-trace {
+  stroke: rgba(22, 20, 14, 0.15);
+  stroke-width: 1;
+  fill: none;
+}
+.rg-brd-silk {
+  stroke: rgba(22, 20, 14, 0.1);
+  stroke-width: 1;
+}
+
+/* Component properties */
+.rg-prop {
+  /* container */
+}
+.rg-chip-pkg {
+  fill: #f5f0dc;
+  stroke: rgba(22, 20, 14, 0.3);
+  stroke-width: 1;
+}
+.rg-chip-die {
+  fill: rgba(22, 20, 14, 0.1);
+}
+.rg-pin {
+  stroke: rgba(22, 20, 14, 0.3);
+  stroke-width: 1;
+}
+.rg-db-body {
+  fill: #f5f0dc;
+  stroke: rgba(22, 20, 14, 0.3);
+  stroke-width: 1;
+}
+.rg-db-top {
+  fill: #f5f0dc;
+  stroke: rgba(22, 20, 14, 0.3);
+  stroke-width: 1;
+}
+.rg-cloud-body {
+  fill: #f5f0dc;
+  stroke: rgba(22, 20, 14, 0.3);
+  stroke-width: 1;
+}
+.rg-chip-t {
+  font-family: ui-monospace, monospace;
+  font-size: 8px;
+  fill: #8b8577;
+  letter-spacing: 0.08em;
+}
+.rg-code-box {
+  fill: #f5f0dc;
+  stroke: rgba(22, 20, 14, 0.3);
+  stroke-width: 1;
+}
+.rg-code-bar {
+  fill: rgba(22, 20, 14, 0.08);
+}
+.rg-code-dot {
+  fill: rgba(22, 20, 14, 0.25);
+}
+.rg-code-ln {
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+.rg-code-ln.k-kw {
+  stroke: #9b7bb8;
+}
+.rg-code-ln.k-id {
+  stroke: #7a9e7e;
+}
+.rg-code-ln.k-st {
+  stroke: #e8a33d;
+}
+
+/* Rails & wires */
+.rg-store {
+  /* storage container */
+}
+.rg-rail {
+  stroke: rgba(22, 20, 14, 0.2);
+  stroke-width: 1;
+  fill: none;
+}
+.rg-wire {
+  stroke: rgba(22, 20, 14, 0.15);
+  stroke-width: 1;
+  fill: none;
+}
+.rg-tie {
+  stroke: rgba(22, 20, 14, 0.25);
+}
+.rg-back {
+  stroke: rgba(22, 20, 14, 0.08);
+}
+.rg-drop {
+  stroke: rgba(22, 20, 14, 0.12);
+  stroke-width: 1;
+  fill: none;
+}
+
+/* Station cards */
+.rg-stn .rg-box {
+  fill: #fffdf3;
+  stroke: rgba(22, 20, 14, 0.2);
+  stroke-width: 1;
+}
+.rg-stn .rg-lip {
+  fill: rgba(22, 20, 14, 0.15);
+}
+.rg-stn .rg-nm {
+  font-family: "General Sans", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  fill: #16140e;
+}
+.rg-stn .rg-sb {
+  font-family: ui-monospace, monospace;
+  font-size: 10px;
+  fill: #8b8577;
+}
+.rg-stn .rg-unit {
+  fill: rgba(22, 20, 14, 0.04);
+  stroke: rgba(22, 20, 14, 0.1);
+  stroke-width: 0.5;
+}
+.rg-stn .rg-vent {
+  stroke: rgba(22, 20, 14, 0.12);
+  stroke-width: 1;
+}
+.rg-stn .rg-led {
+  fill: #f3b44a;
+}
+.rg-stn .rg-led.l0 {
+  fill: #7a9e7e;
+}
+.rg-stn .rg-led.l1 {
+  fill: #e8a33d;
+}
+.rg-stn .rg-slot {
+  fill: rgba(22, 20, 14, 0.06);
+}
+.rg-stn .rg-feet {
+  stroke: rgba(22, 20, 14, 0.2);
+  stroke-width: 1;
+}
+
+/* Agent cards */
+.rg-ag .rg-ag-box {
+  fill: #fffdf3;
+  stroke: rgba(22, 20, 14, 0.2);
+  stroke-width: 1;
+}
+.rg-ag .rg-ag-dot {
+  fill: #f3b44a;
+}
+.rg-ag .rg-ag-nm {
+  font-family: "General Sans", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  fill: #16140e;
+}
+.rg-ag .rg-ag-out {
+  font-family: ui-monospace, monospace;
+  font-size: 10px;
+  fill: #8b8577;
+}
+.rg-ag .rg-ag-run {
+  stroke: rgba(22, 20, 14, 0.1);
+  stroke-width: 1;
+}
+
+/* Robot — only side view is visible, front is hidden */
+.rg-bot .front {
+  display: none;
+}
+
+.rg-bot .shadow {
+  fill: rgba(22, 20, 14, 0.08);
+}
+.rg-bot .limb {
+  fill: #b8c4d0;
+  stroke: #8a9aa8;
+  stroke-width: 1;
+}
+.rg-bot .foot {
+  fill: #16140e;
+}
+.rg-bot .body {
+  fill: #b8c4d0;
+  stroke: #8a9aa8;
+  stroke-width: 1;
+}
+.rg-bot .vent {
+  stroke: #8a9aa8;
+  stroke-width: 1;
+}
+.rg-bot .core {
+  fill: #f3b44a;
+}
+.rg-bot .neck {
+  fill: #b8c4d0;
+  stroke: #8a9aa8;
+  stroke-width: 1;
+}
+.rg-bot .head {
+  fill: #b8c4d0;
+  stroke: #8a9aa8;
+  stroke-width: 1;
+}
+.rg-bot .visor {
+  fill: #16140e;
+}
+.rg-bot .eye {
+  fill: #fffdf3;
+}
+.rg-bot .ant {
+  stroke: #8a9aa8;
+  stroke-width: 1;
+}
+.rg-bot .ant-led {
+  fill: #f3b44a;
+}
+.rg-bot .joint {
+  fill: #8a9aa8;
+}
+.rg-bot .grip {
+  fill: #b8c4d0;
+  stroke: #8a9aa8;
+  stroke-width: 1;
+}
+.rg-bot .thigh,
+.rg-bot .knee,
+.rg-bot .shoulder,
+.rg-bot .elbow {
+  /* joint groups */
+}
+.rg-bot .leg,
+.rg-bot .arm {
+  /* limb groups */
+}
+.rg-bot .hull,
+.rg-bot .jump,
+.rg-bot .wave {
+  /* animation groups */
+}
+
+/* Thinking indicator */
+.rg-think-t {
+  font-family: ui-monospace, monospace;
+  font-size: 9px;
+  fill: #8b8577;
+  letter-spacing: 0.08em;
+}
+.rg-think-d {
+  fill: #f3b44a;
+}
+
+/* ============================================================
+   PCB Animation System
+   Timelines for LEDs, wires, agents, robot, thinking
+   ============================================================ */
+
+/* ============================================================
+   PCB Animation System — merged with base styles
+   ============================================================ */
+
+/* LED blink — merged with fill */
+@keyframes rg-led-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.rg-stn .rg-led {
+  animation: rg-led-blink 2s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.rg-stn .rg-led.l0 {
+  fill: #7a9e7e;
+  animation-delay: 0s;
+}
+.rg-stn .rg-led.l1 {
+  fill: #e8a33d;
+  animation-delay: 1s;
+}
+
+/* Live station indicator */
+@keyframes rg-live-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.rg-stn.is-live .rg-lip {
+  animation: rg-live-pulse 2s ease-in-out infinite;
+}
+
+/* Fan-out wire pulse */
+@keyframes rg-wire-pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+.rg-fan .rg-wire {
+  animation: rg-wire-pulse 1.5s ease-in-out infinite;
+  animation-delay: var(--d, 0s);
+}
+
+/* Agent run line */
+@keyframes rg-run {
+  0% { transform: scaleX(0); transform-origin: left; }
+  50% { transform: scaleX(1); transform-origin: left; }
+  51% { transform-origin: right; }
+  100% { transform: scaleX(0); transform-origin: right; }
+}
+
+.rg-ag .rg-ag-run {
+  animation: rg-run 2s ease-in-out infinite;
+  animation-delay: var(--d, 0s);
+  transform-box: fill-box;
+  transform-origin: left;
+}
+
+/* Agent dot pulse */
+@keyframes rg-dot-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.3); opacity: 0.7; }
+}
+
+.rg-ag .rg-ag-dot {
+  animation: rg-dot-pulse 1.5s ease-in-out infinite;
+  animation-delay: var(--d, 0s);
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* Thinking dots */
+@keyframes rg-think-pulse {
+  0%, 100% { opacity: 0.3; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+.rg-think-d {
+  animation: rg-think-pulse 1.2s ease-in-out infinite;
+  animation-delay: var(--d, 0s);
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* ============================================================
+   Robot Walk — slow, steady, no bounce
+   ============================================================ */
+
+@keyframes rg-bot-walk {
+  0% { transform: translate(0px, 250px); }
+  100% { transform: translate(var(--walk-dist, 806px), 250px); }
+}
+
+.rg-bot.is-walking {
+  animation: rg-bot-walk 10s linear forwards;
+}
+
+.rg-bot.is-stopped {
+  transform: translate(var(--walk-dist, 806px), 250px);
+}
+
+/* Legs — animate thigh only (body stays attached) */
+@keyframes rg-leg-swing {
+  0%, 100% { transform: rotate(-18deg); }
+  50% { transform: rotate(18deg); }
+}
+
+.rg-bot.is-walking .side .leg .thigh {
+  animation: rg-leg-swing 1.6s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: 50% 0%;
+}
+
+/* Back leg offset by half cycle — starts in opposite pose */
+.rg-bot.is-walking .side .leg.leg-b .thigh {
+  animation-delay: 0.8s;
+}
+
+/* Arms — gentle swing, opposite to legs */
+@keyframes rg-arm-swing {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-15deg); }
+  75% { transform: rotate(15deg); }
+}
+
+.rg-bot.is-walking .side .arm .shoulder {
+  animation: rg-arm-swing 1.6s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: top center;
+}
+
+.rg-bot.is-walking .side .arm.arm-a .shoulder {
+  animation-delay: 0.8s;
+}
+
+/* Front arm — subtle wave */
+@keyframes rg-wave {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(-20deg); }
+}
+
+.rg-bot.is-walking .front .wave {
+  animation: rg-wave 3s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: bottom center;
+}
+
+/* Stopped: resting pose — standing upright, one hand on hip */
+.rg-bot.is-stopped .side .leg .thigh {
+  animation: none;
+  transform: rotate(0deg);
+}
+
+.rg-bot.is-stopped .side .arm .shoulder {
+  animation: none;
+  transform: rotate(0deg);
+}
+
+/* Resting pose: front arm bent (hand on hip) */
+.rg-bot.is-stopped .front .wave {
+  animation: none;
+  transform: rotate(-45deg);
+}
+
+/* Resting pose: legs together, weight shifted */
+.rg-bot.is-stopped .side .leg.leg-a .thigh {
+  transform: rotate(5deg);
+}
+
+.rg-bot.is-stopped .side .leg.leg-b .thigh {
+  transform: rotate(-3deg);
+}
+
+/* Always active */
+.rg-bot .eye {
+  animation: rg-bot-blink 3s ease-in-out infinite;
+}
+
+.rg-bot .ant-led {
+  animation: rg-ant-pulse 1s ease-in-out infinite;
+}
+
+/* Block jump — gentle lift, no bounce */
+@keyframes rg-block-jump {
+  0% { transform: translateY(0); }
+  40% { transform: translateY(-8px); }
+  100% { transform: translateY(0); }
+}
+
+.rg-stn.prompt .rg-box,
+.rg-stn.prompt .rg-lip {
+  animation: rg-block-jump 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1;
+  animation-delay: 1.4s;
+  transform-box: fill-box;
+  transform-origin: bottom center;
+}
+
+.rg-stn.router .rg-box,
+.rg-stn.router .rg-lip {
+  animation: rg-block-jump 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1;
+  animation-delay: 3.3s;
+  transform-box: fill-box;
+  transform-origin: bottom center;
+}
+
+.rg-stn.gate .rg-box,
+.rg-stn.gate .rg-lip {
+  animation: rg-block-jump 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1;
+  animation-delay: 8.1s;
+  transform-box: fill-box;
+  transform-origin: bottom center;
+}
+
+.rg-stn.ship .rg-box,
+.rg-stn.ship .rg-lip {
+  animation: rg-block-jump 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1;
+  animation-delay: 9.8s;
+  transform-box: fill-box;
+  transform-origin: bottom center;
+}
+
+.rg-stn.ship .rg-box,
+.rg-stn.ship .rg-lip {
+  animation: rg-block-jump 0.5s ease-out 1;
+  animation-delay: 5.8s;
+  transform-box: fill-box;
+  transform-origin: bottom center;
+}
+
+/* Keyframes */
+@keyframes rg-jump {
+  0%, 100% { transform: translateY(0); }
+  30% { transform: translateY(-6px); }
+  60% { transform: translateY(0); }
+  80% { transform: translateY(-2px); }
+}
+
+@keyframes rg-leg-swing {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(20deg); }
+  75% { transform: rotate(-20deg); }
+}
+
+@keyframes rg-arm-swing {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-25deg); }
+  75% { transform: rotate(25deg); }
+}
+
+@keyframes rg-wave {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(-25deg); }
+}
+
+@keyframes rg-bot-blink {
+  0%, 90%, 100% { opacity: 1; }
+  95% { opacity: 0; }
+}
+
+@keyframes rg-ant-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* Walking state class — applied via JS when robot is moving */
+.rg-bot.is-walking .side .leg .thigh,
+.rg-bot.is-walking .side .arm .shoulder,
+.rg-bot.is-walking .side .jump,
+.rg-bot.is-walking .front .wave {
+  animation-play-state: running;
+}
+
+/* Stopped state — freeze all walking animations */
+.rg-bot.is-stopped .side .leg .thigh,
+.rg-bot.is-stopped .side .arm .shoulder,
+.rg-bot.is-stopped .side .jump,
+.rg-bot.is-stopped .front .wave {
+  animation-play-state: paused;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .rg-stn .rg-led,
+  .rg-stn.is-live .rg-lip,
+  .rg-fan .rg-wire,
+  .rg-ag .rg-ag-run,
+  .rg-ag .rg-ag-dot,
+  .rg-think-d,
+  .rg-bot.is-walking,
+  .rg-bot.is-walking .side .jump,
+  .rg-bot.is-walking .side .leg .thigh,
+  .rg-bot.is-walking .side .arm .shoulder,
+  .rg-bot.is-walking .front .wave,
+  .rg-stn.prompt .rg-box,
+  .rg-stn.prompt .rg-lip,
+  .rg-stn.router .rg-box,
+  .rg-stn.router .rg-lip,
+  .rg-stn.gate .rg-box,
+  .rg-stn.gate .rg-lip,
+  .rg-stn.ship .rg-box,
+  .rg-stn.ship .rg-lip {
+    animation: none;
+  }
+  .rg-bot.is-stopped {
+    transform: translate(806px, 250px) scale(0.74);
+  }
+}
+
+/* Profile hero lead — Figma 248:5: 788px paragraph, 667px tail span. */
+.pf-lead {
+  max-width: 788px;
+}
+
+.pf-lead .pf-tail {
+  display: block;
+  max-width: 667px;
+  margin-inline: auto;
+}
+
+/* ============================================================
+   About hero pin (.sv-ab-hero-pin) — reference motion system.
+   section#top is the scroll track; the pin sticks a full viewport
+   (statement top, desk stage bottom); a rAF driver maps progress
+   to transform/opacity only.
+   ============================================================ */
+section#top {
+  position: relative;
+  height: 280vh;
+}
+
+.sv-ab-hero-pin {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding-inline: 24px;
+}
+
+@media (min-width: 768px) {
+  .sv-ab-hero-pin {
+    padding-inline: 68px;
+  }
+}
+
+.sv-ab-hero-inner {
+  flex: 1.25;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 48px;
+  will-change: transform, opacity;
+}
+
+@media (min-width: 768px) {
+  .sv-ab-hero-inner {
+    padding-top: 64px;
+  }
+}
+
+.sv-ab-hero-inner .lead {
+  width: 100%;
+  margin-inline: auto;
+  text-align: center;
+  font-family: "General Sans", ui-sans-serif, system-ui, sans-serif;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 1.45;
+  letter-spacing: -0.3px;
+  color: var(--ink);
+}
+
+@media (min-width: 768px) {
+  .sv-ab-hero-inner .lead {
+    font-size: 30px;
+    line-height: 46.5px;
+  }
+}
+
+.sv-dim {
+  color: var(--faint);
+}
+
+.sv-desk-wrap {
+  height: 48svh;
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  overflow: hidden;
+  padding-bottom: 3vh;
+}
+
+.sv-desk-view {
+  width: 100%;
+  max-width: 1590px;
+  aspect-ratio: 1590 / 325;
+}
+
+.sv-desk-view .sv-desk-art {
+  display: block;
+  width: 100%;
+  height: auto;
+  user-select: none;
+}
+
+/* ============================================================
+   Credo blur reveal (section#credo) — words rest blurred + dimmed,
+   .is-visible (viewport middle band) focuses each in place.
+   ============================================================ */
+section#credo {
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.sv-credo-grid .main .lead .w {
+  display: inline-block;
+  filter: blur(3.5px);
+  opacity: 0.14;
+  transform: translateY(0.2em);
+  transition:
+    filter 0.45s ease,
+    opacity 0.32s ease,
+    transform 0.5s cubic-bezier(0.22, 0.86, 0.24, 1);
+  will-change: filter, opacity, transform;
+}
+
+.sv-credo-grid .main .lead .w.is-visible {
+  filter: blur(0);
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Credo chips — Figma 255:4709. Black fill on hover. */
+.sv-chip {
+  display: inline-block;
+  border: 1px solid var(--line);
+  padding: 9px 16px;
+  font-family: "General Sans", ui-sans-serif, system-ui, sans-serif;
+  font-size: 10.5px;
+  line-height: 16.275px;
+  letter-spacing: 1.05px;
+  white-space: nowrap;
+  color: var(--muted);
+  background: transparent;
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.sv-chip:hover {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--bg);
+}
+
+/* ============================================================
+   Theme toggle motion — state-driven `is-on` (reference theme-*).
+   Rays rotate + fade, halo breathes in, disc fills accent.
+   ============================================================ */
+.th-toggle .th-rays {
+  opacity: 1;
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: rotate(0deg) scale(1);
+  transition:
+    opacity 0.3s ease,
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, opacity;
+}
+
+.th-toggle.is-on .th-rays {
+  opacity: 0;
+  transform: rotate(90deg) scale(0.6);
+}
+
+.th-toggle .th-halo {
+  fill: none;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scale(0.7);
+  transition:
+    opacity 0.35s ease,
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  stroke: #f3b44a;
+  stroke-width: 1;
+}
+
+.th-toggle.is-on .th-halo {
+  opacity: 0.5;
+  transform: scale(1);
+}
+
+.th-toggle .th-disc {
+  fill: transparent;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  transition: fill 0.3s ease;
+}
+
+.th-toggle.is-on .th-disc {
+  fill: #f3b44a;
+  stroke: #f3b44a;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .th-toggle .th-rays,
+  .th-toggle .th-halo,
+  .th-toggle .th-disc {
+    transition: none;
+  }
+}
+
+/* ============================================================
+   3D book (ported from the main site Book3D widget).
+   Hover/focus lifts the book and swings the cover open.
+   ============================================================ */
+.bk3d-scene {
+  perspective: 1200px;
+}
+
+.bk3d {
+  position: relative;
+  transform: rotate(-3deg);
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.bk3d-scene:hover .bk3d,
+.bk3d-scene:focus-visible .bk3d {
+  transform: translateY(-24px) rotate(-3deg);
+}
+
+.bk3d-spine {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 12px;
+  border-left: 1px solid color-mix(in srgb, var(--ink) 20%, transparent);
+  transform: translateX(-6px) translateZ(-6px) rotateY(90deg);
+  transform-origin: right center;
+}
+
+.bk3d-cover {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 20;
+  transform-origin: left center;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: 10px 12px 0 rgba(22, 20, 14, 0.12);
+}
+
+.bk3d-scene:hover .bk3d-cover,
+.bk3d-scene:focus-visible .bk3d-cover {
+  transform: rotateY(-45deg);
+}
+
+.bk3d-sheen {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 5px;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0.4), transparent);
+  pointer-events: none;
+}
+
+.bk3d-inside {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--bg-soft);
+  box-shadow: inset 0 0 24px color-mix(in srgb, var(--ink) 12%, transparent);
+}
+
+.bk3d-lines {
+  width: 75%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  opacity: 0.2;
+}
+
+.bk3d-lines span {
+  height: 4px;
+  background: var(--ink);
+  border-radius: 999px;
+}
+
+.bk3d-lines span:nth-child(2) {
+  width: 83.333%;
+}
+
+.bk3d-lines span:nth-child(4) {
+  width: 66.666%;
+}
+
+.bk3d-pages {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  right: 0;
+  width: 12px;
+  border: 1px solid color-mix(in srgb, var(--ink) 20%, transparent);
+  background-color: var(--bg-soft);
+  background-image: repeating-linear-gradient(90deg, transparent 0 1px, color-mix(in srgb, var(--ink) 14%, transparent) 1px 2px);
+  transform: translateX(6px) translateZ(-6px) rotateY(90deg);
+  transform-origin: left center;
+}
+
+.bk3d-back {
+  position: absolute;
+  inset: 0;
+  transform: translateZ(-12px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bk3d,
+  .bk3d-cover {
+    transition: none;
+  }
+  .bk3d-scene:hover .bk3d,
+  .bk3d-scene:focus-visible .bk3d {
+    transform: none;
+  }
+  .bk3d-scene:hover .bk3d-cover,
+  .bk3d-scene:focus-visible .bk3d-cover {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sv-credo-grid .main .lead .w {
+    filter: none;
+    opacity: 1;
+    transform: none;
+    transition: none;
+    will-change: auto;
+  }
+  .sv-chip {
+    transition: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sv-ab-hero-inner {
+    will-change: auto;
+  }
+  .sv-desk-view .sv-desk-art {
+    will-change: auto;
+  }
+}
+
+/* Tracks illustrations are static (motion pass comes later) */
+
+/* ============================================================
+   Work hover flex + cursor card (sv-wx)
+   Reference: static flex items (.sv-wx-p) + floating preview (.sv-wx-pop)
+   that tracks the cursor. Position (outer) and entrance (inner) are split
+   so GSAP owns translate while CSS owns scale/fade — compositor only.
+   ============================================================ */
+.sv-wx {
+  position: relative;
+}
+
+@media (min-width: 1024px) {
+  .sv-wx {
+    display: flex;
+    align-items: stretch;
+    gap: 1px;
+    height: clamp(360px, 48vh, 520px);
+  }
+  .sv-wx-p {
+    flex: 1 1 0%;
+    min-width: 0;
+    min-height: 0;
+  }
+  .sv-wx-p .sv-plus {
+    translate: -50% 0;
+    transition:
+      opacity 0.25s ease,
+      translate 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .sv-wx-p:hover .sv-plus,
+  .sv-wx-p.is-active .sv-plus {
+    opacity: 0;
+    translate: -50% -8px;
+  }
+}
+
+/* Floating preview — outer handles cursor position (GSAP x/y), inner the pop */
+.sv-wx-pop {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: clamp(280px, 26vw, 400px);
+  max-width: calc(100% - 32px);
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  z-index: 50;
+  transition:
+    opacity 0.25s ease,
+    visibility 0s linear 0.25s;
+}
+
+.sv-wx-pop.is-on {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.25s ease;
+}
+
+.sv-wx-pop-card {
+  transition: transform 0.46s cubic-bezier(0.22, 0.86, 0.24, 1);
+  transform: scale(0.94) translateY(20px);
+  will-change: transform;
+}
+
+.sv-wx-pop.is-on .sv-wx-pop-card {
+  transform: scale(1) translateY(0);
+}
+
+/* Stacked preview layers — active toggles opacity, no height measuring.
+   Title (.nm) and description (.ld) rise in stages once the layer is active:
+   card pops first (.sv-wx-pop-card .46s), then text follows. */
+.sv-wx-layers {
+  display: grid;
+}
+
+.sv-wx-layer {
+  grid-area: 1 / 1;
+  min-width: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.sv-wx-layer.is-active {
+  opacity: 1;
+  pointer-events: none;
+}
+
+.sv-wx-layer .nm,
+.sv-wx-layer .ld {
+  opacity: 0;
+  transform: translateY(13px);
+  transition:
+    transform 0.5s cubic-bezier(0.22, 0.86, 0.24, 1),
+    opacity 0.32s ease;
+}
+
+.sv-wx-pop.is-on .sv-wx-layer.is-active .nm {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.08s;
+}
+
+.sv-wx-pop.is-on .sv-wx-layer.is-active .ld {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.14s;
+}
+
+/* Hovered column title dips down and fades so it never duplicates the
+   card title — the card carries the name while hovering. */
+.sv-wx-p .sv-ttl {
+  transition:
+    opacity 0.3s ease,
+    translate 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.sv-wx-p:hover .sv-ttl,
+.sv-wx-p.is-active .sv-ttl {
+  opacity: 0;
+  translate: 0 12px;
+}
+
+/* Touch: no cursor card — columns stay static and tappable */
+@media (hover: none) {
+  .sv-wx-pop {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sv-wx-pop,
+  .sv-wx-pop-card,
+  .sv-wx-layer,
+  .sv-wx-layer .nm,
+  .sv-wx-layer .ld,
+  .sv-wx-p .sv-ttl,
+  .sv-wx-p .sv-plus {
+    transition: none !important;
+  }
+  .sv-wx-pop-card {
+    transform: none;
+  }
+  .sv-wx-layer .nm,
+  .sv-wx-layer .ld {
+    opacity: 1;
+    transform: none;
+    translate: none;
+  }
+  .sv-wx-p:hover .sv-ttl,
+  .sv-wx-p.is-active .sv-ttl {
+    opacity: 1;
+    translate: none;
+  }
+  .bd-step.is-on .bar > i.bd-fill {
+    animation: none;
+    width: 100%;
+  }
+}
+
+/* ============================================================
+   Build steps continuous loader (.bd-flow)
+   Each step owns a bottom progress bar; the filler runs linear
+   0→100% when its step turns .is-on and holds full (forwards).
+   ============================================================ */
+.bd-flow {
+  display: grid;
+}
+
+.bd-flow .bd-step {
+  position: relative;
+}
+
+.bd-step .bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--ink) 8%, transparent);
+}
+
+.bd-step .bar > i {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: rgb(110, 145, 85);
+}
+
+.bd-step.is-on .bar > i.bd-fill {
+  animation: sv-bd-fill 1.9s linear forwards;
+}
+
+@keyframes sv-bd-fill {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+/* ============================================================
+   Console chrome (.sv-console) — Figma 238:2454.
+   Shared by the AI build board and the Welcome workspace board:
+   40px header bar, 216px sidebar + fluid canvas (min 680px tall),
+   ~41px footer. Borders/padding keep both consoles the same size.
+   ============================================================ */
+.sv-console {
+  display: block;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  box-sizing: border-box;
+}
+
+.sv-cn-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  height: 40px;
+  padding-inline: 16px;
+}
+
+.sv-cn-body {
+  display: grid;
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .sv-cn-body {
+    grid-template-columns: clamp(184px, 24%, 216px) 1fr;
+    min-height: clamp(560px, 75svh, 680px);
+  }
+}
+
+.sv-cn-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 41px;
+  padding: 13px 16px;
+}
+
+/* ============================================================
+   Route transition — splash veil + two-sided curtain wipe
+   (GSAP-driven, see RouteTransition.tsx). Veil plays once on boot
+   with the route wordmark; on every navigation ink columns draw
+   DOWN from the top to cover, then draw back UP to reveal.
+   Columns wear the graph-section dot grid.
+   ============================================================ */
+.rt-veil {
+  position: fixed;
+  inset: 0;
+  z-index: 95;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+}
+
+.rt-word {
+  font-family: "General Sans", ui-sans-serif, system-ui, sans-serif;
+  font-weight: 500;
+  font-size: clamp(56px, 10vw, 132px);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+  margin: 0;
+}
+
+.rt-word .rt-dot {
+  color: var(--accent);
+}
+
+.rt-cover-word {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  font-family: "General Sans", ui-sans-serif, system-ui, sans-serif;
+  font-weight: 500;
+  font-size: clamp(48px, 8vw, 110px);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: #16140e;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.rt-cover-word .rt-dot {
+  color: #c77e0a;
+}
+
+/* Dark theme — curtain drops to the deep band with faint light lines. */
+[data-theme="dark"] .rt-col {
+  background-color: #0d0c09;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0 3px,
+    rgba(241, 238, 230, 0.12) 3px 4px
+  );
+}
+
+[data-theme="dark"] .rt-cover-word {
+  color: #f1eee6;
+}
+
+/* The wipe parks Lenis, whose stopped state hides page overflow —
+   which would take the scrollbar with it. Keep it painted so the
+   scrollbar stays visible through the whole transition. Wheel/touch
+   stay parked by Lenis itself. */
+html.lenis.lenis-stopped {
+  overflow: auto;
+}
+
+.rt-curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: none;
+  pointer-events: none;
+}
+
+.rt-col {
+  flex: 1;
+  background-color: #efe9d2;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0 3px,
+    rgba(22, 20, 14, 0.07) 3px 4px
+  );
+  background-attachment: fixed;
+  transform: scaleY(0);
+  transform-origin: top;
+}
+
+/* Ambient shell — the same stacked-line rhythm lives on the page
+   itself, so the curtain reads as the background gathering and
+   parting rather than a foreign overlay. Fixed attachment keeps
+   shell and curtain lines registered at rest. */
+.sv-shell-lines {
+  background-color: var(--bg);
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0 3px,
+    color-mix(in srgb, var(--ink) 7%, transparent) 3px 4px
+  );
+  background-attachment: fixed;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rt-veil,
+  .rt-curtain {
+    display: none !important;
+  }
+}

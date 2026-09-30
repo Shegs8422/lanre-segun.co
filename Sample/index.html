@@ -1,0 +1,140 @@
+<!DOCTYPE html><html lang="en" data-theme="dark"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Keep the private editor out of search: add a noindex meta ONLY on /editor
+     (or ?edit) so it never gets indexed, without touching the rest of the site.
+     Runs at head-parse time; Google renders JS so it sees the tag. Paired with
+     robots.txt Disallow: /editor. -->
+<script type="text/javascript" async="" src="js/array.js"></script><script>try{if(location.pathname.replace(/\/$/,'')==='/editor'||new URLSearchParams(location.search).has('edit')){var _r=document.createElement('meta');_r.name='robots';_r.content='noindex, nofollow';document.head.appendChild(_r);}}catch(e){}</script>
+<script>
+try{
+  /* dark is the default for first-time visitors; only an explicit 'light'
+     preference switches to the light look */
+  if(localStorage.getItem('theme-pref')==='light'){document.documentElement.classList.add('mode-light');}
+  else{document.documentElement.setAttribute('data-theme','dark');}
+}catch(e){document.documentElement.setAttribute('data-theme','dark');}
+</script>
+<style>html,body{background:#050711;}html.mode-light,html.mode-light body{background:#f7f7f7;}</style>
+<title>Pleurat Shala — Product Designer and AI Product Builder</title>
+<!-- SEO / social. These are the DEFAULT (homepage) tags that non-JS social
+     crawlers (LinkedIn, Slack, iMessage, X) read for every route. Per-route
+     <title>/description are also updated client-side in App.tsx for Google's
+     rendered pass + the browser tab. If the deployed domain isn't
+     www.pleurat.com, change the absolute URLs below (canonical + og:*). -->
+<meta name="description" content="Pleurat Shala — product designer with 10+ years across SaaS, brand and design systems, now building AI-native workflows. Selected work, case studies and contact.">
+<link rel="canonical" href="https://www.pleurat.com/">
+<meta name="theme-color" content="#0b0d0c">
+<link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Pleurat Shala">
+<meta property="og:title" content="Pleurat Shala — Product Designer and AI Product Builder">
+<meta property="og:description" content="10+ years across SaaS, brand and design systems, now building AI-native workflows. Selected work, case studies and contact.">
+<meta property="og:url" content="https://www.pleurat.com/">
+<!-- A real 1200x630 card, drawn in the site's own hand (General Sans on the
+     ruled paper, amber plate). The portrait it replaces was 800x800 — square
+     in a 1.91:1 slot, so every link preview cropped it. -->
+<meta property="og:image" content="images/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Pleurat Shala — Product Designer, AI workflows. pleurat.com">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Pleurat Shala — Product Designer and AI Product Builder">
+<meta name="twitter:description" content="10+ years across SaaS, brand and design systems, now building AI-native workflows.">
+<meta name="twitter:image" content="images/og.png">
+<meta name="twitter:image:alt" content="Pleurat Shala — Product Designer, AI workflows. pleurat.com">
+<!-- Who this site IS, for the knowledge graph: a Person and their WebSite.
+     Static in the head, so no crawler has to run a line of JS to learn it. -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+ {"@type":"Person","@id":"https://www.pleurat.com/#person",
+  "name":"Pleurat Shala","jobTitle":"Product Designer",
+  "url":"https://www.pleurat.com/",
+  "image":"https://www.pleurat.com/assets/portrait.webp",
+  "description":"Product designer with 10+ years across SaaS, brand and design systems, building AI-native workflows.",
+  "knowsAbout":["Product design","Design systems","Brand design","AI workflows"],
+  "address":{"@type":"PostalAddress","addressLocality":"Pristina","addressCountry":"XK"},
+  "sameAs":["https://www.awwwards.com/Pleurats/","https://dribbble.com/Pleurat",
+   "https://www.linkedin.com/in/pleuratshala/","https://themeforest.net/user/pleuratt"]},
+ {"@type":"WebSite","@id":"https://www.pleurat.com/#website",
+  "url":"https://www.pleurat.com/","name":"Pleurat Shala",
+  "publisher":{"@id":"https://www.pleurat.com/#person"}}]}
+</script>
+
+<!-- Two preconnects, both for the FONT FILE hosts — those are the origins the
+     browser discovers late (only after each font CSS arrives). The CSS hosts
+     need no preconnect: their preload links below open the connection at the
+     same instant a preconnect would. More than ~4 preconnects is a net loss —
+     every TLS handshake competes with the render-blocking CSS for slow-4G
+     bandwidth, and Lighthouse flags it. -->
+<link rel="preconnect" href="https://cdn.fontshare.com" crossorigin="">
+<!-- Load the font stylesheet WITHOUT blocking first paint: preload it as a
+     stylesheet, then flip rel→stylesheet once it arrives. `display=swap` (in the
+     URL) means text shows in the fallback face immediately and swaps in General
+     Sans when ready, so there's no invisible-text flash. <noscript> keeps it
+     working with JS disabled. -->
+<link rel="preload" as="style" href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&amp;display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap" /></noscript>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<!-- The mono face, same pattern. This was an @import inside site.css, which
+     held first paint for a fetch the browser couldn't even start until the
+     main stylesheet had arrived. -->
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" /></noscript>
+
+<!-- Google Analytics 4. Same reasoning as PostHog below: the head of
+     index.html is every page, and the tag is async so it costs first paint
+     nothing. gtag's own `config` sends ONE page_view, at load — the route
+     changes are sent from RouteMeta in src/App.tsx alongside PostHog's. -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-3NT5LFZ30V"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-3NT5LFZ30V');
+</script>
+
+<!-- PostHog. In the head of index.html, which IS every page: the site is a
+     single document and the router swaps the tree underneath it, so this
+     loads once and covers every route. The loader appends its own async
+     script tag, so nothing here blocks first paint.
+
+     `capture_pageview: true` fires ONE $pageview, at load. A client-side
+     route change is not a page load and does not fire another, so the rest
+     are sent from RouteMeta in src/App.tsx — see the note there. Without
+     that, this would report the whole site as visits to whichever page the
+     visitor happened to open first. -->
+<script>
+  !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty createPersonProfile opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug getPageViewId captureTraceFeedback captureTraceMetric".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+  posthog.init("phc_BQsyp9X4PjYveL3GaRx82rL4GJ3MnY4xW94zoAFxB6F3", {
+    api_host: "https://us.i.posthog.com",
+    capture_pageview: true,
+    autocapture: true,
+    capture_dead_clicks: true,
+    rageclick: true,
+    persistence: 'localStorage+cookie'
+  });
+</script>
+
+<!-- utest.me. Same place as the two above, for the same reason: the head of
+     index.html is every page. Async, so it costs first paint nothing. -->
+<script src="js/t.js" async=""></script>
+  <script type="module" src="js/index-B1Y5hztz.js"></script>
+  <link rel="modulepreload" crossorigin="" href="js/react-dom-36navsnf.js">
+  <link rel="modulepreload" crossorigin="" href="js/router-5ag9yOgs.js">
+  <link rel="stylesheet" crossorigin="" href="css/index-sXIK4by5.css">
+  <link rel="modulepreload" crossorigin="" href="js/SiteHome-B7YT8V0Q.js">
+  <link rel="modulepreload" crossorigin="" href="js/index-B1Y5hztz.js">
+  <link rel="modulepreload" crossorigin="" href="js/theme-m98XvadK.js">
+  <link rel="modulepreload" crossorigin="" href="js/Commuter-CiLS0Fer.js">
+  <link rel="modulepreload" crossorigin="" href="js/Ledger-d5fq30Qi.js">
+  <link rel="modulepreload" crossorigin="" href="js/asset-BaG-jDRI.js">
+  <link rel="modulepreload" crossorigin="" href="js/Console-BSkllXpD.js">
+  <link rel="preload" as="style" href="css/theme-B8shlST7.css">
+</head>
+<body>
+<div id="root"></div>
+
+
+</body></html>
