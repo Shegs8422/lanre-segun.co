@@ -21,11 +21,11 @@ export const PROJECTS: Project[] = [
       "Lighthouse Academy is a full-stack learning platform for the interactive age — student portal, facilitator dashboard and admin back office.",
   },
   {
-    slug: "otee",
-    title: "Otee",
-    category: "Web and Mobile apps",
+    slug: "prooval",
+    title: "Prooval",
+    category: "Creator Platform",
     description:
-      "Otee is an online laundry service platform covering every part of the workflow — customer ordering, driver pickups, kiosk POS and full admin operations.",
+      "Prooval is an all-in-one creator store and monetization platform — one storefront link for sessions, digital products, priority messaging and memberships.",
   },
   {
     slug: "appello",

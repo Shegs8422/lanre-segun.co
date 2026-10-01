@@ -1,8 +1,8 @@
 /**
  * Static case-study fallback. Mirrors the `project` document shape exactly so
  * the page renders identically whether Sanity is configured or not — swap in
- * the CMS and only the copy/images change. Copy transcribed from the MindPath
- * design (Figma 287:2071).
+ * the CMS and only the copy/images change. The layout these mirror is the
+ * case study reference design (Figma 287:2071, 289:3780).
  */
 
 export type CaseImage = {
@@ -79,8 +79,7 @@ const shot = (alt: string): CaseImage => ({ alt });
 
 /**
  * Sorplos — Nigeria's compare-and-buy insurance aggregator, taken from spec
- * documents to a working three-portal prototype. Replaces MindPath as the
- * first project.
+ * documents to a working three-portal prototype. Leads the project list.
  *
  * Two content notes worth keeping in mind when editing:
  *   1. "What shipped" carries the ten numbered deliverables rather than the
@@ -236,7 +235,8 @@ export const LIGHTHOUSE: CaseStudy = {
   category: "Learning Platform",
   description: "Design for the interactive age — from platform spec documents to a full-stack learning management system and multi-role web platform.",
   cover: {
-    alt: "Lighthouse Academy — a full-stack learning platform spanning a student portal, a facilitator dashboard and an admin back office.",
+    src: "https://cdn.sanity.io/images/80wu0o5s/production/9577129669b983f1b6543bacf66e9c8f74aca667-2032x1040.png",
+    alt: "Lighthouse Academy — the academy landing page on a laptop, showing the hero 'Learn the skills leading tech teams are looking for' with login and join actions.",
   },
   meta: [
     { label: "Role", value: "Lead Design Engineer + Product Designer" },
@@ -351,161 +351,88 @@ export const LIGHTHOUSE: CaseStudy = {
     ],
   },
   next: {
-    slug: "otee",
-    title: "Otee",
-    category: "Web and Mobile apps",
-    description: "A complete online laundry platform — five surfaces, one design system.",
+    slug: "prooval",
+    title: "Prooval",
+    category: "Creator Platform",
+    description:
+      "An all-in-one creator store and monetization platform — packaging, selling and managing expertise through a single storefront link.",
   },
 };
 /**
- * Otee — Figma 289:3780. Structurally identical to MindPath (same hero, same
- * chapter band, same figure layouts) but with three differences worth noting,
- * because they are why the schema is shaped the way it is:
- *   1. No quote block at all — every outcome field is optional.
- *   2. Stat values are words ("Apps", "Web", "Kiosk"), not metrics, and the
- *      accent is indigo rather than green — hence `tone`.
- *   3. "What shipped" is document-level, not part of the last section.
- *   4. The fourth meta cell is "Type" with no link, vs MindPath's "Live".
- * Eight chapters instead of ten, and repeated kicker labels ("Discovery phase"
- * twice), so the kicker stays free text rather than a phase enum.
+ * Prooval — an all-in-one creator storefront and monetization platform.
+ *
+ * Content notes:
+ *   1. No quote block: the source material contained no customer testimonial,
+ *      and inventing one would be worse than omitting it.
+ *   2. Five chapters rather than the six-to-ten of the other projects — the
+ *      brief grouped design system and UX architecture together, so those were
+ *      split for rhythm rather than padding out.
+ *   3. The brand's primary blue (#2563EB) maps to the indigo outcome tone.
  */
-export const OTEE: CaseStudy = {
-  slug: "otee",
-  title: "Otee",
-  category: "Web and Mobile apps",
-  description: "A complete online laundry platform — five surfaces, one design system.",
+export const PROOVAL: CaseStudy = {
+  slug: "prooval",
+  title: "Prooval",
+  category: "Creator Platform",
+  description:
+    "An all-in-one creator store and monetization platform — packaging, selling and managing expertise through a single storefront link.",
   cover: {
-    alt: "Otee — a complete online laundry platform — five surfaces, one design system.",
+    src: "https://cdn.sanity.io/images/80wu0o5s/production/43a9a0aa38aae663b243ce5eb66a11427c84c3b8-2032x1040.png",
+    alt: "Prooval — the storefront hero 'Monetize Your Skills All In One Place' shown across a laptop and a phone, with a $5,000 revenue metric card.",
   },
   meta: [
-    { label: "Role", value: "Sole UX/UI Designer" },
-    { label: "Tools", value: "Figma & FigJam" },
-    { label: "Type", value: "Web · App · Kiosk" },
-    { label: "Year", value: "2025 — 26" },
+    { label: "Role", value: "Product Designer" },
+    { label: "Tools", value: "Figma" },
+    { label: "Year", value: "2026" },
+    { label: "Status", value: "Live" },
   ],
   sections: [
     {
       kicker: "01 · Overview",
-      heading: "The whole product, first sketch to system",
+      heading: "One storefront for the whole business",
       body: [
-        "My role covered the whole product, from the first sketches to the bigger system thinking. I shaped the flows, built the component library, and made sure everything worked together. I was the only designer on the project, handling everything from UX to UI for the web app, mobile apps, and the dashboard.",
+        "Prooval replaces the four-link patchwork most creators rely on — a booking link, a digital-file storefront, a tip jar and a DM inbox — with a single cohesive storefront. It consolidates live consultations, digital assets, priority messaging, recurring coaching and community memberships under one URL.",
+        "My job on it was to make monetizing expertise feel effortless on the creator's side and trustworthy on the buyer's side: build confidence, remove friction, and make every step between interest and paid session feel obvious.",
       ],
     },
     {
-      kicker: "02 · Challenges",
-      heading: "Five platforms, five audiences, one service",
+      kicker: "02 · Monetization",
+      heading: "Transactional, not subscription",
       body: [
-        "Design a multi-system online laundry platform while staying true to the brand identity and keeping the whole experience smooth. The main challenge was creating a seamless flow for different types of users, since we had to design five separate platforms for five different user groups.",
+        "We designed Prooval on a transactional revenue model rather than hiding capability behind a paywall. Creators earn through 1-on-1 sessions, webinars and live workshops, digital products, priority DMs, session series, paid communities and direct audience contributions.",
+        "There are no mandatory monthly fees — the platform takes a transaction fee only when the creator earns. Critically, payouts are instant: creators withdraw straight to their local bank accounts on completion, instead of waiting out the three-to-seven-day rolling cycles that lock earnings on comparable platforms.",
       ],
       chips: [
-        "Design System",
-        "Discovery phase and research",
-        "Three mobile apps",
-        "E-commerce website",
-        "Official Dashboard",
-        "Seamless handoff",
+        "1-on-1 Sessions",
+        "Webinars & Workshops",
+        "Digital Products",
+        "Priority DMs",
+        "Session Series",
+        "Paid Communities",
+        "Support Me",
       ],
     },
     {
-      kicker: "03 · Discovery phase",
-      heading: "Research and sitemap",
+      kicker: "03 · Design system",
+      heading: "A colour system that carries meaning",
       body: [
-        "We started by studying the market and key competitors, just to understand where the real gaps were. From there, we shaped the first ideas and began outlining the requirements, the product structure, and all the pages the system would need.",
-      ],
-      figures: [{ layout: "full", images: [shot("Sitemap and product structure")] }],
-    },
-    {
-      kicker: "04 · Discovery phase",
-      heading: "The complete user flow",
-      body: [
-        "With the structure agreed, I mapped the complete flow across every surface — how an order moves from a customer booking it, to a driver collecting it, to a station processing it, and back again. Getting that end-to-end picture right is what keeps five separate products feeling like one service.",
-      ],
-      figures: [
-        { layout: "full", images: [shot("The complete user flow, across all five surfaces")] },
+        "The palette does structural work rather than decoration. A single vibrant blue is reserved strictly for primary conversion actions — starting a page, checking out — because blue signals security and professional trust, which matters most on screens that handle payments and calendar access.",
+        "Everything else sits on a neutral high-contrast canvas so creator branding and their own offerings stay dominant. Warm gold and soft green appear only on quantitative metrics and ratings, pulling the eye to social proof exactly where it earns attention.",
       ],
     },
     {
-      kicker: "05 · UX/UI design",
-      heading: "Design exploration",
+      kicker: "04 · UX architecture",
+      heading: "Progressive disclosure by design",
       body: [
-        "We had to explore different directions, since each audience had different needs. We started by following the brand identity rules, then used that as a base to explore ideas for the website, the mobile app, and the dashboard.",
-      ],
-      figures: [
-        { layout: "full", images: [shot("Design exploration across web, app and dashboard")] },
+        "Above the fold, the hero pairs a clear typographic hierarchy with floating proof cards for page views, revenue earned and bookings, so the platform's capability is validated before anyone is asked to scroll.",
+        "Onboarding breaks setup into three steps — create page, set up page, start selling — which keeps cognitive load low enough that a first-time creator finishes configuring their storefront in minutes. Every offering type then lives in a standardized card with consistent hover states, so browsing works the same on mobile and desktop.",
       ],
     },
     {
-      kicker: "06 · Collaboration",
-      heading: "Figma structure and collaboration",
+      kicker: "05 · Booking",
+      heading: "Slot, questions, payment, calendar",
       body: [
-        "On projects like this, having a solid Figma structure is key. We had to collaborate with multiple developers, the product team, and stakeholders. To keep everything organized, we split the files by project and connected them through one unified design system.",
-      ],
-      figures: [
-        {
-          layout: "full",
-          images: [shot("One file per surface, all connected through a single design system")],
-        },
-      ],
-    },
-    {
-      kicker: "07 · Results",
-      heading: "The final design",
-      body: [
-        "Three mobile apps, an e-commerce website, a kiosk POS and an operations dashboard — every surface drawn from the same system.",
-      ],
-      figures: [
-        { layout: "full", images: [shot("The customer app in hand")] },
-        {
-          layout: "pair",
-          images: [
-            shot("Driver app — assigned tasks and routes"),
-            shot("Account settings, light and dark"),
-          ],
-        },
-        {
-          layout: "pair",
-          images: [
-            shot("Driver app — earnings and payouts"),
-            shot("Customer app — home, orders and order detail"),
-          ],
-        },
-        { layout: "full", images: [shot("Station app — shift management and check-in")] },
-        { layout: "full", images: [shot("QR handover at collection")] },
-        { layout: "full", images: [shot("Website — “Otee laundry made simple, quick and easy”")] },
-        { layout: "full", images: [shot("Website — a service page")] },
-        {
-          layout: "pair",
-          images: [
-            shot("Website — the customer landing page"),
-            shot("Website — laundry services in three easy steps"),
-          ],
-        },
-        { layout: "full", images: [shot("Otee for business — the B2B site")] },
-        { layout: "full", images: [shot("The driver app on shift")] },
-        {
-          layout: "pair",
-          images: [shot("Dashboard — the operations overview"), shot("Dashboard — stations")],
-        },
-        {
-          layout: "pair",
-          images: [
-            shot("Dashboard — kiosk management"),
-            shot("Dashboard — product inventory and support"),
-          ],
-        },
-        { layout: "full", images: [shot("Kiosk — the POS order screen")] },
-      ],
-    },
-    {
-      kicker: "08 · Project results",
-      heading: "A whole ecosystem, shipped",
-      body: [
-        "We’ve successfully designed the whole ecosystem for an online laundry platform, including three parts. The mobile apps, the website, and the dashboard for managing all services.",
-      ],
-      stats: [
-        { value: "Apps", label: "Three mobile apps, each built for a different user" },
-        { value: "Web", label: "Website with full marketing features and integrated e-commerce" },
-        { value: "Kiosk", label: "POS-style interface design for every device" },
+        "Mentorship through scattered DMs breaks down in predictable ways: messages get lost, scheduling runs long, and unpaid advice quietly consumes a mentor's time. Prooval collapses that into one structured flow — the mentee selects a slot, answers pre-booking questions, pays upfront, and the session is written to both calendars with a generated meeting link.",
+        "Creators define recurring availability, session duration and buffer time to avoid burnout. Bookings only confirm once payment clears, which removes unpaid no-shows, and two-way calendar sync means existing commitments automatically block their own slots so nothing double-books.",
       ],
     },
   ],
@@ -513,16 +440,22 @@ export const OTEE: CaseStudy = {
   shipped: {
     heading: "What shipped",
     items: [
-      "Three mobile apps for three users.",
-      "Marketing site with e-commerce.",
-      "POS-grade kiosk for every device.",
+      "Single storefront consolidating sessions, products, DMs and communities.",
+      "Transactional pricing with no mandatory monthly fees.",
+      "Instant payouts straight to creators' local bank accounts.",
+      "Two-way Google Calendar sync with auto-generated event links.",
+      "Upfront payment gate eliminating unpaid no-shows.",
+      "Pre-booking intake forms so sessions start with context.",
+      "Three-step creator onboarding.",
+      "Modular card system for every offering type.",
     ],
   },
   next: {
-    slug: "lighthouse-academy",
-    title: "Lighthouse Academy",
-    category: "Learning Platform",
-    description: "Design for the interactive age — from platform spec documents to a full-stack learning management system and multi-role web platform.",
+    slug: "appello",
+    title: "Appello",
+    category: "Mobile App",
+    description:
+      "A mobile app that lets field-based responders provide assistance wherever it is needed.",
   },
 };
 
@@ -839,11 +772,11 @@ export const CODEX: CaseStudy = {
     ],
   },
   next: {
-    slug: "sorplos",
-    title: "Sorplos",
-    category: "Insurance Aggregator",
+    slug: "ai-journey",
+    title: "AI Journey",
+    category: "AI SaaS",
     description:
-      "Nigeria's compare-and-buy insurance aggregator — from spec documents to a working three-portal prototype.",
+      "An AI analyst for marketing teams — it explains why visitors leave, suggests one fix, and checks whether the fix worked.",
   },
 };
 
@@ -937,13 +870,20 @@ export const AI_JOURNEY: CaseStudy = {
       "One suggested fix, with before-and-after verification.",
     ],
   },
+  next: {
+    slug: "sorplos",
+    title: "Sorplos",
+    category: "Insurance Aggregator",
+    description:
+      "Nigeria's compare-and-buy insurance aggregator — from spec documents to a working three-portal prototype.",
+  },
 };
 
 /** Static fallbacks keyed by slug. */
 export const CASE_STUDIES: Record<string, CaseStudy> = {
   [SORPLOS.slug]: SORPLOS,
   [LIGHTHOUSE.slug]: LIGHTHOUSE,
-  [OTEE.slug]: OTEE,
+  [PROOVAL.slug]: PROOVAL,
   [APPELLO.slug]: APPELLO,
   [VALUEHUT.slug]: VALUEHUT,
   [CODEX.slug]: CODEX,

@@ -1,12 +1,18 @@
 import type { CaseStat } from "../data/caseStudies";
 
 /**
- * Outcome stats — Figma 287:2442 (MindPath) and 289:4041 (Otee).
- * Three even columns of a large value over an uppercase mono label, divided by
- * vertical hairlines. The value may be a metric ("10+") or a word ("Apps") —
- * Otee uses the latter — so `tabular-nums` is the only numeric assumption made.
- * Accent colour comes from the per-project `--outcome` token, not a hard-coded
- * green, because the two case studies resolve to green and indigo respectively.
+ * Outcome stats — Figma 287:2442, the three-column band from the case study
+ * reference design. Three even columns of a large value over an uppercase
+ * label, divided by vertical hairlines.
+ *
+ * `value` is free text, not a number: projects use both metrics ("10+",
+ * "~70") and words where the metric is a count of surfaces. `tabular-nums` is
+ * therefore the only numeric assumption made, and it costs nothing when the
+ * value is alphabetical.
+ *
+ * Accent colour comes from the per-project `--outcome` token rather than a
+ * hard-coded green, because projects resolve to different tones — green for
+ * Lighthouse, indigo for Prooval, matching each brand's primary.
  */
 export default function CaseStats({
   stats,

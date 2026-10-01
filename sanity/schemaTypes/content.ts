@@ -130,8 +130,9 @@ export const caseStudyShipped = defineType({
 
 /**
  * Per-project accent for the outcome blocks (stat values and the ↳ glyph).
- * Both case studies pick this up: MindPath is green, Otee is indigo. Kept as
- * a token reference rather than a free colour so the palette stays closed.
+ * Each project picks this up to match its brand primary — green for Lighthouse
+ * Academy, indigo for Prooval. Kept as a token reference rather than a free
+ * colour so the palette stays closed.
  */
 export const caseStudyTone = defineType({
   name: "caseStudyTone",

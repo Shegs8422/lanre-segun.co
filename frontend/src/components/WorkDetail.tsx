@@ -10,8 +10,8 @@ import CaseShipped from "./CaseShipped";
 import { useCaseStudy } from "../hooks/useSanity";
 
 /**
- * Work detail — Figma 287:2071 (MindPath).
- * A thin assembler: hero, cover, then the CMS-supplied chapter sequence, the
+ * Work detail — built against the case study reference design (Figma 287:2071
+ * and 289:3780). A thin assembler: hero, cover, then the CMS-supplied chapter sequence, the
  * "next case study" panel and the site footer. All layout lives in the
  * children so the data contract (a project document) stays the only coupling.
  *

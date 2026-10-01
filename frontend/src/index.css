@@ -94,8 +94,9 @@
 }
 
 /* Case study outcome accent — set per project via the CMS `outcomeTone`
-   field. MindPath resolves to green, Otee to indigo. Kept as live vars (not
-   baked into the @theme map) so a tone change never needs a rebuild. */
+   field, matching each brand's primary: green for Lighthouse Academy, indigo
+   for Prooval. Kept as live vars (not baked into the @theme map) so changing a
+   project's tone never needs a rebuild. */
 :root {
   --outcome: #3f6b3a;
 }

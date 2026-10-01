@@ -58,7 +58,10 @@ export default function CaseNext({ next }: { next?: CaseNextData }) {
             height={314}
             loading="lazy"
             decoding="async"
-            className="block h-auto w-full border border-line-strong object-cover"
+            // Aspect-locked to the design's 502x314 so the panel height is
+            // stable before the image loads, and so wider source art crops
+            // rather than stretching the panel.
+            className="block aspect-[502/314] w-full border border-line-strong object-cover"
           />
         ) : (
           <div

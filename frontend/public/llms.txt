@@ -22,8 +22,9 @@
 
 ## Selected work
 
-- MindPath — Website and Web App. Online mental-health service in Ireland for adult ADHD and autism assessment.
-- Otee — Web and Mobile apps. Online laundry service platform: customer ordering, driver pickups, kiosk POS, admin operations.
+- Sorplos — Insurance Aggregator. Nigeria's compare-and-buy insurance aggregator: customer app, corporate portal and admin back office on one design system.
+- Lighthouse Academy — Learning Platform. Full-stack learning platform with student, facilitator and admin portals, built as a live Next.js application.
+- Prooval — Creator Platform. All-in-one creator store consolidating sessions, digital products, priority messaging and memberships under a single link.
 - Appello — Mobile App. Field-based responder assistance, primarily for people who live alone.
 - ValueHut — Website. Agile management consultancy transforming organisations into product-team networks.
 - Codex — SaaS. Headless CMS for publishers, focused on rapid content creation.
