@@ -1,0 +1,18 @@
+# Keep the Vercel build lean — the Studio source is not needed once built.
+node_modules
+.git
+.gitignore
+.eslintrc*
+eslint.config.mjs
+package-lock.json
+tsconfig.json
+tsconfig.tsbuildinfo
+asset-ids.jsonl
+asset-stage
+logs
+coverage
+*.log
+*.local
+*.pem
+.DS_Store
+README.md
