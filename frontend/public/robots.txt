@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://lanre-segun.co/sitemap.xml
+Sitemap: https://lanre-segun-co.vercel.app/sitemap.xml

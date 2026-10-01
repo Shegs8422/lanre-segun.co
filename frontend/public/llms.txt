@@ -6,10 +6,10 @@
 
 ## Site
 
-- Welcome: https://lanre-segun.co/
-- Selected Work: https://lanre-segun.co/work
-- AI Workflow: https://lanre-segun.co/ai
-- Profile: https://lanre-segun.co/profile
+- Welcome: https://lanre-segun-co.vercel.app/
+- Selected Work: https://lanre-segun-co.vercel.app/work
+- AI Workflow: https://lanre-segun-co.vercel.app/ai
+- Profile: https://lanre-segun-co.vercel.app/profile
 - Contact: olanrewajuoluwasegun51@gmail.com
 
 ## Profiles
