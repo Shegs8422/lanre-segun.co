@@ -23,13 +23,24 @@ const PROJECTS = [
   },
 ];
 
-const PREVIEW_IMAGE =
-  "http://localhost:3845/assets/bff826db13cc4f5a6f56e0d3c809210e01483d5d.png";
+/**
+ * Preview artwork for the panel on the right. Undefined until real assets are
+ * supplied — the dashed frame below stands in its place so the panel keeps its
+ * height instead of collapsing.
+ */
+const PREVIEW_ARTWORK: string | undefined = undefined;
 
 /**
  * Working with AI — Figma node 237:467.
  * "Here's what I built with AI." heading + interactive project list
  * with preview panel. Clicking a row expands it and updates the preview.
+ *
+ * The preview artwork was previously a hardcoded `http://localhost:3845/...`
+ * URL — Sanity Studio's dev server. On the HTTPS production domain Chrome
+ * blocked it as mixed content and it 500'd, so no preview ever rendered.
+ * Artwork has not been supplied yet, so it now falls back to the same
+ * aspect-locked dashed frame used by CaseFigure. Set PREVIEW_ARTWORK to a
+ * deployed CDN URL (or a file in src/assets) to restore it.
  */
 export default function WorkAI() {
   const [active, setActive] = useState(0);
@@ -152,11 +163,23 @@ export default function WorkAI() {
 
           {/* Right: preview */}
           <div className="relative hidden border border-line bg-[#efe9d2] lg:block">
-            <img
-              src={PREVIEW_IMAGE}
-              alt={project.label}
-              className="absolute inset-0 h-full w-full object-cover"
-            />
+            {PREVIEW_ARTWORK ? (
+              <img
+                src={PREVIEW_ARTWORK}
+                alt={project.label}
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+            ) : (
+              <div
+                role="img"
+                aria-label={`${project.label} — preview artwork pending`}
+                className="absolute inset-0 flex items-center justify-center border border-dashed border-ink/20 p-[24px] text-center"
+              >
+                <span className="max-w-[30ch] font-sans text-[10.5px] font-normal uppercase leading-[16.275px] tracking-[1.68px] text-faint">
+                  Preview pending
+                </span>
+              </div>
+            )}
             <p className="absolute left-[16px] top-[14px] font-sans text-[10.5px] uppercase tracking-[1.68px] text-[#fbf7e6]">
               {project.label}
             </p>
