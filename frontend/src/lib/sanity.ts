@@ -80,7 +80,7 @@ export function caseStudyQuery(_slug: string) {
       figures[]{
         _type == "caseStudyFigureFull" => { "layout": "full", caption, "images": [image]${image} },
         _type == "caseStudyFigurePair" => { "layout": "pair", caption, "images": images[]${image} },
-        _type == "caseStudyFigureTriptych" => { "layout": "triptych", "images": images[]${image} }
+        _type == "caseStudyFigureTriptych" => { "layout": "triptych", caption, "images": images[]${image} }
       },
       stats[]{ value, label },
       quote{ text, cite }
