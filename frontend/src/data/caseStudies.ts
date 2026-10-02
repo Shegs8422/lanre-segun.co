@@ -496,6 +496,17 @@ export const PROOVAL: CaseStudy = {
         "Mentorship through scattered DMs breaks down in predictable ways: messages get lost, scheduling runs long, and unpaid advice quietly consumes a mentor's time. Prooval collapses that into one structured flow — the mentee selects a slot, answers pre-booking questions, pays upfront, and the session is written to both calendars with a generated meeting link.",
         "Creators define recurring availability, session duration and buffer time to avoid burnout. Bookings only confirm once payment clears, which removes unpaid no-shows, and two-way calendar sync means existing commitments automatically block their own slots so nothing double-books.",
       ],
+      figures: [
+        {
+          layout: "full",
+          images: [
+            {
+              src: "https://cdn.sanity.io/images/80wu0o5s/production/e3ea6f6b1db69a3fda127613b5fbdbcd3e9f792d-1278x853.png",
+              alt: "The Prooval booking page shown on a laptop and a phone at once — a package session titled 'Let's talk about negotiations' with chips for video call, question count, instant booking and price, an Africa/Lagos timezone selector, and a calendar of available slots leading to a Proceed step and a Confirm booking button.",
+            },
+          ],
+        },
+      ],
     },
   ],
   tone: "indigo",
