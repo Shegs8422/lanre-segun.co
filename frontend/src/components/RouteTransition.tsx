@@ -115,6 +115,22 @@ export default function RouteTransition({ lenisRef, children }: Props) {
     return curtain;
   };
 
+  // Scroll reset for a route change.
+  //
+  // The curtain parks Lenis with stop(), and Lenis's scrollTo() is a no-op
+  // while stopped — so a reset issued during the cover is discarded, leaving
+  // the stale pre-navigation target in place. The later start() then animates
+  // back to the old offset and the reader lands mid-page instead of at the
+  // top. `force: true` bypasses Lenis's stopped/locked guards, and the native
+  // scrollTo covers the reduced-motion path where Lenis never exists.
+  //
+  // Called AFTER lenis.start(): starting is what resumes the animation, so
+  // resetting before it would just be overwritten.
+  const resetScroll = () => {
+    lenisRef.current?.scrollTo(0, { immediate: true, force: true });
+    window.scrollTo(0, 0);
+  };
+
   // Reveal helper shared by intercepted + popstate navigations.
   const playReveal = (onDone: () => void) => {
     const curtain = primeCurtain();
@@ -217,8 +233,7 @@ export default function RouteTransition({ lenisRef, children }: Props) {
     if (reduced) {
       window.scrollTo(0, 0);
       return;
-    }
-    if (prevPath.current === pathname) return; // mount / StrictMode re-run
+    }    if (prevPath.current === pathname) return; // mount / StrictMode re-run
     prevPath.current = pathname;
     const lenis = lenisRef.current;
     lenis?.stop();
@@ -228,6 +243,7 @@ export default function RouteTransition({ lenisRef, children }: Props) {
       return playReveal(() => {
         phaseRef.current = "idle";
         lenis?.start();
+        resetScroll();
         const next = queuedRef.current;
         queuedRef.current = null;
         if (next && next !== pathRef.current) go(next);
@@ -237,6 +253,7 @@ export default function RouteTransition({ lenisRef, children }: Props) {
     const curtain = primeCurtain();
     if (!curtain) {
       lenis?.start();
+      resetScroll();
       return;
     }
     if (lenis) lenis.scrollTo(0, { immediate: true });
@@ -252,6 +269,7 @@ export default function RouteTransition({ lenisRef, children }: Props) {
             gsap.set(curtain, { display: "none" });
             phaseRef.current = "idle";
             lenis?.start();
+            resetScroll();
           },
         })
         .fromTo(cols, { scaleY: 0 }, { scaleY: 1, duration: 0.4, ease: "expo.inOut", stagger: 0.05 })
@@ -260,6 +278,7 @@ export default function RouteTransition({ lenisRef, children }: Props) {
     return () => {
       ctx.revert();
       lenis?.start();
+      resetScroll();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, reduced, lenisRef]);

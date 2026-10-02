@@ -1,7 +1,7 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import { Link } from "react-router";
 import { Plus } from "lucide-react";
-import { PROJECTS } from "../data/projects";
+import { PROJECTS, type Project } from "../data/projects";
 import { useHeaderReveal } from "../hooks/useReveal";
 import { useSanityCollection } from "../hooks/useSanity";
 import { QUERIES } from "../lib/sanity";
@@ -15,6 +15,55 @@ import gsap from "gsap";
  * Header copy uses mount reveal (useHeaderReveal). Touch + reduced-motion
  * fall back to static columns with no cursor card.
  */
+/**
+ * Card thumbnail — used by the mobile accordion, the inline column frame and
+ * the desktop floating hover card.
+ *
+ * Renders the project's CMS `cover` when it exists, and falls back to the
+ * labelled dashed placeholder it replaced, so projects without imagery keep
+ * their slot rather than collapsing. The source art is ~1.95:1 while these
+ * frames are 21/9 and 16/9, so `object-cover` crops rather than distorts.
+ * Decorative: every card already carries the project title as text, so the
+ * image is empty-alt to avoid announcing it twice.
+ */
+function WorkThumb({
+  project,
+  shots,
+  aspect,
+  eager = false,
+}: {
+  project: Project;
+  shots: boolean;
+  aspect: string;
+  eager?: boolean;
+}) {
+  if (project.cover) {
+    return (
+      <div className={`${aspect} w-full overflow-hidden bg-bg-soft`}>
+        <img
+          src={project.cover}
+          alt=""
+          width={2032}
+          height={1040}
+          loading={eager ? "eager" : "lazy"}
+          decoding="async"
+          className="block h-full w-full object-cover"
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div
+      className={`${aspect} w-full items-center justify-center border border-dashed border-ink/25 bg-bg-soft`}
+    >
+      <span className="font-mono text-[10px] tracking-[1.68px] text-faint">
+        {shots ? project.title.toUpperCase() : "SCREENSHOT"}
+      </span>
+    </div>
+  );
+}
+
 export default function WorkHero() {
   const { ref: headerRef, inView: headerIn } = useHeaderReveal<HTMLElement>();
   const projects = useSanityCollection(QUERIES.projects, PROJECTS);
@@ -189,13 +238,8 @@ export default function WorkHero() {
                 inert={!open}
               >
                 <div className="min-h-0 overflow-hidden">
-                  <div className="relative mb-5 aspect-[21/9] w-full overflow-hidden border border-dashed border-ink/25 bg-bg-soft">
-                    <span
-                      aria-hidden
-                      className="absolute inset-0 flex items-center justify-center font-mono text-[10px] tracking-[1.68px] text-faint"
-                    >
-                      {shots ? p.title.toUpperCase() : "SCREENSHOT"}
-                    </span>
+                  <div className="relative mb-5 w-full overflow-hidden border border-dashed border-ink/25 bg-bg-soft">
+                    <WorkThumb project={p} shots={shots} aspect="aspect-[21/9]" eager={i < 2} />
                     <button
                       type="button"
                       onClick={() => {
@@ -256,13 +300,11 @@ export default function WorkHero() {
               <Plus size={20} strokeWidth={1.5} className="text-faint transition-colors group-hover:text-ink" />
             </span>
 
-            {/* Placeholder frame — always visible */}
-            <div className="mt-12 border border-dashed border-ink/25 bg-bg-soft transition-colors group-hover:border-ink/40 group-hover:bg-bg-sunk lg:hidden">
-              <div className="flex aspect-video items-center justify-center">
-                <span className="font-mono text-[10px] tracking-[1.68px] text-faint">
-                  {shots ? p.title.toUpperCase() : "SCREENSHOT"}
-                </span>
-              </div>
+            {/* Card frame — cover image when the project has one, otherwise
+                the labelled placeholder. Hidden on lg, where the floating
+                hover card takes over. */}
+            <div className="mt-12 overflow-hidden border border-dashed border-ink/25 bg-bg-soft transition-colors group-hover:border-ink/40 group-hover:bg-bg-sunk lg:hidden">
+              <WorkThumb project={p} shots={shots} aspect="aspect-video" />
             </div>
 
             <div className="sv-ttl mt-auto pt-6">
@@ -285,10 +327,8 @@ export default function WorkHero() {
             <div className="sv-wx-layers">
               {projects.map((p, i) => (
                 <div key={p.slug} className={`sv-wx-layer ${activeProject === i ? "is-active" : ""}`}>
-                  <div className="flex aspect-video items-center justify-center border-b border-dashed border-ink/30 bg-bg-soft">
-                    <span className="font-mono text-[10px] tracking-[1.68px] text-faint">
-                      {shots ? p.title.toUpperCase() : "SCREENSHOT"}
-                    </span>
+                  <div className="overflow-hidden border-b border-line-strong">
+                    <WorkThumb project={p} shots={shots} aspect="aspect-video" />
                   </div>
                   <div className="p-4">
                     <h3 className="nm font-sans text-[18px] font-medium text-ink">{p.title}</h3>
