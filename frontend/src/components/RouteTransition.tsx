@@ -117,18 +117,28 @@ export default function RouteTransition({ lenisRef, children }: Props) {
 
   // Scroll reset for a route change.
   //
-  // The curtain parks Lenis with stop(), and Lenis's scrollTo() is a no-op
-  // while stopped — so a reset issued during the cover is discarded, leaving
-  // the stale pre-navigation target in place. The later start() then animates
-  // back to the old offset and the reader lands mid-page instead of at the
-  // top. `force: true` bypasses Lenis's stopped/locked guards, and the native
-  // scrollTo covers the reduced-motion path where Lenis never exists.
+  // Two things fight a naive reset here:
   //
-  // Called AFTER lenis.start(): starting is what resumes the animation, so
-  // resetting before it would just be overwritten.
+  // 1. The curtain parks Lenis with stop(), and Lenis's scrollTo() is a no-op
+  //    while stopped — so a reset issued during the cover is discarded,
+  //    leaving the stale pre-navigation target in place. The later start()
+  //    then animates back to the old offset and the reader lands mid-page.
+  //    `force: true` bypasses Lenis's stopped/locked guards.
+  //
+  // 2. `html { scroll-behavior: smooth }` turns a plain scrollTo into a CSS
+  //    animation. Lenis cancels that with `.lenis-smooth`, but only while it
+  //    is running — and we reset precisely when it is stopped, so the jump
+  //    crawls instead of snapping. `behavior: "instant"` overrides the CSS
+  //    and keeps the reset a hard jump.
+  //
+  // The native call also covers the reduced-motion path, where Lenis is never
+  // created at all.
+  //
+  // Called after lenis.start() too: starting is what resumes the animation, so
+  // a reset issued before it would just be overwritten.
   const resetScroll = () => {
     lenisRef.current?.scrollTo(0, { immediate: true, force: true });
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
   };
 
   // Reveal helper shared by intercepted + popstate navigations.
@@ -231,12 +241,20 @@ export default function RouteTransition({ lenisRef, children }: Props) {
   // Route change: reveal (intercepted) or cover+reveal (popstate/direct).
   useLayoutEffect(() => {
     if (reduced) {
-      window.scrollTo(0, 0);
+      resetScroll();
       return;
-    }    if (prevPath.current === pathname) return; // mount / StrictMode re-run
+    }
+    if (prevPath.current === pathname) return; // mount / StrictMode re-run
     prevPath.current = pathname;
     const lenis = lenisRef.current;
     lenis?.stop();
+    // Reset the moment the new route commits, not at the end of the reveal.
+    // This effect runs after React mutates the DOM but before paint, so the
+    // incoming page is never painted at the outgoing page's offset. Doing it
+    // in the reveal's onComplete instead left the page parked at the old
+    // position for the length of the curtain animation, which read as the
+    // scroll "snapping" a beat after the page appeared.
+    resetScroll();
     if (navigatingRef.current) {
       // Cover already played over the old page — just reveal.
       navigatingRef.current = false;
