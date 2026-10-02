@@ -458,6 +458,17 @@ export const PROOVAL: CaseStudy = {
         "The palette does structural work rather than decoration. A single vibrant blue is reserved strictly for primary conversion actions — starting a page, checking out — because blue signals security and professional trust, which matters most on screens that handle payments and calendar access.",
         "Everything else sits on a neutral high-contrast canvas so creator branding and their own offerings stay dominant. Warm gold and soft green appear only on quantitative metrics and ratings, pulling the eye to social proof exactly where it earns attention.",
       ],
+      figures: [
+        {
+          layout: "full",
+          images: [
+            {
+              src: "https://cdn.sanity.io/images/80wu0o5s/production/cf9ca7b1a3e2e15d9771532638287f67dc96ce78-1278x799.png",
+              alt: "The Prooval brand palette — seven colour bands labelled with CMYK, RGB and hex values, running from a vivid blue and a near-black through white and two greys to a warm gold, beside a branded cap carrying the Prooval mark.",
+            },
+          ],
+        },
+      ],
     },
     {
       kicker: "04 · UX architecture",
