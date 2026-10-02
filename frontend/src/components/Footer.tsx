@@ -2,6 +2,7 @@ import { Link } from "react-router";
 import { CERTS } from "../data/certs";
 import { useSanityCollection, useSanityDoc } from "../hooks/useSanity";
 import { QUERIES } from "../lib/sanity";
+import { sanityFallback, sanitySrcSet } from "../lib/sanityImage";
 import arrowUrl from "../assets/arrow.svg";
 
 /**
@@ -46,7 +47,17 @@ export default function Footer() {
                   className="w-[150px] shrink-0 border border-[rgba(22,20,14,0.22)] bg-[#fbf7e6] p-3 text-center md:w-[180px]"
                 >
                   {c.src ? (
-                    <img src={c.src} alt="" width={120} height={44} loading="lazy" className="mx-auto block h-[44px] w-full object-contain" />
+                    <img
+                      src={sanityFallback(c.src, 240)}
+                      srcSet={sanitySrcSet(c.src, [120, 240, 360])}
+                      sizes="180px"
+                      alt=""
+                      width={120}
+                      height={44}
+                      loading="lazy"
+                      decoding="async"
+                      className="mx-auto block h-[44px] w-full object-contain"
+                    />
                   ) : (
                     <span aria-hidden className="mx-auto block h-[44px] w-full" />
                   )}
