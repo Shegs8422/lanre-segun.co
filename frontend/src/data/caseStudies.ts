@@ -455,8 +455,8 @@ export const PROOVAL: CaseStudy = {
       kicker: "03 · Design system",
       heading: "A colour system that carries meaning",
       body: [
-        "The palette does structural work rather than decoration. A single vibrant blue is reserved strictly for primary conversion actions — starting a page, checking out — because blue signals security and professional trust, which matters most on screens that handle payments and calendar access.",
-        "Everything else sits on a neutral high-contrast canvas so creator branding and their own offerings stay dominant. Warm gold and soft green appear only on quantitative metrics and ratings, pulling the eye to social proof exactly where it earns attention.",
+        "Seven swatches, and only two of them are allowed to shout. A single saturated blue carries every primary action — starting a page, checking out, confirming a booking — because blue reads as secure and professional, which matters most on the screens that take payments and calendar access. The warm gold is the only other colour admitted, held back for figures and ratings so the eye reaches the number before the label.",
+        "The remaining five are a neutral ladder, from a deep black with a plum cast through two greys and an off white to pure white. That ladder is what keeps creator branding dominant: the interface can go as dark or as light as the content demands without ever reaching for a second hue. The blue that drives the buttons is the blue on the cap, so the mark and the product are literally the same colour.",
       ],
       figures: [
         {
