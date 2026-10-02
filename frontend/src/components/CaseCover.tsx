@@ -1,4 +1,5 @@
 import type { CaseImage } from "../data/caseStudies";
+import { sanityFallback, sanitySrcSet, WIDTHS_FULL } from "../lib/sanityImage";
 
 /**
  * Cover image — Figma 287:2497.
@@ -19,7 +20,9 @@ export default function CaseCover({ cover }: { cover?: CaseImage }) {
     <figure className="mt-[54px] md:-mx-[24px]">
       {cover.src ? (
         <img
-          src={cover.src}
+          src={sanityFallback(cover.src)}
+          srcSet={sanitySrcSet(cover.src, WIDTHS_FULL)}
+          sizes="(min-width: 1024px) 1059px, (min-width: 768px) 94vw, 100vw"
           alt={cover.alt}
           width={2032}
           height={1040}

@@ -5,6 +5,7 @@ import { PROJECTS, type Project } from "../data/projects";
 import { useHeaderReveal } from "../hooks/useReveal";
 import { useSanityCollection } from "../hooks/useSanity";
 import { QUERIES } from "../lib/sanity";
+import { sanityFallback, sanitySrcSet, WIDTHS_THUMB } from "../lib/sanityImage";
 import gsap from "gsap";
 
 /**
@@ -41,7 +42,9 @@ function WorkThumb({
     return (
       <div className={`${aspect} w-full overflow-hidden bg-bg-soft`}>
         <img
-          src={project.cover}
+          src={sanityFallback(project.cover, 1088)}
+          srcSet={sanitySrcSet(project.cover, WIDTHS_THUMB)}
+          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
           alt=""
           width={2032}
           height={1040}

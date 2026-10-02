@@ -1,4 +1,5 @@
 import type { CaseFigure as CaseFigureData, CaseImage } from "../data/caseStudies";
+import { sanityFallback, sanitySrcSet, WIDTHS_FULL } from "../lib/sanityImage";
 
 /**
  * Case study figure — Figma 287:2419 … 287:2367.
@@ -32,7 +33,9 @@ function Shot({ image }: { image: CaseImage }) {
 
   return (
     <img
-      src={image.src}
+      src={sanityFallback(image.src)}
+      srcSet={sanitySrcSet(image.src, WIDTHS_FULL)}
+      sizes="(min-width: 1024px) 1011px, (min-width: 768px) 90vw, 100vw"
       alt={image.alt}
       loading="lazy"
       decoding="async"
