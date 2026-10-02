@@ -474,8 +474,8 @@ export const PROOVAL: CaseStudy = {
       kicker: "04 · UX architecture",
       heading: "Progressive disclosure by design",
       body: [
-        "Above the fold, the hero pairs a clear typographic hierarchy with floating proof cards for page views, revenue earned and bookings, so the platform's capability is validated before anyone is asked to scroll.",
-        "Onboarding breaks setup into three steps — create page, set up page, start selling — which keeps cognitive load low enough that a first-time creator finishes configuring their storefront in minutes. Every offering type then lives in a standardized card with consistent hover states, so browsing works the same on mobile and desktop.",
+        "The buyer side starts deliberately empty. A new account lands on one welcome card that states what the dashboard will hold and offers two ways forward — see my purchases, or become a creator — instead of a grid of features with nothing behind them yet. Nothing appears until there is something to put on it.",
+        "Once there is content, all of it reads the same. Communities and bundles share a single card grammar: media, a status badge, a title, a price, one line of description, the metadata that matters for that type, and one action. The bottom navigation never moves, and search and filtering sit above the list, so a buyer learns the interface once and reuses it for every purchase after.",
       ],
       figures: [
         {
