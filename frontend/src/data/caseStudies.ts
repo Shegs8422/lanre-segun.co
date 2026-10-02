@@ -477,6 +477,17 @@ export const PROOVAL: CaseStudy = {
         "Above the fold, the hero pairs a clear typographic hierarchy with floating proof cards for page views, revenue earned and bookings, so the platform's capability is validated before anyone is asked to scroll.",
         "Onboarding breaks setup into three steps — create page, set up page, start selling — which keeps cognitive load low enough that a first-time creator finishes configuring their storefront in minutes. Every offering type then lives in a standardized card with consistent hover states, so browsing works the same on mobile and desktop.",
       ],
+      figures: [
+        {
+          layout: "full",
+          images: [
+            {
+              src: "https://cdn.sanity.io/images/80wu0o5s/production/2ac790aa79dfc0fd630ba76f480314d61121fd71-1278x959.png",
+              alt: "The Prooval user dashboard on mobile — three phone screens showing a welcome state offering purchases or creator access, a My Communities list of joined communities with price and resource counts, and a Bundles list of products, each above the same five item bottom navigation bar.",
+            },
+          ],
+        },
+      ],
     },
     {
       kicker: "05 · Booking",
