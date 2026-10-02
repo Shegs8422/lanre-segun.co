@@ -58,12 +58,13 @@ export const QUERIES = {
  * Full case study for one project. Figure variants are normalised onto a
  * single `images[]` array with a `layout` discriminator, so the renderer can
  * treat full / pair / triptych uniformly instead of branching on _type.
+ *
+ * `caseStudyFigureFull` stores a singular `image`, not an array, so it needs
+ * `[image]{...}` to wrap that one value into `images[]`. Without the brackets
+ * the projection resolves to null and CaseFigure drops the figure entirely.
  */
 export function caseStudyQuery(_slug: string) {
-  const figure = `{
-    caption,
-    images[]{ "src": image.asset->url, alt, caption }
-  }`;
+  const image = `{ "src": image.asset->url, alt, caption }`;
   return `*[_type == "project" && slug.current == $slug][0]{
     "slug": slug.current,
     title,
@@ -77,9 +78,9 @@ export function caseStudyQuery(_slug: string) {
       body,
       chips,
       figures[]{
-        _type == "caseStudyFigureFull" => { "layout": "full", ${figure} },
-        _type == "caseStudyFigurePair" => { "layout": "pair", ${figure} },
-        _type == "caseStudyFigureTriptych" => { "layout": "triptych", ${figure} }
+        _type == "caseStudyFigureFull" => { "layout": "full", caption, "images": [image]${image} },
+        _type == "caseStudyFigurePair" => { "layout": "pair", caption, "images": images[]${image} },
+        _type == "caseStudyFigureTriptych" => { "layout": "triptych", "images": images[]${image} }
       },
       stats[]{ value, label },
       quote{ text, cite }

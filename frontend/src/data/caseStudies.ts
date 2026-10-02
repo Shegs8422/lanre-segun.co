@@ -393,13 +393,24 @@ export const PROOVAL: CaseStudy = {
         "Prooval replaces the four-link patchwork most creators rely on — a booking link, a digital-file storefront, a tip jar and a DM inbox — with a single cohesive storefront. It consolidates live consultations, digital assets, priority messaging, recurring coaching and community memberships under one URL.",
         "My job on it was to make monetizing expertise feel effortless on the creator's side and trustworthy on the buyer's side: build confidence, remove friction, and make every step between interest and paid session feel obvious.",
       ],
+      figures: [
+        {
+          layout: "full",
+          images: [
+            {
+              src: "https://cdn.sanity.io/images/80wu0o5s/production/3fffb55e94dcd8a1c28132b8b374828040e68f4f-1278x959.png",
+              alt: "The Prooval creator dashboard — sidebar navigation for Link in Bio, Store and Wallet, with summary cards for total products, sessions booked, page views and earnings, a 'Page is Active' panel, and a Suggested Actions section offering profile photo, bio and social links tasks.",
+            },
+          ],
+        },
+      ],
     },
     {
-      kicker: "02 · Monetization",
-      heading: "Transactional, not subscription",
+      kicker: "02 · Features",
+      heading: "One page, every way to sell",
       body: [
-        "We designed Prooval on a transactional revenue model rather than hiding capability behind a paywall. Creators earn through 1-on-1 sessions, webinars and live workshops, digital products, priority DMs, session series, paid communities and direct audience contributions.",
-        "There are no mandatory monthly fees — the platform takes a transaction fee only when the creator earns. Critically, payouts are instant: creators withdraw straight to their local bank accounts on completion, instead of waiting out the three-to-seven-day rolling cycles that lock earnings on comparable platforms.",
+        "A creator should not need a new product to gain a new way of selling. Prooval holds a fixed set of offering types — bookable sessions, webinars, session series, digital products, bundles, priority DMs and paid communities — and renders each through the same card, the same checkout and the same confirmation, so a buyer who understands one listing understands all of them.",
+        "Booking is the deepest of those surfaces. One toggle takes a creator from idle to live, a linked Google Calendar handles availability, and sessions are then filtered by type so a client sees only what applies to them. Priority messaging is built on the same logic: an open inbox becomes a queue with counts for pending, answered and refunded, and each enquiry carries a visible response window, so priority means a commitment with a clock on it rather than a line in a bio.",
       ],
       chips: [
         "1-on-1 Sessions",
@@ -409,6 +420,35 @@ export const PROOVAL: CaseStudy = {
         "Session Series",
         "Paid Communities",
         "Support Me",
+      ],
+      figures: [
+        {
+          layout: "full",
+          images: [
+            {
+              src: "https://cdn.sanity.io/images/80wu0o5s/production/12ecfb936be69519d0d46cb44f7c1d3646795186-1278x959.png",
+              alt: "The Prooval Session Series landing page — 'Create your own structured coaching programs with Session Series', above Create Session Series and Watch Demo calls to action.",
+            },
+          ],
+        },
+        {
+          layout: "full",
+          images: [
+            {
+              src: "https://cdn.sanity.io/images/80wu0o5s/production/5c268308bee541296000d5f9409446800ab30e33-1278x959.png",
+              alt: "The Bookings screen in the creator dashboard — a 'Bookings Activated' panel offering Add New Booking and Link Google Calendar, above My Sessions and Upcoming Sessions filters and a 1-on-1 session card.",
+            },
+          ],
+        },
+        {
+          layout: "full",
+          images: [
+            {
+              src: "https://cdn.sanity.io/images/80wu0o5s/production/c0686b0c49a7dbc51b5b5e8f6a175c9b87a5d786-1278x959.png",
+              alt: "The Priority DMs screen in the creator dashboard — pending, answered and refunded message counts above a searchable list of enquiries, each showing its remaining response window.",
+            },
+          ],
+        },
       ],
     },
     {
