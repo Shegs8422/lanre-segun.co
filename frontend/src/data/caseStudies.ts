@@ -474,8 +474,8 @@ export const PROOVAL: CaseStudy = {
       kicker: "04 · UX architecture",
       heading: "Progressive disclosure by design",
       body: [
-        "The buyer side starts deliberately empty. A new account lands on one welcome card that states what the dashboard will hold and offers two ways forward — see my purchases, or become a creator — instead of a grid of features with nothing behind them yet. Nothing appears until there is something to put on it.",
-        "Once there is content, all of it reads the same. Communities and bundles share a single card grammar: media, a status badge, a title, a price, one line of description, the metadata that matters for that type, and one action. The bottom navigation never moves, and search and filtering sit above the list, so a buyer learns the interface once and reuses it for every purchase after.",
+        "A buyer's dashboard is one flow rather than a set of pages. The bottom bar holds its position for the whole journey, so nothing has to be relearned when the content behind it changes. Search and filters sit above every list, which means a buyer narrows down before opening anything.",
+        "Inside a collection, everything is described the same way whatever the product is. A monthly community and a bundle bought once both show what they are, what they cost, what is included, and one action to take. Even the navigation follows the flow, carrying five slots while browsing categories and narrowing to three inside a single collection.",
       ],
       figures: [
         {
