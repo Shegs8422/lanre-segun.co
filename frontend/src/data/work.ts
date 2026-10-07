@@ -29,7 +29,7 @@ export const JOBS: Job[] = [
   {
     team: "Konfera",
     role: "Product Designer",
-    body: "Event management systems for an event management company.",
+    body: "Eventy8 — end-to-end product design for an event management platform, from research through to handoff.",
   },
   {
     team: "Freelancing",

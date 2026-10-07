@@ -35,11 +35,11 @@ export const PROJECTS: Project[] = [
       "https://cdn.sanity.io/images/80wu0o5s/production/43a9a0aa38aae663b243ce5eb66a11427c84c3b8-2032x1040.png",
   },
   {
-    slug: "appello",
-    title: "Appello",
-    category: "Mobile App",
+    slug: "eventy8",
+    title: "Eventy8 by Konfera",
+    category: "Event Platform",
     description:
-      "Appello is a mobile app, designed to enable field-based responders to provide assistance wherever it is needed, primarily for people who live alone.",
+      "Eventy8 is Konfera's event management platform. I joined as the product designer and took it end to end — research, flows, interface and handoff.",
   },
   {
     slug: "valuehut",

@@ -524,11 +524,11 @@ export const PROOVAL: CaseStudy = {
     ],
   },
   next: {
-    slug: "appello",
-    title: "Appello",
-    category: "Mobile App",
+    slug: "eventy8",
+    title: "Eventy8 by Konfera",
+    category: "Event Platform",
     description:
-      "A mobile app that lets field-based responders provide assistance wherever it is needed.",
+      "Konfera's event management platform. Designed end to end — research, flows, interface and handoff.",
   },
 };
 
@@ -540,112 +540,44 @@ export const PROOVAL: CaseStudy = {
  * placeholders with alt text only.
  */
 
-export const APPELLO: CaseStudy = {
-  slug: "appello",
-  title: "Appello",
-  category: "Mobile App",
+/**
+ * Eventy8 — brief by design.
+ *
+ * The Appello entry this replaced was seven sections of seeded filler: invented
+ * shift shadowing, WCAG 2.2 claims and platform counts. Only four facts about
+ * this project are actually confirmed — Konfera is an event management company,
+ * Eventy8 is the product, and I designed it end to end. So this entry states
+ * exactly that and stops. No problem statement, research method, outcome or
+ * metric is asserted until it is real. The prose below is the whole entry, not
+ * a placeholder for longer prose.
+ */
+export const EVENTY8: CaseStudy = {
+  slug: "eventy8",
+  title: "Eventy8 by Konfera",
+  category: "Event Platform",
   description:
-    "A mobile app, designed to enable field-based responders to provide assistance wherever it is needed, primarily for people who live alone.",
-  cover: {
-    alt: "Appello — a mobile app that lets field-based responders provide assistance wherever it is needed.",
-  },
+    "Eventy8 is Konfera's event management platform. I joined as the product designer and took it end to end — research, flows, interface and handoff.",
   meta: [
-    { label: "Role", value: "UX/UI + Research" },
-    { label: "Tools", value: "Figma & FigJam" },
-    { label: "Platform", value: "iOS & Android" },
-    { label: "Year", value: "2023 — 24" },
+    { label: "Role", value: "Product Designer, end to end" },
+    { label: "Team", value: "Konfera" },
   ],
   sections: [
     {
       kicker: "01 · Overview",
-      heading: "Help that arrives when it matters most",
+      heading: "An event platform, owned end to end",
       body: [
-        "I designed Appello end-to-end — research, flows, interface and handoff. The result is a calm, fast mobile app built for responders in the field and the people who depend on them.",
+        "Eventy8 is Konfera's event management platform. I joined as the product designer and carried the work from research through to handoff, so the problem, the flows and the interface were all decided by the same person rather than handed between stages.",
       ],
     },
     {
-      kicker: "02 · The problem",
-      heading: "Built around the hardest moment",
+      kicker: "02 · Scope",
+      heading: "What that meant in practice",
       body: [
-        "Appello is used primarily by people who live alone. When something goes wrong, the person is very often alone too, and the responder is on their own, without reliable context or a signal to work from.",
-        "My job was to make that moment as simple as possible: fewer taps, clearer state, and a design that stays readable in bad light, low battery and high stress.",
-      ],
-      chips: [
-        "Field-ready UX",
-        "Fast under pressure",
-        "Offline-tolerant",
-        "Clear for older users",
-        "Accessible by default",
-      ],
-    },
-    {
-      kicker: "03 · Discovery",
-      heading: "Talking to the people in the field",
-      body: [
-        "I started with the responders, not the screens. Shadowing a few shifts showed where the existing process broke down and which details actually mattered versus which were noise.",
-        "From that we shaped the structure: what a responder needs to know first, what can wait, and what must never be ambiguous.",
-      ],
-      figures: [{ layout: "full", images: [shot("Discovery — responder interviews and journey mapping")] }],
-    },
-    {
-      kicker: "04 · The user",
-      heading: "Two sides of the same call",
-      body: [
-        "There are two users in every interaction: the person who needs help, and the responder travelling to them. Both are on a phone, often moving, often under time pressure.",
-        "I mapped both journeys together so the handoff between them stays consistent — the same names, the same status language, the same sense of what happens next.",
-      ],
-      figures: [
-        { layout: "full", images: [shot("User types and the journeys between them")] },
-      ],
-    },
-    {
-      kicker: "05 · Product",
-      heading: "Fast, legible, one-handed",
-      body: [
-        "The interface is designed to be used one-handed while moving. Large targets, a single clear action per screen, and status that can be understood at a glance rather than read.",
-        "Accessibility was a requirement rather than a pass at the end: contrast, type size and focus order were all resolved against WCAG 2.2 AA as the flows were built.",
-      ],
-      figures: [
-        { layout: "full", images: [shot("The responder app — the core call flow")] },
-        {
-          layout: "pair",
-          images: [shot("Job list and live status"), shot("Visit detail and notes")],
-        },
-      ],
-    },
-    {
-      kicker: "06 · Craft",
-      heading: "Design system and handoff",
-      body: [
-        "Every screen was drawn from one shared component library, so behaviour stayed consistent across the app and the work was straightforward for engineering to pick up.",
-        "I documented the system as I built it, which is what turned a set of screens into something the team could keep extending after handover.",
-      ],
-      figures: [
-        { layout: "full", images: [shot("One component library, documented")] },
-      ],
-    },
-    {
-      kicker: "07 · Outcome",
-      heading: "Ready for the field",
-      body: [
-        "Appello shipped as a complete, native-feeling mobile app on both platforms, with a design system the engineering team could build on.",
-      ],
-      stats: [
-        { value: "2", label: "Platforms shipped — iOS and Android" },
-        { value: "AA", label: "WCAG 2.2 AA contrast and focus order" },
-        { value: "1", label: "Shared component library, documented" },
+        "Research, flows, interface and handoff were all mine. That meant settling what the product should do before deciding how any screen looked, and then documenting it well enough to hand over.",
+        "The rest of this case study — what Eventy8 does, the design decisions behind it and how it landed — is still being written and will be added here once it is confirmed.",
       ],
     },
   ],
-  tone: "green",
-  shipped: {
-    heading: "What shipped",
-    items: [
-      "Research, flows and interface for the full responder journey.",
-      "Native-quality app on iOS and Android.",
-      "A documented design system for ongoing work.",
-    ],
-  },
   next: {
     slug: "valuehut",
     title: "ValueHut",
@@ -957,7 +889,7 @@ export const CASE_STUDIES: Record<string, CaseStudy> = {
   [SORPLOS.slug]: SORPLOS,
   [LIGHTHOUSE.slug]: LIGHTHOUSE,
   [PROOVAL.slug]: PROOVAL,
-  [APPELLO.slug]: APPELLO,
+  [EVENTY8.slug]: EVENTY8,
   [VALUEHUT.slug]: VALUEHUT,
   [CODEX.slug]: CODEX,
   [AI_JOURNEY.slug]: AI_JOURNEY,
