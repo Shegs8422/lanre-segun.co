@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { Link } from "react-router";
 import { useReveal } from "../hooks/useReveal";
+import { CASE_STUDIES } from "../data/caseStudies";
+
+/** Row title -> case study slug. Kept in one place so the link and the
+ *  existence check can never disagree. */
+const caseSlug = (title: string) => title.toLowerCase().replace(/\s+/g, "-");
 
 const PROJECTS = [
   {
@@ -118,22 +123,28 @@ export default function WorkAI() {
                         <p className="max-w-[402px] font-sans text-[15px] leading-[23.25px] text-muted">
                           {p.desc}
                         </p>
-                        <Link
-                          to={`/work/${p.title.toLowerCase().replace(/\s+/g, "-")}`}
-                          onClick={(e) => e.stopPropagation()}
-                          className="mt-[14px] inline-flex items-center gap-2 font-sans text-[10.5px] font-medium uppercase tracking-[1.365px] text-accent-deep transition hover:text-ink"
-                        >
-                          Read the report
-                          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
-                            <path
-                              d="M3 11L11 3M11 3H4M11 3V10"
-                              stroke="currentColor"
-                              strokeWidth="1.5"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
-                        </Link>
+                        {/* Only link when a case study actually exists for this
+                            slug. Sena and AI Realtime Renamer have no entry, and
+                            linking them anyway produced soft 404s that returned
+                            HTTP 200 with an empty page. */}
+                        {CASE_STUDIES[caseSlug(p.title)] && (
+                          <Link
+                            to={`/work/${caseSlug(p.title)}`}
+                            onClick={(e) => e.stopPropagation()}
+                            className="mt-[14px] inline-flex items-center gap-2 font-sans text-[10.5px] font-medium uppercase tracking-[1.365px] text-accent-deep transition hover:text-ink"
+                          >
+                            Read the report
+                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
+                              <path
+                                d="M3 11L11 3M11 3H4M11 3V10"
+                                stroke="currentColor"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            </svg>
+                          </Link>
+                        )}
                       </div>
                     )}
                   </div>
