@@ -598,6 +598,26 @@ export const EVENTY8: CaseStudy = {
         },
       ],
     },
+    {
+      kicker: "03 · Discovery",
+      heading: "From research findings to a platform architecture",
+      body: [
+        "The discovery board is where the work stopped being a list of complaints and became a product. Four challenges sit at the top, the candidate ideas that answer them in the middle, and underneath them the open questions that decided how far each idea could actually go.",
+        "Three ideas survived that round: native social features for attendee communities, email connectors built into the organizer dashboard instead of a third-party CRM, and a unified checkout and account centre that keeps discovery, intake and booking under one flow. The architecture frame is where they stopped being notes — one platform engine carrying three surfaces, an attendee portal, an organizer dashboard, and the governance layer behind both.",
+      ],
+      figures: [
+        {
+          layout: "full",
+          images: [
+            {
+              src: "https://cdn.sanity.io/images/80wu0o5s/production/f5521282ab7c76ec42c8976f91cdba0c9ba5d1e1-1098x556.png",
+              alt: "The Eventy8 discovery board in two frames. The first, labelled Brainstorm, lists four challenges — platforms that fail at end-to-end online, hybrid and physical events in Nigeria, organizers relying on fragmented siloed tools like WhatsApp and Telegram, an unintegrated CRM forcing manual attendee entry, and disjointed payment and checkout causing drop-offs — followed by three ideas covering native social features, in-dashboard email connectors, and a unified checkout and account centre, then three open topics on ticket drops, booth permissions and offline check-ins. The second frame, labelled Architecture, maps a single Eventy8 platform engine onto three surfaces: an attendee portal running from landing and event discovery through to account and in-app DMs, an organizer dashboard running from venue and schedule builder through to sponsor tier management, and a governance layer covering payout and security, user roles and approvals, and ecosystem analytics.",
+              caption: "Discovery — brainstorm board and the platform architecture it produced",
+            },
+          ],
+        },
+      ],
+    },
   ],
   next: {
     slug: "valuehut",
