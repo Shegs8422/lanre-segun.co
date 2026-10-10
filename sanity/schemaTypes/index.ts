@@ -15,6 +15,7 @@ import {
   caseStudyQuote,
   caseStudyShipped,
   caseStudyTone,
+  caseStudyPoint,
   caseStudySection,
 } from './content'
 
@@ -37,5 +38,6 @@ export const schemaTypes = [
   caseStudyQuote,
   caseStudyShipped,
   caseStudyTone,
+  caseStudyPoint,
   caseStudySection,
 ]

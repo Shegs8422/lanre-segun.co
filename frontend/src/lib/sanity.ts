@@ -76,6 +76,7 @@ export function caseStudyQuery(_slug: string) {
       kicker,
       heading,
       body,
+      points[]{ label, text },
       chips,
       figures[]{
         _type == "caseStudyFigureFull" => { "layout": "full", caption, "images": [image]${image} },

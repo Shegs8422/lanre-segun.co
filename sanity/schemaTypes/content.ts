@@ -154,6 +154,17 @@ export const caseStudyTone = defineType({
   ],
 });
 
+export const caseStudyPoint = defineType({
+  name: "caseStudyPoint",
+  title: "Point",
+  type: "object",
+  fields: [
+    defineField({ name: "label", title: "Label", type: "string", validation: (r) => r.required() }),
+    defineField({ name: "text", title: "Detail", type: "text", rows: 3, validation: (r) => r.required() }),
+  ],
+  preview: { select: { title: "label", subtitle: "text" } },
+});
+
 export const caseStudySection = defineType({
   name: "caseStudySection",
   title: "Section",
@@ -169,6 +180,11 @@ export const caseStudySection = defineType({
       name: "body", title: "Body", type: "array",
       description: "One item per paragraph.",
       of: [{ type: "text", rows: 4 }],
+    }),
+    defineField({
+      name: "points", title: "Points", type: "array",
+      description: "Optional labelled list under the body — a name over its detail.",
+      of: [{ type: "caseStudyPoint" }],
     }),
     defineField({
       name: "chips", title: "Tags", type: "array",

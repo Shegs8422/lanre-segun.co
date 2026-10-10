@@ -1,5 +1,6 @@
 import { useReveal } from "../hooks/useReveal";
 import CaseFigure from "./CaseFigure";
+import CasePoints from "./CasePoints";
 import CaseQuote from "./CaseQuote";
 import CaseStats from "./CaseStats";
 import type { CaseSection as CaseSectionData } from "../data/caseStudies";
@@ -52,6 +53,10 @@ export default function CaseSection({ section }: { section: CaseSectionData }) {
               {paragraph}
             </p>
           ))}
+
+          {section.points && section.points.length > 0 && (
+            <CasePoints points={section.points} inView={inView} />
+          )}
 
           {section.chips && section.chips.length > 0 && (
             <ul

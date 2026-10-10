@@ -48,10 +48,17 @@ export type CaseNext = {
   cover?: string;
 };
 
+/** A labelled sub-point inside a chapter — a problem name over its detail. */
+export type CasePoint = {
+  label: string;
+  text: string;
+};
+
 export type CaseSection = {
   kicker: string;
   heading: string;
   body: string[];
+  points?: CasePoint[];
   chips?: string[];
   figures?: CaseFigure[];
   stats?: CaseStat[];
@@ -541,40 +548,54 @@ export const PROOVAL: CaseStudy = {
  */
 
 /**
- * Eventy8 — brief by design.
+ * Eventy8 — overview and problem.
  *
  * The Appello entry this replaced was seven sections of seeded filler: invented
- * shift shadowing, WCAG 2.2 claims and platform counts. Only four facts about
- * this project are actually confirmed — Konfera is an event management company,
- * Eventy8 is the product, and I designed it end to end. So this entry states
- * exactly that and stops. No problem statement, research method, outcome or
- * metric is asserted until it is real. The prose below is the whole entry, not
- * a placeholder for longer prose.
+ * shift shadowing, WCAG 2.2 claims and platform counts. The chapters below are
+ * confirmed by Segun — the product, the market it serves, the role and its
+ * scope, and the three failure modes the platform exists to remove. Nothing
+ * beyond chapter 02 is asserted: no research method, metric or outcome is
+ * stated until it is real, so the entry stops where the confirmed brief stops
+ * rather than padding to a template length.
  */
 export const EVENTY8: CaseStudy = {
   slug: "eventy8",
   title: "Eventy8 by Konfera",
   category: "Event Platform",
   description:
-    "Eventy8 is Konfera's event management platform. I joined as the product designer and took it end to end — research, flows, interface and handoff.",
+    "An all-in-one event orchestration platform for emerging markets — ticketing, community and lead management in one place. Designed end to end as Lead Product Designer.",
   meta: [
-    { label: "Role", value: "Product Designer, end to end" },
+    { label: "Role", value: "Lead Product Designer" },
     { label: "Team", value: "Konfera" },
   ],
   sections: [
     {
       kicker: "01 · Overview",
-      heading: "An event platform, owned end to end",
+      heading: "An end-to-end event engine for modern conferences",
       body: [
-        "Eventy8 is Konfera's event management platform. I joined as the product designer and carried the work from research through to handoff, so the problem, the flows and the interface were all decided by the same person rather than handed between stages.",
+        "Eventy8 is an all-in-one event orchestration platform built to solve the fragmented event ecosystem in emerging markets like Nigeria. Existing platforms force organizers to hack together disconnected tools for ticketing, community engagement, and lead management, creating friction for attendees and operational fatigue for hosts.",
+        "As the Lead Product Designer, I owned the project end-to-end — driving research, mapping multi-persona UX architectures, crafting a scalable component design system, and authoring developer handoff specs for a Next.js implementation.",
       ],
     },
     {
-      kicker: "02 · Scope",
-      heading: "What that meant in practice",
+      kicker: "02 · The problem",
+      heading: "The fragmented event stack",
       body: [
-        "Research, flows, interface and handoff were all mine. That meant settling what the product should do before deciding how any screen looked, and then documenting it well enough to hand over.",
-        "The rest of this case study — what Eventy8 does, the design decisions behind it and how it landed — is still being written and will be added here once it is confirmed.",
+        "Nigeria and similar high-growth event hubs host thousands of physical, hybrid, and virtual gatherings annually. However, organizers are routinely hampered by fragmented software ecosystems:",
+      ],
+      points: [
+        {
+          label: "Siloed communication",
+          text: "Hosts rely on external tools like WhatsApp, Telegram, or custom email builders to keep attendees informed before, during, and after events.",
+        },
+        {
+          label: "Leaky lead pipelines",
+          text: "Organizers struggle to capture, track, and follow up with leads, forcing them to transfer contact data manually into third-party CRMs.",
+        },
+        {
+          label: "Disjointed attendee journeys",
+          text: "Attendees jump between standalone registration pages, independent ticketing portals, and third-party event apps, leading to drop-offs at checkout.",
+        },
       ],
     },
   ],
